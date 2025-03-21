@@ -1,3 +1,10 @@
+---
+name: Feature template
+about: For issues relating to new features
+title: ""
+labels: feature
+---
+
 ### User story:
 
 As a **<user>**,
