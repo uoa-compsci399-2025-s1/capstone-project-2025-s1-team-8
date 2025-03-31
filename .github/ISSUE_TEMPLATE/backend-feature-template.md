@@ -1,8 +1,9 @@
 ---
-name: General feature template
-about: For issues relating to new features
-title: "[insert-issue-type-here] "
+name: Backend feature template
+about: Features relating to the backend
+title: "[BACKEND] "
 type: Feature
+labels: backend
 assignees: ''
 
 ---
@@ -22,9 +23,12 @@ A clear and concise description of any alternative solutions or features you've 
 ### Definition of Done:
 
 - [ ] Acceptance criteria met
-- [ ] Tests written for critical interactions
+- [ ] Integration test written for services
+- [ ] [Schemas annotated](https://payloadcms.com/docs/configuration/collections) if adding new models
+- [ ] Code generation run (*hint*: `pnpm generate:types`)
+- [ ] Appropriate mocks created where possible
 - [ ] PR Reviewed (For non-trivial changes)
-- [ ] Changes tested after rebasing on master or merging in master (_hint_: `git fetch origin master:master`, then `git rebase master` or `git merge master`)
+- [ ] Changes tested after rebasing on master or merging in master (*hint*: `git fetch origin master:master`, then `git rebase master` or `git merge master`)
 - [ ] All required PR checks passing
 
 ### Notes / Links

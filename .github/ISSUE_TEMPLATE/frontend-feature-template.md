@@ -1,8 +1,9 @@
 ---
-name: General feature template
-about: For issues relating to new features
-title: "[insert-issue-type-here] "
+name: Frontend feature template
+about: Features relating to the frontend
+title: "[FRONTEND] "
 type: Feature
+labels: frontend
 assignees: ''
 
 ---
@@ -22,6 +23,8 @@ A clear and concise description of any alternative solutions or features you've 
 ### Definition of Done:
 
 - [ ] Acceptance criteria met
+- [ ] Storybooks created where possible
+- [ ] Tested with [react testing library](https://testing-library.com/docs/react-testing-library/example-intro)
 - [ ] Tests written for critical interactions
 - [ ] PR Reviewed (For non-trivial changes)
 - [ ] Changes tested after rebasing on master or merging in master (_hint_: `git fetch origin master:master`, then `git rebase master` or `git merge master`)

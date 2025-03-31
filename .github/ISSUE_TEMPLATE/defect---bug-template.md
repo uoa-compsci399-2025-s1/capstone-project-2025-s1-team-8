@@ -1,8 +1,8 @@
 ---
 name: Defect / Bug Template
 about: An issue with the application producing incorrect/unexpected behaviour
-title: ''
-labels: ''
+title: '[BUG] '
+labels: Bug
 assignees: ''
 
 ---
