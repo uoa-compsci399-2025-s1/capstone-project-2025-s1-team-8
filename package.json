@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8#readme",
   "engines": {
-    "node": ">=18.20.2",
+    "node": "^18.20.2 || >=20.9.0",
     "pnpm": ">=9"
   },
   "volta": {
