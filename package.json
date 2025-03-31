@@ -1,0 +1,29 @@
+{
+  "name": "capstone-project-2025-s1-team-8",
+  "version": "1.0.0",
+  "description": "[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/4-04QCSZ)",
+  "main": "index.js",
+  "devDependencies": {"typescript": "^5.8.2"},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/issues"
+  },
+  "homepage": "https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8#readme",
+  "engines": {
+    "node": ">=20.9.0",
+    "pnpm": ">=9"
+  },
+  "volta": {
+    "node": "18.20.2"
+  },
+  "packageManager": "pnpm@10.7.0"
+}
+
