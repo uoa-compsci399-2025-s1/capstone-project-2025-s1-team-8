@@ -1,30 +1,51 @@
 {
   "name": "capstone-project-2025-s1-team-8",
   "version": "1.0.0",
-  "description": "[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/4-04QCSZ)",
-  "main": "index.js",
-  "devDependencies": {
-    "typescript": "^5.8.2"
-  },
+  "description": "A blank template to get started with Payload 3.0",
+  "license": "MIT",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
+    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8.git"
+  "dependencies": {
+    "@payloadcms/db-mongodb": "3.31.0",
+    "@payloadcms/next": "3.31.0",
+    "@payloadcms/payload-cloud": "3.31.0",
+    "@payloadcms/richtext-lexical": "3.31.0",
+    "cross-env": "^7.0.3",
+    "graphql": "^16.8.1",
+    "next": "15.2.3",
+    "payload": "3.31.0",
+    "pnpm": "^10.7.1",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "sharp": "0.32.6"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/issues"
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@types/node": "^22.5.4",
+    "@types/react": "19.0.12",
+    "@types/react-dom": "19.0.4",
+    "eslint": "^9.16.0",
+    "eslint-config-next": "15.2.3",
+    "prettier": "^3.4.2",
+    "typescript": "5.7.3"
   },
-  "homepage": "https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8#readme",
   "engines": {
     "node": "^18.20.2 || >=20.9.0",
-    "pnpm": ">=9"
+    "pnpm": "^9"
   },
-  "volta": {
-    "node": "18.20.2"
-  },
-  "packageManager": "pnpm@10.7.0"
+  "packageManager": "pnpm@9.0.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp"
+    ]
+  }
 }
