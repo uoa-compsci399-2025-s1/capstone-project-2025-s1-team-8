@@ -1,8 +1,8 @@
 {
   "name": "capstone-project-2025-s1-team-8",
   "version": "1.0.0",
-  "description": "A blank template to get started with Payload 3.0",
-  "license": "MIT",
+  "description": "[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/4-04QCSZ)",
+  "license": "ISC",
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
@@ -12,22 +12,32 @@
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
-    "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/issues"
+  },
+  "homepage": "https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8#readme",
   "dependencies": {
-    "@payloadcms/db-mongodb": "3.31.0",
-    "@payloadcms/next": "3.31.0",
-    "@payloadcms/payload-cloud": "3.31.0",
-    "@payloadcms/richtext-lexical": "3.31.0",
+    "@payloadcms/db-mongodb": "latest",
+    "@payloadcms/next": "latest",
+    "@payloadcms/payload-cloud": "latest",
+    "@payloadcms/richtext-lexical": "latest",
     "cross-env": "^7.0.3",
     "graphql": "^16.8.1",
     "next": "15.2.3",
-    "payload": "3.31.0",
-    "pnpm": "^10.7.1",
+    "payload": "latest",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "sharp": "0.32.6"
   },
+  
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@types/node": "^22.5.4",
@@ -42,7 +52,9 @@
     "node": "^18.20.2 || >=20.9.0",
     "pnpm": "^9"
   },
-  "packageManager": "pnpm@9.0.0",
+  "volta": {
+    "node": "18.20.2"
+  },
   "pnpm": {
     "onlyBuiltDependencies": [
       "sharp"
