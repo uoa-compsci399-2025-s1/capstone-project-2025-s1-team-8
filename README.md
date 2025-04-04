@@ -62,7 +62,7 @@ Copy the `.env.example` file and rename it to `.env`.
 
 #### Type Generation
 
-We use payload's built in code generation to generate types for our project. To do this you can run the following command:
+We use payload's built-in code generation to generate types for our project. To do this you can run the following command:
 
 ```bash
 pnpm generate:types
