@@ -4,9 +4,7 @@ Project by Team 8, Status 418.
 
 ### About
 
-Encapsulate is a platform that aims to provide a comprehensive solution for Clients, Admins, and Students to manage, submit, and view projects for the [University of Auckland's BSc Computer Science](https://www.auckland.ac.nz/en/study/study-options/find-a-study-option/computer-science/undergraduate/bsc-compsci-from-2019.html) capstone course, COMPSCI 399.
-
-Encapsulate is built for a user-friendly interface, aiming for an efficient and effective user experience.
+Encapsulate is a platform that aims to provide a comprehensive solution for Clients, Admins, and Students to manage, submit, and view projects for the [University of Auckland's BSc Computer Science](https://www.auckland.ac.nz/en/study/study-options/find-a-study-option/computer-science/undergraduate/bsc-compsci-from-2019.html) capstone course, COMPSCI 399. Encapsulate is built for a user-friendly interface, aiming for an efficient and effective user experience.
 
 ## Setting up the Project
 
@@ -15,8 +13,6 @@ Encapsulate is built for a user-friendly interface, aiming for an efficient and 
 #### **Node.js installation**
 
 You will need to have `Node.js` installed, so you can use `pnpm`.
-
-**Using Volta or NVM**
 
 **Volta:**
 
@@ -118,8 +114,13 @@ See further towards contributing guidelines in the [GitHub Wiki](https://github.
 ## Acknowledgements
 
 [Eric Zheng - Facilitator](https://github.com/monoclonalAb)
+
 [JooHui Lee - Lead Designer](https://github.com/joohuil)
+
 [Bethany Yates - Frontend Lead](https://github.com/bethany-aroha)
+
 [Dennis Hu - Backend Lead](https://github.com/midnightcuberx)
+
 [Sheena Lin - DevOps Lead](https://github.com/elin277)
+
 [Jeffery Ji - Documentation Lead](https://github.com/jeffplays2005)
