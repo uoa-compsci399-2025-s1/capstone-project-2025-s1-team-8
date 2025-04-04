@@ -66,6 +66,54 @@ We use payload's built in code generation to generate types for our project. To 
 pnpm generate:types
 ```
 
+### Testing
+
+Automated testing is an important part of writing code that can be maintained and understood long after the developers stop working on code.
+
+We use [vitest](https://vitest.dev/) as our test runner because of its ease of setup
+
+Tests should be suffixed with the extension, `.test.ts`. I.e. for `auth.ts`, we have `auth.test.ts`.
+
+To run all the tests the following command can be used
+
+```bash
+pnpm test
+```
+
+To run a single test you can use the following command
+
+```bash
+pnpm test <test-name>
+```
+
+## Technical Stack
+
+We use the following technologies:
+
+**Frontend:**
+
+The main framework for this project is using `Next.js`, it is most important to understand that we are using the [App Router](https://nextjs.org/docs/app) and [API Routes](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) to build the project. Note that you will need to have some understanding of React to work on this project.
+
+- [Next.js](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+
+**Backend:**
+
+We are using PayloadCMS to manage the content of the website, as well as define the shape of our data. This takes away a lot of the hard work that is put into setting up a database and API. You will have to familiarise yourself with how to use [Payload's API](https://payloadcms.com/docs/local-api/overview).
+
+- [Payload CMS](https://payloadcms.com/)
+- [Vitest](https://vitest.dev/)
+
 ## Contributing
 
 See further towards contributing guidelines in the [GitHub Wiki](https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/wiki/)
+
+## Acknowledgements
+
+[Eric Zheng - Facilitator](https://github.com/monoclonalAb)
+[JooHui Lee - Lead Designer](https://github.com/joohuil)
+[Bethany Yates - Frontend Lead](https://github.com/bethany-aroha)
+[Dennis Hu - Backend Lead](https://github.com/midnightcuberx)
+[Sheena Lin - DevOps Lead](https://github.com/elin277)
+[Jeffery Ji - Documentation Lead](https://github.com/jeffplays2005)
