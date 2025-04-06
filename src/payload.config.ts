@@ -20,6 +20,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
+  
   collections: [Users, Media],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -34,4 +35,8 @@ export default buildConfig({
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
+  routes: {
+    admin: "/payload/admin",
+    api: "/payload/api",
+  },
 })
