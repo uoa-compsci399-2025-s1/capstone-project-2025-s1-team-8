@@ -161,7 +161,7 @@ jobs:
 
   verify:
     name: Verify
-    needs: [lint, style]
+    needs: [lint, style, codegen, check_changes]
     runs-on: ubuntu-latest
     steps:
       - name: All checks passed
