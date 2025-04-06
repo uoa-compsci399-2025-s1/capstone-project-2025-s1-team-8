@@ -13,7 +13,8 @@
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "repository": {
     "type": "git",
@@ -49,7 +50,8 @@
     "postcss": "^8.5.3",
     "prettier": "^3.4.2",
     "tailwindcss": "^4.1.2",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "vitest": "^3.1.1"
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0",
