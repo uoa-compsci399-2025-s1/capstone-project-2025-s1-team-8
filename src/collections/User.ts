@@ -7,23 +7,23 @@ export const User: CollectionConfig = {
     {
       name: 'firstName',
       type: 'text',
-      required: true
+      required: true,
     },
     {
       name: 'lastName',
       type: 'text',
-      required: true
+      required: true,
     },
     {
       name: 'email',
       type: 'email',
-      required: true
+      required: true,
     },
     {
       name: 'password',
       // check type for password ??
       type: 'text',
-      required: true
+      required: true,
     },
     {
       name: 'role',
@@ -31,24 +31,24 @@ export const User: CollectionConfig = {
       options: [
         {
           label: 'Admin',
-          value: 'admin'
+          value: 'admin',
         },
         {
           label: 'User',
-          value: 'user'
+          value: 'user',
         },
         {
           label: 'Student',
-          value: 'student'
+          value: 'student',
         },
       ],
-      required: true
+      required: true,
     },
     {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
-      required: false
+      required: false,
     },
   ],
 }
