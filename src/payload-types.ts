@@ -63,22 +63,24 @@ export type SupportedTimezones =
 
 export interface Config {
   auth: {
-    users: UserAuthOperations;
+    user: UserAuthOperations;
   };
   blocks: {};
   collections: {
-    users: User;
+    user: User;
     media: Media;
     project: Project;
+    formQuestion: FormQuestion;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    user: UserSelect<false> | UserSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     project: ProjectSelect<false> | ProjectSelect<true>;
+    formQuestion: FormQuestionSelect<false> | FormQuestionSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -90,7 +92,7 @@ export interface Config {
   globalsSelect: {};
   locale: null;
   user: User & {
-    collection: 'users';
+    collection: 'user';
   };
   jobs: {
     tasks: unknown;
@@ -117,10 +119,14 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "user".
  */
 export interface User {
   id: string;
+  firstName: string;
+  lastName: string;
+  role: 'admin' | 'client' | 'student';
+  image?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -172,13 +178,23 @@ export interface Project {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "formQuestion".
+ */
+export interface FormQuestion {
+  id: string;
+  question: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
-        relationTo: 'users';
+        relationTo: 'user';
         value: string | User;
       } | null)
     | ({
@@ -188,10 +204,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'project';
         value: string | Project;
+      } | null)
+    | ({
+        relationTo: 'formQuestion';
+        value: string | FormQuestion;
       } | null);
   globalSlug?: string | null;
   user: {
-    relationTo: 'users';
+    relationTo: 'user';
     value: string | User;
   };
   updatedAt: string;
@@ -204,7 +224,7 @@ export interface PayloadLockedDocument {
 export interface PayloadPreference {
   id: string;
   user: {
-    relationTo: 'users';
+    relationTo: 'user';
     value: string | User;
   };
   key?: string | null;
@@ -233,9 +253,13 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "user_select".
  */
-export interface UsersSelect<T extends boolean = true> {
+export interface UserSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  role?: T;
+  image?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -279,6 +303,15 @@ export interface ProjectSelect<T extends boolean = true> {
   deadline_tz?: T;
   timestamp?: T;
   timestamp_tz?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "formQuestion_select".
+ */
+export interface FormQuestionSelect<T extends boolean = true> {
+  question?: T;
   updatedAt?: T;
   createdAt?: T;
 }
