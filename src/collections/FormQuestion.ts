@@ -5,8 +5,8 @@ export const FormQuestion: CollectionConfig = {
   access: {},
   fields: [
     {
-      name: 'description',
-      type: 'textarea',
+      name: 'question',
+      type: 'text',
       required: true,
     },
   ],

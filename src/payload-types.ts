@@ -157,7 +157,7 @@ export interface Media {
  */
 export interface FormQuestion {
   id: string;
-  description: string;
+  question: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -260,7 +260,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "formQuestion_select".
  */
 export interface FormQuestionSelect<T extends boolean = true> {
-  description?: T;
+  question?: T;
   updatedAt?: T;
   createdAt?: T;
 }
