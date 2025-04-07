@@ -295,7 +295,6 @@ export interface FormQuestionSelect<T extends boolean = true> {
  * via the `definition` "form_select".
  */
 export interface FormSelect<T extends boolean = true> {
-  id?: T;
   name?: T;
   clients?: T;
   questions?: T;
