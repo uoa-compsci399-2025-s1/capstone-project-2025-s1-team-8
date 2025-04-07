@@ -3,5 +3,3 @@ export enum Role {
   Client = 'client',
   Student = 'student',
 }
-
-Object.values(Role)
