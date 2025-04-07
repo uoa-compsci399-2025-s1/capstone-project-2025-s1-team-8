@@ -9,6 +9,7 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { FormQuestion } from './collections/FormQuestion'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -18,11 +19,11 @@ export default buildConfig({
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
-      importMapFile: '/payload/admin',
+      importMapFile: path.resolve(dirname) + '/app/payload/admin/importMap.js',
     },
   },
 
-  collections: [Users, Media],
+  collections: [Users, Media, FormQuestion],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
