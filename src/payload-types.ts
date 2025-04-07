@@ -70,6 +70,7 @@ export interface Config {
     user: User;
     media: Media;
     formQuestion: FormQuestion;
+    form: Form;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -79,6 +80,7 @@ export interface Config {
     user: UserSelect<false> | UserSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     formQuestion: FormQuestionSelect<false> | FormQuestionSelect<true>;
+    form: FormSelect<false> | FormSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -167,6 +169,18 @@ export interface FormQuestion {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form".
+ */
+export interface Form {
+  id: string;
+  name: string;
+  clients?: (string | User)[] | null;
+  questions?: (string | FormQuestion)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -183,6 +197,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'formQuestion';
         value: string | FormQuestion;
+      } | null)
+    | ({
+        relationTo: 'form';
+        value: string | Form;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -269,6 +287,18 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface FormQuestionSelect<T extends boolean = true> {
   question?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form_select".
+ */
+export interface FormSelect<T extends boolean = true> {
+  id?: T;
+  name?: T;
+  clients?: T;
+  questions?: T;
   updatedAt?: T;
   createdAt?: T;
 }
