@@ -7,7 +7,7 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-import { Users } from './collections/Users'
+import { User } from './collections/User'
 import { Media } from './collections/Media'
 import { FormQuestion } from './collections/FormQuestion'
 
@@ -16,14 +16,13 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
-    user: Users.slug,
+    user: User.slug,
     importMap: {
       baseDir: path.resolve(dirname),
       importMapFile: path.resolve(dirname) + '/app/payload/admin/importMap.js',
     },
   },
-
-  collections: [Users, Media, FormQuestion],
+  collections: [User, Media, FormQuestion],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
