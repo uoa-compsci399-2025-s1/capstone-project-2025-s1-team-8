@@ -22,7 +22,7 @@ export default buildConfig({
       importMapFile: path.resolve(dirname) + '/app/payload/admin/importMap.js',
     },
   },
-  collections: [Users, Media, FormQuestion],
+  collections: [User, Media, FormQuestion],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

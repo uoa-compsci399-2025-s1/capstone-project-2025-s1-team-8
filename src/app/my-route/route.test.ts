@@ -9,15 +9,18 @@ dotenv.config()
 
 describe('get user count', () => {
   afterEach(async () => {
-    await clearCollection(testPayloadObject, 'users')
+    await clearCollection(testPayloadObject, 'user')
   })
 
   it('should get 1 user correctly', async () => {
     await testPayloadObject.create({
-      collection: 'users',
+      collection: 'user',
       data: {
         email: 'jeffery@gmail.com',
-        password: '12132',
+        password: '1234',
+        firstName: '12132',
+        lastName: 'lastName',
+        role: 'admin',
       },
     })
 
@@ -27,17 +30,23 @@ describe('get user count', () => {
 
   it('should get 2 user correctly', async () => {
     await testPayloadObject.create({
-      collection: 'users',
+      collection: 'user',
       data: {
         email: 'jeffery@gmail.com',
-        password: '12132',
+        password: '1234',
+        firstName: '12132',
+        lastName: 'lastName',
+        role: 'admin',
       },
     })
     await testPayloadObject.create({
-      collection: 'users',
+      collection: 'user',
       data: {
-        email: 'lolololol@gmail.com',
-        password: '12132',
+        email: 'jeffery1@gmail.com',
+        password: '1234',
+        firstName: '12132',
+        lastName: 'lastName',
+        role: 'admin',
       },
     })
 
