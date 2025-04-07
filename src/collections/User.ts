@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { Role } from '@/enums/RoleEnum'
+import { Role } from '@/types/RoleTypes'
 
 export const User: CollectionConfig = {
   slug: 'user',
@@ -18,20 +18,7 @@ export const User: CollectionConfig = {
     {
       name: 'role',
       type: 'select',
-      options: [
-        {
-          label: 'Admin',
-          value: Role.Admin,
-        },
-        {
-          label: 'Client',
-          value: Role.Client,
-        },
-        {
-          label: 'Student',
-          value: Role.Student,
-        },
-      ],
+      options: Object.values(Role),
       required: true,
     },
     {
