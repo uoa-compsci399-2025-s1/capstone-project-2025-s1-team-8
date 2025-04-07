@@ -44,6 +44,7 @@
     "@types/node": "^22.5.4",
     "@types/react": "19.0.12",
     "@types/react-dom": "19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.16.0",
     "eslint-config-next": "15.2.3",
@@ -52,6 +53,7 @@
     "prettier": "^3.4.2",
     "tailwindcss": "^4.1.2",
     "typescript": "5.7.3",
+    "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.1.1"
   },
   "engines": {
