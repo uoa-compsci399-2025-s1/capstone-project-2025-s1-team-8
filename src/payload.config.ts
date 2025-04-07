@@ -18,8 +18,10 @@ export default buildConfig({
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
+      importMapFile: "/payload/admin",
     },
   },
+  
   collections: [Users, Media],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
@@ -34,4 +36,10 @@ export default buildConfig({
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
+  routes: {
+    admin: "/payload/admin",
+    api: "/payload/api",
+    graphQL: "/payload/graphql",
+    graphQLPlayground: "/payload/graphql-playground",
+  },
 })
