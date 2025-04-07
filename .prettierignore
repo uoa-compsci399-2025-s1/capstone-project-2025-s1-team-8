@@ -1,3 +1,4 @@
 *.md
 pnpm-lock.yaml
-.github
+src/payload-types.ts
+.github/
