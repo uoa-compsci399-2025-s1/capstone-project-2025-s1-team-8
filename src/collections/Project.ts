@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { Status } from '@/enums/StatusEnum'
+import { Status } from '@/types/StatusEnum'
 
 export const Project: CollectionConfig = {
   slug: 'project',
