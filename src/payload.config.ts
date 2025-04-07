@@ -9,6 +9,7 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Semester } from './collections/Semester'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -18,11 +19,11 @@ export default buildConfig({
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
-      importMapFile: "/payload/admin",
+      importMapFile: '/payload/admin',
     },
   },
-  
-  collections: [Users, Media],
+
+  collections: [Users, Media, Semester],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -37,9 +38,9 @@ export default buildConfig({
     // storage-adapter-placeholder
   ],
   routes: {
-    admin: "/payload/admin",
-    api: "/payload/api",
-    graphQL: "/payload/graphql",
-    graphQLPlayground: "/payload/graphql-playground",
+    admin: '/payload/admin',
+    api: '/payload/api',
+    graphQL: '/payload/graphql',
+    graphQLPlayground: '/payload/graphql-playground',
   },
 })
