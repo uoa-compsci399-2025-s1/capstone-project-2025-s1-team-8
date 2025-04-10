@@ -40,7 +40,6 @@ export const Project: CollectionConfig = {
         required: true,
         defaultValue: Status.Pending,
         options: Object.values(Status)
-
     },
     /*{
         name: "semester",
@@ -54,7 +53,6 @@ export const Project: CollectionConfig = {
       type: 'checkbox',
       defaultValue: false,
       required: true,
-
     },
     {
         name: "deadline",
@@ -75,6 +73,5 @@ export const Project: CollectionConfig = {
         hasMany: false,
         required: true,
     },*/
-
   ],
 }
