@@ -20,6 +20,7 @@ export const Project: CollectionConfig = {
         type: "relationship",
         hasMany: true,
         required: true,
+        minRows: 1,
     },
     {
         name: "description",
