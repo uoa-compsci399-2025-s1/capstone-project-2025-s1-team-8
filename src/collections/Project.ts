@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { Status } from '@/types/StatusEnum'
+import { Status } from '@/types/StatusTypes'
 
 export const Project: CollectionConfig = {
   slug: 'project',
@@ -7,7 +7,7 @@ export const Project: CollectionConfig = {
     {
       name: 'number',
       type: 'number',
-      required: true,
+      required: false,
     },
     {
         name: "name",
@@ -38,20 +38,7 @@ export const Project: CollectionConfig = {
         type: "select",
         required: true,
         defaultValue: Status.Pending,
-        options: [
-            {
-                label: "Pending",
-                value: Status.Pending,
-            },
-            {
-                label: "Accepted",
-                value: Status.Accepted,
-            },
-            {
-                label: "Rejected",
-                value: Status.Rejected,
-            },
-        ]
+        options: Object.values(Status)
 
     },
     /*{
