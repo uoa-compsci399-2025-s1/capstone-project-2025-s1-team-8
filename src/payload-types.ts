@@ -163,8 +163,9 @@ export interface Media {
  */
 export interface Project {
   id: string;
-  number: number;
+  number?: number | null;
   name: string;
+  clients: (string | User)[];
   description: string;
   attachments?: (string | Media)[] | null;
   status: 'pending' | 'accepted' | 'rejected';
@@ -295,6 +296,7 @@ export interface MediaSelect<T extends boolean = true> {
 export interface ProjectSelect<T extends boolean = true> {
   number?: T;
   name?: T;
+  clients?: T;
   description?: T;
   attachments?: T;
   status?: T;
