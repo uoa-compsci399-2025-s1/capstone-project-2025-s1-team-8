@@ -14,13 +14,13 @@ export const Project: CollectionConfig = {
         type: "text",
         required: true,
     },
-    /*{
+    {
         name: "clients",
-        relationTo: "client",
+        relationTo: "user",
         type: "relationship",
         hasMany: true,
         required: true,
-    },*/
+    },
     {
         name: "description",
         type: "textarea",
