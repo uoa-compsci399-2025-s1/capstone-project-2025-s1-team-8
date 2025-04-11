@@ -1,6 +1,6 @@
-import { FormQuestion } from "@/payload-types";
+import { FormQuestion } from '@/payload-types'
 
 export interface QuestionResponse {
-    question: FormQuestion;
-    answer: string;
+  question: FormQuestion
+  answer: string
 }
