@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     formQuestion: FormQuestion;
     formResponse: FormResponse;
+    form: Form;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -81,6 +82,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     formQuestion: FormQuestionSelect<false> | FormQuestionSelect<true>;
     formResponse: FormResponseSelect<false> | FormResponseSelect<true>;
+    form: FormSelect<false> | FormSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -188,6 +190,18 @@ export interface FormResponse {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form".
+ */
+export interface Form {
+  id: string;
+  name: string;
+  description: string;
+  questions?: (string | FormQuestion)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -206,9 +220,12 @@ export interface PayloadLockedDocument {
         value: string | FormQuestion;
       } | null)
     | ({
-
         relationTo: 'formResponse';
         value: string | FormResponse;
+      } | null)
+    | ({
+        relationTo: 'form';
+        value: string | Form;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -313,6 +330,17 @@ export interface FormResponseSelect<T extends boolean = true> {
         answer?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form_select".
+ */
+export interface FormSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  questions?: T;
   updatedAt?: T;
   createdAt?: T;
 }
