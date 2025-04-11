@@ -41,13 +41,6 @@ export const Project: CollectionConfig = {
         defaultValue: Status.Pending,
         options: Object.values(Status)
     },
-    /*{
-        name: "semester",
-        relationTo: "semester",
-        type: "relationship",
-        hasMany: false,
-        required: true,
-    },*/
     {
       name: 'published',
       type: 'checkbox',
@@ -58,7 +51,7 @@ export const Project: CollectionConfig = {
         name: "deadline",
         type: "date",
         timezone: true,
-        required: true,
+        required: false,
     },
     {
         name: "timestamp",
@@ -66,12 +59,12 @@ export const Project: CollectionConfig = {
         timezone: true,
         required: true,
     },
-    /*{
-        name: "form",
-        relationTo: "form",
+    {
+        name: "formResponse",
+        relationTo: "formResponse",
         type: "relationship",
         hasMany: false,
         required: true,
-    },*/
+    },
   ],
 }
