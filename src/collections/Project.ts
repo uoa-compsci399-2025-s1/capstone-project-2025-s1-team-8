@@ -30,19 +30,6 @@ export const Project: CollectionConfig = {
         maxRows: 5
     },
     {
-        name: "status",
-        type: "select",
-        required: true,
-        defaultValue: Status.Pending,
-        options: Object.values(Status)
-    },
-    {
-      name: 'published',
-      type: 'checkbox',
-      defaultValue: false,
-      required: true,
-    },
-    {
         name: "deadline",
         type: "date",
         timezone: true,
