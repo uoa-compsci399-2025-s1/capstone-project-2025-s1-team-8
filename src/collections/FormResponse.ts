@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 export const FormResponse: CollectionConfig = {
-  slug: 'formresponse',
+  slug: 'formResponse',
   fields: [
     {
       name: 'name',
@@ -18,6 +18,7 @@ export const FormResponse: CollectionConfig = {
       type: 'relationship',
       relationTo: 'user',
       hasMany: true,
+      minRows: 1,
     },
     {
       name: 'questionResponses',
