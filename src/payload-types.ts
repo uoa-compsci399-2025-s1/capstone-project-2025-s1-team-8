@@ -70,7 +70,7 @@ export interface Config {
     user: User;
     media: Media;
     formQuestion: FormQuestion;
-    formresponse: Formresponse;
+    formResponse: FormResponse;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -80,7 +80,7 @@ export interface Config {
     user: UserSelect<false> | UserSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     formQuestion: FormQuestionSelect<false> | FormQuestionSelect<true>;
-    formresponse: FormresponseSelect<false> | FormresponseSelect<true>;
+    formResponse: FormResponseSelect<false> | FormResponseSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -169,9 +169,9 @@ export interface FormQuestion {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "formresponse".
+ * via the `definition` "formResponse".
  */
-export interface Formresponse {
+export interface FormResponse {
   id: string;
   name: string;
   description: string;
@@ -206,8 +206,8 @@ export interface PayloadLockedDocument {
         value: string | FormQuestion;
       } | null)
     | ({
-        relationTo: 'formresponse';
-        value: string | Formresponse;
+        relationTo: 'formResponse';
+        value: string | FormResponse;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -299,9 +299,9 @@ export interface FormQuestionSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "formresponse_select".
+ * via the `definition` "formResponse_select".
  */
-export interface FormresponseSelect<T extends boolean = true> {
+export interface FormResponseSelect<T extends boolean = true> {
   name?: T;
   description?: T;
   clients?: T;
