@@ -11,6 +11,7 @@ import { User } from './collections/User'
 import { Media } from './collections/Media'
 import { FormQuestion } from './collections/FormQuestion'
 import { Form } from './collections/Form'
+import { FormResponse } from './collections/FormResponse'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -23,7 +24,7 @@ export default buildConfig({
       importMapFile: path.resolve(dirname) + '/app/payload/admin/importMap.js',
     },
   },
-  collections: [User, Media, FormQuestion, Form],
+  collections: [User, Media, FormQuestion, FormResponse, Form],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

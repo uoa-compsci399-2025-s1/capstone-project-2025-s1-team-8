@@ -70,7 +70,7 @@ export interface Config {
     user: User;
     media: Media;
     formQuestion: FormQuestion;
-    form: Form;
+    formResponse: FormResponse;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -80,7 +80,7 @@ export interface Config {
     user: UserSelect<false> | UserSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     formQuestion: FormQuestionSelect<false> | FormQuestionSelect<true>;
-    form: FormSelect<false> | FormSelect<true>;
+    formResponse: FormResponseSelect<false> | FormResponseSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -169,13 +169,20 @@ export interface FormQuestion {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form".
+ * via the `definition` "formResponse".
  */
-export interface Form {
+export interface FormResponse {
   id: string;
   name: string;
+  description: string;
   clients?: (string | User)[] | null;
-  questions?: (string | FormQuestion)[] | null;
+  questionResponses?:
+    | {
+        question: string | FormQuestion;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -199,8 +206,9 @@ export interface PayloadLockedDocument {
         value: string | FormQuestion;
       } | null)
     | ({
-        relationTo: 'form';
-        value: string | Form;
+
+        relationTo: 'formResponse';
+        value: string | FormResponse;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -292,12 +300,19 @@ export interface FormQuestionSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form_select".
+ * via the `definition` "formResponse_select".
  */
-export interface FormSelect<T extends boolean = true> {
+export interface FormResponseSelect<T extends boolean = true> {
   name?: T;
+  description?: T;
   clients?: T;
-  questions?: T;
+  questionResponses?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
