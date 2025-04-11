@@ -5,11 +5,6 @@ export const Project: CollectionConfig = {
   slug: 'project',
   fields: [
     {
-      name: 'number',
-      type: 'number',
-      required: false,
-    },
-    {
         name: "name",
         type: "text",
         required: true,
