@@ -167,15 +167,12 @@ export interface Media {
  */
 export interface Project {
   id: string;
-  number?: number | null;
   name: string;
   clients: (string | User)[];
   description: string;
   attachments?: (string | Media)[] | null;
-  status: 'pending' | 'accepted' | 'rejected';
-  published: boolean;
-  deadline: string;
-  deadline_tz: SupportedTimezones;
+  deadline?: string | null;
+  deadline_tz?: SupportedTimezones;
   timestamp: string;
   timestamp_tz: SupportedTimezones;
   updatedAt: string;
@@ -337,13 +334,10 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "project_select".
  */
 export interface ProjectSelect<T extends boolean = true> {
-  number?: T;
   name?: T;
   clients?: T;
   description?: T;
   attachments?: T;
-  status?: T;
-  published?: T;
   deadline?: T;
   deadline_tz?: T;
   timestamp?: T;
