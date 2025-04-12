@@ -9,7 +9,11 @@ import sharp from 'sharp'
 
 import { User } from './collections/User'
 import { Media } from './collections/Media'
+import { Project } from './collections/Project'
 import { FormQuestion } from './collections/FormQuestion'
+import { Form } from './collections/Form'
+import { FormResponse } from './collections/FormResponse'
+import { SemesterProject } from './collections/SemesterProject'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -22,7 +26,7 @@ export default buildConfig({
       importMapFile: path.resolve(dirname) + '/app/payload/admin/importMap.js',
     },
   },
-  collections: [User, Media, FormQuestion],
+  collections: [User, Media, Project, SemesterProject, FormQuestion, FormResponse, Form],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

@@ -15,6 +15,7 @@
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "test": "vitest",
     "coverage": "vitest run --coverage",
+    "yassify": "prettier --write .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
