@@ -9,13 +9,10 @@ import sharp from 'sharp'
 
 import { User } from './collections/User'
 import { Media } from './collections/Media'
-<<<<<<< HEAD
 import { Semester } from './collections/Semester'
-=======
 import { FormQuestion } from './collections/FormQuestion'
 import { Form } from './collections/Form'
 import { FormResponse } from './collections/FormResponse'
->>>>>>> main
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -28,12 +25,7 @@ export default buildConfig({
       importMapFile: path.resolve(dirname) + '/app/payload/admin/importMap.js',
     },
   },
-<<<<<<< HEAD
-
-  collections: [Users, Media, Semester],
-=======
-  collections: [User, Media, FormQuestion, FormResponse, Form],
->>>>>>> main
+  collections: [User, Media, FormQuestion, FormResponse, Form, Semester],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
