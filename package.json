@@ -14,7 +14,9 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,7 @@
     "@payloadcms/next": "latest",
     "@payloadcms/payload-cloud": "latest",
     "@payloadcms/richtext-lexical": "latest",
+    "@storybook/react": "^8.6.12",
     "@tailwindcss/postcss": "^4.1.2",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
@@ -42,6 +45,9 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
+    "@storybook/addon-essentials": "^8.6.12",
+    "@storybook/addon-interactions": "^8.6.12",
+    "@storybook/nextjs": "^8.6.12",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
