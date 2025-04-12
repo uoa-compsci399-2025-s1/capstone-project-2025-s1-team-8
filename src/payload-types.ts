@@ -70,6 +70,7 @@ export interface Config {
     user: User;
     media: Media;
     project: Project;
+    semesterProject: SemesterProject;
     formQuestion: FormQuestion;
     formResponse: FormResponse;
     form: Form;
@@ -83,6 +84,7 @@ export interface Config {
     user: UserSelect<false> | UserSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     project: ProjectSelect<false> | ProjectSelect<true>;
+    semesterProject: SemesterProjectSelect<false> | SemesterProjectSelect<true>;
     formQuestion: FormQuestionSelect<false> | FormQuestionSelect<true>;
     formResponse: FormResponseSelect<false> | FormResponseSelect<true>;
     form: FormSelect<false> | FormSelect<true>;
@@ -180,6 +182,19 @@ export interface Project {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "semesterProject".
+ */
+export interface SemesterProject {
+  id: string;
+  number?: number | null;
+  project: string | Project;
+  status: 'pending' | 'accepted' | 'rejected';
+  published: boolean;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "formQuestion".
  */
 export interface FormQuestion {
@@ -253,6 +268,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'project';
         value: string | Project;
+      } | null)
+    | ({
+        relationTo: 'semesterProject';
+        value: string | SemesterProject;
       } | null)
     | ({
         relationTo: 'formQuestion';
@@ -360,6 +379,18 @@ export interface ProjectSelect<T extends boolean = true> {
   attachments?: T;
   deadline?: T;
   timestamp?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "semesterProject_select".
+ */
+export interface SemesterProjectSelect<T extends boolean = true> {
+  number?: T;
+  project?: T;
+  status?: T;
+  published?: T;
   updatedAt?: T;
   createdAt?: T;
 }
