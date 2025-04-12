@@ -71,10 +71,10 @@ export interface Config {
     media: Media;
     project: Project;
     semesterProject: SemesterProject;
+    semester: Semester;
     formQuestion: FormQuestion;
     formResponse: FormResponse;
     form: Form;
-    semester: Semester;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -85,10 +85,10 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     project: ProjectSelect<false> | ProjectSelect<true>;
     semesterProject: SemesterProjectSelect<false> | SemesterProjectSelect<true>;
+    semester: SemesterSelect<false> | SemesterSelect<true>;
     formQuestion: FormQuestionSelect<false> | FormQuestionSelect<true>;
     formResponse: FormResponseSelect<false> | FormResponseSelect<true>;
     form: FormSelect<false> | FormSelect<true>;
-    semester: SemesterSelect<false> | SemesterSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -195,6 +195,20 @@ export interface SemesterProject {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "semester".
+ */
+export interface Semester {
+  id: string;
+  name: string;
+  projects: string | SemesterProject;
+  deadline: string;
+  startDate: string;
+  endDate: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "formQuestion".
  */
 export interface FormQuestion {
@@ -236,22 +250,6 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "semester".
- */
-export interface Semester {
-  id: string;
-  name: string;
-  deadline: string;
-  deadline_tz: SupportedTimezones;
-  startDate: string;
-  startDate_tz: SupportedTimezones;
-  endDate: string;
-  endDate_tz: SupportedTimezones;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -274,6 +272,10 @@ export interface PayloadLockedDocument {
         value: string | SemesterProject;
       } | null)
     | ({
+        relationTo: 'semester';
+        value: string | Semester;
+      } | null)
+    | ({
         relationTo: 'formQuestion';
         value: string | FormQuestion;
       } | null)
@@ -284,10 +286,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'form';
         value: string | Form;
-      } | null)
-    | ({
-        relationTo: 'semester';
-        value: string | Semester;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -396,6 +394,19 @@ export interface SemesterProjectSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "semester_select".
+ */
+export interface SemesterSelect<T extends boolean = true> {
+  name?: T;
+  projects?: T;
+  deadline?: T;
+  startDate?: T;
+  endDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "formQuestion_select".
  */
 export interface FormQuestionSelect<T extends boolean = true> {
@@ -429,21 +440,6 @@ export interface FormSelect<T extends boolean = true> {
   name?: T;
   description?: T;
   questions?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "semester_select".
- */
-export interface SemesterSelect<T extends boolean = true> {
-  name?: T;
-  deadline?: T;
-  deadline_tz?: T;
-  startDate?: T;
-  startDate_tz?: T;
-  endDate?: T;
-  endDate_tz?: T;
   updatedAt?: T;
   createdAt?: T;
 }
