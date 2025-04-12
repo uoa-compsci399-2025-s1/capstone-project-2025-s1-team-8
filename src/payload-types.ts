@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     user: User;
     media: Media;
+    project: Project;
     formQuestion: FormQuestion;
     formResponse: FormResponse;
     form: Form;
@@ -80,6 +81,7 @@ export interface Config {
   collectionsSelect: {
     user: UserSelect<false> | UserSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    project: ProjectSelect<false> | ProjectSelect<true>;
     formQuestion: FormQuestionSelect<false> | FormQuestionSelect<true>;
     formResponse: FormResponseSelect<false> | FormResponseSelect<true>;
     form: FormSelect<false> | FormSelect<true>;
@@ -161,6 +163,21 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project".
+ */
+export interface Project {
+  id: string;
+  name: string;
+  clients: (string | User)[];
+  description: string;
+  attachments?: (string | Media)[] | null;
+  deadline?: string | null;
+  timestamp: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "formQuestion".
  */
 export interface FormQuestion {
@@ -214,6 +231,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'project';
+        value: string | Project;
       } | null)
     | ({
         relationTo: 'formQuestion';
@@ -305,6 +326,20 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project_select".
+ */
+export interface ProjectSelect<T extends boolean = true> {
+  name?: T;
+  clients?: T;
+  description?: T;
+  attachments?: T;
+  deadline?: T;
+  timestamp?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
