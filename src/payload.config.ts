@@ -7,23 +7,33 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-import { Users } from './collections/Users'
+import { User } from './collections/User'
 import { Media } from './collections/Media'
+<<<<<<< HEAD
 import { Semester } from './collections/Semester'
+=======
+import { FormQuestion } from './collections/FormQuestion'
+import { Form } from './collections/Form'
+import { FormResponse } from './collections/FormResponse'
+>>>>>>> main
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
-    user: Users.slug,
+    user: User.slug,
     importMap: {
       baseDir: path.resolve(dirname),
-      importMapFile: '/payload/admin',
+      importMapFile: path.resolve(dirname) + '/app/payload/admin/importMap.js',
     },
   },
+<<<<<<< HEAD
 
   collections: [Users, Media, Semester],
+=======
+  collections: [User, Media, FormQuestion, FormResponse, Form],
+>>>>>>> main
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
