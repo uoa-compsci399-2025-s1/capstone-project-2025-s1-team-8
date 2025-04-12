@@ -172,9 +172,7 @@ export interface Project {
   description: string;
   attachments?: (string | Media)[] | null;
   deadline?: string | null;
-  deadline_tz?: SupportedTimezones;
   timestamp: string;
-  timestamp_tz: SupportedTimezones;
   updatedAt: string;
   createdAt: string;
 }
@@ -339,9 +337,7 @@ export interface ProjectSelect<T extends boolean = true> {
   description?: T;
   attachments?: T;
   deadline?: T;
-  deadline_tz?: T;
   timestamp?: T;
-  timestamp_tz?: T;
   updatedAt?: T;
   createdAt?: T;
 }
