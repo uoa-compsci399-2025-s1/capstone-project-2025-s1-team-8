@@ -15,12 +15,12 @@ export const SemesterProject: CollectionConfig = {
       relationTo: 'project',
       required: true,
     },
-    // {
-    //   name: 'semester',
-    //   type: 'relationship',
-    //   relationTo: 'semester',
-    //   required: true,
-    // },
+    {
+      name: 'semester',
+      type: 'relationship',
+      relationTo: 'semester',
+      required: true,
+    },
     {
       name: 'status',
       type: 'select',

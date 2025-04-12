@@ -188,6 +188,7 @@ export interface SemesterProject {
   id: string;
   number?: number | null;
   project: string | Project;
+  semester: string | Semester;
   status: 'pending' | 'accepted' | 'rejected';
   published: boolean;
   updatedAt: string;
@@ -387,6 +388,7 @@ export interface ProjectSelect<T extends boolean = true> {
 export interface SemesterProjectSelect<T extends boolean = true> {
   number?: T;
   project?: T;
+  semester?: T;
   status?: T;
   published?: T;
   updatedAt?: T;
