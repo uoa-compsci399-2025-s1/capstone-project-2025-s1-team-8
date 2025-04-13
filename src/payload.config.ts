@@ -9,6 +9,7 @@ import sharp from 'sharp'
 
 import { User } from './collections/User'
 import { Media } from './collections/Media'
+import { Semester } from './collections/Semester'
 import { Project } from './collections/Project'
 import { FormQuestion } from './collections/FormQuestion'
 import { Form } from './collections/Form'
@@ -26,7 +27,7 @@ export default buildConfig({
       importMapFile: path.resolve(dirname) + '/app/payload/admin/importMap.js',
     },
   },
-  collections: [User, Media, Project, SemesterProject, FormQuestion, FormResponse, Form],
+  collections: [User, Media, Project, SemesterProject, Semester, FormQuestion, FormResponse, Form],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
