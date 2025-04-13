@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     project: Project;
     semesterProject: SemesterProject;
+    semester: Semester;
     formQuestion: FormQuestion;
     formResponse: FormResponse;
     form: Form;
@@ -84,6 +85,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     project: ProjectSelect<false> | ProjectSelect<true>;
     semesterProject: SemesterProjectSelect<false> | SemesterProjectSelect<true>;
+    semester: SemesterSelect<false> | SemesterSelect<true>;
     formQuestion: FormQuestionSelect<false> | FormQuestionSelect<true>;
     formResponse: FormResponseSelect<false> | FormResponseSelect<true>;
     form: FormSelect<false> | FormSelect<true>;
@@ -186,8 +188,23 @@ export interface SemesterProject {
   id: string;
   number?: number | null;
   project: string | Project;
+  semester: string | Semester;
   status: 'pending' | 'accepted' | 'rejected';
   published: boolean;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "semester".
+ */
+export interface Semester {
+  id: string;
+  name: string;
+  projects: string | SemesterProject;
+  deadline: string;
+  startDate: string;
+  endDate: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -254,6 +271,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'semesterProject';
         value: string | SemesterProject;
+      } | null)
+    | ({
+        relationTo: 'semester';
+        value: string | Semester;
       } | null)
     | ({
         relationTo: 'formQuestion';
@@ -367,8 +388,22 @@ export interface ProjectSelect<T extends boolean = true> {
 export interface SemesterProjectSelect<T extends boolean = true> {
   number?: T;
   project?: T;
+  semester?: T;
   status?: T;
   published?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "semester_select".
+ */
+export interface SemesterSelect<T extends boolean = true> {
+  name?: T;
+  projects?: T;
+  deadline?: T;
+  startDate?: T;
+  endDate?: T;
   updatedAt?: T;
   createdAt?: T;
 }
