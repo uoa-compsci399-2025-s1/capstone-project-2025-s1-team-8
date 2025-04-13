@@ -1,7 +1,14 @@
 import type { CollectionConfig } from 'payload'
+import { admin } from '@/access/AdminAccess'
 
 export const Semester: CollectionConfig = {
   slug: 'semester',
+  access: {
+    read: admin,
+    create: admin,
+    update: admin,
+    delete: admin,
+  },
   fields: [
     {
       name: 'name',

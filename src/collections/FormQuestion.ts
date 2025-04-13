@@ -1,8 +1,14 @@
 import type { CollectionConfig } from 'payload'
+import { admin } from '@/access/AdminAccess'
 
 export const FormQuestion: CollectionConfig = {
   slug: 'formQuestion',
-  access: {},
+  access: {
+    read: admin,
+    create: admin,
+    update: admin,
+    delete: admin,
+  },
   fields: [
     {
       name: 'question',
