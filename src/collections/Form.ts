@@ -1,8 +1,9 @@
 import type { CollectionConfig } from 'payload'
+import { adminOnlyAccess } from '@/collections/access/AdminOnly'
 
 export const Form: CollectionConfig = {
   slug: 'form',
-  access: {},
+  access: adminOnlyAccess,
   fields: [
     {
       name: 'name',
