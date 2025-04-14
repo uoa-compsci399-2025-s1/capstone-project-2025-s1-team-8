@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Silkscreen:wght@400;700&display=swap');
 
 :root {
   --font-mono: 'Roboto Mono', monospace;
@@ -163,4 +164,25 @@ svg {
       border-radius: 4px;
     }
   }
+}
+
+@theme {
+  --color-light-beige: #FFFEF9;
+  --color-beige: #F8F5E9;
+  --color-bright-blue: #DEFEFF; 
+  --color-muted-blue: #C6DDDE;
+  --color-muted-blue-op-45: rgba(198, 221, 222, 0.45);
+  --color-deeper-blue: #88B8C4;
+  --color-dark-blue-1: #0E4361;
+  --color-dark-blue-2: #4091AD; /*Often used for dark text*/
+  --color-dark-blue-3: #3f91ad;
+  --color-dark-blue-4: #13536B; /*Often used for radio buttons*/
+  --color-dark-blue-5: #0D062D; /*Often used for dark text*/
+  --color-grey-1: #748086; /*Often used for grey text*/
+  --color-pink-1: #FFBBEE; /*Used for gradients*/
+
+  --font-silkscreen: "Silkscreen", sans-serif;
+  --font-newsreader: "Newsreader", serif;
+  --font-inter: "Inter", sans-serif;
+
 }

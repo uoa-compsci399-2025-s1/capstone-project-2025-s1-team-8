@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8#readme",
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@payloadcms/db-mongodb": "latest",
     "@payloadcms/next": "latest",
     "@payloadcms/payload-cloud": "latest",
