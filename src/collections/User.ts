@@ -1,16 +1,11 @@
 import type { CollectionConfig } from 'payload'
 import { Role } from '@/types/RoleTypes'
-import { adminOnly } from '@/access/AdminAccess'
+import { adminOnlyAccess } from '@/access/AdminOnly'
 
 export const User: CollectionConfig = {
   slug: 'user',
   auth: true,
-  access: {
-    read: adminOnly,
-    create: adminOnly,
-    update: adminOnly,
-    delete: adminOnly,
-  },
+  access: adminOnlyAccess,
   fields: [
     {
       name: 'firstName',

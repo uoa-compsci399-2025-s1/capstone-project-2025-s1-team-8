@@ -1,14 +1,9 @@
 import type { CollectionConfig } from 'payload'
-import { adminOnly } from '@/access/AdminAccess'
+import { adminOnlyAccess } from '@/access/AdminOnly'
 
 export const FormQuestion: CollectionConfig = {
   slug: 'formQuestion',
-  access: {
-    read: adminOnly,
-    create: adminOnly,
-    update: adminOnly,
-    delete: adminOnly,
-  },
+  access: adminOnlyAccess,
   fields: [
     {
       name: 'question',
