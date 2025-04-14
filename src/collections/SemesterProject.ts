@@ -1,8 +1,10 @@
 import { Status } from '@/types/StatusTypes'
 import type { CollectionConfig } from 'payload'
+import { adminOnlyAccess } from '@/collections/access/AdminOnly'
 
 export const SemesterProject: CollectionConfig = {
   slug: 'semesterProject',
+  access: adminOnlyAccess,
   fields: [
     {
       name: 'number',
