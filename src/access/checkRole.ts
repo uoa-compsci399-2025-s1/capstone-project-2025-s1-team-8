@@ -5,4 +5,4 @@ import { User } from '@/payload-types'
   @param {roles} - An array of roles to check against.
   @param {user} - The user object containing the role information.
 */
-export const checkRole = (roles: string[], user: User) => roles.includes(user?.role)
+export const checkRole = (roles: string[], user: User): boolean => roles.includes(user?.role)
