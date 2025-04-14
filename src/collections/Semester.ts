@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { adminOnlyAccess } from '@/access/AdminOnly'
+import { adminOnlyAccess } from '@/collections/access/AdminOnly'
 
 export const Semester: CollectionConfig = {
   slug: 'semester',
