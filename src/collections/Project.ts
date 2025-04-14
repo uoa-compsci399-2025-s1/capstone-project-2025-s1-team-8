@@ -1,13 +1,13 @@
 import type { CollectionConfig } from 'payload'
-import { admin } from '@/access/AdminAccess'
+import { adminOnly } from '@/access/AdminAccess'
 
 export const Project: CollectionConfig = {
   slug: 'project',
   access: {
-    read: admin,
-    create: admin,
-    update: admin,
-    delete: admin,
+    read: adminOnly,
+    create: adminOnly,
+    update: adminOnly,
+    delete: adminOnly,
   },
   fields: [
     {
