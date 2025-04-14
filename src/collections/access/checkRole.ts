@@ -4,5 +4,6 @@ import { User } from '@/payload-types'
   It returns true if the user has one of the roles, and false otherwise.
   @param {roles} - An array of roles to check against.
   @param {user} - The user object containing the role information.
+  @returns {boolean} - Returns true if the user has one of the roles, false otherwise.
 */
 export const checkRole = (roles: string[], user: User): boolean => roles.includes(user?.role)
