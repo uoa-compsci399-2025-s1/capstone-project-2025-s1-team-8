@@ -15,10 +15,13 @@ I want to **<unit of work>**,
 So that **<context>**.
 
 ### Description:
-A clear and concise description of what you want to happen.
+<!-- A clear and concise description of what you want to happen. -->
 
 ### Alternative Solutions?
-A clear and concise description of any alternative solutions or features you've considered.
+<!-- A clear and concise description of any alternative solutions or features you've considered. -->
+
+### Acceptance Criteria:
+<!-- Define the acceptance criteria for the feature -->
 
 ### Definition of Done:
 
