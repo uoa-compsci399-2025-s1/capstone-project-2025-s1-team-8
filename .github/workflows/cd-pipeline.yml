@@ -17,8 +17,7 @@ on:
 jobs:
   deploy-to-staging:
     name: Deploy Encapsulate to Staging
-    if: (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
-    # if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
     env:
       EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
       EC2_HOST: ${{ secrets.EC2_HOST }}
