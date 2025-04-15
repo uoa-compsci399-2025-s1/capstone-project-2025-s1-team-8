@@ -37,16 +37,17 @@ jobs:
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
+          username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
-          script:
-            echo "storing secrets"
-            echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> ~/.env
-            echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> ~/.env
+          script: whoami
+          # script: |
+          #   echo "storing secrets"
+          #   echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> ~/.env
+          #   echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> ~/.env
 
-            echo "Stopping old containers"
-            docker compose down
+          #   echo "Stopping old containers"
+          #   docker compose down
 
-            echo "Rebuilding and starting containers"
-            docker compose up -d --build
+          #   echo "Rebuilding and starting containers"
+          #   docker compose up -d --build
