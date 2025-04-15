@@ -42,7 +42,7 @@ jobs:
 
       - name: Upload repo to EC2
         run: |
-          rsync -avz -e "ssh -i ../private.key" \
+          rsync -az --delete -e "ssh -i ../private.key" \
             --exclude '.git' \
             ./ ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/app
 
@@ -53,8 +53,8 @@ jobs:
           ssh -i ../private.key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} <<'EOT'
           cd ~/app
           echo "storing secrets"
-          echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> ~/.env
-          echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> ~/.env
+          echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> .env
+          echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> .env
 
           echo "install docker and docker-compose"
           sudo apt-get update
