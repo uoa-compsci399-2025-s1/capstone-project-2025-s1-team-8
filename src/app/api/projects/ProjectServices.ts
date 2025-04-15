@@ -55,3 +55,59 @@ export const createProject = async (payload: BasePayload, data: Project): Promis
     })
     return project;
 }
+
+export const updateProject = async (payload: BasePayload, id: string, data: Project): Promise<Project | null> => {
+    try{
+        const findProject: Project | null = await payload.findByID({
+            collection: 'project',
+            id,
+        })
+    } catch (error){
+        if (error instanceof NotFound){
+            return null;
+        }
+    }
+    const project: Project = await payload.update({
+        collection: 'project',
+        id,
+        data,
+    })
+    return project;
+}
+
+export const patchProject = async (payload: BasePayload, id: string, data: Partial<Project>): Promise<Project | null> => {
+    try{
+        const findProject: Project | null = await payload.findByID({
+            collection: 'project',
+            id,
+        })
+    } catch (error){
+        if (error instanceof NotFound){
+            return null;
+        }
+    }
+    const project: Project = await payload.update({
+        collection: 'project',
+        id,
+        data,
+    })
+    return project;
+}
+
+export const deleteProject = async (payload: BasePayload, id: string): Promise<Project | null> => {
+    try{
+        const findProject: Project | null = await payload.findByID({
+            collection: 'project',
+            id,
+        })
+    } catch (error){
+        if (error instanceof NotFound){
+            return null;
+        }
+    }
+    const project: Project = await payload.delete({
+        collection: 'project',
+        id,
+    })
+    return project;
+}

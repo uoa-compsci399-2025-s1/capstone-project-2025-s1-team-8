@@ -28,7 +28,7 @@ export const POST = async (req: NextRequest): Promise<Response> => {
         const project: Project = await createProject(payload, data);
         return Response.json(project, { status: 201 })
     } catch (error){
-        return Response.json({ "error": error.data.errors }, { status: 500 })
+        return Response.json(error, { status: 500 })
     }
 
     
