@@ -1,9 +1,9 @@
 import { expect, test, describe, afterEach } from 'vitest'
 import { checkRole } from './access'
 import { User } from '@/payload-types'
-import { clearCollection, testPayloadObject } from 'tests/utils'
+import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import { UserRole } from '@/types/user'
-import { adminCreateMock, clientCreateMock, studentCreateMock } from 'tests/mocks/User.mock'
+import { adminCreateMock, clientCreateMock, studentCreateMock } from '@/test-config/mocks/User.mock'
 
 describe('Check Role', () => {
   afterEach(async () => {

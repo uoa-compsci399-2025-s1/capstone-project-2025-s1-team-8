@@ -3,7 +3,7 @@ import { describe, it, expect, afterEach } from 'vitest'
 import { GET } from '@/app/api/my-route/route'
 
 import dotenv from 'dotenv'
-import { clearCollection, testPayloadObject } from 'tests/utils'
+import { clearCollection, testPayloadObject } from '@/test-config/utils'
 
 dotenv.config()
 
