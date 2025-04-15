@@ -75,7 +75,7 @@ p {
 }
 
 a {
-  color: currentColor;
+  /* color: currentColor; */
 
   &:focus {
     opacity: 0.8;
@@ -185,4 +185,15 @@ svg {
   --font-newsreader: "Newsreader", serif;
   --font-inter: "Inter", sans-serif;
 
+}
+
+@utility nav-link-text {
+  @apply text-dark-blue-1 uppercase hover:cursor-pointer text-sm sm:text-base;
+}
+@utility nav-link-text-underline {
+  @apply absolute left-0 bottom-0 w-full h-1 bg-muted-blue scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-lg
+}
+
+body {
+  @apply font-inter;
 }
