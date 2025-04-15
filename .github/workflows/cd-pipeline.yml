@@ -2,8 +2,8 @@ name: CD Pipeline
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+      # - main
     paths-ignore:
       - '**.md'
       - '.gitignore'
@@ -44,27 +44,21 @@ jobs:
       - name: Connect to Server via SSH
         run: |
           echo "Connecting via SSH..."
-          ssh -i ../private.key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}
-          echo "Connected via SSH"
 
-      - name: store secrets
-        run: |
+          ssh -i ../private.key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} <<'EOT'
           echo "storing secrets"
           echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> ~/.env
           echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> ~/.env
 
-      - name: install docker
-        run: |
-          echo "installing docker"
+          echo "install docker"
           sudo apt-get update
           sudo apt-get install -y docker.io
           sudo usermod -aG docker $USER
           newgrp docker
 
-      - name: start docker
-        run: |
           echo "Stopping old containers"
           docker compose down
 
           echo "Rebuilding and starting containers"
-          docker compose up -d --build
+          docker compose up -d --buil
+          EOT
