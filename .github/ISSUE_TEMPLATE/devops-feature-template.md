@@ -1,9 +1,9 @@
 ---
-name: Frontend feature template
-about: Features relating to the frontend
-title: "[FRONTEND] "
+name: DevOps feature template
+about: Features relating to the development operations
+title: "[DevOps] "
 type: Feature
-labels: frontend
+labels: devop
 assignees: ''
 
 ---
@@ -23,14 +23,14 @@ So that **<context>**.
 ### Acceptance Criteria:
 <!-- Define the acceptance criteria for the feature -->
 
+1. Ensure that the feature is tested thoroughly
+2. Ensure that the feature is documented properly
+
 ### Definition of Done:
 
 - [ ] Acceptance criteria met
-- [ ] Storybooks created where possible
-- [ ] Tested with [react testing library](https://testing-library.com/docs/react-testing-library/example-intro)
-- [ ] Tests written for critical interactions
 - [ ] PR Reviewed (For non-trivial changes)
-- [ ] Changes tested after rebasing on master or merging in master (_hint_: `git fetch origin master:master`, then `git rebase master` or `git merge master`)
+- [ ] Changes tested after rebasing on master or merging in master (*hint*: `git fetch origin master:master`, then `git rebase master` or `git merge master`)
 - [ ] All required PR checks passing
 
 ### Notes / Links

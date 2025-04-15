@@ -2,7 +2,7 @@
 
 <!-- Please include a summary of the changes towards the related issue. Please also  include relevant context. List any dependencies that are required for this change. -->
 
-Fixes # (issue)
+**Fixes** # (issue)
 
 ## Type of change
 <!-- Please delete options that are not relevant. -->
@@ -23,4 +23,5 @@ Fixes # (issue)
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have made corresponding changes to the documentation
 - [ ] I have added thorough tests that prove my fix is effective and that my feature works
-- [ ] I've requested a review from another user
+- [ ] I have written a storybook for frontend components (if applicable)
+- [ ] I have requested a review from another user
