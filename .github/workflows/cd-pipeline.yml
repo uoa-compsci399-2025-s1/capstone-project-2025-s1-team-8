@@ -24,6 +24,9 @@ jobs:
       EC2_HOST: ${{ secrets.EC2_HOST }}
       EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
       EC2_PORT: ${{ secrets.EC2_PORT }}
+      # Repository secrets
+      DATABASE_URI: ${{ secrets.DATABASE_URI }}
+      PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
     environment:
       name: staging
       url: http://[2406:da1c:5cf:900:ae61:fd30:b24c:451a:3000]
@@ -39,8 +42,9 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: ${{ secrets.EC2_PORT }}
           script:
-            echo "Fetching repository"
-            git pull origin main
+            echo "storing secrets"
+            echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> ~/.env
+            echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> ~/.env
 
             echo "Stopping old containers"
             docker compose down
