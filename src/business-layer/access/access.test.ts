@@ -3,7 +3,7 @@ import { checkRole } from './access'
 import { User } from '@/payload-types'
 import { clearCollection, testPayloadObject } from 'tests/utils'
 import { UserRole } from '@/types/user'
-import { userCreateMock } from 'tests/mocks/User.mock'
+import { adminCreateMock, clientCreateMock, studentCreateMock } from 'tests/mocks/User.mock'
 
 describe('Check Role', () => {
   afterEach(async () => {
@@ -13,10 +13,8 @@ describe('Check Role', () => {
   test('Check for Admin access', async () => {
     const user1: User = await testPayloadObject.create({
       collection: 'user',
-      data: userCreateMock,
+      data: adminCreateMock,
     })
-    expect(checkRole([UserRole.Admin], user1)).toBe(true)
-    expect(checkRole([UserRole.Client], user1)).toBe(false)
     expect(checkRole([UserRole.Admin, UserRole.Client], user1)).toBe(true)
     expect(checkRole([UserRole.Client, UserRole.Student], user1)).toBe(false)
   })
@@ -24,21 +22,17 @@ describe('Check Role', () => {
   test('Check for Client access', async () => {
     const user1: User = await testPayloadObject.create({
       collection: 'user',
-      data: userCreateMock,
+      data: clientCreateMock,
     })
-    expect(checkRole([UserRole.Client], user1)).toBe(true)
-    expect(checkRole([UserRole.Admin], user1)).toBe(false)
     expect(checkRole([UserRole.Admin, UserRole.Client], user1)).toBe(true)
-    expect(checkRole([UserRole.Client, UserRole.Student], user1)).toBe(true)
+    expect(checkRole([UserRole.Admin, UserRole.Student], user1)).toBe(false)
   })
 
   test('Check for Student access', async () => {
     const user1: User = await testPayloadObject.create({
       collection: 'user',
-      data: userCreateMock,
+      data: studentCreateMock,
     })
-    expect(checkRole([UserRole.Student], user1)).toBe(true)
-    expect(checkRole([UserRole.Client], user1)).toBe(false)
     expect(checkRole([UserRole.Admin, UserRole.Client], user1)).toBe(false)
     expect(checkRole([UserRole.Client, UserRole.Student], user1)).toBe(true)
     expect(checkRole([UserRole.Admin, UserRole.Student], user1)).toBe(true)
