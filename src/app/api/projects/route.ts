@@ -4,6 +4,7 @@ import { NextRequest } from 'next/server'
 import { getPayload } from 'payload'
 import {
   createProject,
+  deleteProject,
   getAllProjects,
   getProjectByName,
   getProjectsByClientId,
@@ -55,4 +56,20 @@ export const POST = async (req: NextRequest): Promise<Response> => {
   } catch (error) {
     return Response.json(error, { status: 500 })
   }
+}
+
+/*
+ * This function deletes all projects
+ * returns {Promise<Response>} - Status 204 for deleted
+ */
+export const DELETE = async (): Promise<Response> => {
+  const payload = await getPayload({
+    config: configPromise,
+  })
+
+  const projects: Array<Project> = await getAllProjects(payload);
+  for (const project of projects) {
+    await deleteProject(payload, project.id)
+  }
+  return Response.json({ status: 204 })
 }
