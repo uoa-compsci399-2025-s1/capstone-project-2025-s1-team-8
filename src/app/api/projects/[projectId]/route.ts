@@ -1,9 +1,14 @@
 import configPromise from '@payload-config'
 import { getProjectById, deleteProject, patchProject, updateProject } from '../../../services/ProjectServices'
 import { NextRequest } from 'next/server'
-import { getPayload, NotFound } from 'payload'
+import { getPayload } from 'payload'
 import { Project } from '@/payload-types'
 
+/*
+* This function retrieves a project by ID
+* @param {projectId} projectId - The ID of the project
+* returns {Promise<Response>} - The project object or an error response
+*/
 export const GET = async ( req: NextRequest, {params} : {params: {projectId: string}}): Promise<Response> => {
   const payload = await getPayload({
     config: configPromise,
@@ -17,6 +22,11 @@ export const GET = async ( req: NextRequest, {params} : {params: {projectId: str
 
 }
 
+/*
+* This function deletes a project by ID
+* @param {projectId} projectId - The ID of the project
+* returns {Promise<Response>} - The project object or an error response
+*/
 export const DELETE = async ( req: NextRequest, {params} : {params: {projectId: string}}): Promise<Response> => {
     const payload = await getPayload({
         config: configPromise,
@@ -30,6 +40,11 @@ export const DELETE = async ( req: NextRequest, {params} : {params: {projectId: 
     
 }
 
+/*
+* This function updates a partial project by ID
+* @param {projectId} projectId - The ID of the project
+* returns {Promise<Response>} - The project object or an error response
+*/
 export const PATCH = async ( req: NextRequest, {params} : {params: {projectId: string}}): Promise<Response> => {
     const payload = await getPayload({
         config: configPromise,
@@ -43,6 +58,11 @@ export const PATCH = async ( req: NextRequest, {params} : {params: {projectId: s
     return Response.json(project, { status: 201 })    
 }
 
+/*
+* This function updates a project by ID
+* @param {projectId} projectId - The ID of the project
+* returns {Promise<Response>} - The project object or an error response
+*/
 export const PUT = async ( req: NextRequest, {params} : {params: {projectId: string}}): Promise<Response> => {
     const payload = await getPayload({
         config: configPromise,

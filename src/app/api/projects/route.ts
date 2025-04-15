@@ -4,6 +4,11 @@ import { NextRequest } from 'next/server'
 import { getPayload } from 'payload'
 import { createProject, getAllProjects, getProjectByName, getProjectsByClientId } from '../../services/ProjectServices'
 
+/*
+* This function retrieves a list of projects based on query parameters
+* @param {req} req - The request object
+* returns {Promise<Response>} - A list of projects or an error response
+*/
 export const GET = async (req: NextRequest) :Promise<Response>=> {
   const payload = await getPayload({
     config: configPromise,
@@ -26,6 +31,11 @@ export const GET = async (req: NextRequest) :Promise<Response>=> {
   return Response.json(projects, { status: 200 })
 }
 
+/*
+* This function creates a new project
+* @param {req} req - The request object
+* returns {Promise<Response>} - The created project object or an error response
+*/
 export const POST = async (req: NextRequest): Promise<Response> => {
     const payload = await getPayload({
         config: configPromise,
