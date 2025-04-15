@@ -32,22 +32,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      # https://stackoverflow.com/questions/60477061/github-actions-how-to-deploy-to-remote-server-using-ssh
+      - name: Create SSH key
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{secrets.EC2_SSH_KEY}}" > ../private.key
+          sudo chmod 600 ../private.key
+          echo "${{secrets.EC2_HOST}}" > ~/.ssh/known_hosts
+        shell: bash
 
-      - name: Setup SSH connection
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
-          port: 22
-          script: whoami
-          # script: |
-          #   echo "storing secrets"
-          #   echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> ~/.env
-          #   echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> ~/.env
+      - name: Connect to Server via SSH
+        run: |
+          echo "Connecting via SSH..."
+          ssh -i ../private.key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}
+          echo "Connected via SSH"
 
-          #   echo "Stopping old containers"
-          #   docker compose down
+      - name: store secrets
+        run: |
+          echo "storing secrets"
+          echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> ~/.env
+          echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> ~/.env
 
-          #   echo "Rebuilding and starting containers"
-          #   docker compose up -d --build
+      - name: install docker
+        run: |
+          echo "installing docker"
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+          sudo usermod -aG docker $USER
+          newgrp docker
+
+      - name: start docker
+        run: |
+          echo "Stopping old containers"
+          docker compose down
+
+          echo "Rebuilding and starting containers"
+          docker compose up -d --build
