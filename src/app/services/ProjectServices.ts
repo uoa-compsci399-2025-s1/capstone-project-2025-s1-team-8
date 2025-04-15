@@ -1,4 +1,5 @@
 import { Project } from '@/payload-types'
+import { CreateProject } from '@/types/CreateProject'
 import { BasePayload, NotFound, PaginatedDocs } from 'payload'
 
 /*
@@ -82,7 +83,10 @@ export const getProjectsByClientId = async (
  * @param {data} data - The project data
  * @returns {Promise<Project>} - The created project object
  */
-export const createProject = async (payload: BasePayload, data: Project): Promise<Project> => {
+export const createProject = async (
+  payload: BasePayload,
+  data: CreateProject,
+): Promise<Project> => {
   const project: Project = await payload.create({
     collection: 'project',
     data,
@@ -100,7 +104,7 @@ export const createProject = async (payload: BasePayload, data: Project): Promis
 export const updateProject = async (
   payload: BasePayload,
   id: string,
-  data: Project,
+  data: CreateProject,
 ): Promise<Project | null> => {
   try {
     const findProject: Project | null = await payload.findByID({
