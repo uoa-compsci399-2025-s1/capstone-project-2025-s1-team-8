@@ -40,31 +40,46 @@ jobs:
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
         shell: bash
 
+      - name: Install nodejs and pnpm
+        run: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+          export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+          nvm install
+          nvm use
+          corepack enable pnpm
+
+      - name: Install modules
+        run: pnpm install
+
+      - name: Build next app
+        run: pnpm build
+
       - name: Upload repo to EC2
         run: |
           rsync -az --delete -e "ssh -i ../private.key" \
             --exclude '.git' \
             ./ ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/app
 
-      - name: Connect to Server via SSH
-        run: |
-          echo "Connecting via SSH..."
+      # - name: Connect to Server via SSH
+      #   run: |
+      #     echo "Connecting via SSH..."
 
-          ssh -i ../private.key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} <<'EOT'
-          cd ~/app
-          echo "storing secrets"
-          echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> .env
-          echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> .env
+      #     ssh -i ../private.key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} <<'EOT'
+      #     cd ~/app
+      #     echo "storing secrets"
+      #     echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> .env
+      #     echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> .env
 
-          echo "install docker and docker-compose"
-          sudo apt-get update
-          sudo apt-get install -y docker.io docker-compose
-          sudo usermod -aG docker $USER
-          newgrp docker
+      #     echo "install docker and docker-compose"
+      #     sudo apt-get update
+      #     sudo apt-get install -y docker.io docker-compose
+      #     sudo usermod -aG docker $USER
+      #     newgrp docker
 
-          echo "Stopping old containers"
-          docker-compose down
+      #     echo "Stopping old containers"
+      #     docker-compose down
 
-          echo "Rebuilding and starting containers"
-          docker-compose up -d --build
-          EOT
+      #     echo "Rebuilding and starting containers"
+      #     docker-compose up -d --build
+      #     EOT
