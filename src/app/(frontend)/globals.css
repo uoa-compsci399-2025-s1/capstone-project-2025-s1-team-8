@@ -180,6 +180,7 @@ svg {
   --color-dark-blue-5: #0d062d; /*Often used for dark text*/
   --color-grey-1: #748086; /*Often used for grey text*/
   --color-pink-1: #ffbbee; /*Used for gradients*/
+  --color-pink-2: #ff2aca; /*Used for errors and required fields*/
 
   --font-silkscreen: 'Silkscreen', sans-serif;
   --font-newsreader: 'Newsreader', serif;
