@@ -40,7 +40,7 @@ jobs:
           port: ${{ secrets.EC2_PORT }}
           script:
             echo "Fetching repository"
-            git pull origin master
+            git pull origin main
 
             echo "Stopping old containers"
             docker compose down
