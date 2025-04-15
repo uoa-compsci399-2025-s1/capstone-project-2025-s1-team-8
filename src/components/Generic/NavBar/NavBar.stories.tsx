@@ -3,7 +3,8 @@ import NavBar from './NavBar'
 
 const meta: Meta<typeof NavBar> = {
   component: NavBar,
-  title: 'Components/NavBar',
+  title: 'Generic/NavBar',
+  tags: ['autodocs'],
 }
 
 export default meta

@@ -3,7 +3,7 @@ import Button from './Button'
 import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/16/solid'
 
 const meta: Meta<typeof Button> = {
-  title: 'Components/Button',
+  title: 'Generic/Button',
   component: Button,
   tags: ['autodocs'],
   args: {
