@@ -67,7 +67,7 @@ export const DELETE = async (): Promise<Response> => {
     config: configPromise,
   })
 
-  const projects: Array<Project> = await getAllProjects(payload);
+  const projects: Array<Project> = await getAllProjects(payload)
   for (const project of projects) {
     await deleteProject(payload, project.id)
   }

@@ -83,7 +83,10 @@ export const getProjectsByClientId = async (
  * @param {data} data - The project data
  * @returns {Promise<Project>} - The created project object
  */
-export const createProject = async (payload: BasePayload, data: CreateProject): Promise<Project> => {
+export const createProject = async (
+  payload: BasePayload,
+  data: CreateProject,
+): Promise<Project> => {
   const project: Project = await payload.create({
     collection: 'project',
     data,

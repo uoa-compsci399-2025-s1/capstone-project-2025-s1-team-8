@@ -557,12 +557,10 @@ describe('Testing all the project service methods', () => {
       timestamp: '2023-11-01T00:00:00Z',
     }
 
-
     const project1: Project = await testPayloadObject.create({
       collection: 'project',
       data: project1Data,
     })
-
 
     const project2: Project = await testPayloadObject.create({
       collection: 'project',
@@ -577,6 +575,5 @@ describe('Testing all the project service methods', () => {
     await deleteProject(testPayloadObject, project2.id)
     projects = await getAllProjects(testPayloadObject)
     expect(projects.length).toBe(0)
-
   })
 })
