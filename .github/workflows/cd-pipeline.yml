@@ -27,7 +27,7 @@ jobs:
       PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
     environment:
       name: staging
-      url: http://[2406:da1c:5cf:900:ae61:fd30:b24c:451a:3000]
+      # url:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -37,7 +37,7 @@ jobs:
           mkdir -p ~/.ssh/
           echo "${{secrets.EC2_SSH_KEY}}" > ../private.key
           sudo chmod 600 ../private.key
-          echo "${{secrets.EC2_HOST}}" > ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
         shell: bash
 
       - name: Connect to Server via SSH
