@@ -23,7 +23,7 @@ jobs:
       EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
       EC2_HOST: ${{ secrets.EC2_HOST }}
       EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
-      EC2_PORT: ${{ secrets.EC2_PORT }}
+      EC2_PORT: 22
       # Repository secrets
       DATABASE_URI: ${{ secrets.DATABASE_URI }}
       PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
