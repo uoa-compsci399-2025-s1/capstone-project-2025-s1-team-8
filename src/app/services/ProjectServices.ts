@@ -1,13 +1,18 @@
 import { Project } from '@/payload-types'
 import { CreateProject } from '@/types/CreateProject'
 import { BasePayload, NotFound, PaginatedDocs } from 'payload'
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
 
 /*
  * This function returns a list of all projects
  * @param {payload} payload - The payload object
- * @returns {Promise<Array<Project>>} - An array of projects
+ * @returns {Promise<Project[]>} - An array of projects
  */
-export const getAllProjects = async (payload: BasePayload): Promise<Array<Project>> => {
+export const getAllProjects = async (): Promise<Project[]> => {
+  const payload = await getPayload({
+    config: configPromise,
+  })
   const data: PaginatedDocs = await payload.find({
     collection: 'project',
   })
@@ -20,7 +25,10 @@ export const getAllProjects = async (payload: BasePayload): Promise<Array<Projec
  * @param {id} id - The ID of the project
  * @returns {Promise<Project | null>} - A project object or null if not found
  */
-export const getProjectById = async (payload: BasePayload, id: string): Promise<Project | null> => {
+export const getProjectById = async (id: string): Promise<Project | null> => {
+  const payload = await getPayload({
+    config: configPromise,
+  })
   try {
     const data: Project | null = await payload.findByID({
       collection: 'project',
@@ -42,9 +50,11 @@ export const getProjectById = async (payload: BasePayload, id: string): Promise<
  * @returns {Promise<Project | null>} - A project object or null if not found
  */
 export const getProjectByName = async (
-  payload: BasePayload,
   name: string,
 ): Promise<Project | null> => {
+  const payload = await getPayload({
+    config: configPromise,
+  })
   const data: Project | null = await payload.db.findOne({
     collection: 'project',
     where: {
@@ -60,12 +70,14 @@ export const getProjectByName = async (
  * This function returns a list of all projects for a specific client
  * @param {clientId} clientId - The ID of the client
  * @param {payload} payload - The payload object
- * @returns {Promise<Array<Project>>} - An array of projects
+ * @returns {Promise<Project[]>} - An array of projects
  */
 export const getProjectsByClientId = async (
-  payload: BasePayload,
   clientId: string,
-): Promise<Array<Project>> => {
+): Promise<Project[]> => {
+  const payload = await getPayload({
+    config: configPromise,
+  })
   const data: PaginatedDocs = await payload.find({
     collection: 'project',
     where: {
@@ -84,9 +96,11 @@ export const getProjectsByClientId = async (
  * @returns {Promise<Project>} - The created project object
  */
 export const createProject = async (
-  payload: BasePayload,
   data: CreateProject,
 ): Promise<Project> => {
+  const payload = await getPayload({
+    config: configPromise,
+  })
   const project: Project = await payload.create({
     collection: 'project',
     data,
@@ -102,10 +116,12 @@ export const createProject = async (
  * @returns {Promise<Project | null>} - The updated project object or null if not found
  */
 export const updateProject = async (
-  payload: BasePayload,
   id: string,
   data: CreateProject,
 ): Promise<Project | null> => {
+  const payload = await getPayload({
+    config: configPromise,
+  })
   try {
     const findProject: Project | null = await payload.findByID({
       collection: 'project',
@@ -131,10 +147,12 @@ export const updateProject = async (
  * @returns {Promise<Project | null >} - The updated project object or null if not found
  */
 export const patchProject = async (
-  payload: BasePayload,
   id: string,
   data: Partial<CreateProject>,
 ): Promise<Project | null> => {
+  const payload = await getPayload({
+    config: configPromise,
+  })
   try {
     const findProject: Project | null = await payload.findByID({
       collection: 'project',
@@ -159,7 +177,10 @@ export const patchProject = async (
  * @param {id} id - The ID of the project
  * @returns {Promise<Project | null >} - The deleted project object or null if not found
  */
-export const deleteProject = async (payload: BasePayload, id: string): Promise<Project | null> => {
+export const deleteProject = async (id: string): Promise<Project | null> => {
+  const payload = await getPayload({
+    config: configPromise,
+  })
   try {
     const findProject: Project | null = await payload.findByID({
       collection: 'project',

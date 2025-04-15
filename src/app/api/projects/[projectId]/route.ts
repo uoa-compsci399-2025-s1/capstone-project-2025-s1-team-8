@@ -18,11 +18,8 @@ export const GET = async (
   req: NextRequest,
   { params }: { params: { projectId: string } },
 ): Promise<Response> => {
-  const payload = await getPayload({
-    config: configPromise,
-  })
   const { projectId } = await params
-  const data: Project | null = await getProjectById(payload, projectId)
+  const data: Project | null = await getProjectById(projectId)
   if (!data) {
     return Response.json({ error: 'Project not found' }, { status: 404 })
   }
@@ -38,11 +35,8 @@ export const DELETE = async (
   req: NextRequest,
   { params }: { params: { projectId: string } },
 ): Promise<Response> => {
-  const payload = await getPayload({
-    config: configPromise,
-  })
   const { projectId } = await params
-  const project: Project | null = await deleteProject(payload, projectId)
+  const project: Project | null = await deleteProject(projectId)
   if (!project) {
     return Response.json({ error: 'Project not found' }, { status: 404 })
   }
@@ -52,18 +46,15 @@ export const DELETE = async (
 /*
  * This function updates a partial project by ID
  * @param {projectId} projectId - The ID of the project
- * returns {Promise<Response>} - The project object or an error response
+ * @returns {Promise<Response>} - The project object or an error response
  */
 export const PATCH = async (
   req: NextRequest,
   { params }: { params: { projectId: string } },
 ): Promise<Response> => {
-  const payload = await getPayload({
-    config: configPromise,
-  })
   const { projectId } = await params
   const data: Partial<Project> = await req.json()
-  const project: Project | null = await patchProject(payload, projectId, data)
+  const project: Project | null = await patchProject(projectId, data)
   if (!project) {
     return Response.json({ error: 'Project not found' }, { status: 404 })
   }
@@ -73,18 +64,15 @@ export const PATCH = async (
 /*
  * This function updates a project by ID
  * @param {projectId} projectId - The ID of the project
- * returns {Promise<Response>} - The project object or an error response
+ * @returns {Promise<Response>} - The project object or an error response
  */
 export const PUT = async (
   req: NextRequest,
   { params }: { params: { projectId: string } },
 ): Promise<Response> => {
-  const payload = await getPayload({
-    config: configPromise,
-  })
   const { projectId } = await params
   const data: Project = await req.json()
-  const project: Project | null = await updateProject(payload, projectId, data)
+  const project: Project | null = await updateProject(projectId, data)
   if (!project) {
     return Response.json({ error: 'Project not found' }, { status: 404 })
   }

@@ -22,8 +22,6 @@ export const GET = async (req: NextRequest): Promise<Response> => {
 
   const params: URLSearchParams = req.nextUrl.searchParams
   let projects: Array<Project>
-  //console.log(params.size)
-  //console.log(params)
   if ('clientID' in params) {
     projects = await getProjectsByClientId(payload, params.get('clientID') as string)
   } else if ('name' in params) {
@@ -40,7 +38,7 @@ export const GET = async (req: NextRequest): Promise<Response> => {
 /*
  * This function creates a new project
  * @param {req} req - The request object
- * returns {Promise<Response>} - The created project object or an error response
+ * @returns {Promise<Response>} - The created project object or an error response
  */
 export const POST = async (req: NextRequest): Promise<Response> => {
   const payload = await getPayload({
@@ -49,7 +47,6 @@ export const POST = async (req: NextRequest): Promise<Response> => {
 
   const data: Project = await req.json()
 
-  //console.log('data', data)
   try {
     const project: Project = await createProject(payload, data)
     return Response.json(project, { status: 201 })
@@ -60,7 +57,7 @@ export const POST = async (req: NextRequest): Promise<Response> => {
 
 /*
  * This function deletes all projects
- * returns {Promise<Response>} - Status 204 for deleted
+ * @returns {Promise<Response>} - Status 204 for deleted
  */
 export const DELETE = async (): Promise<Response> => {
   const payload = await getPayload({
