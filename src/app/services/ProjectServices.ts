@@ -83,10 +83,7 @@ export const getProjectsByClientId = async (
  * @param {data} data - The project data
  * @returns {Promise<Project>} - The created project object
  */
-export const createProject = async (
-  payload: BasePayload,
-  data: CreateProject,
-): Promise<Project> => {
+export const createProject = async (payload: BasePayload, data: CreateProject): Promise<Project> => {
   const project: Project = await payload.create({
     collection: 'project',
     data,
@@ -133,7 +130,7 @@ export const updateProject = async (
 export const patchProject = async (
   payload: BasePayload,
   id: string,
-  data: Partial<Project>,
+  data: Partial<CreateProject>,
 ): Promise<Project | null> => {
   try {
     const findProject: Project | null = await payload.findByID({
