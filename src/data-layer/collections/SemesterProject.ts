@@ -1,6 +1,6 @@
-import { Status } from '@/types/StatusTypes'
 import type { CollectionConfig } from 'payload'
-import { adminOnlyAccess } from '@/collections/access/AdminOnly'
+import { adminOnlyAccess } from '@/business-layer/access/access'
+import { ProjectStatus } from '@/types/project'
 
 export const SemesterProject: CollectionConfig = {
   slug: 'semesterProject',
@@ -26,8 +26,8 @@ export const SemesterProject: CollectionConfig = {
     {
       name: 'status',
       type: 'select',
-      defaultValue: Status.Pending,
-      options: Object.values(Status),
+      defaultValue: ProjectStatus.Pending,
+      options: Object.values(ProjectStatus),
       required: true,
     },
     {

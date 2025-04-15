@@ -1,8 +1,8 @@
 import type { CollectionConfig } from 'payload'
-import { adminOnlyAccess } from '@/collections/access/AdminOnly'
+import { adminOnlyAccess } from '@/business-layer/access/access'
 
-export const FormResponse: CollectionConfig = {
-  slug: 'formResponse',
+export const Project: CollectionConfig = {
+  slug: 'project',
   access: adminOnlyAccess,
   fields: [
     {
@@ -11,15 +11,11 @@ export const FormResponse: CollectionConfig = {
       required: true,
     },
     {
-      name: 'description',
-      type: 'textarea',
-      required: true,
-    },
-    {
       name: 'clients',
-      type: 'relationship',
       relationTo: 'user',
+      type: 'relationship',
       hasMany: true,
+      required: true,
       minRows: 1,
       validate: async (val, args) => {
         if (!val || val.length === 0) return true
@@ -45,21 +41,26 @@ export const FormResponse: CollectionConfig = {
       },
     },
     {
-      name: 'questionResponses',
-      type: 'array',
-      fields: [
-        {
-          name: 'question',
-          type: 'relationship',
-          relationTo: 'formQuestion',
-          required: true,
-        },
-        {
-          name: 'answer',
-          type: 'textarea',
-          required: true,
-        },
-      ],
+      name: 'description',
+      type: 'textarea',
+      required: true,
+    },
+    {
+      name: 'attachments',
+      type: 'upload',
+      relationTo: 'media', // placeholder for attachments
+      hasMany: true,
+      maxRows: 5,
+    },
+    {
+      name: 'deadline',
+      type: 'date',
+      required: false,
+    },
+    {
+      name: 'timestamp',
+      type: 'date',
+      required: true,
     },
   ],
 }
