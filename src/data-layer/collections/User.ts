@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
-import { Role } from '@/types/RoleTypes'
-import { adminOnlyAccess } from '@/collections/access/AdminOnly'
+import { adminOnlyAccess } from '@/business-layer/access/access'
+import { UserRole } from '@/types/user'
 
 export const User: CollectionConfig = {
   slug: 'user',
@@ -20,7 +20,7 @@ export const User: CollectionConfig = {
     {
       name: 'role',
       type: 'select',
-      options: Object.values(Role),
+      options: Object.values(UserRole),
       required: true,
     },
     {

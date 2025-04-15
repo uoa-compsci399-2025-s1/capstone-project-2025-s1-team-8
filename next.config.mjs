@@ -8,11 +8,11 @@ const nextConfig = {
     config.module.rules.push({
       test: /\.svg$/,
       use: ['@svgr/webpack'],
-    });
+    })
 
     // Any other custom Webpack modifications (if needed) can go here
 
-    return config;
+    return config
   },
 }
 

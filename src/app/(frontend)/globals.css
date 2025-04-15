@@ -167,31 +167,30 @@ svg {
 }
 
 @theme {
-  --color-light-beige: #FFFEF9;
-  --color-beige: #F8F5E9;
-  --color-bright-blue: #DEFEFF; 
-  --color-muted-blue: #C6DDDE;
+  --color-light-beige: #fffef9;
+  --color-beige: #f8f5e9;
+  --color-bright-blue: #defeff;
+  --color-muted-blue: #c6ddde;
   --color-muted-blue-op-45: rgba(198, 221, 222, 0.45);
-  --color-deeper-blue: #88B8C4;
-  --color-dark-blue-1: #0E4361;
-  --color-dark-blue-2: #4091AD; /*Often used for dark text*/
+  --color-deeper-blue: #88b8c4;
+  --color-dark-blue-1: #0e4361;
+  --color-dark-blue-2: #4091ad; /*Often used for dark text*/
   --color-dark-blue-3: #3f91ad;
-  --color-dark-blue-4: #13536B; /*Often used for radio buttons*/
-  --color-dark-blue-5: #0D062D; /*Often used for dark text*/
+  --color-dark-blue-4: #13536b; /*Often used for radio buttons*/
+  --color-dark-blue-5: #0d062d; /*Often used for dark text*/
   --color-grey-1: #748086; /*Often used for grey text*/
-  --color-pink-1: #FFBBEE; /*Used for gradients*/
+  --color-pink-1: #ffbbee; /*Used for gradients*/
 
-  --font-silkscreen: "Silkscreen", sans-serif;
-  --font-newsreader: "Newsreader", serif;
-  --font-inter: "Inter", sans-serif;
-
+  --font-silkscreen: 'Silkscreen', sans-serif;
+  --font-newsreader: 'Newsreader', serif;
+  --font-inter: 'Inter', sans-serif;
 }
 
 @utility nav-link-text {
   @apply text-dark-blue-1 uppercase hover:cursor-pointer text-sm sm:text-base;
 }
 @utility nav-link-text-underline {
-  @apply absolute left-0 bottom-0 w-full h-1 bg-muted-blue scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-lg
+  @apply absolute left-0 bottom-0 w-full h-1 bg-muted-blue scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-lg;
 }
 
 body {

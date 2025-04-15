@@ -7,14 +7,14 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-import { User } from './collections/User'
-import { Media } from './collections/Media'
-import { Semester } from './collections/Semester'
-import { Project } from './collections/Project'
-import { FormQuestion } from './collections/FormQuestion'
-import { Form } from './collections/Form'
-import { FormResponse } from './collections/FormResponse'
-import { SemesterProject } from './collections/SemesterProject'
+import { User } from './data-layer/collections/User'
+import { Media } from './data-layer/collections/Media'
+import { Project } from './data-layer/collections/Project'
+import { SemesterProject } from './data-layer/collections/SemesterProject'
+import { Semester } from './data-layer/collections/Semester'
+import { FormQuestion } from './data-layer/collections/FormQuestion'
+import { FormResponse } from './data-layer/collections/FormResponse'
+import { Form } from './data-layer/collections/Form'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)

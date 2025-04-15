@@ -1,0 +1,49 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Manual deployment environment'
+        type: environment
+        required: true
+
+jobs:
+  deploy-to-staging:
+    name: Deploy Encapsulate to Staging
+    if: (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
+    # if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
+    env:
+      EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+      EC2_HOST: ${{ secrets.EC2_HOST }}
+      EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+      EC2_PORT: ${{ secrets.EC2_PORT }}
+    environment:
+      name: staging
+      url: http://[2406:da1c:5cf:900:ae61:fd30:b24c:451a:3000]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup SSH connection
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          script:
+            echo "Fetching repository"
+            git pull origin main
+
+            echo "Stopping old containers"
+            docker compose down
+
+            echo "Rebuilding and starting containers"
+            docker compose up -d --build

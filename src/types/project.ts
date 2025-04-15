@@ -1,4 +1,4 @@
-export enum Status {
+export enum ProjectStatus {
   Pending = 'pending',
   Accepted = 'accepted',
   Rejected = 'rejected',
