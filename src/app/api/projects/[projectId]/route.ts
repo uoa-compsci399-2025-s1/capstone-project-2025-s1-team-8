@@ -1,5 +1,5 @@
 import configPromise from '@payload-config'
-import { getProjectById, deleteProject, patchProject, updateProject } from '../ProjectServices'
+import { getProjectById, deleteProject, patchProject, updateProject } from '../../../services/ProjectServices'
 import { NextRequest } from 'next/server'
 import { getPayload, NotFound } from 'payload'
 import { Project } from '@/payload-types'

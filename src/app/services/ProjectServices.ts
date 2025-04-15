@@ -1,6 +1,11 @@
 import { Project } from "@/payload-types";
 import { BasePayload, NotFound, PaginatedDocs } from "payload";
 
+/*
+* This function returns a list of all projects
+* @param {payload} payload - The payload object
+* @returns {Promise<Array<Project>>} - An array of projects
+*/
 export const getAllProjects = async (payload: BasePayload): Promise<Array<Project>> => {
     const data: PaginatedDocs = await payload.find({
         collection: 'project',
@@ -8,6 +13,12 @@ export const getAllProjects = async (payload: BasePayload): Promise<Array<Projec
     return data.docs
 }
 
+/*
+* This function returns a project by its ID
+* @param {payload} payload - The payload object
+* @param {id} id - The ID of the project
+* @returns {Promise<Project | null>} - A project object or null if not found
+*/
 export const getProjectById = async (payload: BasePayload, id: string): Promise<Project | null> => {
     try{
         const data: Project | null = await payload.findByID({
@@ -23,6 +34,12 @@ export const getProjectById = async (payload: BasePayload, id: string): Promise<
     return null;
 }
 
+/*
+* This function returns a project by its name
+* @param {name} name - The name of the project
+* @param {payload} payload - The payload object
+* @returns {Promise<Project | null>} - A project object or null if not found
+*/
 export const getProjectByName = async (payload: BasePayload, name: string): Promise<Project | null> => {
         const data: Project | null = await payload.db.findOne({
             collection: 'project',
@@ -36,6 +53,12 @@ export const getProjectByName = async (payload: BasePayload, name: string): Prom
 
 }
 
+/*
+* This function returns a list of all projects for a specific client
+* @param {clientId} clientId - The ID of the client
+* @param {payload} payload - The payload object
+* @returns {Promise<Array<Project>>} - An array of projects
+*/
 export const getProjectsByClientId = async (payload: BasePayload, clientId: string): Promise<Array<Project>> => {
     const data: PaginatedDocs = await payload.find({
         collection: 'project',
@@ -48,6 +71,12 @@ export const getProjectsByClientId = async (payload: BasePayload, clientId: stri
     return data.docs;
 }
 
+/*
+* This function creates a project
+* @param {payload} payload - The payload object
+* @param {data} data - The project data
+* @returns {Promise<Project>} - The created project object
+*/
 export const createProject = async (payload: BasePayload, data: Project): Promise<Project> => {
     const project: Project = await payload.create({
         collection: 'project',
@@ -56,6 +85,13 @@ export const createProject = async (payload: BasePayload, data: Project): Promis
     return project;
 }
 
+/*
+* This function updates a project
+* @param {payload} payload - The payload object
+* @param {id} id - The ID of the project
+* @param {data} data - The project data
+* @returns {Promise<Project | null>} - The updated project object or null if not found
+*/
 export const updateProject = async (payload: BasePayload, id: string, data: Project): Promise<Project | null> => {
     try{
         const findProject: Project | null = await payload.findByID({
@@ -74,7 +110,13 @@ export const updateProject = async (payload: BasePayload, id: string, data: Proj
     })
     return project;
 }
-
+/*
+* This function updates a project
+* @param {payload} payload - The payload object
+* @param {id} id - The ID of the project
+* @param {data} data - The partial project data
+* @returns {Promise<Project | null >} - The updated project object or null if not found
+*/
 export const patchProject = async (payload: BasePayload, id: string, data: Partial<Project>): Promise<Project | null> => {
     try{
         const findProject: Project | null = await payload.findByID({
@@ -94,6 +136,12 @@ export const patchProject = async (payload: BasePayload, id: string, data: Parti
     return project;
 }
 
+/*
+* This function updates a project
+* @param {payload} payload - The payload object
+* @param {id} id - The ID of the project
+* @returns {Promise<Project | null >} - The deleted project object or null if not found
+*/
 export const deleteProject = async (payload: BasePayload, id: string): Promise<Project | null> => {
     try{
         const findProject: Project | null = await payload.findByID({

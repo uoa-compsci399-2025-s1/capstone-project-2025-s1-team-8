@@ -2,7 +2,7 @@ import { Project } from '@/payload-types'
 import configPromise from '@payload-config'
 import { NextRequest } from 'next/server'
 import { getPayload } from 'payload'
-import { createProject, getAllProjects } from './ProjectServices'
+import { createProject, getAllProjects, getProjectByName, getProjectsByClientId } from '../../services/ProjectServices'
 
 export const GET = async (req: NextRequest) :Promise<Response>=> {
   const payload = await getPayload({
@@ -10,10 +10,20 @@ export const GET = async (req: NextRequest) :Promise<Response>=> {
   })
 
   const params: URLSearchParams = req.nextUrl.searchParams
-  console.log(!params)
-  const data: Array<Project> = await getAllProjects(payload);
+  let projects: Array<Project>;
+  //console.log(params.size)
+  //console.log(params)
+  if ("clientID" in params) {
+    projects  = await getProjectsByClientId(payload, params.get("clientID") as string)
+  } else if ("name" in params){
+    projects = [];
+    const project: Project | null = await getProjectByName(payload, params.get("name") as string)
+    if (project) projects.push(project);
+  } else{
+    projects = await getAllProjects(payload);
+  }
 
-  return Response.json(data)
+  return Response.json(projects, { status: 200 })
 }
 
 export const POST = async (req: NextRequest): Promise<Response> => {
