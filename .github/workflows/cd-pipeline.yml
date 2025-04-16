@@ -2,8 +2,8 @@ name: CD Pipeline
 
 on:
   push:
-    # branches:
-    #   - main
+    branches:
+      - main
     paths-ignore:
       - '**.md'
       - '.gitignore'
@@ -30,17 +30,10 @@ jobs:
       PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
     environment:
       name: staging
-      # url:
+      url: http://3.106.195.255:3000
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      # - name: Create SSH key
-      #   run: |
-      #     mkdir -p ~/.ssh/
-      #     echo "${{secrets.EC2_SSH_KEY}}" > ../private.key
-      #     sudo chmod 600 ../private.key
-      #     ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-      #   shell: bash
 
       - name: Upload repo to EC2
         uses: burnett01/rsync-deployments@7.0.2
