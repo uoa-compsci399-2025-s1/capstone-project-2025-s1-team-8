@@ -1,9 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest'
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import { UserService } from './UserService'
-import { adminCreateMock } from '@/test-config/mocks/User.mock'
-import { clientCreateMock } from '@/test-config/mocks/User.mock'
-import { studentCreateMock } from '@/test-config/mocks/User.mock'
+import { adminCreateMock, clientCreateMock, studentCreateMock } from '@/test-config/mocks/User.mock'
 
 describe('User service test', () => {
   const userService = new UserService()
@@ -45,7 +43,7 @@ describe('User service test', () => {
     expect(fetchedUser).toEqual(createdUser)
   })
 
-  it('find user with nonexistent id', async () => {
+  it('not found - find user with nonexistent id', async () => {
     await expect(userService.getUser('nonexistent_id')).rejects.toThrow('Not Found')
   })
 
@@ -57,7 +55,7 @@ describe('User service test', () => {
     expect(updatedUser.firstName).toEqual('updated user')
   })
 
-  it('update a user by nonexisting ID', async () => {
+  it('not found - update a user by nonexisting ID', async () => {
     await expect(
       userService.updateUser('non-existing-id', {
         firstName: 'updated user',
@@ -76,7 +74,7 @@ describe('User service test', () => {
     ).rejects.toThrow('Not Found')
   })
 
-  it('delete a user by nonexisting ID', async () => {
+  it('not found - delete a user by nonexisting ID', async () => {
     await expect(userService.deleteUser('non-existing-id')).rejects.toThrow('Not Found')
   })
 })
