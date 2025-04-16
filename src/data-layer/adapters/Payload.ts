@@ -1,6 +1,6 @@
-import { getPayload } from 'payload'
+import { getPayload, Payload } from 'payload'
 import configPromise from '@payload-config'
 
-export const payload = await getPayload({
+export const payload: Payload = await getPayload({
   config: configPromise,
 })
