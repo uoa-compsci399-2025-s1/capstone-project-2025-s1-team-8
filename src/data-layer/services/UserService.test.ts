@@ -12,7 +12,7 @@ describe('User service test', () => {
     await clearCollection(testPayloadObject, 'user')
   })
 
-  it('should create a new admin user', async () => {
+  it('create a new admin user', async () => {
     const newUser = await userService.createUser(adminCreateMock)
     const fetchedUser = await testPayloadObject.findByID({
       collection: 'user',
@@ -21,7 +21,7 @@ describe('User service test', () => {
     expect(newUser).toEqual(fetchedUser)
   })
 
-  it('should create a new client user', async () => {
+  it('create a new client user', async () => {
     const newUser = await userService.createUser(clientCreateMock)
     const fetchedUser = await testPayloadObject.findByID({
       collection: 'user',
@@ -30,12 +30,54 @@ describe('User service test', () => {
     expect(newUser).toEqual(fetchedUser)
   })
 
-  it('should create a new student user', async () => {
+  it('create a new student user', async () => {
     const newUser = await userService.createUser(studentCreateMock)
     const fetchedUser = await testPayloadObject.findByID({
       collection: 'user',
       id: newUser.id,
     })
     expect(newUser).toEqual(fetchedUser)
+  })
+
+  it('find a user by ID', async () => {
+    const createdUser = await userService.createUser(studentCreateMock)
+    const fetchedUser = await userService.getUser(createdUser.id)
+    expect(fetchedUser).toEqual(createdUser)
+  })
+
+  it('find user with nonexistent id', async () => {
+    const fetchedUser = await userService.getUser('non-existing-id')
+    expect(fetchedUser).toBeUndefined()
+  })
+
+  it('update a user by ID', async () => {
+    const createdUser = await userService.createUser(studentCreateMock)
+    const updatedUser = await userService.updateUser(createdUser.id, {
+      firstName: 'updated user',
+    })
+    expect(updatedUser.firstName).toEqual('updated user')
+  })
+
+  it('update a user by nonexisting ID', async () => {
+    await expect(
+      userService.updateUser('non-existing-id', {
+        firstName: 'updated user',
+      }),
+    ).rejects.toThrow('Not Found')
+  })
+
+  it('delete a user by ID', async () => {
+    const createdUser = await userService.createUser(studentCreateMock)
+    await userService.deleteUser(createdUser.id)
+    await expect(
+      testPayloadObject.findByID({
+        collection: 'user',
+        id: createdUser.id,
+      }),
+    ).rejects.toThrow('Not Found')
+  })
+
+  it('delete a user by nonexisting ID', async () => {
+    await expect(userService.deleteUser('non-existing-id')).rejects.toThrow('Not Found')
   })
 })

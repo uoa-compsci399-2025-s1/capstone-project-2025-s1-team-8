@@ -1,5 +1,4 @@
 import { User } from '@/payload-types'
-import { UserRole } from '@/types/user'
 import { payload } from '../adapters/Payload'
 import { CreateUserData, UpdateUserData } from '@/types/Collections'
 
