@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { adminOnlyAccess } from '@/collections/access/AdminOnly'
+import { adminOnlyAccess } from '@/business-layer/access/access'
 
 export const Semester: CollectionConfig = {
   slug: 'semester',
@@ -14,6 +14,7 @@ export const Semester: CollectionConfig = {
       name: 'projects',
       type: 'relationship',
       relationTo: 'semesterProject',
+      hasMany: true,
       required: true,
     },
     {

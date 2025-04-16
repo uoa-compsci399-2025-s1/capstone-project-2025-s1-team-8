@@ -1,11 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest'
 
+import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import { GET } from '@/app/api/my-route/route'
-
-import dotenv from 'dotenv'
-import { clearCollection, testPayloadObject } from 'tests/utils'
-
-dotenv.config()
 
 describe('get user count', () => {
   afterEach(async () => {
