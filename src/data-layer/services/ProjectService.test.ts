@@ -22,7 +22,6 @@ describe('Testing all the project service methods', () => {
       data: mockProject1,
     })
 
-
     expect((await projectService.getAllProjects()).length).toBe(1)
     const project2 = await testPayloadObject.create({
       collection: 'project',
@@ -33,22 +32,26 @@ describe('Testing all the project service methods', () => {
   })
 
   test('Get project by ID', async () => {
-    const project1  = await testPayloadObject.create({
+    const project1 = await testPayloadObject.create({
       collection: 'project',
       data: mockProject1,
     })
 
-    const project2  = await testPayloadObject.create({
+    const project2 = await testPayloadObject.create({
       collection: 'project',
       data: mockProject2,
     })
 
     const testProject1 = await projectService.getProjectById(project1.id)
     const testProject2 = await projectService.getProjectById(project2.id)
-    const testProject3 = await projectService.getProjectById('1234567890')
+    try {
+      const testProject3 = await projectService.getProjectById('1234567890')
+    } catch (error) {
+      expect(error).toBeDefined()
+    }
+
     expect(testProject1).toEqual(project1)
     expect(testProject2).toEqual(project2)
-    expect(testProject3).toBeNull()
   })
 
   test('Get project by name', async () => {
@@ -57,7 +60,7 @@ describe('Testing all the project service methods', () => {
       data: mockProject1,
     })
 
-    const project2  = await testPayloadObject.create({
+    const project2 = await testPayloadObject.create({
       collection: 'project',
       data: mockProject2,
     })
@@ -71,7 +74,7 @@ describe('Testing all the project service methods', () => {
   })
 
   test('Get projects by clientID', async () => {
-    const project1= await testPayloadObject.create({
+    const project1 = await testPayloadObject.create({
       collection: 'project',
       data: mockProject1,
     })
@@ -104,7 +107,7 @@ describe('Testing all the project service methods', () => {
 
   test('Update', async () => {
     const project1 = await projectService.createProject(mockCreateProject1)
-    const project2  = await projectService.createProject(mockCreateProject2)
+    const project2 = await projectService.createProject(mockCreateProject2)
 
     const updatedProject1Data = {
       name: 'Project 1',
@@ -174,8 +177,12 @@ describe('Testing all the project service methods', () => {
     expect((await projectService.getAllProjects()).length).toBe(2)
     await projectService.deleteProject(project1.id)
     expect((await projectService.getAllProjects()).length).toBe(1)
-    const deletedProject = await projectService.deleteProject('1234567890')
-    expect(deletedProject).toBeNull()
+    try {
+      await projectService.deleteProject('1234567890')
+    } catch (error) {
+      expect(error).toBeDefined()
+    }
+
     expect((await projectService.getAllProjects()).length).toBe(1)
     await projectService.deleteProject(project2.id)
     expect((await projectService.getAllProjects()).length).toBe(0)

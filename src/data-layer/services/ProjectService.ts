@@ -19,11 +19,11 @@ export class ProjectService {
    * @param {id} id - The ID of the project
    */
   public async getProjectById(id: string): Promise<Project> {
-      const data = await payload.findByID({
-        collection: 'project',
-        id,
-      })
-      return data
+    const data = await payload.findByID({
+      collection: 'project',
+      id,
+    })
+    return data
   }
 
   /*
@@ -31,7 +31,7 @@ export class ProjectService {
    * @param {name} name - The name of the project
    */
   public async getProjectByName(name: string): Promise<Project> {
-    const data= await payload.find({
+    const data = await payload.find({
       collection: 'project',
       where: {
         name: {
@@ -39,7 +39,7 @@ export class ProjectService {
         },
       },
     })
-    return data.docs[0];
+    return data.docs[0]
   }
 
   /*
@@ -47,7 +47,7 @@ export class ProjectService {
    * @param {clientId} clientId - The ID of the client
    */
   public async getProjectsByClientId(clientId: string): Promise<Project[]> {
-    const data  = await payload.find({
+    const data = await payload.find({
       collection: 'project',
       where: {
         clients: {
@@ -102,7 +102,7 @@ export class ProjectService {
    * @param {id} id - The ID of the project
    */
   public async deleteProject(id: string): Promise<void> {
-await payload.delete({
+    await payload.delete({
       collection: 'project',
       id,
     })
