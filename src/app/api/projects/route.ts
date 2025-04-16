@@ -16,20 +16,17 @@ import {
  * returns {Promise<Response>} - A list of projects or an error response
  */
 export const GET = async (req: NextRequest): Promise<Response> => {
-  const payload = await getPayload({
-    config: configPromise,
-  })
 
   const params: URLSearchParams = req.nextUrl.searchParams
   let projects: Array<Project>
   if ('clientID' in params) {
-    projects = await getProjectsByClientId(payload, params.get('clientID') as string)
+    projects = await getProjectsByClientId(params.get('clientID') as string)
   } else if ('name' in params) {
     projects = []
-    const project: Project | null = await getProjectByName(payload, params.get('name') as string)
+    const project: Project | null = await getProjectByName(params.get('name') as string)
     if (project) projects.push(project)
   } else {
-    projects = await getAllProjects(payload)
+    projects = await getAllProjects()
   }
 
   return Response.json(projects, { status: 200 })
@@ -41,14 +38,11 @@ export const GET = async (req: NextRequest): Promise<Response> => {
  * @returns {Promise<Response>} - The created project object or an error response
  */
 export const POST = async (req: NextRequest): Promise<Response> => {
-  const payload = await getPayload({
-    config: configPromise,
-  })
 
   const data: Project = await req.json()
 
   try {
-    const project: Project = await createProject(payload, data)
+    const project: Project = await createProject(data)
     return Response.json(project, { status: 201 })
   } catch (error) {
     return Response.json(error, { status: 500 })
@@ -60,13 +54,10 @@ export const POST = async (req: NextRequest): Promise<Response> => {
  * @returns {Promise<Response>} - Status 204 for deleted
  */
 export const DELETE = async (): Promise<Response> => {
-  const payload = await getPayload({
-    config: configPromise,
-  })
 
-  const projects: Array<Project> = await getAllProjects(payload)
+  const projects: Array<Project> = await getAllProjects()
   for (const project of projects) {
-    await deleteProject(payload, project.id)
+    await deleteProject(project.id)
   }
   return Response.json({ status: 204 })
 }
