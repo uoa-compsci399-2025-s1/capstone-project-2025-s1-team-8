@@ -26,8 +26,7 @@ describe('Semester service tests', () => {
   })
 
   it('should return undefined if semester does not exist', async () => {
-    const fetchedSemester = await semesterService.getSemester('nonexistent_id')
-    expect(fetchedSemester).toBeUndefined()
+    await expect(semesterService.getSemester('nonexistent_id')).rejects.toThrow('Not Found')
   })
 
   it('should update a semester', async () => {
