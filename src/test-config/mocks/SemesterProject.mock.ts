@@ -1,6 +1,6 @@
 import { SemesterProject } from '@/payload-types'
 import { CreateSemesterProjectData } from '@/types/Collections'
-import { ProjectStatus } from '@/types/project'
+import { ProjectStatus } from '@/types/Project'
 
 export const semesterProjectMock: SemesterProject = {
   id: '67ff38a56a35e1b6cf43a68b',

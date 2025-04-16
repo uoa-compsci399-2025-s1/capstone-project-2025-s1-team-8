@@ -1,5 +1,5 @@
 import { CreateUserData } from '@/types/Collections'
-import { UserRole } from '@/types/user'
+import { UserRole } from '@/types/User'
 
 export const adminCreateMock: CreateUserData = {
   role: UserRole.Admin,
