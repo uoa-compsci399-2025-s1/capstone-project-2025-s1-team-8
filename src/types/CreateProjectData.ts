@@ -1,5 +1,5 @@
 import { Media, User } from '@/payload-types'
-export interface CreateProject {
+export interface CreateProjectData {
   name: string
   clients: (string | User)[]
   description: string

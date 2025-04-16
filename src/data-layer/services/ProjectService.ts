@@ -1,5 +1,5 @@
 import { Project } from '@/payload-types'
-import { CreateProject } from '@/types/CreateProject'
+import { CreateProjectData } from '@/types/CreateProjectData'
 import { NotFound, PaginatedDocs } from 'payload'
 import { payload } from '../adapters/Payload'
 
@@ -79,7 +79,7 @@ export class ProjectService {
    * @param {data} data - The project data
    * @returns {Promise<Project>} - The created project object
    */
-  public async createProject(data: CreateProject): Promise<Project> {
+  public async createProject(data: CreateProjectData): Promise<Project> {
     const project: Project = await payload.create({
       collection: 'project',
       data,
@@ -94,7 +94,7 @@ export class ProjectService {
    * @param {data} data - The project data
    * @returns {Promise<Project | null>} - The updated project object or null if not found
    */
-  public async updateProject(id: string, data: CreateProject): Promise<Project | null> {
+  public async updateProject(id: string, data: CreateProjectData): Promise<Project | null> {
     try {
       const findProject: Project | null = await payload.findByID({
         collection: 'project',
@@ -119,7 +119,7 @@ export class ProjectService {
    * @param {data} data - The partial project data
    * @returns {Promise<Project | null >} - The updated project object or null if not found
    */
-  public async patchProject(id: string, data: Partial<CreateProject>): Promise<Project | null> {
+  public async patchProject(id: string, data: Partial<CreateProjectData>): Promise<Project | null> {
     try {
       const findProject: Project | null = await payload.findByID({
         collection: 'project',
