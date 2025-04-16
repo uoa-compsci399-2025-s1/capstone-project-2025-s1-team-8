@@ -1,16 +1,13 @@
 import { Project } from '@/payload-types'
-import configPromise from '@payload-config'
 import { NextRequest } from 'next/server'
-import { getPayload } from 'payload'
 import { ProjectService } from '@/data-layer/services/ProjectService'
 
+const projectService = new ProjectService()
 /*
  * This function retrieves a list of projects based on query parameters
  * @param {req} req - The request object
  * returns {Promise<Response>} - A list of projects or an error response
  */
-
-const projectService = new ProjectService()
 
 export const GET = async (req: NextRequest): Promise<Response> => {
   const params: URLSearchParams = req.nextUrl.searchParams
