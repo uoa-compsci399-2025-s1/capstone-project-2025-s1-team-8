@@ -34,37 +34,45 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Create SSH key
-        run: |
-          mkdir -p ~/.ssh/
-          echo "${{secrets.EC2_SSH_KEY}}" > ../private.key
-          sudo chmod 600 ../private.key
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-        shell: bash
+      # - name: Create SSH key
+      #   run: |
+      #     mkdir -p ~/.ssh/
+      #     echo "${{secrets.EC2_SSH_KEY}}" > ../private.key
+      #     sudo chmod 600 ../private.key
+      #     ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+      #   shell: bash
 
       - name: Upload repo to EC2
-        run: |
-          rsync -az --delete -e "ssh -i ../private.key" \
-            --exclude '.git' \
-            --exclude 'node_modules' \
-            ./ ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/app
+        uses: burnett01/rsync-deployments@7.0.2
+        with:
+          switches: -avz --delete
+          path: ./
+          remote_path: ~/app
+          remote_host: ${{ secrets.EC2_HOST }}
+          remote_user: ${{ secrets.EC2_USERNAME }}
+          remote_key: ${{ secrets.EC2_SSH_KEY }}
+        # run: |
+        #   rsync -avz --delete -e "ssh -i ../private.key" \
+        #     --exclude '.git' \
+        #     --exclude 'node_modules' \
+        #     ./ ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/app
 
-      - name: Connect to Server via SSH
-        run: |
-          echo "Connecting via SSH..."
+      # - name: Connect to Server via SSH
+      #   run: |
+      #     echo "Connecting via SSH..."
 
-          ssh -i ../private.key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} <<'EOT'
-          cd ~/app
-          echo "storing secrets"
-          echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> .env
-          echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> .env
+      #     ssh -i ../private.key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} <<'EOT'
+      #     cd ~/app
+      #     echo "storing secrets"
+      #     echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> .env
+      #     echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> .env
 
-          echo "Stopping old containers"
-          docker-compose down
+      #     echo "Stopping old containers"
+      #     docker-compose down
 
-          echo "Rebuilding and starting containers"
-          docker-compose up -d --build
-          EOT
+      #     echo "Rebuilding and starting containers"
+      #     docker-compose up -d --build
+      #     EOT
 
   deploy-to-production:
     concurrency:
