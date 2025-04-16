@@ -1,4 +1,4 @@
-name: Setup EC2 server
+name: Setup deployment server
 
 on:
   workflow_dispatch:
