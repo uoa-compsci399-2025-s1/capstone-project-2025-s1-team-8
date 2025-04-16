@@ -1,6 +1,5 @@
 import { Project } from '@/payload-types'
 import { CreateProjectData, UpdateProjectData } from '@/types/Collections'
-import { NotFound } from 'payload'
 import { payload } from '../adapters/Payload'
 
 export class ProjectService {

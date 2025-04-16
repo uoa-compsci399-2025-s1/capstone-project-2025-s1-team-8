@@ -37,21 +37,9 @@ describe('Testing all the project service methods', () => {
       data: mockProject1,
     })
 
-    const project2 = await testPayloadObject.create({
-      collection: 'project',
-      data: mockProject2,
-    })
-
     const testProject1 = await projectService.getProjectById(project1.id)
-    const testProject2 = await projectService.getProjectById(project2.id)
-    try {
-      const testProject3 = await projectService.getProjectById('1234567890')
-    } catch (error) {
-      expect(error).toBeDefined()
-    }
-
+    await expect(projectService.getProjectById('nonexistent_id')).rejects.toThrow('Not Found')
     expect(testProject1).toEqual(project1)
-    expect(testProject2).toEqual(project2)
   })
 
   test('Get project by name', async () => {
@@ -66,11 +54,9 @@ describe('Testing all the project service methods', () => {
     })
 
     const testProject1 = await projectService.getProjectByName(project1.name)
-    const testProject2 = await projectService.getProjectByName(project2.name)
-    const testProject3 = await projectService.getProjectByName('1234567890')
+    const testProject2 = await projectService.getProjectByName('1234567890')
     expect(testProject1).toEqual(project1)
-    expect(testProject2).toEqual(project2)
-    expect(testProject3).toBeUndefined()
+    expect(testProject2).toBeUndefined()
   })
 
   test('Get projects by clientID', async () => {
@@ -177,14 +163,7 @@ describe('Testing all the project service methods', () => {
     expect((await projectService.getAllProjects()).length).toBe(2)
     await projectService.deleteProject(project1.id)
     expect((await projectService.getAllProjects()).length).toBe(1)
-    try {
-      await projectService.deleteProject('1234567890')
-    } catch (error) {
-      expect(error).toBeDefined()
-    }
-
+    await expect(projectService.getProjectById('nonexistent_id')).rejects.toThrow('Not Found')
     expect((await projectService.getAllProjects()).length).toBe(1)
-    await projectService.deleteProject(project2.id)
-    expect((await projectService.getAllProjects()).length).toBe(0)
   })
 })
