@@ -1,4 +1,4 @@
-import { CreateUserData } from '@/types/collections'
+import { CreateUserData } from '@/types/Collections'
 import { UserRole } from '@/types/user'
 
 export const adminCreateMock: CreateUserData = {
