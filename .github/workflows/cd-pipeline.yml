@@ -2,8 +2,8 @@ name: CD Pipeline
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
     paths-ignore:
       - '**.md'
       - '.gitignore'
@@ -62,8 +62,8 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.EC2_SSH_KEY }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
           script: |
             cd ~/app
 
