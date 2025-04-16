@@ -30,11 +30,11 @@ export class UserService {
   }
 
   /**
-   * Retrieves all users from the database.
+   * Updates a user from the database.
    *
    * @param userID the ID of the user to update and
    * @param updatedUser the updated user data object
-   * @returns An array of user documents
+   * @returns A user document
    */
   public async updateUser(userID: string, updatedUser: UpdateUserData): Promise<User> {
     const result = await payload.update({
@@ -46,10 +46,10 @@ export class UserService {
   }
 
   /**
-   * Retrieves all users from the database.
+   * Deletes a user from the database.
    *
    * @param userID the ID of the user to delete
-   * @returns An array of user documents
+   * @returns A user document
    */
   public async deleteUser(userID: string): Promise<void> {
     await payload.delete({
