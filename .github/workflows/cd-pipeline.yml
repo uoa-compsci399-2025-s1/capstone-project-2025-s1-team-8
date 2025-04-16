@@ -2,8 +2,8 @@ name: CD Pipeline
 
 on:
   push:
-    # branches:
-      # - main
+    branches:
+      - main
     paths-ignore:
       - '**.md'
       - '.gitignore'
@@ -16,6 +16,9 @@ on:
 
 jobs:
   deploy-to-staging:
+    concurrency:
+      group: deploy-staging
+      cancel-in-progress: true
     name: Deploy Encapsulate to Staging
     if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
     env:
@@ -31,7 +34,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      # https://stackoverflow.com/questions/60477061/github-actions-how-to-deploy-to-remote-server-using-ssh
       - name: Create SSH key
         run: |
           mkdir -p ~/.ssh/
@@ -61,5 +63,26 @@ jobs:
           docker-compose down
 
           echo "Rebuilding and starting containers"
-          docker-compose up -d --build --progress plain
+          docker-compose up -d --build
           EOT
+
+  deploy-to-production:
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: true
+    name: Deploy Encapsulate to Production
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production'
+    env:
+      EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+      EC2_HOST: ${{ secrets.EC2_HOST }}
+      EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+      # Repository secrets
+      DATABASE_URI: ${{ secrets.DATABASE_URI }}
+      PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+    environment:
+      name: production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "To be implemented"
+      # To be implemented at a later stage
