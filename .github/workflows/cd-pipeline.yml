@@ -30,7 +30,8 @@ jobs:
       PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
     environment:
       name: staging
-      url: http://3.106.195.255:3000
+      # Note this url will change whenever our IP gets discarded, need to get our domain first.
+      url: https://ec2-3-26-157-177.ap-southeast-2.compute.amazonaws.com:3000
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
