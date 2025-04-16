@@ -46,8 +46,7 @@ describe('User service test', () => {
   })
 
   it('find user with nonexistent id', async () => {
-    const fetchedUser = await userService.getUser('non-existing-id')
-    expect(fetchedUser).toBeUndefined()
+    await expect(userService.getUser('nonexistent_id')).rejects.toThrow('Not Found')
   })
 
   it('update a user by ID', async () => {
