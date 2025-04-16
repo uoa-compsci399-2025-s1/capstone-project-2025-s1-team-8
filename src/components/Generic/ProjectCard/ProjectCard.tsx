@@ -8,7 +8,7 @@ interface BasicClientDTOPlaceholder {
     email: string;
 }
 
-interface ProjectDTOPlaceholder {
+export interface ProjectDTOPlaceholder {
     projectId: string;
     projectName: string;
     projectDescription: string;

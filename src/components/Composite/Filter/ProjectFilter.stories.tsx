@@ -4,7 +4,7 @@ import ProjectFilter from './ProjectFilter';
 import { FilterProvider } from '@/contexts/FilterContext'; // adjust the import if needed
 
 const meta: Meta<typeof ProjectFilter> = {
-  title: 'Components/Filter/ProjectFilter',
+  title: 'Composite/ProjectFilter',
   component: ProjectFilter,
   decorators: [
     (Story: StoryFn) => (

@@ -39,6 +39,7 @@
     "@payloadcms/payload-cloud": "latest",
     "@payloadcms/richtext-lexical": "latest",
     "@storybook/react": "^8.6.12",
+    "@storybook/test": "^8.6.12",
     "@tailwindcss/postcss": "^4.1.2",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
