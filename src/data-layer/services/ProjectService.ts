@@ -18,26 +18,19 @@ export class ProjectService {
    * This function returns a project by its ID
    * @param {id} id - The ID of the project
    */
-  public async getProjectById(id: string): Promise<Project | null> {
-    try {
+  public async getProjectById(id: string): Promise<Project> {
       const data = await payload.findByID({
         collection: 'project',
         id,
       })
       return data
-    } catch (error) {
-      if (error instanceof NotFound) {
-        return null
-      }
-    }
-    return null
   }
 
   /*
    * This function returns a project by its name
    * @param {name} name - The name of the project
    */
-  public async getProjectByName(name: string): Promise<Project | null> {
+  public async getProjectByName(name: string): Promise<Project> {
     const data= await payload.find({
       collection: 'project',
       where: {
@@ -82,17 +75,7 @@ export class ProjectService {
    * @param {id} id - The ID of the project
    * @param {data} data - The project data
    */
-  public async updateProject(id: string, data: CreateProjectData): Promise<Project | null> {
-    try {
-      const findProject: Project | null = await payload.findByID({
-        collection: 'project',
-        id,
-      })
-    } catch (error) {
-      if (error instanceof NotFound) {
-        return null
-      }
-    }
+  public async updateProject(id: string, data: CreateProjectData): Promise<Project> {
     const project: Project = await payload.update({
       collection: 'project',
       id,
@@ -105,17 +88,7 @@ export class ProjectService {
    * @param {id} id - The ID of the project
    * @param {data} data - The partial project data
    */
-  public async patchProject(id: string, data: UpdateProjectData): Promise<Project | null> {
-    try {
-      const findProject: Project | null = await payload.findByID({
-        collection: 'project',
-        id,
-      })
-    } catch (error) {
-      if (error instanceof NotFound) {
-        return null
-      }
-    }
+  public async patchProject(id: string, data: UpdateProjectData): Promise<Project> {
     const project: Project = await payload.update({
       collection: 'project',
       id,
@@ -128,21 +101,10 @@ export class ProjectService {
    * This function updates a project
    * @param {id} id - The ID of the project
    */
-  public async deleteProject(id: string): Promise<Project | null> {
-    try {
-      const findProject: Project | null = await payload.findByID({
-        collection: 'project',
-        id,
-      })
-    } catch (error) {
-      if (error instanceof NotFound) {
-        return null
-      }
-    }
-    const project: Project = await payload.delete({
+  public async deleteProject(id: string): Promise<void> {
+await payload.delete({
       collection: 'project',
       id,
     })
-    return project
   }
 }
