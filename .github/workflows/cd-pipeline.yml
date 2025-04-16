@@ -57,7 +57,22 @@ jobs:
         #     --exclude 'node_modules' \
         #     ./ ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/app
 
-      # - name: Connect to Server via SSH
+      - name: Connect to Server via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/app
+
+            echo "storing secrets"
+            echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> .env
+            echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> .env
+
+            echo "Stopping old containers"
+            docker-compose down
       #   run: |
       #     echo "Connecting via SSH..."
 
