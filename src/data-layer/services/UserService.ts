@@ -23,15 +23,11 @@ export class UserService {
    * @returns The retrieved user document
    */
   public async getUser(userID: string): Promise<User> {
-    const result = await payload.find({
+    const result = await payload.findByID({
       collection: 'user',
-      where: {
-        id: {
-          equals: userID,
-        },
-      },
+      id: userID,
     })
-    return result.docs[0]
+    return result
   }
 
   /**
