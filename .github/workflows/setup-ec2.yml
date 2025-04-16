@@ -36,7 +36,7 @@ jobs:
           BACKUP="/root/.ssh/authorized_keys.bak"
 
           # Backup original authorized_keys file
-          cp "$AUTHORIZED_KEYS" "$BACKUP"
+          sudo cp "$AUTHORIZED_KEYS" "$BACKUP"
 
           sudo sed -i 's/^.*command=.*Please login as the user \\"ubuntu\\".*ssh-rsa/ssh-rsa/' "$AUTHORIZED_KEYS"
           EOT
