@@ -67,7 +67,7 @@ h1 {
 }
 
 p {
-  margin: 24px 0;
+  /* margin: 24px 0; */
 
   @media (max-width: 1024px) {
     margin: calc(var(--base) * 0.75) 0;
