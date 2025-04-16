@@ -1,7 +1,5 @@
 import { Semester, SemesterProject, User, Project } from '@/payload-types'
 
-export type CreateUserData = Omit<User, 'id' | 'createdAt' | 'updatedAt'>
-
 /*
  * Semester Collection Types
  */
@@ -18,3 +16,19 @@ export type CreateSemesterProjectData = Omit<SemesterProject, 'id' | 'createdAt'
 */
 export type CreateProjectData = Omit<Project, 'id' | 'createdAt' | 'updatedAt'>
 export type UpdateProjectData = Partial<CreateProjectData>
+/*
+ * User Collection Types
+ */
+export type CreateUserData = Omit<
+  User,
+  | 'id'
+  | 'createdAt'
+  | 'updatedAt'
+  | 'loginAttempts'
+  | 'lockUntil'
+  | 'salt'
+  | 'hash'
+  | 'resetPasswordToken'
+  | 'resetPasswordExpiration'
+>
+export type UpdateUserData = Partial<CreateUserData>

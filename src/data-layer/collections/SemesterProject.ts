@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { adminOnlyAccess } from '@/business-layer/access/access'
-import { ProjectStatus } from '@/types/project'
+import { ProjectStatus } from '@/types/Project'
 
 export const SemesterProject: CollectionConfig = {
   slug: 'semesterProject',

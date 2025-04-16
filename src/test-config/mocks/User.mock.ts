@@ -1,5 +1,5 @@
 import { CreateUserData } from '@/types/Collections'
-import { UserRole } from '@/types/user'
+import { UserRole } from '@/types/User'
 import { User } from '@/payload-types'
 
 export const adminCreateMock: CreateUserData = {

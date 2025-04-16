@@ -22,15 +22,10 @@ export class SemesterService {
    * @returns The retrieved semester document
    */
   public async getSemester(semesterID: string): Promise<Semester> {
-    const result = await payload.find({
+    return await payload.findByID({
       collection: 'semester',
-      where: {
-        id: {
-          equals: semesterID,
-        },
-      },
+      id: semesterID,
     })
-    return result.docs[0]
   }
 
   /**
