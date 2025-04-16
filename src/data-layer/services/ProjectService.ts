@@ -63,7 +63,7 @@ export class ProjectService {
    * @param {data} data - The project data
    */
   public async createProject(data: CreateProjectData): Promise<Project> {
-    const project: Project = await payload.create({
+    const project = await payload.create({
       collection: 'project',
       data,
     })
@@ -76,7 +76,7 @@ export class ProjectService {
    * @param {data} data - The project data
    */
   public async updateProject(id: string, data: CreateProjectData): Promise<Project> {
-    const project: Project = await payload.update({
+    const project = await payload.update({
       collection: 'project',
       id,
       data,
@@ -89,7 +89,7 @@ export class ProjectService {
    * @param {data} data - The partial project data
    */
   public async patchProject(id: string, data: UpdateProjectData): Promise<Project> {
-    const project: Project = await payload.update({
+    const project = await payload.update({
       collection: 'project',
       id,
       data,
