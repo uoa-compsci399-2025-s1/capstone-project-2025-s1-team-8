@@ -57,12 +57,6 @@ jobs:
           echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> .env
           echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> .env
 
-          echo "install docker and docker-compose"
-          sudo apt-get update
-          sudo apt-get install -y docker.io docker-compose
-          sudo usermod -aG docker $USER
-          newgrp docker
-
           echo "Stopping old containers"
           docker-compose down
 
