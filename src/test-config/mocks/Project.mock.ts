@@ -1,4 +1,4 @@
-import { CreateProjectData } from '@/types/CreateProjectData'
+import { CreateProjectData } from '@/types/Collections'
 import { mockClient1, mockClient2 } from './User.mock'
 import { Project } from '@/payload-types'
 
@@ -22,14 +22,14 @@ export const mockProject2: Project = {
   timestamp: new Date().toISOString(),
 }
 
-export const mockProject3: CreateProjectData = {
+export const mockCreateProject1: CreateProjectData = {
   name: 'Project 1',
   description: 'Description 1',
   clients: [mockClient1],
   timestamp: new Date().toISOString(),
 }
 
-export const mockProject4: CreateProjectData = {
+export const mockCreateProject2: CreateProjectData = {
   name: 'Project 2',
   description: 'Description 2',
   clients: [mockClient1, mockClient2],
