@@ -2,6 +2,7 @@ import { CreateSemesterProjectData, UpdateSemesterProjectData } from '@/types/Co
 import { payload } from '../adapters/Payload'
 import { SemesterProject } from '@/payload-types'
 import { ProjectStatus } from '@/types/Project'
+import { Semester } from '@/payload-types'
 
 export class SemesterProjectService {
   /**
@@ -50,33 +51,37 @@ export class SemesterProjectService {
     * @param status The status of the semesterProjects to retrieve
     * @returns An array of semesterProjects with the specified status
     **/
-  public async getSemesterProjectsByStatus(status: ProjectStatus): Promise<SemesterProject[]> {
-    const semesterProjects = await payload.find({
-      collection: 'semesterProject',
-      where: {
-        status: {
-          equals: status,
-        },
-      },
-    })
-    return semesterProjects.docs
+  public async filterSemesterProjectsByStatus(status: ProjectStatus, projects: SemesterProject[]): Promise<SemesterProject[]> {
+    let semesterProjects = [];
+    for (const project of projects) {
+      if (project.status === status) {
+        semesterProjects.push(project);
+      }
+    }
+    return semesterProjects;
   }
 
   /**
-   * Retrieves all semesterProjects by semester ID
+   * Filters a list of semesterProjects by semester ID
+   * @param projects The array of semesterProjects to filter
    * @param id The semester ID
    * @returns An array of semesterProjects associated with the specified semester ID
    */
-    public async getSemesterProjectsBySemester(id: string): Promise<SemesterProject[]> {
-        const semesterProjects = await payload.find({
-        collection: 'semesterProject',
-        where: {
-            semester: {
-            equals: id,
-            },
-        },
-        })
-        return semesterProjects.docs
+    public async filterProjectsBySemester(id: string, projects: SemesterProject[]): Promise<SemesterProject[]> {
+        let semesterProjects = [];
+        for (const project of projects) {
+            if (typeof project.semester === "string") {
+              if (project.semester === id){
+                semesterProjects.push(project);
+              }
+            } else{
+                const semester = project.semester as Semester;
+                if (semester.id === id) {
+                    semesterProjects.push(project);
+                }
+            }
+        }
+        return semesterProjects;
     }
 
     /**
@@ -84,32 +89,14 @@ export class SemesterProjectService {
      * @param published The publish status
      * @returns An array of semesterProjects with the specified publish status
      */
-    public async getSemesterProjectsByPublished(published: boolean): Promise<SemesterProject[]> {
-        const semesterProjects = await payload.find({
-        collection: 'semesterProject',
-        where: {
-            published: {
-            equals: published,
-            },
-        },
-        })
-        return semesterProjects.docs
-    }
-    /**
-     * Retrieves all semesterProjects by number
-     * @param number The semesterProject number
-     * @returns A SemesterProject with the specified number
-     */
-    public async getSemesterProjectByNumber(number: number): Promise<SemesterProject> {
-        const semesterProject = await payload.find({
-        collection: 'semesterProject',
-        where: {
-            number: {
-            equals: number,
-            },
-        },
-        })
-        return semesterProject.docs[0]
+    public async filterSemesterProjectsByPublished(published: boolean, projects: SemesterProject[]): Promise<SemesterProject[]> {
+      let semesterProjects = [];
+      for (const project of projects) {
+        if (project.published === published) {
+          semesterProjects.push(project);
+        }
+      }
+      return semesterProjects;
     }
 
   /**
