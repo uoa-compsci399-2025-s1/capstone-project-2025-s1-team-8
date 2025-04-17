@@ -1,11 +1,6 @@
 import { expect, test, describe, afterEach } from 'vitest'
-import { mockClient1, mockClient2 } from '@/test-config/mocks/User.mock'
-import {
-  mockProject1,
-  mockProject2,
-  mockCreateProject1,
-  mockCreateProject2,
-} from '@/test-config/mocks/Project.mock'
+import { mockClient1 } from '@/test-config/mocks/User.mock'
+import { mockProject1, mockProject2, mockCreateProject1 } from '@/test-config/mocks/Project.mock'
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import { ProjectService } from './ProjectService'
 
@@ -16,13 +11,13 @@ describe('Testing all the project service methods', () => {
   })
   test('Check get all projects service method', async () => {
     expect((await projectService.getAllProjects()).length).toBe(0)
-    const project1 = await testPayloadObject.create({
+    await testPayloadObject.create({
       collection: 'project',
       data: mockProject1,
     })
 
     expect((await projectService.getAllProjects()).length).toBe(1)
-    const project2 = await testPayloadObject.create({
+    await testPayloadObject.create({
       collection: 'project',
       data: mockProject2,
     })
@@ -47,7 +42,7 @@ describe('Testing all the project service methods', () => {
       data: mockProject1,
     })
 
-    const project2 = await testPayloadObject.create({
+    await testPayloadObject.create({
       collection: 'project',
       data: mockProject2,
     })
@@ -59,12 +54,12 @@ describe('Testing all the project service methods', () => {
   })
 
   test('Get projects by clientID', async () => {
-    const project1 = await testPayloadObject.create({
+    await testPayloadObject.create({
       collection: 'project',
       data: mockProject1,
     })
 
-    const project2 = await testPayloadObject.create({
+    await testPayloadObject.create({
       collection: 'project',
       data: mockProject2,
     })
@@ -108,7 +103,7 @@ describe('Testing all the project service methods', () => {
       data: mockProject1,
     })
 
-    const project2 = await testPayloadObject.create({
+    await testPayloadObject.create({
       collection: 'project',
       data: mockProject2,
     })
