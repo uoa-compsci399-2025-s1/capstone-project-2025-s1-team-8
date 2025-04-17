@@ -1,7 +1,6 @@
 import { CreateFormQuestionData, UpdateFormQuestionData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 import { FormQuestion } from '@/payload-types'
-import { ProjectStatus } from '@/types/Project'
 
 export class FormQuestionService {
   /**
@@ -10,9 +9,7 @@ export class FormQuestionService {
    * @param newFormQuestion The data for the new formQuestion
    * @returns The created formQuestion
    */
-  public async createFormQuestion(
-    newFormQuestion: CreateFormQuestionData,
-  ): Promise<FormQuestion> {
+  public async createFormQuestion(newFormQuestion: CreateFormQuestionData): Promise<FormQuestion> {
     const formQuestion = await payload.create({
       collection: 'formQuestion',
       data: newFormQuestion,
