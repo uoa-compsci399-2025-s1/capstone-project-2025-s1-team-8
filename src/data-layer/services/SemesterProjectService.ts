@@ -137,7 +137,7 @@ export class SemesterProjectService {
    **/
   public async deleteSemesterProject(id: string): Promise<void> {
     await payload.delete({
-      collection: 'semester',
+      collection: 'semesterProject',
       id: id,
     })
   }
