@@ -64,12 +64,11 @@ describe('Testing all the project service methods', () => {
       collection: 'project',
       data: mockProject1,
     })
-  
+
     const project2 = await testPayloadObject.create({
       collection: 'project',
       data: mockProject2,
     })
-
 
     const client1Projects = await projectService.getProjectsByClientId(mockClient1.id)
     const client2Projects = await projectService.getProjectsByClientId('1234567890')
@@ -79,10 +78,12 @@ describe('Testing all the project service methods', () => {
   test('Create project', async () => {
     const project1 = await projectService.createProject(mockCreateProject1)
 
-    expect(project1).toEqual(await testPayloadObject.findByID({
-      collection: 'project',
-      id: project1.id,
-    }))
+    expect(project1).toEqual(
+      await testPayloadObject.findByID({
+        collection: 'project',
+        id: project1.id,
+      }),
+    )
   })
 
   test('Update', async () => {
@@ -96,13 +97,14 @@ describe('Testing all the project service methods', () => {
       timestamp: '2023-11-01T00:00:00Z',
     }
 
-
     const updatedProject1 = await projectService.updateProject(project1.id, updatedProject1Data)
 
-    expect(updatedProject1).toEqual(await testPayloadObject.findByID({
-      collection: 'project',
-      id: updatedProject1.id,
-    }))
+    expect(updatedProject1).toEqual(
+      await testPayloadObject.findByID({
+        collection: 'project',
+        id: updatedProject1.id,
+      }),
+    )
   })
 
   test('Check delete projects method', async () => {
@@ -110,7 +112,7 @@ describe('Testing all the project service methods', () => {
       collection: 'project',
       data: mockProject1,
     })
-  
+
     const project2 = await testPayloadObject.create({
       collection: 'project',
       data: mockProject2,
