@@ -89,10 +89,7 @@ describe('Testing all the project service methods', () => {
     const project1 = await projectService.createProject(mockCreateProject1)
 
     const updatedProject1Data = {
-      name: 'Project 1',
       description: 'Description 1 v2',
-      clients: [mockClient1],
-      timestamp: '2023-11-01T00:00:00Z',
     }
 
     const updatedProject1 = await projectService.updateProject(project1.id, updatedProject1Data)

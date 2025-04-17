@@ -74,7 +74,7 @@ export class ProjectService {
    * @param {id} id - The ID of the project
    * @param {data} data - The project data
    */
-  public async updateProject(id: string, data: CreateProjectData): Promise<Project> {
+  public async updateProject(id: string, data: UpdateProjectData): Promise<Project> {
     const project = await payload.update({
       collection: 'project',
       id,
