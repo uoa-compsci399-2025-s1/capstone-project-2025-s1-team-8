@@ -2,13 +2,10 @@ import { describe, it, expect, afterEach } from 'vitest'
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import { SemesterProjectService } from '@/data-layer/services/SemesterProjectService'
 import {
-  semesterProjectMock,
   semesterProjectCreateMock,
   semesterProjectListMock,
-  semesterProjectMock2,
 } from '@/test-config/mocks/SemesterProject.mock'
 import { ProjectStatus } from '@/types/Project'
-import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 
 describe('Semester service tests', () => {
   const semesterProjectService = new SemesterProjectService()
