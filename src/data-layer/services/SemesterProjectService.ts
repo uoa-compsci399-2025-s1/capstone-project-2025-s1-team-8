@@ -51,14 +51,17 @@ export class SemesterProjectService {
     * @param status The status of the semesterProjects to retrieve
     * @returns An array of semesterProjects with the specified status
     **/
-  public async filterSemesterProjectsByStatus(status: ProjectStatus, projects: SemesterProject[]): Promise<SemesterProject[]> {
-    let semesterProjects = [];
+  public async filterSemesterProjectsByStatus(
+    status: ProjectStatus,
+    projects: SemesterProject[],
+  ): Promise<SemesterProject[]> {
+    let semesterProjects = []
     for (const project of projects) {
       if (project.status === status) {
-        semesterProjects.push(project);
+        semesterProjects.push(project)
       }
     }
-    return semesterProjects;
+    return semesterProjects
   }
 
   /**
@@ -67,37 +70,43 @@ export class SemesterProjectService {
    * @param id The semester ID
    * @returns An array of semesterProjects associated with the specified semester ID
    */
-    public async filterProjectsBySemester(id: string, projects: SemesterProject[]): Promise<SemesterProject[]> {
-        let semesterProjects = [];
-        for (const project of projects) {
-            if (typeof project.semester === "string") {
-              if (project.semester === id){
-                semesterProjects.push(project);
-              }
-            } else{
-                const semester = project.semester as Semester;
-                if (semester.id === id) {
-                    semesterProjects.push(project);
-                }
-            }
+  public async filterProjectsBySemester(
+    id: string,
+    projects: SemesterProject[],
+  ): Promise<SemesterProject[]> {
+    let semesterProjects = []
+    for (const project of projects) {
+      if (typeof project.semester === 'string') {
+        if (project.semester === id) {
+          semesterProjects.push(project)
         }
-        return semesterProjects;
-    }
-
-    /**
-     * Retrieves all semesterProjects by publish status
-     * @param published The publish status
-     * @returns An array of semesterProjects with the specified publish status
-     */
-    public async filterSemesterProjectsByPublished(published: boolean, projects: SemesterProject[]): Promise<SemesterProject[]> {
-      let semesterProjects = [];
-      for (const project of projects) {
-        if (project.published === published) {
-          semesterProjects.push(project);
+      } else {
+        const semester = project.semester as Semester
+        if (semester.id === id) {
+          semesterProjects.push(project)
         }
       }
-      return semesterProjects;
     }
+    return semesterProjects
+  }
+
+  /**
+   * Retrieves all semesterProjects by publish status
+   * @param published The publish status
+   * @returns An array of semesterProjects with the specified publish status
+   */
+  public async filterSemesterProjectsByPublished(
+    published: boolean,
+    projects: SemesterProject[],
+  ): Promise<SemesterProject[]> {
+    let semesterProjects = []
+    for (const project of projects) {
+      if (project.published === published) {
+        semesterProjects.push(project)
+      }
+    }
+    return semesterProjects
+  }
 
   /**
    * Updates a semesterProject.

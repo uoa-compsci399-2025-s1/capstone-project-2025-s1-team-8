@@ -56,5 +56,5 @@ export const semesterProjectListMock: SemesterProject[] = [
   semesterProjectMock,
   semesterProjectMock2,
   semesterProjectMock3,
-  semesterProjectMock4
+  semesterProjectMock4,
 ]
