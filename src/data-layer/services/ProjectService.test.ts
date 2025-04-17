@@ -105,26 +105,6 @@ describe('Testing all the project service methods', () => {
     }))
   })
 
-  test('Patch projects', async () => {
-    const project1 = await projectService.createProject(mockCreateProject1)
-    const project2 = await projectService.createProject(mockCreateProject2)
-
-    const updatedProject1Data = {
-      description: 'Description 1 v2',
-    }
-
-    const updatedProject2Data = {
-      description: 'Description 2 v2',
-    }
-
-    const updatedProject1 = await projectService.patchProject(project1.id, updatedProject1Data)
-
-    expect(updatedProject1).toEqual(await testPayloadObject.findByID({
-      collection: 'project',
-      id: updatedProject1.id,
-    }))
-  })
-
   test('Check delete projects method', async () => {
     const project1 = await testPayloadObject.create({
       collection: 'project',

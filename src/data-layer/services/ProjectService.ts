@@ -82,19 +82,6 @@ export class ProjectService {
     })
     return project
   }
-  /*
-   * This function patches a project
-   * @param {id} id - The ID of the project
-   * @param {data} data - The partial project data
-   */
-  public async patchProject(id: string, data: UpdateProjectData): Promise<Project> {
-    const project = await payload.update({
-      collection: 'project',
-      id,
-      data,
-    })
-    return project
-  }
 
   /*
    * This function updates a project
