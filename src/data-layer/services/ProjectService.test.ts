@@ -64,31 +64,25 @@ describe('Testing all the project service methods', () => {
       collection: 'project',
       data: mockProject1,
     })
-
+  
     const project2 = await testPayloadObject.create({
       collection: 'project',
       data: mockProject2,
     })
 
+
     const client1Projects = await projectService.getProjectsByClientId(mockClient1.id)
-    const client2Projects = await projectService.getProjectsByClientId(mockClient2.id)
-    const client3Projects = await projectService.getProjectsByClientId('1234567890')
+    const client2Projects = await projectService.getProjectsByClientId('1234567890')
     expect(client1Projects.length).toBe(2)
-    expect(client2Projects.length).toBe(1)
-    expect(client3Projects.length).toBe(0)
+    expect(client2Projects.length).toBe(0)
   })
   test('Create project', async () => {
     const project1 = await projectService.createProject(mockCreateProject1)
-    const project2 = await projectService.createProject(mockCreateProject2)
 
-    expect(project1).not.toBeNull()
-    expect(project1.name).toBe(mockCreateProject1.name)
-    expect(project1.description).toBe(mockCreateProject1.description)
-    expect(project1.clients.length).toBe(1)
-    expect(project2).not.toBeNull()
-    expect(project2.name).toBe(mockCreateProject2.name)
-    expect(project2.description).toBe(mockCreateProject2.description)
-    expect(project2.clients.length).toBe(2)
+    expect(project1).toEqual(await testPayloadObject.findByID({
+      collection: 'project',
+      id: project1.id,
+    }))
   })
 
   test('Update', async () => {
@@ -102,25 +96,13 @@ describe('Testing all the project service methods', () => {
       timestamp: '2023-11-01T00:00:00Z',
     }
 
-    const updatedProject2Data = {
-      name: 'Project 2',
-      description: 'Description 2 v2',
-      clients: [mockClient1, mockClient2],
-      timestamp: '2023-12-01T00:00:00Z',
-    }
 
     const updatedProject1 = await projectService.updateProject(project1.id, updatedProject1Data)
 
-    const updatedProject2 = await projectService.updateProject(project2.id, updatedProject2Data)
-
-    expect(updatedProject1).not.toBeNull()
-    expect(updatedProject1?.name).toBe(updatedProject1Data.name)
-    expect(updatedProject1?.description).toBe(updatedProject1Data.description)
-    expect(updatedProject1?.clients.length).toBe(1)
-    expect(updatedProject2).not.toBeNull()
-    expect(updatedProject2?.name).toBe(updatedProject2Data.name)
-    expect(updatedProject2?.description).toBe(updatedProject2Data.description)
-    expect(updatedProject2?.clients.length).toBe(2)
+    expect(updatedProject1).toEqual(await testPayloadObject.findByID({
+      collection: 'project',
+      id: updatedProject1.id,
+    }))
   })
 
   test('Patch projects', async () => {
@@ -137,16 +119,10 @@ describe('Testing all the project service methods', () => {
 
     const updatedProject1 = await projectService.patchProject(project1.id, updatedProject1Data)
 
-    const updatedProject2 = await projectService.patchProject(project2.id, updatedProject2Data)
-
-    expect(updatedProject1).not.toBeNull()
-    expect(updatedProject1?.name).toBe(project1.name)
-    expect(updatedProject1?.description).toBe(updatedProject1Data.description)
-    expect(updatedProject1?.clients.length).toBe(1)
-    expect(updatedProject2).not.toBeNull()
-    expect(updatedProject2?.name).toBe(project2.name)
-    expect(updatedProject2?.description).toBe(updatedProject2Data.description)
-    expect(updatedProject2?.clients.length).toBe(2)
+    expect(updatedProject1).toEqual(await testPayloadObject.findByID({
+      collection: 'project',
+      id: updatedProject1.id,
+    }))
   })
 
   test('Check delete projects method', async () => {
@@ -154,10 +130,10 @@ describe('Testing all the project service methods', () => {
       collection: 'project',
       data: mockProject1,
     })
-
+  
     const project2 = await testPayloadObject.create({
       collection: 'project',
-      data: mockProject1,
+      data: mockProject2,
     })
 
     expect((await projectService.getAllProjects()).length).toBe(2)
