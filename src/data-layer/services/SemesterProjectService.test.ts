@@ -126,8 +126,7 @@ describe('Semester service tests', () => {
   it('Should return all semesterProjects', async () => {
     await semesterProjectService.createSemesterProject(semesterProjectCreateMock)
     await semesterProjectService.createSemesterProject(semesterProjectCreateMock)
-    const semesterProjectList =
-      await semesterProjectService.getAllSemesterProjects()
+    const semesterProjectList = await semesterProjectService.getAllSemesterProjects()
     expect(semesterProjectList.length).toEqual(2)
   })
 })
