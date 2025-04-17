@@ -13,7 +13,6 @@ describe('Testing all the project service methods', () => {
   const projectService = new ProjectService()
   afterEach(async () => {
     await clearCollection(testPayloadObject, 'project')
-    await clearCollection(testPayloadObject, 'user')
   })
   test('Check get all projects service method', async () => {
     expect((await projectService.getAllProjects()).length).toBe(0)
@@ -88,7 +87,6 @@ describe('Testing all the project service methods', () => {
 
   test('Update', async () => {
     const project1 = await projectService.createProject(mockCreateProject1)
-    const project2 = await projectService.createProject(mockCreateProject2)
 
     const updatedProject1Data = {
       name: 'Project 1',
