@@ -1,5 +1,5 @@
 import { UniqueIdentifier } from '@dnd-kit/core'
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
@@ -36,7 +36,7 @@ const ProjectCard = ({ id, projectInfo }: ProjectCardType) => {
     },
   })
 
-  //TODO: onclick of three dots (or whole card - will this interfere with drag and drop??), show expanded project modal (maybe another endpoint call to fetch all project info? Pass in projectID)
+  //TODO: onclick of three dots (or whole card - will this interfere with drag and drop??), show expanded project modal
 
   const truncatedDescription = projectInfo.projectDescription.slice(0, 80) + '...'
 
