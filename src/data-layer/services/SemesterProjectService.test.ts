@@ -55,7 +55,7 @@ describe('Semester service tests', () => {
     await semesterProjectService.deleteSemesterProject(newSemester.id)
     await expect(
       testPayloadObject.findByID({
-        collection: 'semester',
+        collection: 'semesterProject',
         id: newSemester.id,
       }),
     ).rejects.toThrow('Not Found')

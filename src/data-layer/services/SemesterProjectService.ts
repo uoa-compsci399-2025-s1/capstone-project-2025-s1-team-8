@@ -55,7 +55,7 @@ export class SemesterProjectService {
     status: ProjectStatus,
     projects: SemesterProject[],
   ): Promise<SemesterProject[]> {
-    let semesterProjects = []
+    const semesterProjects = []
     for (const project of projects) {
       if (project.status === status) {
         semesterProjects.push(project)
@@ -74,7 +74,7 @@ export class SemesterProjectService {
     id: string,
     projects: SemesterProject[],
   ): Promise<SemesterProject[]> {
-    let semesterProjects = []
+    const semesterProjects = []
     for (const project of projects) {
       if (typeof project.semester === 'string') {
         if (project.semester === id) {
@@ -99,7 +99,7 @@ export class SemesterProjectService {
     published: boolean,
     projects: SemesterProject[],
   ): Promise<SemesterProject[]> {
-    let semesterProjects = []
+    const semesterProjects = []
     for (const project of projects) {
       if (project.published === published) {
         semesterProjects.push(project)
