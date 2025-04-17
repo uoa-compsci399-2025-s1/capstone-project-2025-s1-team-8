@@ -1,5 +1,5 @@
-import { FormQuestion } from "@/payload-types"
-import { CreateFormQuestionData, UpdateFormQuestionData } from "@/types/Collections"
+import { FormQuestion } from '@/payload-types'
+import { CreateFormQuestionData, UpdateFormQuestionData } from '@/types/Collections'
 
 export const formQuestionCreateMock: CreateFormQuestionData = {
   question: 'What is your name?',
