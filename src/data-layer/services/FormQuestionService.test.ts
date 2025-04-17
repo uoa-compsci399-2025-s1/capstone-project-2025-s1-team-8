@@ -4,7 +4,7 @@ import { FormQuestionService } from './FormQuestionService'
 import {
   formQuestionCreateMock,
   formQuestionUpdateMock,
-} from '@/test-config/mocks/formQuestion.mock'
+} from '@/test-config/mocks/FormQuestion.mock'
 
 describe('Form service test', () => {
   const formQuestionService = new FormQuestionService()
