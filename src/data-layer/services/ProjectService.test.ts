@@ -6,23 +6,23 @@ import { ProjectService } from './ProjectService'
 
 describe('Testing all the project service methods', () => {
   const projectService = new ProjectService()
+
   afterEach(async () => {
     await clearCollection(testPayloadObject, 'project')
   })
+
   test('Check get all projects service method', async () => {
-    expect((await projectService.getAllProjects()).length).toBe(0)
-    await testPayloadObject.create({
+    const project1 = await testPayloadObject.create({
       collection: 'project',
       data: mockProject1,
     })
 
-    expect((await projectService.getAllProjects()).length).toBe(1)
-    await testPayloadObject.create({
+    const project2 = await testPayloadObject.create({
       collection: 'project',
       data: mockProject2,
     })
 
-    expect((await projectService.getAllProjects()).length).toBe(2)
+    expect(await projectService.getAllProjects()).toEqual([project1, project2])
   })
 
   test('Get project by ID', async () => {
@@ -69,6 +69,7 @@ describe('Testing all the project service methods', () => {
     expect(client1Projects.length).toBe(2)
     expect(client2Projects.length).toBe(0)
   })
+
   test('Create project', async () => {
     const project1 = await projectService.createProject(mockCreateProject1)
 
