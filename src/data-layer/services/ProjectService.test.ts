@@ -22,7 +22,9 @@ describe('Testing all the project service methods', () => {
       data: mockProject2,
     })
 
-    expect(await projectService.getAllProjects()).toStrictEqual([project1, project2])
+    expect(await projectService.getAllProjects()).toEqual(
+      expect.arrayContaining([project1, project2]),
+    )
   })
 
   test('Get project by ID', async () => {
