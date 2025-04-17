@@ -1,6 +1,7 @@
 import { User } from '@/payload-types'
 import { payload } from '../adapters/Payload'
 import { CreateUserData, UpdateUserData } from '@/types/Collections'
+import { PaginatedDocs } from 'payload'
 
 export class UserService {
   /**
@@ -26,6 +27,17 @@ export class UserService {
     return await payload.findByID({
       collection: 'user',
       id: userID,
+    })
+  }
+
+  /**
+   * Retrieves all user documents from the database.
+   *
+   * @returns The retrieved user documents
+   */
+  public async getAllUsers(): Promise<PaginatedDocs<User>> {
+    return await payload.find({
+      collection: 'user',
     })
   }
 
