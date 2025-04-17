@@ -1,7 +1,7 @@
-import React from 'react';
-import { Meta, StoryObj, StoryFn } from '@storybook/react';
-import ProjectFilter from './ProjectFilter';
-import { FilterProvider } from '@/contexts/FilterContext'; // adjust the import if needed
+import React from 'react'
+import { Meta, StoryObj, StoryFn } from '@storybook/react'
+import ProjectFilter from './ProjectFilter'
+import { FilterProvider } from '@/contexts/FilterContext' // adjust the import if needed
 
 const meta: Meta<typeof ProjectFilter> = {
   title: 'Composite/ProjectFilter',
@@ -15,14 +15,14 @@ const meta: Meta<typeof ProjectFilter> = {
       </FilterProvider>
     ),
   ],
-};
+}
 
-export default meta;
-type Story = StoryObj<typeof ProjectFilter>;
+export default meta
+type Story = StoryObj<typeof ProjectFilter>
 
 export const Default: Story = {
   args: {
     className: '',
     containerWidth: 300,
   },
-};
+}

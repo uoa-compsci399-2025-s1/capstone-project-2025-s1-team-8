@@ -1,7 +1,7 @@
-import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
-import FilterInner from './FilterInner';
-import { EnvelopeIcon } from '@heroicons/react/16/solid'; // Example icon from lucide-react or any icon lib you use
+import React from 'react'
+import { Meta, StoryObj } from '@storybook/react'
+import FilterInner from './FilterInner'
+import { EnvelopeIcon } from '@heroicons/react/16/solid' // Example icon from lucide-react or any icon lib you use
 
 const meta: Meta<typeof FilterInner> = {
   title: 'Generic/FilterInner',
@@ -20,20 +20,20 @@ const meta: Meta<typeof FilterInner> = {
       },
     },
   },
-};
+}
 
-export default meta;
-type Story = StoryObj<typeof FilterInner>;
+export default meta
+type Story = StoryObj<typeof FilterInner>
 
 export const WithIcon: Story = {
   args: {
     text: 'Active Filter',
-    icon: <EnvelopeIcon className='w-5 h-5' />,
+    icon: <EnvelopeIcon className="w-5 h-5" />,
     isActive: true,
     key: 'active-icon',
     hasActiveStyles: true,
   },
-};
+}
 
 export const WithoutIconActive: Story = {
   args: {
@@ -42,7 +42,7 @@ export const WithoutIconActive: Story = {
     key: 'radio-active',
     hasActiveStyles: true,
   },
-};
+}
 
 export const WithoutIconInactive: Story = {
   args: {
@@ -51,4 +51,4 @@ export const WithoutIconInactive: Story = {
     key: 'radio-inactive',
     hasActiveStyles: true,
   },
-};
+}

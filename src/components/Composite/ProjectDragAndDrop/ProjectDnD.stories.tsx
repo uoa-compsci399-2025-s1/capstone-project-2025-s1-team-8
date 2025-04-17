@@ -1,14 +1,15 @@
-import React from 'react';
-import { Meta, StoryObj } from '@storybook/react';
-import ProjectDnD from './ProjectDnD';
-import { UniqueIdentifier } from '@dnd-kit/core';
+import React from 'react'
+import { Meta, StoryObj } from '@storybook/react'
+import ProjectDnD from './ProjectDnD'
+import { UniqueIdentifier } from '@dnd-kit/core'
 
 const containers = [
   {
     id: 'container-1' as UniqueIdentifier,
     title: 'Rejected',
     containerColor: 'light',
-    items: [{
+    items: [
+      {
         id: `item-1`,
         projectInfo: {
           projectId: 'P1',
@@ -23,7 +24,8 @@ const containers = [
           semesters: ['S1 2025'],
           submissionDate: new Date('2025-06-01'),
         },
-      }, {
+      },
+      {
         id: `item-2`,
         projectInfo: {
           projectId: 'P2',
@@ -38,7 +40,8 @@ const containers = [
           semesters: ['S2 2025'],
           submissionDate: new Date('2025-08-15'),
         },
-      },],
+      },
+    ],
   },
   {
     id: 'container-2' as UniqueIdentifier,
@@ -52,7 +55,7 @@ const containers = [
     containerColor: 'dark',
     items: [],
   },
-];
+]
 
 const meta: Meta<typeof ProjectDnD> = {
   title: 'Composite/ProjectDnD',
@@ -61,10 +64,10 @@ const meta: Meta<typeof ProjectDnD> = {
   args: {
     presetContainers: containers,
   },
-};
+}
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof ProjectDnD>;
+type Story = StoryObj<typeof ProjectDnD>
 
-export const Default: Story = {};
+export const Default: Story = {}
