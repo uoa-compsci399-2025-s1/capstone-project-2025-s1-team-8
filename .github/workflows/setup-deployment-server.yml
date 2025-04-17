@@ -1,0 +1,56 @@
+name: Setup deployment server
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Manual setup environment'
+        type: environment
+        required: true
+
+jobs:
+  setup:
+    name: Sets up EC2 server
+    runs-on: ubuntu-latest
+    env:
+      EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+      EC2_HOST: ${{ secrets.EC2_HOST }}
+      EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+      EC2_DEFAULT_USER: ubuntu
+    environment:
+      name: ${{github.event.inputs.environment}}
+    steps:
+      - name: Create and setup SSH key
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{secrets.EC2_SSH_KEY}}" > ../private.key
+          sudo chmod 600 ../private.key
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+        shell: bash
+
+      - name: Connect via SSH and enable root access
+        run: |
+          echo "Connecting via SSH..."
+          ssh -i ../private.key ${{ secrets.EC2_DEFAULT_USER }}@${{ secrets.EC2_HOST }} <<'EOT'
+          AUTHORIZED_KEYS="/root/.ssh/authorized_keys"
+          BACKUP="/root/.ssh/authorized_keys.bak"
+
+          # Backup original authorized_keys file
+          sudo cp "$AUTHORIZED_KEYS" "$BACKUP"
+
+          sudo sed -i 's/^.*command=.*Please login as the user \\"ubuntu\\".*ssh-rsa/ssh-rsa/' "$AUTHORIZED_KEYS"
+          EOT
+
+      - name: Install required dependencies
+        run: |
+          echo "Connecting via SSH..."
+          ssh -i ../private.key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} <<'EOT'
+
+          echo "Updating package list"
+          sudo apt-get update
+
+          echo "Install docker and docker-compose"
+          sudo apt-get install -y docker.io docker-compose
+          sudo usermod -aG docker $USER
+          newgrp docker
+          EOT
