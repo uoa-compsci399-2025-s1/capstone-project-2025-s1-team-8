@@ -1,11 +1,6 @@
-import { getPayload } from 'payload'
-import configPromise from '@payload-config'
 import { Authentication } from '@/payload-types'
 import { CreateAuthenticationData, UpdateAuthenticationData } from '@/types/Collections'
-
-const payload = await getPayload({
-  config: configPromise,
-})
+import { payload } from '../adapters/Payload'
 
 export default class AuthService {
   /**
