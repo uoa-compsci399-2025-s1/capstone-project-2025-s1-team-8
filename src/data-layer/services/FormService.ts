@@ -20,6 +20,7 @@ export class FormService {
       data: newForm,
     })
   }
+
   /**
    * Retrieves a form document from the database by its ID.
    *
