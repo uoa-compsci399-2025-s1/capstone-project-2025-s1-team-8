@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest'
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import { FormService } from './FormService'
-import { formResponseCreateMock } from '@/test-config/mocks/FormResponse.mock'
+import { formResponseCreateMock } from '@/test-config/mocks/Form.mock'
 
 describe('Form service tests', () => {
   const formService = new FormService()
