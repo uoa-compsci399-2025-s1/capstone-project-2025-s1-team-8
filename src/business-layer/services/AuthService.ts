@@ -16,6 +16,10 @@ export default class AuthService {
         accessToken,
       },
       process.env.JWT_SECRET,
+      /**
+       * JWT token including user info and the Google access token.
+       * Expires in 1 hour (same duration as Google access token)
+       */
       { expiresIn: '1h' },
     )
   }
