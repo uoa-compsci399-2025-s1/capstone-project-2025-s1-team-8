@@ -42,7 +42,7 @@ const ProjectFilter: React.FC<ProjectFilterProps> = ({ className, containerWidth
           className={`absolute top-full right-0 mt-2 z-20 max-w-40`}
           style={{ width: newMaxWidth }}
         >
-          <div className={`bg-dark-blue-1 rounded-lg flex flex-col gap-2 p-2 ${className}`}>
+          <div className={`bg-dark-blue rounded-lg flex flex-col gap-2 p-2 ${className}`}>
             {DefaultDropdownOptions.map((option, index) => (
               <div
                 key={index}

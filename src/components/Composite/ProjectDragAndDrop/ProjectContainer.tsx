@@ -53,13 +53,13 @@ const ProjectContainer = ({
       ? 'text-bright-blue'
       : containerColor == 'medium'
         ? 'text-deeper-blue'
-        : 'text-dark-blue-1'
+        : 'text-dark-blue'
   const dividerColor =
     containerColor == 'light'
       ? 'bg-bright-blue'
       : containerColor == 'medium'
         ? 'bg-deeper-blue'
-        : 'bg-dark-blue-1'
+        : 'bg-dark-blue'
   return (
     <div
       {...attributes}
@@ -68,7 +68,7 @@ const ProjectContainer = ({
         containerRef.current = el
       }}
       style={style}
-      className={`relative w-full h-[600px] max-h-[65vh] bg-muted-blue-op-45 ring-1 ring-deeper-blue rounded-xl flex flex-col gap-y-4 ${isDragging ? 'opacity-50' : ''} overflow-auto transition-all duration-300 ease-in-out shadow-md shadow-inner`}
+      className={`relative w-full h-[600px] max-h-[65vh] bg-muted-blue-op-45 ring-1 ring-deeper-blue rounded-xl flex flex-col gap-y-4 ${isDragging ? 'opacity-50' : ''} overflow-auto transition-all duration-300 ease-in-out shadow-inner`}
     >
       <div className="sticky top-0 w-full flex flex-col gap-4 items-center z-40 bg-muted-blue-op-45 p-4">
         <div className="flex items-center w-full justify-between">
@@ -84,11 +84,11 @@ const ProjectContainer = ({
                   <circle cx="6" cy="12" r="5" />
                 </svg>
               </span>
-              <p className="text-dark-blue-5 text-md font-semibold">{containerName}</p>
+              <p className="text-dark-blue text-md font-semibold">{containerName}</p>
             </div>
 
             <div className="bg-beige rounded-full flex justify-center items-center aspect-square min-w-[1.5rem] h-auto px-1.5">
-              <p className="text-sm font-bold text-dark-blue-1">{projects.length}</p>
+              <p className="text-sm font-bold text-dark-blue">{projects.length}</p>
             </div>
           </div>
 
