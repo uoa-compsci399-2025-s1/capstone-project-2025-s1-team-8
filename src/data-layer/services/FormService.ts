@@ -3,7 +3,9 @@ import {
   CreateFormData,
   CreateFormResponseData,
   UpdateFormData,
-  UpdateFormResponseData, UpdateFormQuestionData, CreateFormQuestionData
+  UpdateFormResponseData,
+  UpdateFormQuestionData,
+  CreateFormQuestionData,
 } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 
@@ -123,7 +125,7 @@ export class FormService {
     })
   }
 
-/**
+  /**
    * Creates a new formQuestion
    *
    * @param newFormQuestion The data for the new formQuestion

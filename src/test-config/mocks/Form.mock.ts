@@ -51,4 +51,3 @@ export const formMock: CreateFormData = {
   description: 'Form Description Mock',
   questions: [formQuestionMock],
 }
-

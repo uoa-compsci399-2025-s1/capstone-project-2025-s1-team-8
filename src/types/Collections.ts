@@ -1,4 +1,12 @@
-import { Semester, SemesterProject, User, Project, FormResponse, Form, FormQuestion } from '@/payload-types'
+import {
+  Semester,
+  SemesterProject,
+  User,
+  Project,
+  FormResponse,
+  Form,
+  FormQuestion,
+} from '@/payload-types'
 
 /*
  * Semester Collection Types
