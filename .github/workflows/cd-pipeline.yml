@@ -31,6 +31,7 @@ jobs:
       GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
       GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
       NEXT_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_URL }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
     environment:
       name: staging
       # Note this url will change whenever our IP gets discarded, need to get our domain first.
@@ -65,6 +66,7 @@ jobs:
             echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
             echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
             echo "NEXT_PUBLIC_URL=${{ secrets.NEXT_PUBLIC_URL }}" >> .env
+            echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
 
             echo "Stopping old containers"
             docker-compose down
@@ -85,6 +87,10 @@ jobs:
       # Repository secrets
       DATABASE_URI: ${{ secrets.DATABASE_URI }}
       PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      NEXT_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_URL }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
     environment:
       name: production
     runs-on: ubuntu-latest
