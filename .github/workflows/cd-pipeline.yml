@@ -28,10 +28,13 @@ jobs:
       # Repository secrets
       DATABASE_URI: ${{ secrets.DATABASE_URI }}
       PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      NEXT_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_URL }}
     environment:
       name: staging
       # Note this url will change whenever our IP gets discarded, need to get our domain first.
-      url: https://ec2-3-26-157-177.ap-southeast-2.compute.amazonaws.com:3000
+      url: http://ec2-3-26-157-177.ap-southeast-2.compute.amazonaws.com:3000
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -59,6 +62,9 @@ jobs:
             echo "storing secrets"
             echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> .env
             echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> .env
+            echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+            echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+            echo "NEXT_PUBLIC_URL=${{ secrets.NEXT_PUBLIC_URL }}" >> .env
 
             echo "Stopping old containers"
             docker-compose down

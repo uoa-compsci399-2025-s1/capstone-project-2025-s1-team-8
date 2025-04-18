@@ -19,6 +19,7 @@ declare global {
       GOOGLE_CLIENT_SECRET: string
       /**
        * The public URL of the website
+       * NOTE: We currently have an unstable url as we don't have a static IP. This variable will require changes whenever our IP gets rolled out.
        */
       NEXT_PUBLIC_URL: string
     }
