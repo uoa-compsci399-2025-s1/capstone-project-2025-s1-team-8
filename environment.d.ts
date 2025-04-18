@@ -22,6 +22,10 @@ declare global {
        * NOTE: We currently have an unstable url as we don't have a static IP. This variable will require changes whenever our IP gets rolled out.
        */
       NEXT_PUBLIC_URL: string
+      /**
+       * Secret used to secure JWT. You can see how to generate this secret [here](https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/wiki/Backend-Architecture#jwt-authentication).
+       */
+      JWT_SECRET: string
     }
   }
 }

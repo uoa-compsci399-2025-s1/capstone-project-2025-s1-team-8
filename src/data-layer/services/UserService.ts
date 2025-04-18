@@ -30,6 +30,19 @@ export class UserService {
     })
   }
 
+  public async getUserByEmail(email: string): Promise<User> {
+    return (
+      await payload.find({
+        collection: 'user',
+        where: {
+          email: {
+            equals: email,
+          },
+        },
+      })
+    ).docs[0]
+  }
+
   /**
    * Retrieves all user documents from the database.
    *
