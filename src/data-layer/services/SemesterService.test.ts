@@ -1,4 +1,3 @@
-import { describe, it, expect, afterEach } from 'vitest'
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import { SemesterService } from './SemesterService'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
@@ -23,6 +22,14 @@ describe('Semester service tests', () => {
     const newSemester = await semesterService.createSemester(semesterCreateMock)
     const fetchedSemester = await semesterService.getSemester(newSemester.id)
     expect(newSemester).toEqual(fetchedSemester)
+  })
+
+  it('should get all semesters', async () => {
+    const semester1 = await semesterService.createSemester(semesterCreateMock)
+    const semester2 = await semesterService.createSemester(semesterCreateMock)
+    const fetchedSemester = await semesterService.getAllSemesters()
+    expect(fetchedSemester.docs.length).toEqual(2)
+    expect(fetchedSemester.docs).toEqual(expect.arrayContaining([semester1, semester2]))
   })
 
   it('should return undefined if semester does not exist', async () => {
