@@ -28,6 +28,7 @@ export const mockClient1: User = {
   email: 'bobdoe@gmail.com',
   password: 'abcdefg',
 }
+
 export const mockClient2: User = {
   id: '67ff38a56a35e1b6cf43a681',
   updatedAt: new Date().toISOString(),
@@ -38,6 +39,7 @@ export const mockClient2: User = {
   email: 'Johndoe@gmail.com',
   password: 'abcdefg',
 }
+
 export const studentCreateMock: CreateUserData = {
   role: UserRole.Student,
   firstName: 'John',

@@ -1,5 +1,9 @@
 import { CreateSemesterData } from '@/types/Collections'
-import { semesterProjectMock } from './SemesterProject.mock'
+import { semesterProjectMock } from './Project.mock'
+
+/*
+ * Semester mocks
+ */
 
 export const semesterCreateMock: CreateSemesterData = {
   name: 'Semester 2 2025',
