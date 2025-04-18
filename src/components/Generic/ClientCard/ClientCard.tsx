@@ -1,5 +1,5 @@
 import React from 'react'
-import { FiCopy } from "react-icons/fi";
+import { FiCopy } from 'react-icons/fi'
 
 interface BasicProjectDTOPlaceholder {
   name: string
@@ -22,7 +22,7 @@ const ClientCard: React.FC<ClientDTOPlaceholder> = (clientInfo) => {
         <p className="text-light-beige font-semibold text-xl">{clientInfo.name}</p>
         <p className="text-light-beige text-base self-end">{clientInfo.email}</p>
       </div>
-      <div></div>
+      <FiCopy className="self-center size-5 text-muted-blue hover:text-light-beige" />
     </div>
   )
 }
