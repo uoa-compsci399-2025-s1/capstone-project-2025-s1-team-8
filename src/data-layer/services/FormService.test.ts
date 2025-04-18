@@ -10,6 +10,7 @@ describe('Form service tests', () => {
   afterEach(async () => {
     await clearCollection(testPayloadObject, 'form')
     await clearCollection(testPayloadObject, 'formResponse')
+    await clearCollection(testPayloadObject, 'formQuestion')
   })
 
   describe('Form service test', () => {
@@ -107,15 +108,6 @@ describe('Form service tests', () => {
       await expect(formService.deleteFormResponse('nonexistent_id')).rejects.toThrow('Not Found')
     })
   })
-})
-
-describe('FormQuestion service test', () => {
-  const formService = new FormService()
-
-  afterEach(async () => {
-    await clearCollection(testPayloadObject, 'formQuestion')
-  })
-
   it('create a formQuestion', async () => {
     const newFormQuestion = await formService.createFormQuestion(formQuestionCreateMock)
     const res = await testPayloadObject.findByID({
