@@ -43,6 +43,13 @@ describe('User service test', () => {
     expect(fetchedUser).toEqual(createdUser)
   })
 
+  it('find all users', async () => {
+    const createdUser1 = await userService.createUser(adminCreateMock)
+    const createdUser2 = await userService.createUser(clientCreateMock)
+    const fetchedUsers = await userService.getAllUsers()
+    await expect(fetchedUsers.docs.length).toEqual(2)
+  })
+
   it('not found - find user with nonexistent id', async () => {
     await expect(userService.getUser('nonexistent_id')).rejects.toThrow('Not Found')
   })
