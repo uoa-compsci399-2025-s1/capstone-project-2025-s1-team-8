@@ -25,11 +25,12 @@ describe('Semester service tests', () => {
     expect(newSemester).toEqual(fetchedSemester)
   })
 
-  it('find all semesters', async () => {
-    const createdSemester1 = await semesterService.createSemester(semesterCreateMock)
-    const createdSemester2 = await semesterService.createSemester(semesterCreateMock)
+  it('should get all semesters', async () => {
+    const semester1 = await semesterService.createSemester(semesterCreateMock)
+    const semester2 = await semesterService.createSemester(semesterCreateMock)
     const fetchedSemester = await semesterService.getAllSemesters()
-    await expect(fetchedSemester.docs.length).toEqual(2)
+    expect(fetchedSemester.docs).toEqual(2)
+    expect(fetchedSemester).toEqual(expect.arrayContaining([semester1, semester2]))
   })
 
   it('should return undefined if semester does not exist', async () => {
