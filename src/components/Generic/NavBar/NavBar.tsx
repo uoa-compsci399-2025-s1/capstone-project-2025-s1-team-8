@@ -84,7 +84,7 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden overflow-hidden fixed mt-16 p-5 top-0 left-0 w-screen transition-all duration-300 ease-in-out bg-beige w-screen z-50 ${
+        className={`md:hidden overflow-hidden fixed mt-16 p-5 top-0 left-0 w-screen transition-all duration-300 ease-in-out bg-beige z-50 ${
           isOpen
             ? 'max-h-96 opacity-100 py-4 mt-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]'
             : 'max-h-0 opacity-0 py-0'

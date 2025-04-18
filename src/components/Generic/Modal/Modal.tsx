@@ -26,11 +26,11 @@ const Modal: React.FC<ModalProps> = ({
   
   return ReactDOM.createPortal(
     <div
-      className={`fixed bg-[#1E617959] w-full h-full left-0 top-0 ${open ? "block" : "hidden"}`}
+      className={`absolute bg-[#1E617959] w-full h-full left-0 top-0 ${open ? "block" : "hidden"}`}
         onClick={handleClose}
     >
       <div 
-        className={`fixed bg-light-beige max-w-screen w-[1280px] max-h-960 -translate-x-2/4 -translate-y-2/4 flex flex-col items-center rounded-[20px] left-2/4 top-2/4 ${className}`}
+        className={`absolute bg-light-beige max-w-screen w-[1280px] max-h-960 -translate-x-2/4 -translate-y-2/4 flex flex-col items-center rounded-[20px] left-2/4 top-2/4 ${className}`}
       >
         <div className={``}>
           <Button
