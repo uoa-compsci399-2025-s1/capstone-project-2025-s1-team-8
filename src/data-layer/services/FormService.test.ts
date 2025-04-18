@@ -162,8 +162,6 @@ describe('FormQuestion service test', () => {
   })
 
   it('not found - delete a formQuestion with a nonexistent ID', async () => {
-    await expect(formService.deleteFormQuestion('non existent ID')).rejects.toThrow(
-      'Not Found',
-    )
+    await expect(formService.deleteFormQuestion('non existent ID')).rejects.toThrow('Not Found')
   })
 })
