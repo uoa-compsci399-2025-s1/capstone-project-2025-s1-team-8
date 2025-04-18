@@ -1,11 +1,4 @@
-import {
-  Semester,
-  SemesterProject,
-  User,
-  FormQuestion,
-  Project,
-  FormResponse,
-} from '@/payload-types'
+import { Semester, SemesterProject, User, Project, FormResponse, Form, FormQuestion } from '@/payload-types'
 
 /*
  * Semester Collection Types
@@ -47,7 +40,13 @@ export type CreateUserData = Omit<
 export type UpdateUserData = Partial<CreateUserData>
 
 /*
- * Form Collection Types
+ * FormResponse Collection Types
  */
 export type CreateFormResponseData = Omit<FormResponse, 'id' | 'createdAt' | 'updatedAt'>
 export type UpdateFormResponseData = Partial<CreateFormResponseData>
+
+/*
+ * Form Collection Types
+ */
+export type CreateFormData = Omit<Form, 'id' | 'createdAt' | 'updatedAt'>
+export type UpdateFormData = Partial<CreateFormData>

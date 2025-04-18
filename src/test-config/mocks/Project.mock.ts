@@ -1,8 +1,13 @@
-import { CreateProjectData } from '@/types/Collections'
+import { CreateProjectData, CreateSemesterProjectData } from '@/types/Collections'
 import { mockClient1, mockClient2 } from './User.mock'
-import { Project } from '@/payload-types'
+import { Project, SemesterProject } from '@/payload-types'
+import { ProjectStatus } from '@/types/Project'
 
-export const mockProject1: Project = {
+/*
+ * Project mocks
+ */
+
+export const projectMock: Project = {
   id: '67ff38a56a35e1b6cf43a681',
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
@@ -12,7 +17,7 @@ export const mockProject1: Project = {
   timestamp: new Date().toISOString(),
 }
 
-export const mockProject2: Project = {
+export const projectMock2: Project = {
   id: '67ff38a56a35e1b6cf43a68c',
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
@@ -22,16 +27,39 @@ export const mockProject2: Project = {
   timestamp: new Date().toISOString(),
 }
 
-export const mockCreateProject1: CreateProjectData = {
+export const projectCreateMock: CreateProjectData = {
   name: 'Project 1',
   description: 'Description 1',
   clients: [mockClient1],
   timestamp: new Date().toISOString(),
 }
 
-export const mockCreateProject2: CreateProjectData = {
+export const projectCreateMock2: CreateProjectData = {
   name: 'Project 2',
   description: 'Description 2',
   clients: [mockClient1, mockClient2],
   timestamp: new Date().toISOString(),
+}
+
+/*
+ * SemesterProject mocks
+ */
+
+export const semesterProjectMock: SemesterProject = {
+  id: '67ff38a56a35e1b6cf43a68b',
+  number: 1,
+  project: '67ff38a56a35e1b6cf43a68c',
+  semester: '67ff38a56a35e1b6cf43a68d',
+  status: ProjectStatus.Pending,
+  published: false,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+}
+
+export const semesterProjectCreateMock: CreateSemesterProjectData = {
+  number: 1,
+  project: '67ff38a56a35e1b6cf43a68c',
+  semester: '67ff38a56a35e1b6cf43a68d',
+  status: ProjectStatus.Pending,
+  published: false,
 }

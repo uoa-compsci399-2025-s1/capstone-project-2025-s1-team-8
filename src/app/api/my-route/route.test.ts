@@ -1,5 +1,3 @@
-import { describe, it, expect, afterEach } from 'vitest'
-
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import { GET } from '@/app/api/my-route/route'
 
