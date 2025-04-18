@@ -29,8 +29,8 @@ describe('Semester service tests', () => {
     const semester1 = await semesterService.createSemester(semesterCreateMock)
     const semester2 = await semesterService.createSemester(semesterCreateMock)
     const fetchedSemester = await semesterService.getAllSemesters()
-    expect(fetchedSemester.docs).toEqual(2)
-    expect(fetchedSemester).toEqual(expect.arrayContaining([semester1, semester2]))
+    expect(fetchedSemester.docs.length).toEqual(2)
+    expect(fetchedSemester.docs).toEqual(expect.arrayContaining([semester1, semester2]))
   })
 
   it('should return undefined if semester does not exist', async () => {
