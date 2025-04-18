@@ -1,4 +1,3 @@
-import { describe, it, expect, afterEach } from 'vitest'
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import { UserService } from './UserService'
 import { adminCreateMock, clientCreateMock, studentCreateMock } from '@/test-config/mocks/User.mock'
