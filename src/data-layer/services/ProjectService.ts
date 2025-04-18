@@ -151,6 +151,7 @@ export class ProjectService {
     })
     return semesterProjects.docs
   }
+  
   /**
    * Updates a semesterProject.
    *
