@@ -1,10 +1,8 @@
-import { Form, FormQuestion, SemesterProject } from '@/payload-types'
-import { CreateFormData } from '@/types/Collections'
-import { ProjectStatus } from '@/types/Project'
+import { FormQuestion } from '@/payload-types'
 
 export const formQuestionMock: FormQuestion = {
-  id: '67ff38a56a35e1b6cf43a68b',
-  question: 'Question mock',
+  id: '67ff38a56a35e1b6cf43a681',
+  question: 'What do you want out of this project?',
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
 }
