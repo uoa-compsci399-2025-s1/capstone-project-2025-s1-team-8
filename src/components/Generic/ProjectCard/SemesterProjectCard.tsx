@@ -12,8 +12,8 @@ const SemesterProjectCard: React.FC<ProjectDTOPlaceholder> = (projectInfo) => {
     >
       <div className="text-left">
         <div className="relative z-10">
-          <p className="text-dark-blue-1 text-lg font-bold">{projectInfo.projectName}</p>
-          <p className="text-dark-blue-1">{projectInfo.client.name}</p>
+          <p className="text-dark-blue text-lg font-bold">{projectInfo.projectName}</p>
+          <p className="text-dark-blue">{projectInfo.client.name}</p>
           <p className="text-grey-1 py-2">{truncatedDescription}</p>
         </div>
       </div>

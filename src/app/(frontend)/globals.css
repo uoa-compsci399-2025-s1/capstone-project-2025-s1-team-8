@@ -173,11 +173,9 @@ svg {
   --color-muted-blue: #c6ddde;
   --color-muted-blue-op-45: #e1eae5;
   --color-deeper-blue: #88b8c4;
-  --color-dark-blue-1: #0e4361;
-  --color-dark-blue-2: #4091ad; /*Often used for dark text*/
-  --color-dark-blue-3: #3f91ad;
-  --color-dark-blue-4: #13536b; /*Often used for radio buttons*/
-  --color-dark-blue-5: #0d062d; /*Often used for dark text*/
+  --color-dark-blue: #0e4361;
+  --color-steel-blue: #4091ad; /*Often used for dark text*/
+  --color-deep-indigo: #0d062d; /*Often used for dark text*/
   --color-grey-1: #748086; /*Often used for grey text*/
   --color-pink-1: #ffbbee; /*Used for gradients*/
   --color-pink-2: #ff2aca; /*Used for errors and required fields*/
@@ -188,7 +186,7 @@ svg {
 }
 
 @utility nav-link-text {
-  @apply text-dark-blue-1 uppercase hover:cursor-pointer text-sm sm:text-base;
+  @apply text-dark-blue uppercase hover:cursor-pointer text-sm sm:text-base;
 }
 @utility nav-link-text-underline {
   @apply absolute left-0 bottom-0 w-full h-1 bg-muted-blue scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-lg;

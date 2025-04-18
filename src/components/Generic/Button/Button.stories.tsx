@@ -37,7 +37,7 @@ export const Outline: Story = {
 export const Custom: Story = {
   args: {
     variant: 'custom',
-    className: 'bg-dark-blue-4 text-white px-4 py-2 rounded-md',
+    className: 'bg-dark-blue text-white px-4 py-2 rounded-md',
   },
 }
 

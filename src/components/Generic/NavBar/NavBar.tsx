@@ -22,7 +22,7 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
   return (
     <nav className="py-2 px-10 fixed top-0 left-0 w-full z-50 bg-beige">
       <div className="container mx-auto flex items-center justify-between">
-        <Link href="/" className="text-dark-blue-1">
+        <Link href="/" className="text-dark-blue">
           <Image src="/dark-logo.png" alt="logo" width={100} height={100} />
         </Link>
 
@@ -59,7 +59,7 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
         <div className="md:hidden">
           <button
             onClick={toggleMenu}
-            className="text-dark-blue-1 hover:text-muted-blue focus:outline-none transition-colors"
+            className="text-dark-blue hover:text-muted-blue focus:outline-none transition-colors"
           >
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               {isOpen ? (

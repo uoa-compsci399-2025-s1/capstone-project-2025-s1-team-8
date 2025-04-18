@@ -30,16 +30,15 @@ const Modal: React.FC<ModalProps> = ({
         onClick={handleClose}
     >
       <div 
-        className={`fixed bg-[#FFFEF9] max-w-screen w-[1280px] max-h-960 -translate-x-2/4 -translate-y-2/4 flex flex-col items-center rounded-[20px] left-2/4 top-2/4 ${className}`}
+        className={`fixed bg-light-beige max-w-screen w-[1280px] max-h-960 -translate-x-2/4 -translate-y-2/4 flex flex-col items-center rounded-[20px] left-2/4 top-2/4 ${className}`}
       >
         <div className={``}>
           <Button
-            variant="dark"
-            size="sm"
+            variant="light"
             className="absolute top-4 right-4 rounded-full"
             onClick={onClose}
           >
-            <XMarkIcon className="w-5 h-5" />
+              <XMarkIcon className="text-dark-blue w-5 h-5" />
           </Button>
         </div>
         {children}
