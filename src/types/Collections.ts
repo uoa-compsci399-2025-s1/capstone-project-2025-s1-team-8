@@ -15,6 +15,7 @@ export type UpdateFormQuestionData = Partial<CreateFormQuestionData>
  * Semester Project Collection Types
  */
 export type CreateSemesterProjectData = Omit<SemesterProject, 'id' | 'createdAt' | 'updatedAt'>
+export type UpdateSemesterProjectData = Partial<CreateSemesterProjectData>
 
 /*
  *Project Collection Types
