@@ -2,7 +2,10 @@ import { FormResponse } from '@/payload-types'
 import { CreateFormResponseData, UpdateFormResponseData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 
-export class FormResponseService {
+export class FormService {
+  /*
+   * Form Response Method
+   */
   /**
    * Creates a new form response document in the database.
    *
