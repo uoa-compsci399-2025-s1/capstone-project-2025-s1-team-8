@@ -2,6 +2,7 @@ import { CreateFormResponseData, CreateFormData } from '@/types/Collections'
 import { QuestionResponse } from '@/types/Form'
 import { FormQuestion } from '@/payload-types'
 import { mockClient1 } from './User.mock'
+import { CreateFormQuestionData, UpdateFormQuestionData } from '@/types/Collections'
 
 /*
  * The FormQuestion mocks
@@ -12,6 +13,13 @@ export const formQuestionMock: FormQuestion = {
   question: 'What do you want out of this project?',
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
+}
+
+export const formQuestionCreateMock: CreateFormQuestionData = {
+  question: 'What is your name?',
+}
+export const formQuestionUpdateMock: UpdateFormQuestionData = {
+  question: 'What is your age?',
 }
 
 /*
@@ -43,3 +51,4 @@ export const formMock: CreateFormData = {
   description: 'Form Description Mock',
   questions: [formQuestionMock],
 }
+
