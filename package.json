@@ -37,6 +37,7 @@
     "@tailwindcss/postcss": "^4.1.2",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
+    "googleapis": "^148.0.0",
     "graphql": "^16.8.1",
     "next": "15.2.4",
     "payload": "latest",
