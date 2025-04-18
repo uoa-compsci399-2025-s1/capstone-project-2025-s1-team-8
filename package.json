@@ -39,11 +39,13 @@
     "dotenv": "^16.4.7",
     "googleapis": "^148.0.0",
     "graphql": "^16.8.1",
+    "jsonwebtoken": "^9.0.2",
     "next": "15.2.4",
     "payload": "latest",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "sharp": "0.32.6"
+    "sharp": "0.32.6",
+    "zod": "^3.24.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
