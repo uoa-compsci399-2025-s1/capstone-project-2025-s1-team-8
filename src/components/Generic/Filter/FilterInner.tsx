@@ -13,7 +13,7 @@ const FilterInner: React.FC<DropdownOptionType> = ({ icon, text, isActive }) => 
     <div
       className={`p-2 rounded-sm flex items-center justify-start gap-2 
         ${isActive ? 'bg-deeper-blue' : 'bg-deep-teal'} 
-        hover:cursor-pointer text-xs`}
+        hover:cursor-pointer text-sm`}
     >
       {icon && (
         <span

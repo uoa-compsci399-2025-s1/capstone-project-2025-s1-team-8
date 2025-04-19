@@ -34,8 +34,8 @@ const ProjectFilter: React.FC<ProjectFilterProps> = ({ className, containerWidth
         className=" hover:cursor-pointer flex items-center"
         onClick={() => setShowDropdown(!showDropdown)}
       >
-        <p className="text-xs font-medium text-grey-1 pr-1">Filter By</p>
-        {showDropdown ? <GoChevronUp className="h-5 text-grey-1 size-3" /> : <GoChevronDown className="h-5 text-grey-1 size-3" />}
+        <p className="text-sm font-medium text-grey-1 pr-1">Filter By</p>
+        {showDropdown ? <GoChevronUp className="h-5 text-grey-1 size-4" /> : <GoChevronDown className="h-5 text-grey-1 size-4" />}
       </div>
       {showDropdown && (
         <div
