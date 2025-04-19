@@ -8,6 +8,7 @@ import UserService from '@/data-layer/services/UserService'
 import AuthService from '@/data-layer/services/AuthService'
 import BusinessAuthService from '@/business-layer/services/AuthService'
 import { UserInfoResponse, UserInfoResponseSchema } from '@/types/Auth'
+import { CreateUserData } from '@/types/Collections'
 
 export const GET = async (req: NextRequest) => {
   const params = req.nextUrl.searchParams
@@ -57,8 +58,10 @@ export const GET = async (req: NextRequest) => {
 
   const userService = new UserService()
   let user = await userService.getUserByEmail(email)
-  if (!user)
-    user = await userService.createUser({ firstName, lastName, role: UserRole.Student, email })
+  if (!user) {
+    const newUserData: CreateUserData = { email, firstName, lastName: lastName || '', role: UserRole.Student }
+    user = await userService.createUser(newUserData)
+  }
 
   const authService = new AuthService()
   await authService.createAuth({
@@ -76,8 +79,8 @@ export const GET = async (req: NextRequest) => {
   const token = businessAuthService.generateJWT(user, tokens.access_token)
   const response = NextResponse.json({ token })
 
-  response.cookies.set('auth_token', token, {
-    httpOnly: true,
+  cookieStore.set('auth_token', token, {
+    // httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     maxAge: 60 * 60,
