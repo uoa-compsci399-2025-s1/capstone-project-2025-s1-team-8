@@ -49,7 +49,7 @@ export const Small: Story = {
 
 export const WithIcons: Story = {
   args: {
-    startIcon: <ArrowRightIcon className="w-5 h-5" />,
-    endIcon: <ArrowLeftIcon className="w-5 h-5" />,
+    startIcon: <ArrowRightIcon className="w-3 h-3" />,
+    endIcon: <ArrowLeftIcon className="w-3 h-3" />,
   },
 }

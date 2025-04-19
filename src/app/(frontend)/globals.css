@@ -187,7 +187,7 @@ svg {
 }
 
 @utility nav-link-text {
-  @apply text-dark-blue uppercase hover:cursor-pointer text-sm sm:text-base;
+  @apply text-dark-blue uppercase hover:cursor-pointer text-sm sm:text-sm;
 }
 @utility nav-link-text-underline {
   @apply absolute left-0 bottom-0 w-full h-1 bg-muted-blue scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-lg;

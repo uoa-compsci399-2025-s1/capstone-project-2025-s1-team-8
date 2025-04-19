@@ -30,7 +30,7 @@ const Button: React.FC<ButtonProps> = ({
   const variantClasses = {
     light: 'bg-beige text-steel-blue',
     dark: 'bg-steel-blue text-white',
-    outline: 'text-steel-blue ring-1 ring-deeper-blue',
+    outline: 'text-steel-blue ring-1 ring-steel-blue',
     custom: '',
   }
 
