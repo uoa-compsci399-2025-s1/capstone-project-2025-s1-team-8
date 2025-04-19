@@ -47,6 +47,7 @@ vi.mock('@/data-layer/services/AuthService', () => {
 vi.mock('next/headers', () => ({
   cookies: () => ({
     get: (key: string) => ({ value: key === 'state' ? STATE_MOCK : undefined }),
+    set: vi.fn(),
     delete: vi.fn(),
   }),
 }))

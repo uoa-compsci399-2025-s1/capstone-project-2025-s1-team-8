@@ -47,7 +47,10 @@ describe('Google Auth tests', async () => {
   it('should redirect to Google OAuth URL with state and scopes', async () => {
     await GET()
     expect(redirect).toHaveBeenCalled()
-    expect(mockSet).toHaveBeenCalledWith('state', STATE_MOCK)
+    expect(mockSet).toHaveBeenCalledWith('state', STATE_MOCK, {
+      maxAge: 60,
+      sameSite: "strict"
+    })
     expect(oauth2Client.generateAuthUrl).toHaveBeenCalledWith({
       scope: SCOPES_ARRAY_MOCK,
       include_granted_scopes: true,
