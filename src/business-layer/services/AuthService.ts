@@ -1,5 +1,5 @@
 import { User } from '@/payload-types'
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 
 export default class AuthService {
   /**
@@ -22,5 +22,14 @@ export default class AuthService {
        */
       { expiresIn: '1h' },
     )
+  }
+  /**
+   * Decodes a JWT token and returns the payload.
+   *
+   * @param token The JWT token to decode
+   * @returns The decoded JWT payload
+   */
+  public decodeJWT(token: string): JwtPayload | string {
+    return jwt.verify(token, process.env.JWT_SECRET)
   }
 }
