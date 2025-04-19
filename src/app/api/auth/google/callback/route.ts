@@ -59,7 +59,12 @@ export const GET = async (req: NextRequest) => {
   const userService = new UserService()
   let user = await userService.getUserByEmail(email)
   if (!user) {
-    const newUserData: CreateUserData = { email, firstName, lastName: lastName || '', role: UserRole.Student }
+    const newUserData: CreateUserData = {
+      email,
+      firstName,
+      lastName: lastName || '',
+      role: UserRole.Student,
+    }
     user = await userService.createUser(newUserData)
   }
 
