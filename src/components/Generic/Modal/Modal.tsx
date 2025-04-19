@@ -20,14 +20,14 @@ const Modal: React.FC<ModalProps> = ({ children, open, onClose, className = '' }
 
   return ReactDOM.createPortal(
     <div
-      className={`absolute bg-[#1E617959] w-full h-full left-0 top-0 ${open ? 'block' : 'hidden'}`}
+      className={`absolute bg-[#1e6179]/59 w-full h-full left-0 top-0 ${open ? 'block' : 'hidden'}`}
       onClick={handleClose}
     >
       <div
-        className={`absolute bg-light-beige max-w-screen w-[1280px] max-h-960 -translate-x-2/4 -translate-y-2/4 flex flex-col items-center rounded-[20px] left-2/4 top-2/4 ${className}`}
+        className={`absolute bg-light-beige max-w-screen -translate-x-2/4 -translate-y-2/4 flex flex-col items-center rounded-2xl left-2/4 top-2/4 ${className}`}
       >
         <div className={``}>
-          <Button variant="light" className="absolute top-4 right-4 rounded-full" onClick={onClose}>
+          <Button className="absolute top-4 right-4 rounded-full" onClick={onClose}>
             <XMarkIcon className="text-dark-blue w-5 h-5" />
           </Button>
         </div>
