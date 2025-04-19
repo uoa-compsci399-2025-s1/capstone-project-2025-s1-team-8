@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
 import Modal from './Modal'
+import Button from '../Button/Button'
 
 const meta: Meta<typeof Modal> = {
   title: 'Generic/Modal',
@@ -25,11 +26,12 @@ export const Default: Story = {
 
     return (
       <div>
-        <button onClick={() => onChange()} className="mb-4 p-2 bg-blue-500 text-white rounded">
-          Open Modal
-        </button>
+        <button onClick={() => onChange()}>
+          <Button variant="dark" children="Open modal" size="md"/>
+        </button> 
+
         <Modal {...args} open={open} onClose={() => onChange()}>
-          <p className="text-black">This is a default modal.</p>
+          <p className="text-black pt-10">This is a default modal.</p>
         </Modal>
       </div>
     )
