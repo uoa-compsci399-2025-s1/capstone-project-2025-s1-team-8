@@ -47,7 +47,7 @@ describe('Project service methods test', () => {
     ).rejects.toThrow('Not Found')
   })
 
-  it('should throw an error if semester does not exist', async () => {
+  it('should throw an error if auth does not exist', async () => {
     await expect(authService.deleteAuth('nonexistent_id')).rejects.toThrow('Not Found')
   })
 })
