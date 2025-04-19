@@ -3,7 +3,7 @@ import { payload } from '../adapters/Payload'
 import { CreateUserData, UpdateUserData } from '@/types/Collections'
 import { PaginatedDocs } from 'payload'
 
-export class UserService {
+export default class UserService {
   /**
    * Creates a new user document in the database.
    *

@@ -2,7 +2,7 @@ import { Project } from '@/payload-types'
 import { CreateProjectData, UpdateProjectData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 
-export class ProjectService {
+export default class ProjectService {
   /**
    * This function returns a list of all projects
    *

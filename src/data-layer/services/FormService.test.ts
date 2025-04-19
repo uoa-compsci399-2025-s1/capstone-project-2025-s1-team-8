@@ -1,5 +1,5 @@
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
-import { FormService } from './FormService'
+import FormService from './FormService'
 import { formResponseCreateMock } from '@/test-config/mocks/Form.mock'
 import { formMock } from '@/test-config/mocks/Form.mock'
 
