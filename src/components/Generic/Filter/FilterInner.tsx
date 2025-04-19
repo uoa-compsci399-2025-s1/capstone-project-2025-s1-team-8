@@ -11,9 +11,9 @@ export interface DropdownOptionType {
 const FilterInner: React.FC<DropdownOptionType> = ({ icon, text, isActive }) => {
   return (
     <div
-      className={`p-1 rounded-lg flex items-center justify-start gap-2 
-        ${isActive ? 'bg-deeper-blue' : 'bg-dark-blue-4'} 
-        hover:cursor-pointer text-xs`}
+      className={`p-2 rounded-sm flex items-center justify-start gap-2 
+        ${isActive ? 'bg-deeper-blue' : 'bg-deep-teal'} 
+        hover:cursor-pointer text-sm`}
     >
       {icon && (
         <span

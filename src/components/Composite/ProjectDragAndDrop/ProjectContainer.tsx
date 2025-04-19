@@ -53,13 +53,13 @@ const ProjectContainer = ({
       ? 'text-bright-blue'
       : containerColor == 'medium'
         ? 'text-deeper-blue'
-        : 'text-dark-blue-1'
+        : 'text-dark-blue'
   const dividerColor =
     containerColor == 'light'
       ? 'bg-bright-blue'
       : containerColor == 'medium'
         ? 'bg-deeper-blue'
-        : 'bg-dark-blue-1'
+        : 'bg-dark-blue'
   return (
     <div
       {...attributes}
@@ -68,36 +68,36 @@ const ProjectContainer = ({
         containerRef.current = el
       }}
       style={style}
-      className={`relative w-full h-[600px] max-h-[65vh] bg-muted-blue-op-45 ring-1 ring-deeper-blue rounded-xl flex flex-col gap-y-4 ${isDragging ? 'opacity-50' : ''} overflow-auto transition-all duration-300 ease-in-out shadow-md shadow-inner`}
+      className={`relative w-full h-[80dvh] bg-muted-blue-op-45 ring-1 ring-muted-blue rounded-2xl flex flex-col gap-y-4 ${isDragging ? 'opacity-50' : ''} overflow-auto transition-all duration-300 ease-in-out shadow-inner`}
     >
-      <div className="sticky top-0 w-full flex flex-col gap-4 items-center z-40 bg-muted-blue-op-45 p-4">
+      <div className="sticky top-0 w-full flex flex-col gap-4 items-center z-40 bg-muted-blue-op-45 px-5 pt-6">
         <div className="flex items-center w-full justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3.5 ml-[-8px]">
             <div className="flex items-center">
               <span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
+                  viewBox="0 0 8 24"
                   fill="currentColor"
                   className={`h-6 w-6 ${dotColor}`}
                 >
-                  <circle cx="6" cy="12" r="5" />
+                  <circle cx="4" cy="12" r="4" />
                 </svg>
               </span>
-              <p className="text-dark-blue-5 text-md font-semibold">{containerName}</p>
+              <p className="text-dark-blue text-base font-medium">{containerName}</p>
             </div>
 
             <div className="bg-beige rounded-full flex justify-center items-center aspect-square min-w-[1.5rem] h-auto px-1.5">
-              <p className="text-sm font-bold text-dark-blue-1">{projects.length}</p>
+              <p className="text-xs font-medium text-grey-1">{projects.length}</p>
             </div>
           </div>
 
           <ProjectFilter containerWidth={containerWidth} />
         </div>
-        <div className={`w-full h-1 ${dividerColor}`}></div>
+        <div className={`w-full h-1 ${dividerColor} rounded-lg`}></div>
       </div>
 
-      <div ref={contentRef} className="flex items-center justify-between mx-4 mb-4" {...listeners}>
+      <div ref={contentRef} className="flex items-center justify-between mx-5 mb-4" {...listeners}>
         <SortableContext items={projects.map((i) => i.id)}>
           <div className="flex items-start flex-col gap-y-4 w-full">
             {projects.map((i) => (

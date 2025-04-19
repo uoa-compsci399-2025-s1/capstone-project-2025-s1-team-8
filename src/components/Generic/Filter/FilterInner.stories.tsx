@@ -28,7 +28,7 @@ type Story = StoryObj<typeof FilterInner>
 export const WithIcon: Story = {
   args: {
     text: 'Active Filter',
-    icon: <EnvelopeIcon className="w-5 h-5" />,
+    icon: <EnvelopeIcon className="w-5 h-3" />,
     isActive: true,
     key: 'active-icon',
     hasActiveStyles: true,
