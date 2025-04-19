@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { googleAuthScopes, oauth2Client } from '@/business-layer/security/google'
 
 import { UserRole } from '@/types/User'
-import { UserService } from '@/data-layer/services/UserService'
+import UserService from '@/data-layer/services/UserService'
 import AuthService from '@/data-layer/services/AuthService'
 import BusinessAuthService from '@/business-layer/services/AuthService'
 import { UserInfoResponse, UserInfoResponseSchema } from '@/types/Auth'

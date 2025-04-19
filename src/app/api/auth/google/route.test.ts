@@ -1,4 +1,4 @@
-import { REDIRECT_URI_MOCK, SCOPE_MOCK, STATE_MOCK } from '@/test-config/mocks/Auth.mock'
+import { REDIRECT_URI_MOCK, SCOPES_ARRAY_MOCK, STATE_MOCK } from '@/test-config/mocks/Auth.mock'
 import { GET } from './route'
 import { redirect } from 'next/navigation'
 import { oauth2Client } from '@/business-layer/security/google'
@@ -9,7 +9,7 @@ vi.mock('@/business-layer/security/google', () => ({
   oauth2Client: {
     generateAuthUrl: vi.fn().mockReturnValue(REDIRECT_URI_MOCK),
   },
-  googleAuthScopes: SCOPE_MOCK,
+  googleAuthScopes: SCOPES_ARRAY_MOCK,
 }))
 
 vi.mock('next/headers', () => ({
@@ -49,13 +49,13 @@ describe('Google Auth tests', async () => {
     expect(redirect).toHaveBeenCalled()
     expect(mockSet).toHaveBeenCalledWith('state', STATE_MOCK)
     expect(oauth2Client.generateAuthUrl).toHaveBeenCalledWith({
-      scope: SCOPE_MOCK,
+      scope: SCOPES_ARRAY_MOCK,
       include_granted_scopes: true,
       state: STATE_MOCK,
     })
     expect(redirect).toHaveBeenCalledWith(
       oauth2Client.generateAuthUrl({
-        scope: SCOPE_MOCK,
+        scope: SCOPES_ARRAY_MOCK,
         include_granted_scopes: true,
         state: STATE_MOCK,
       }),
