@@ -2,6 +2,7 @@ import { mockClient1 } from '@/test-config/mocks/User.mock'
 import { projectMock, projectMock2, projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import ProjectService from './ProjectService'
+import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 
 describe('Project service methods test', () => {
   const projectService = new ProjectService()
@@ -117,5 +118,73 @@ describe('Project service methods test', () => {
 
   it('should throw an error if deleting a non existent project', async () => {
     await expect(projectService.getProjectById('nonexistent_id')).rejects.toThrow('Not Found')
+  })
+
+  describe('Semester service tests', () => {
+    const semesterProjectService = new ProjectService()
+
+    afterEach(async () => {
+      await clearCollection(testPayloadObject, 'semesterProject')
+    })
+
+    it('should create a semesterProject', async () => {
+      const newSemesterProject =
+        await semesterProjectService.createSemesterProject(semesterProjectCreateMock)
+      const res = await testPayloadObject.findByID({
+        collection: 'semesterProject',
+        id: newSemesterProject.id,
+      })
+      expect(newSemesterProject).toEqual(res)
+    })
+
+    it('should get a semesterProject by ID', async () => {
+      const newSemesterProject =
+        await semesterProjectService.createSemesterProject(semesterProjectCreateMock)
+      const res = await semesterProjectService.getSemesterProject(newSemesterProject.id)
+      expect(newSemesterProject).toEqual(res)
+    })
+
+    it('should return undefined if semesterProject does not exist', async () => {
+      await expect(semesterProjectService.getSemesterProject('nonexistent_id')).rejects.toThrow(
+        'Not Found',
+      )
+    })
+
+    it('should update a semesterProject', async () => {
+      const newSemesterProject =
+        await semesterProjectService.createSemesterProject(semesterProjectCreateMock)
+      const updatedSemester = await semesterProjectService.updateSemesterProject(
+        newSemesterProject.id,
+        {
+          published: true,
+        },
+      )
+      expect(updatedSemester.published).toEqual(true)
+    })
+
+    it('should delete a semesterProject', async () => {
+      const newSemester =
+        await semesterProjectService.createSemesterProject(semesterProjectCreateMock)
+      await semesterProjectService.deleteSemesterProject(newSemester.id)
+      await expect(
+        testPayloadObject.findByID({
+          collection: 'semesterProject',
+          id: newSemester.id,
+        }),
+      ).rejects.toThrow('Not Found')
+    })
+
+    it('should throw an error if semesterProject does not exist', async () => {
+      await expect(semesterProjectService.deleteSemesterProject('nonexistent_id')).rejects.toThrow(
+        'Not Found',
+      )
+    })
+
+    it('Should return all semesterProjects', async () => {
+      await semesterProjectService.createSemesterProject(semesterProjectCreateMock)
+      await semesterProjectService.createSemesterProject(semesterProjectCreateMock)
+      const semesterProjectList = await semesterProjectService.getAllSemesterProjects()
+      expect(semesterProjectList.length).toEqual(2)
+    })
   })
 })

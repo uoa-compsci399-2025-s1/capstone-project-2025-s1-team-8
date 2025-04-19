@@ -1,6 +1,8 @@
 import { Project } from '@/payload-types'
 import { CreateProjectData, UpdateProjectData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
+import { CreateSemesterProjectData, UpdateSemesterProjectData } from '@/types/Collections'
+import { SemesterProject } from '@/payload-types'
 
 export default class ProjectService {
   /**
@@ -104,6 +106,80 @@ export default class ProjectService {
     await payload.delete({
       collection: 'project',
       id,
+    })
+  }
+
+  /**
+   * Creates a new semesterProject
+   *
+   * @param newSemesterProject The data for the new semesterProject
+   * @returns The created semesterProject
+   */
+  public async createSemesterProject(
+    newSemesterProject: CreateSemesterProjectData,
+  ): Promise<SemesterProject> {
+    const semesterProject = await payload.create({
+      collection: 'semesterProject',
+      data: newSemesterProject,
+    })
+    return semesterProject
+  }
+
+  /**
+   * Retrieves a semesterProject object by ID
+   *
+   * @param id The ID of the semesterProject to retrieve
+   * @returns The retrieved semesterProject object
+   */
+  public async getSemesterProject(id: string): Promise<SemesterProject> {
+    const semesterProject = await payload.findByID({
+      collection: 'semesterProject',
+      id: id,
+    })
+
+    return semesterProject
+  }
+
+  /**
+   * Retrieves all semesterProjects
+   *
+   * @returns An array of semesterProjects
+   */
+  public async getAllSemesterProjects(): Promise<SemesterProject[]> {
+    const semesterProjects = await payload.find({
+      collection: 'semesterProject',
+    })
+    return semesterProjects.docs
+  }
+
+  /**
+   * Updates a semesterProject.
+   *
+   * @param id The semesterProject ID
+   * @param semesterProject The updated semesterProject data object
+   * @returns The updated semesterProject
+   */
+  public async updateSemesterProject(
+    id: string,
+    semesterProject: UpdateSemesterProjectData,
+  ): Promise<SemesterProject> {
+    const updatedSemesterProject = await payload.update({
+      collection: 'semesterProject',
+      id: id,
+      data: semesterProject,
+    })
+    return updatedSemesterProject
+  }
+
+  /**
+   * Deletes a semesterProject by ID
+   *
+   * @param id The semesterProject ID
+   **/
+  public async deleteSemesterProject(id: string): Promise<void> {
+    await payload.delete({
+      collection: 'semesterProject',
+      id: id,
     })
   }
 }
