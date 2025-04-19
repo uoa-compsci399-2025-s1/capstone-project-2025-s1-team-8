@@ -5,7 +5,7 @@ export type SortableKeys = 'projectName' | 'clientName' | 'submissionDate'
 const DnDFilterNameLookup = {
   Title: 'projectName',
   Client: 'clientName',
-  'Submission Date': 'submissionDate',
+  'Submission date': 'submissionDate',
 }
 
 export const DefaultDropdownOptions: DropdownOptionType[] = [
@@ -15,5 +15,5 @@ export const DefaultDropdownOptions: DropdownOptionType[] = [
     hasActiveStyles: true,
   },
   { text: 'Client', key: DnDFilterNameLookup['Client'], hasActiveStyles: true },
-  { text: 'Submission Date', key: DnDFilterNameLookup['Submission Date'], hasActiveStyles: true },
+  { text: 'Submission date', key: DnDFilterNameLookup['Submission date'], hasActiveStyles: true },
 ]

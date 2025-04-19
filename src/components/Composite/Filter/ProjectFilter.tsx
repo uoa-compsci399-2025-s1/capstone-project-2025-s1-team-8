@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import FilterInner from '@/components/Generic/Filter/FilterInner'
 import { useFilter } from '@/contexts/FilterContext'
-import { ChevronDownIcon } from '@heroicons/react/16/solid'
+import { GoChevronDown, GoChevronUp } from "react-icons/go"
 import {
   DefaultDropdownOptions,
   SortableKeys,
@@ -34,15 +34,15 @@ const ProjectFilter: React.FC<ProjectFilterProps> = ({ className, containerWidth
         className=" hover:cursor-pointer flex items-center"
         onClick={() => setShowDropdown(!showDropdown)}
       >
-        <p className="text-sm font-semibold text-grey-1">Filter by</p>
-        <ChevronDownIcon className="h-5 text-grey-1" />
+        <p className="text-xs font-medium text-grey-1 pr-1">Filter By</p>
+        {showDropdown ? <GoChevronUp className="h-5 text-grey-1 size-3" /> : <GoChevronDown className="h-5 text-grey-1 size-3" />}
       </div>
       {showDropdown && (
         <div
-          className={`absolute top-full right-0 mt-2 z-20 max-w-40`}
+          className={`absolute top-full right-[-1px] mt-2 z-20 max-w-44`}
           style={{ width: newMaxWidth }}
         >
-          <div className={`bg-dark-blue rounded-lg flex flex-col gap-2 p-2 ${className}`}>
+          <div className={`bg-dark-blue rounded-lg flex flex-col gap-1 p-1.5 ${className}`}>
             {DefaultDropdownOptions.map((option, index) => (
               <div
                 key={index}
