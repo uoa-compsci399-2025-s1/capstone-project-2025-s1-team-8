@@ -1,6 +1,5 @@
 @import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Silkscreen:wght@400;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Silkscreen:wght@400;700&display=swap');
 :root {
   --font-mono: 'Roboto Mono', monospace;
 }
@@ -178,6 +177,7 @@ svg {
   --color-dark-blue-3: #3f91ad;
   --color-dark-blue-4: #13536b; /*Often used for radio buttons*/
   --color-dark-blue-5: #0d062d; /*Often used for dark text*/
+  --color-dark-blue-6: #41585e;
   --color-grey-1: #748086; /*Often used for grey text*/
   --color-pink-1: #ffbbee; /*Used for gradients*/
   --color-pink-2: #ff2aca; /*Used for errors and required fields*/
@@ -185,6 +185,7 @@ svg {
   --font-silkscreen: 'Silkscreen', sans-serif;
   --font-newsreader: 'Newsreader', serif;
   --font-inter: 'Inter', sans-serif;
+  --font-dm-serif-display: 'DM Serif Display', serif;
 }
 
 @utility nav-link-text {
@@ -192,6 +193,14 @@ svg {
 }
 @utility nav-link-text-underline {
   @apply absolute left-0 bottom-0 w-full h-1 bg-muted-blue scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-lg;
+}
+
+@utility info-tag-blue {
+  @apply rounded-lg text-xs py-1 px-2 bg-muted-blue text-dark-blue-1 w-max h-max;
+}
+
+@utility info-tag-beige {
+  @apply rounded-lg text-xs py-1 px-2 bg-beige ring-1 ring-muted-blue text-dark-blue-1 w-max h-max;
 }
 
 body {
