@@ -9,18 +9,18 @@ interface CapsuleProps {
 const Capsule: React.FC<CapsuleProps> = ({ children, variant = 'beige', className = '' }) => {
   // Variant Classes
   const variantClasses = {
-    deeper: 'bg-[#88B8C4] text-[#0E4B61]',
-    muted_blue: 'bg-[#C6DCDE] text-[#0E4B61]',
-    beige: 'bg-[#F8F6E9] text-[#0E4B61] border-2 border-[#C6DCDE]',
-    light_beige: 'bg-[#FFFEF9] text-[#0E4B61]',
+    deeper: 'bg-deeper-blue text-dark-blue',
+    muted_blue: 'bg-muted-blue text-dark-blue',
+    beige: 'bg-[#F8F6E9] text-dark-blue border border-muted-blue',
+    light_beige: 'bg-light-beige text-dark-blue',
     gradient:
-      'bg-gradient-to-r from-[#D1FBFF57] to-[#FFFEF9] text-[#0E4B61] border-2 border-[#C6DCDE]',
+      'bg-gradient-to-r from-bright-blue/60 to-light-beige text-dark-blue border border-muted-blue',
     custom: '',
   }
 
   return (
     <div
-      className={`h-auto w-fit px-2 rounded-xl text-base ${className} 
+      className={`px-2.5 py-1 rounded-xl text-base ${className} 
         ${variantClasses[variant]}`}
     >
       {children}

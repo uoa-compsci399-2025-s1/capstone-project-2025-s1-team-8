@@ -34,7 +34,7 @@ const FilterInner: React.FC<DropdownOptionType> = ({ icon, text, isActive }) => 
             className={`${isActive ? 'text-white' : 'text-muted-blue'}`}
           >
             <circle cx="12" cy="12" r="7" stroke="currentColor" strokeWidth="2" />
-            <circle cx="12" cy="12" r="3" fill="currentColor" />
+            {isActive ? <circle cx="12" cy="12" r="3" fill="currentColor" /> : null}
           </svg>
         </span>
       )}
