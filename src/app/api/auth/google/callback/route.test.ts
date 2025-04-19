@@ -10,7 +10,7 @@ import {
   JWT_SECRET_MOCK,
   SCOPES_MOCK,
   STATE_MOCK,
-  tokensMock
+  tokensMock,
 } from '@/test-config/mocks/Auth.mock'
 
 vi.mock('@/business-layer/security/google', async () => {
@@ -21,7 +21,7 @@ vi.mock('@/business-layer/security/google', async () => {
     ...actual,
     oauth2Client: {
       getToken: vi.fn().mockResolvedValue({
-        tokens: tokensMock
+        tokens: tokensMock,
       }),
     },
   }
@@ -106,6 +106,6 @@ describe('GET /api/auth/google/callback', () => {
     const json = await response.json()
 
     expect(response.status).toBe(400)
-    expect(json.error).toBe("No code provided")
+    expect(json.error).toBe('No code provided')
   })
 })

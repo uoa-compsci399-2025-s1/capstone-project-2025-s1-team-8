@@ -36,7 +36,7 @@ export const googleUserResponseMock: UserInfoResponse = {
   picture: 'https://example.com/picture.jpg',
   email: 'jeffery@gmail.com',
   email_verified: true,
-  hd: 'gmail.com'
+  hd: 'gmail.com',
 }
 
 export const authMock: Authentication = {
