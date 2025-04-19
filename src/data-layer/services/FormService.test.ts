@@ -144,7 +144,7 @@ describe('Form service tests', () => {
 
   it('delete a formQuestion by ID', async () => {
     const createdFormQuestion = await formService.createFormQuestion(formQuestionCreateMock)
-    const deletedFormQuestion = await formService.deleteFormQuestion(createdFormQuestion.id)
+    await formService.deleteFormQuestion(createdFormQuestion.id)
     await expect(
       testPayloadObject.findByID({
         collection: 'formQuestion',
