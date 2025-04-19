@@ -42,7 +42,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
       ${
         currentOrUpcoming === 'upcoming' || currentOrUpcoming === 'current'
           ? 'bg-muted-blue-op-45'
-          : 'bg-gradient-to-r from-dark-blue-6 to-deeper-blue'
+          : 'bg-gradient-to-r from-denim-blue to-deeper-blue'
       }
       rounded-lg ring-1 ring-deeper-blue p-4 sm:p-6 cursor-pointer hover:shadow-md
       flex flex-col gap-3 relative
@@ -51,7 +51,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
         <p
           className={`${
             currentOrUpcoming === 'upcoming' || currentOrUpcoming === 'current'
-              ? 'text-dark-blue-1'
+              ? 'text-dark-blue'
               : 'text-white'
           } text-base sm:text-lg font-semibold`}
         >
@@ -81,7 +81,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
         <div ref={contentRef} className="p-4 sm:p-8 overflow-hidden">
           {/* Close Button */}
           <button
-            className="absolute top-4 sm:top-8 right-4 sm:right-8 text-dark-blue-2 hover:text-dark-blue-4 cursor-pointer"
+            className="absolute top-4 sm:top-8 right-4 sm:right-8 text-steel-blue hover:text-deep-teal cursor-pointer"
             aria-label="Close"
           >
             <XMarkIcon className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -89,7 +89,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
 
           {/* Details Section */}
           <div className="pb-6 sm:pb-10">
-            <h2 className="text-2xl sm:text-3xl text-dark-blue-1 font-dm-serif-display font-bold py-4">
+            <h2 className="text-2xl sm:text-3xl text-dark-blue font-dm-serif-display font-bold py-4">
               {semesterName}
             </h2>
 
@@ -106,7 +106,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
           </div>
 
           {/* Projects Section */}
-          <h2 className="text-xl sm:text-2xl text-dark-blue-1 font-inter py-4 sm:py-6">
+          <h2 className="text-xl sm:text-2xl text-dark-blue font-inter py-4 sm:py-6">
             Approved projects
           </h2>
           <div className="flex flex-col gap-4 overflow-y-auto max-h-[300px] sm:max-h-[400px] p-1">

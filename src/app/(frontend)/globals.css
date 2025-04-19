@@ -194,11 +194,11 @@ svg {
 }
 
 @utility info-tag-blue {
-  @apply rounded-lg text-xs py-1 px-2 bg-muted-blue text-dark-blue-1 w-max h-max;
+  @apply rounded-lg text-xs py-1 px-2 bg-muted-blue text-dark-blue w-max h-max;
 }
 
 @utility info-tag-beige {
-  @apply rounded-lg text-xs py-1 px-2 bg-beige ring-1 ring-muted-blue text-dark-blue-1 w-max h-max;
+  @apply rounded-lg text-xs py-1 px-2 bg-beige ring-1 ring-muted-blue text-dark-blue w-max h-max;
 }
 
 body {
