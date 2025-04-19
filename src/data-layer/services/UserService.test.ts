@@ -1,5 +1,5 @@
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
-import { UserService } from './UserService'
+import UserService from './UserService'
 import { adminCreateMock, clientCreateMock, studentCreateMock } from '@/test-config/mocks/User.mock'
 
 describe('User service test', () => {
@@ -43,10 +43,10 @@ describe('User service test', () => {
   })
 
   it('find all users', async () => {
-    const createdUser1 = await userService.createUser(adminCreateMock)
-    const createdUser2 = await userService.createUser(clientCreateMock)
+    await userService.createUser(adminCreateMock)
+    await userService.createUser(clientCreateMock)
     const fetchedUsers = await userService.getAllUsers()
-    await expect(fetchedUsers.docs.length).toEqual(2)
+    expect(fetchedUsers.docs.length).toEqual(2)
   })
 
   it('not found - find user with nonexistent id', async () => {

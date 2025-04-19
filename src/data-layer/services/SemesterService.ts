@@ -3,7 +3,7 @@ import { payload } from '../adapters/Payload'
 import { Semester } from '@/payload-types'
 import { PaginatedDocs } from 'payload'
 
-export class SemesterService {
+export default class SemesterService {
   /**
    * Creates a new semester document in the database.
    *

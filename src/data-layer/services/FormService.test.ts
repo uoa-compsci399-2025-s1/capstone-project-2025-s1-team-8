@@ -1,5 +1,5 @@
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
-import { FormService } from './FormService'
+import FormService from './FormService'
 import { formResponseCreateMock } from '@/test-config/mocks/Form.mock'
 import { formMock } from '@/test-config/mocks/Form.mock'
 import { formQuestionCreateMock, formQuestionUpdateMock } from '@/test-config/mocks/Form.mock'
@@ -144,7 +144,7 @@ describe('Form service tests', () => {
 
   it('delete a formQuestion by ID', async () => {
     const createdFormQuestion = await formService.createFormQuestion(formQuestionCreateMock)
-    const deletedFormQuestion = await formService.deleteFormQuestion(createdFormQuestion.id)
+    await formService.deleteFormQuestion(createdFormQuestion.id)
     await expect(
       testPayloadObject.findByID({
         collection: 'formQuestion',

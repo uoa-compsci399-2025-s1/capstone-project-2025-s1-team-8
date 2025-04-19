@@ -1,7 +1,7 @@
 import { mockClient1 } from '@/test-config/mocks/User.mock'
 import { projectMock, projectMock2, projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
-import { ProjectService } from './ProjectService'
+import ProjectService from './ProjectService'
 import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 
 describe('Project service methods test', () => {
