@@ -89,7 +89,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
 
           {/* Details Section */}
           <div className="pb-6 sm:pb-10">
-            <h2 className="text-2xl sm:text-3xl text-dark-blue font-dm-serif-display font-bold py-4">
+            <h2 className="text-2xl sm:text-3xl text-dark-blue font-dm-serif-display py-4">
               {semesterName}
             </h2>
 
