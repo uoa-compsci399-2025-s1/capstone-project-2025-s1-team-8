@@ -37,7 +37,7 @@ const Input: FC<InputProps> = ({
   let inputClasses = `${error ? 'ring-pink-2 ring-1 focus:ring-2' : 'ring-muted-blue ring-1 focus:ring-3'} ${startIcon ? 'pl-11' : ''} w-full placeholder-muted-blue text-steel-blue focus:outline-hidden rounded-lg px-4 py-2.5 text-sm shadow bg-white ${className}`
 
   return (
-    <div>
+    <>
       <div className="relative">
         {startIcon && (
           <span className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5">{startIcon}</span>
@@ -64,7 +64,7 @@ const Input: FC<InputProps> = ({
           <p>{errorMessage}</p>
         </div>
       )}
-    </div>
+    </>
   )
 }
 
