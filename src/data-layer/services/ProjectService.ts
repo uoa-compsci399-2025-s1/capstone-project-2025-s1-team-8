@@ -4,7 +4,7 @@ import { payload } from '../adapters/Payload'
 import { CreateSemesterProjectData, UpdateSemesterProjectData } from '@/types/Collections'
 import { SemesterProject } from '@/payload-types'
 
-export class ProjectService {
+export default class ProjectService {
   /**
    * This function returns a list of all projects
    *

@@ -67,6 +67,7 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    authentication: Authentication;
     user: User;
     media: Media;
     project: Project;
@@ -81,6 +82,7 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    authentication: AuthenticationSelect<false> | AuthenticationSelect<true>;
     user: UserSelect<false> | UserSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     project: ProjectSelect<false> | ProjectSelect<true>;
@@ -124,6 +126,55 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authentication".
+ */
+export interface Authentication {
+  id: string;
+  /**
+   * The email who owns this authentication
+   */
+  email: string;
+  /**
+   * The type of authentication
+   */
+  type: string;
+  /**
+   * The type of authentication
+   */
+  provider: 'google';
+  /**
+   * The provider account id of the user authentication
+   */
+  providerAccountId?: string | null;
+  /**
+   * The refresh token of the user authentication
+   */
+  refreshToken?: string | null;
+  /**
+   * The access token of the user authentication
+   */
+  accessToken: string;
+  /**
+   * The expiration time of the access token
+   */
+  expiresAt: number;
+  /**
+   * The type of token
+   */
+  tokenType?: string | null;
+  /**
+   * The scope of the token
+   */
+  scope?: string | null;
+  /**
+   * The id token of the user authentication
+   */
+  idToken?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -257,6 +308,10 @@ export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
+        relationTo: 'authentication';
+        value: string | Authentication;
+      } | null)
+    | ({
         relationTo: 'user';
         value: string | User;
       } | null)
@@ -329,6 +384,24 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authentication_select".
+ */
+export interface AuthenticationSelect<T extends boolean = true> {
+  email?: T;
+  type?: T;
+  provider?: T;
+  providerAccountId?: T;
+  refreshToken?: T;
+  accessToken?: T;
+  expiresAt?: T;
+  tokenType?: T;
+  scope?: T;
+  idToken?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
