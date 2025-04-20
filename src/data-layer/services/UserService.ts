@@ -117,7 +117,7 @@ export default class UserService {
     return (
       await payload.find({
         collection: 'clientAdditionalInfo',
-        where: { user: { equals: clientID } },
+        where: { client: { equals: clientID } },
       })
     ).docs[0]
   }
