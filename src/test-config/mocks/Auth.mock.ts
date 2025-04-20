@@ -21,6 +21,7 @@ export const ACCESS_TOKEN_MOCK = 'access_token'
 export const ID_TOKEN_MOCK = 'id_token'
 
 export const JWT_SECRET_MOCK = 'jwt_secret'
+export const JWT_MOCK = 'jwt_mock'
 
 export const tokensMock = {
   access_token: ACCESS_TOKEN_MOCK,

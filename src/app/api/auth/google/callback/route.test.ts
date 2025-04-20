@@ -1,5 +1,3 @@
-import jwt from 'jsonwebtoken'
-
 import { mockClient1 } from '@/test-config/mocks/User.mock'
 
 import {
@@ -7,7 +5,9 @@ import {
   CODE_MOCK,
   createMockNextRequest,
   googleUserResponseMock,
+  JWT_MOCK,
   JWT_SECRET_MOCK,
+  SCOPES_ARRAY_MOCK,
   SCOPES_MOCK,
   STATE_MOCK,
   tokensMock,
@@ -19,53 +19,95 @@ vi.mock('@/business-layer/security/google', async () => {
   )
   return {
     ...actual,
+    googleAuthScopes: SCOPES_ARRAY_MOCK,
     oauth2Client: {
-      getToken: vi.fn().mockResolvedValue({
-        tokens: tokensMock,
-      }),
+      getToken: (code: string) => (code === CODE_MOCK ? { tokens: tokensMock } : null),
     },
   }
 })
 
 vi.mock('@/data-layer/services/UserService', () => {
   return {
-    default: vi.fn().mockImplementation(() => ({
-      getUserByEmail: vi.fn().mockResolvedValue(mockClient1),
-      createUser: vi.fn().mockResolvedValue(mockClient1),
-    })),
+    default: class {
+      getUserByEmail = vi.fn().mockResolvedValue(mockClient1)
+      createUser = vi.fn().mockResolvedValue(mockClient1)
+    },
   }
 })
 
 vi.mock('@/data-layer/services/AuthService', () => {
   return {
-    default: vi.fn().mockImplementation(() => ({
-      createAuth: vi.fn().mockResolvedValue(authMock),
-      getAuthByEmail: (email: string) => (email === authMock.email ? authMock : null),
-      updateAuth: vi.fn().mockResolvedValue(authMock),
-    })),
+    default: class {
+      createAuth = vi.fn().mockResolvedValue(authMock)
+      getAuthByEmail = vi.fn().mockResolvedValue(authMock)
+      updateAuth = vi.fn().mockResolvedValue(authMock)
+    },
   }
 })
 
-vi.mock('next/headers', () => ({
-  cookies: () => ({
-    get: (key: string) => ({ value: key === 'state' ? STATE_MOCK : undefined }),
-    set: vi.fn(),
-    delete: vi.fn(),
-  }),
-}))
+vi.mock('@/business-layer/services/AuthService', () => {
+  return {
+    default: class {
+      generateJWT = vi.fn().mockReturnValue(JWT_MOCK)
+    },
+  }
+})
 
 import { GET as callback } from '@/app/api/auth/google/callback/route'
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
+import * as nextHeaders from 'next/headers'
+
+const mockSet = vi.fn()
 
 describe('GET /api/auth/google/callback', () => {
   beforeAll(() => {
+    vi.stubGlobal('fetch', (url: string) =>
+      url === 'https://www.googleapis.com/oauth2/v3/userinfo'
+        ? { json: () => googleUserResponseMock }
+        : null,
+    )
     vi.spyOn(globalThis, 'fetch').mockResolvedValue({
       json: vi.fn().mockResolvedValue(googleUserResponseMock),
     } as unknown as Response)
+
+    vi.mock('next/headers', () => ({
+      cookies: () => ({
+        get: (key: string) => ({ value: key === 'state' ? STATE_MOCK : undefined }),
+        set: mockSet,
+        delete: vi.fn(),
+      }),
+    }))
+
+    const mockCookieStore = {
+      get: (key: string) => ({ value: key === 'state' ? STATE_MOCK : undefined }),
+      set: mockSet,
+      delete: vi.fn(),
+    }
+
+    vi.spyOn(nextHeaders, 'cookies').mockResolvedValue(
+      mockCookieStore as unknown as ReadonlyRequestCookies,
+    )
 
     process.env.JWT_SECRET = JWT_SECRET_MOCK
   })
 
   afterEach(() => vi.restoreAllMocks())
+
+  it('should set jwt to cookie', async () => {
+    const req = createMockNextRequest(
+      `/api/auth/google/callback?code=${CODE_MOCK}&state=${STATE_MOCK}&scope=${SCOPES_MOCK}`,
+    )
+    req.cookies.set('state', STATE_MOCK)
+
+    await callback(req)
+
+    expect(mockSet).toHaveBeenCalledWith('auth_token', JWT_MOCK, {
+      maxAge: 3600,
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+    })
+  })
 
   it('returns JWT token on success auth', async () => {
     const req = createMockNextRequest(
@@ -76,14 +118,7 @@ describe('GET /api/auth/google/callback', () => {
     const response = await callback(req)
     const json = await response.json()
 
-    expect(json.token).toBeDefined()
-
-    const decoded = jwt.verify(json.token, process.env.JWT_SECRET)
-
-    expect(decoded).toMatchObject({
-      profile: mockClient1,
-      accessToken: tokensMock.access_token,
-    })
+    expect(json.token).toBe(JWT_MOCK)
   })
 
   it('returns 400 if state does not match', async () => {
