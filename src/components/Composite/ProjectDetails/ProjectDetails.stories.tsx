@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api';
 import ProjectDetails from './ProjectDetails'
-import { bool } from 'sharp';
+import Button from '../../Generic/Button/Button'
 
 const meta: Meta<typeof ProjectDetails> = {
   title: 'Composite/ProjectDetails',
@@ -26,9 +26,9 @@ export const Exemplar: Story = {
     
     return (
       <div>
-        <button onClick={() => onChange()} className="mb-4 p-2 bg-blue-500 text-white rounded">
-          Open Modal
-        </button>
+        <Button onClick={() => onChange()} variant="dark" size="md">
+          Open modal
+        </Button>
         <ProjectDetails
           {...args}
           open = {open}
@@ -40,7 +40,7 @@ export const Exemplar: Story = {
     )
   }, args: {
     open: false,
-    className: "w-[1200px] my-[8%]",
+    className: "w-[1200px]",
     projectTitle: "Chronobiology",
     projectClientDetails: ["David Cumin", "davidcumin@gmail.com"],
     otherClientDetails: [["Sam Pepper", "sampepper@gmail.com"], ["Jack Salt", "jacksalt@gmail.com"]],

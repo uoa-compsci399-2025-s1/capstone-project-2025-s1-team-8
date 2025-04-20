@@ -205,7 +205,4 @@
   .info-tag-beige {
     @apply rounded-lg text-xs py-1 px-2 bg-beige ring-1 ring-muted-blue text-dark-blue w-max h-max;
   }
-  .modal-title {
-    @apply m-0 text-dark-blue font-dm-serif-display text-left;
-  }
 }
