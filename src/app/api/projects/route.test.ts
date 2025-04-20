@@ -11,16 +11,16 @@ describe('get projects', () => {
   })
 
   it('should get no projects if none are created', async () => {
-    const res = await GET({} as NextRequest)
+    const res = await GET()
     expect(res.status).toBe(StatusCodes.OK)
     expect(await res.json()).toEqual({ data: [] })
   })
 
   it('should return a list of all projects created', async () => {
     const projectService = new ProjectService()
-    const project1 = await projectService.createProject(projectCreateMock)
-    const project2 = await projectService.createProject(projectCreateMock)
-    const res = await GET({} as NextRequest)
+    await projectService.createProject(projectCreateMock)
+    await projectService.createProject(projectCreateMock)
+    const res = await GET()
     expect(res.status).toBe(StatusCodes.OK)
     const data = await res.json()
     expect(data.data.length).toEqual(2)

@@ -6,7 +6,7 @@ import ProjectService from '@/data-layer/services/ProjectService'
  * @param req - The request object.
  */
 
-export const GET = async (req: NextRequest): Promise<Response> => {
+export const GET = async (): Promise<Response> => {
   const projectService = new ProjectService()
   return Response.json({ data: await projectService.getAllProjects() })
 }
