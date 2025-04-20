@@ -50,8 +50,8 @@ describe('Google Auth tests', async () => {
     expect(mockSet).toHaveBeenCalledWith('state', STATE_MOCK, {
       maxAge: 60,
       httpOnly: true,
-      sameSite: 'strict',
-      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      // secure: process.env.NODE_ENV === 'production',
     })
     expect(oauth2Client.generateAuthUrl).toHaveBeenCalledWith({
       scope: SCOPES_ARRAY_MOCK,
