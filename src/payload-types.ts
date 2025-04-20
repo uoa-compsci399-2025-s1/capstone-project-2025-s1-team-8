@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     authentication: Authentication;
     user: User;
+    clientAdditionalInfo: ClientAdditionalInfo;
     media: Media;
     project: Project;
     semesterProject: SemesterProject;
@@ -84,6 +85,7 @@ export interface Config {
   collectionsSelect: {
     authentication: AuthenticationSelect<false> | AuthenticationSelect<true>;
     user: UserSelect<false> | UserSelect<true>;
+    clientAdditionalInfo: ClientAdditionalInfoSelect<false> | ClientAdditionalInfoSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     project: ProjectSelect<false> | ProjectSelect<true>;
     semesterProject: SemesterProjectSelect<false> | SemesterProjectSelect<true>;
@@ -218,6 +220,18 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "clientAdditionalInfo".
+ */
+export interface ClientAdditionalInfo {
+  id: string;
+  client: string | User;
+  introduction?: string | null;
+  affiliation?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "project".
  */
 export interface Project {
@@ -317,6 +331,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'user';
         value: string | User;
+      } | null)
+    | ({
+        relationTo: 'clientAdditionalInfo';
+        value: string | ClientAdditionalInfo;
       } | null)
     | ({
         relationTo: 'media';
@@ -424,6 +442,17 @@ export interface UserSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "clientAdditionalInfo_select".
+ */
+export interface ClientAdditionalInfoSelect<T extends boolean = true> {
+  client?: T;
+  introduction?: T;
+  affiliation?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

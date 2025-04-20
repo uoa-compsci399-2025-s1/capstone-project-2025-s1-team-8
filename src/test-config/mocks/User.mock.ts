@@ -1,4 +1,4 @@
-import { CreateUserData } from '@/types/Collections'
+import { CreateClientAdditionalInfoData, CreateUserData } from '@/types/Collections'
 import { UserRole } from '@/types/User'
 import { User } from '@/payload-types'
 
@@ -46,4 +46,10 @@ export const studentCreateMock: CreateUserData = {
   lastName: 'Doe',
   email: 'johndoestudent@gmail.com',
   password: 'abcdefg',
+}
+
+export const clientAdditionalInfoCreateMock: CreateClientAdditionalInfoData = {
+  client: '67ff38a56a35e1b6cf43a680' as string,
+  introduction: "Hello i'm a very cool client. My project cool.",
+  affiliation: 'Very cool company',
 }
