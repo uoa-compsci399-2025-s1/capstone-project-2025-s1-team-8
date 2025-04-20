@@ -34,3 +34,13 @@ export const clearCollection = async (payloadObject: Payload, collectionName: Co
     },
   })
 }
+
+/**
+ * Convert parameters to a promise
+ *
+ * @param params The parameters to convert to a promise
+ * @returns A promise that resolves to the parameters
+ */
+export const paramsToPromise = <T extends Record<string, unknown>>(params: T): Promise<T> => {
+  return Promise.resolve(params)
+}
