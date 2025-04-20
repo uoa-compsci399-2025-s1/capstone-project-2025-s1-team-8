@@ -34,7 +34,7 @@ const Input: FC<InputProps> = ({
   startIcon,
   endIcon,
 }) => {
-  let inputClasses = `${error ? 'ring-pink-2 ring-2' : 'ring-muted-blue ring-1'} ${startIcon ? 'pl-11' : ''} w-full placeholder-muted-blue text-steel-blue focus:outline-hidden focus:ring-3 rounded-lg px-4 py-2.5 text-sm shadow bg-white ${className}`
+  let inputClasses = `${error ? 'ring-pink-2 ring-1 focus:ring-2' : 'ring-muted-blue ring-1 focus:ring-3'} ${startIcon ? 'pl-11' : ''} w-full placeholder-muted-blue text-steel-blue focus:outline-hidden rounded-lg px-4 py-2.5 text-sm shadow bg-white ${className}`
 
   return (
     <div>
@@ -64,7 +64,6 @@ const Input: FC<InputProps> = ({
           <p>{errorMessage}</p>
         </div>
       )}
-
     </div>
   )
 }

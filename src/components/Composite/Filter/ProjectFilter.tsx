@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import FilterInner from '@/components/Generic/Filter/FilterInner'
 import { useFilter } from '@/contexts/FilterContext'
-import { GoChevronDown, GoChevronUp } from "react-icons/go"
+import { GoChevronDown, GoChevronUp } from 'react-icons/go'
 import {
   DefaultDropdownOptions,
   SortableKeys,
@@ -35,7 +35,11 @@ const ProjectFilter: React.FC<ProjectFilterProps> = ({ className, containerWidth
         onClick={() => setShowDropdown(!showDropdown)}
       >
         <p className="text-sm font-medium text-grey-1 pr-1">Filter By</p>
-        {showDropdown ? <GoChevronUp className="h-5 text-grey-1 size-4" /> : <GoChevronDown className="h-5 text-grey-1 size-4" />}
+        {showDropdown ? (
+          <GoChevronUp className="h-5 text-grey-1 size-4" />
+        ) : (
+          <GoChevronDown className="h-5 text-grey-1 size-4" />
+        )}
       </div>
       {showDropdown && (
         <div

@@ -72,7 +72,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
 
       {/* Expandable Details */}
       <div
-      onClick={() => setIsOpen(false)}
+        onClick={() => setIsOpen(false)}
         className={`relative w-full cursor-pointer bg-muted-blue-op-45 ring-1 ring-deeper-blue rounded-lg transition-all duration-500 ${
           isOpen ? 'opacity-100' : 'opacity-0'
         }`}
