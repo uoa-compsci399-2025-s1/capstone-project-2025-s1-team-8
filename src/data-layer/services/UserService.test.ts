@@ -108,7 +108,9 @@ describe('User service test', () => {
       const createdInfo = await userService.createClientAdditionalInfo(
         clientAdditionalInfoCreateMock,
       )
-      const fetchedInfo = await userService.getClientAdditionalInfo(clientAdditionalInfoCreateMock.client.toString())
+      const fetchedInfo = await userService.getClientAdditionalInfo(
+        clientAdditionalInfoCreateMock.client.toString(),
+      )
       expect(createdInfo).toEqual(fetchedInfo)
     })
 
