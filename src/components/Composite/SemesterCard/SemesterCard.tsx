@@ -37,7 +37,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
     <div className="relative w-full flex flex-col gap-4">
       {/* Semester Card */}
       <div
-        onClick={() => setIsOpen(true)}
+        onClick={() => setIsOpen(!isOpen)}
         className={`
       ${
         currentOrUpcoming === 'upcoming' || currentOrUpcoming === 'current'
@@ -72,8 +72,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
 
       {/* Expandable Details */}
       <div
-      onClick={() => setIsOpen(false)}
-        className={`relative w-full cursor-pointer bg-muted-blue-op-45 ring-1 ring-deeper-blue rounded-lg transition-all duration-500 ${
+        className={`relative w-full bg-muted-blue-op-45 ring-1 ring-deeper-blue rounded-lg transition-all duration-500 ${
           isOpen ? 'opacity-100' : 'opacity-0'
         }`}
         style={{ maxHeight: height }}
@@ -83,6 +82,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
           <button
             className="absolute top-4 sm:top-8 right-4 sm:right-8 text-steel-blue hover:text-deep-teal cursor-pointer"
             aria-label="Close"
+            onClick={() => setIsOpen(false)}
           >
             <XMarkIcon className="h-5 w-5 sm:h-6 sm:w-6" />
           </button>
