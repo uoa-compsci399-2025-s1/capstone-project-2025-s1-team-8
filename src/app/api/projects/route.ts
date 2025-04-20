@@ -1,4 +1,3 @@
-import { NextRequest } from 'next/server'
 import ProjectService from '@/data-layer/services/ProjectService'
 
 /**
