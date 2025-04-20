@@ -40,7 +40,7 @@ describe('get projects', () => {
     expect(res.status).toBe(StatusCodes.NO_CONTENT)
     expect((await projectService.getAllProjects()).length).toEqual(0)
   })
-  
+
   it('should return a 404 error if the project does not exist', async () => {
     const slug = { projectId: 'nonexistent' }
     const res = await DELETE({} as NextRequest, {
