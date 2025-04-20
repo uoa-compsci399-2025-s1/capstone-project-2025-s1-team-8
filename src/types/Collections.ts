@@ -7,6 +7,7 @@ import {
   Form,
   Authentication,
   FormQuestion,
+  ClientAdditionalInfo,
 } from '@/payload-types'
 
 /*
@@ -20,6 +21,7 @@ export type UpdateSemesterData = Partial<CreateSemesterData>
  */
 export type CreateFormQuestionData = Omit<FormQuestion, 'createdAt' | 'updatedAt' | 'id'>
 export type UpdateFormQuestionData = Partial<CreateFormQuestionData>
+
 /*
  * Semester Project Collection Types
  */
@@ -48,6 +50,12 @@ export type CreateUserData = Omit<
   | 'resetPasswordExpiration'
 >
 export type UpdateUserData = Partial<CreateUserData>
+
+export type CreateClientAdditionalInfoData = Omit<
+  ClientAdditionalInfo,
+  'id' | 'createdAt' | 'updatedAt'
+>
+export type UpdateClientAdditionalInfoData = Partial<CreateClientAdditionalInfoData>
 
 /*
  * FormResponse Collection Types
