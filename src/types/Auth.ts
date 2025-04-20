@@ -27,7 +27,7 @@ export const UserInfoResponseSchema = z.object({
   picture: z.string(),
   /**
    * The user's email address
-   * @example straightzhao@gmail.com
+   * @example jefferyji@gmail.com
    */
   email: z.string(),
   email_verified: z.boolean(),
