@@ -50,12 +50,15 @@ export default class UserService {
    * @param pagingCounter The page number to retrieve
    * @returns A paginated list of user documents
    */
-  public async getAllUsers(limit: number = 100, pagingCounter?: number): Promise<PaginatedDocs<User>> {
+  public async getAllUsers(
+    limit: number = 100,
+    pagingCounter?: number,
+  ): Promise<PaginatedDocs<User>> {
     return await payload.find({
       collection: 'user',
       limit,
       pagination: true,
-      page: pagingCounter
+      page: pagingCounter,
     })
   }
 

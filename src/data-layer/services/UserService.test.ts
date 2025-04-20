@@ -57,7 +57,10 @@ describe('User service test', () => {
     expect(fetchedUsers.docs.length).toEqual(1)
     expect(fetchedUsers.hasNextPage).toBeTruthy()
 
-    const nextPage = await userService.getAllUsers(1, fetchedUsers.nextPage ? fetchedUsers.nextPage : undefined)
+    const nextPage = await userService.getAllUsers(
+      1,
+      fetchedUsers.nextPage ? fetchedUsers.nextPage : undefined,
+    )
     expect(nextPage.docs.length).toEqual(1)
     expect(nextPage.hasNextPage).toBeFalsy()
 
