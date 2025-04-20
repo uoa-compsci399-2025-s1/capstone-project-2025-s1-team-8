@@ -17,7 +17,7 @@ export const GET = async (
 
   try {
     const data = await projectService.getProjectById(projectId)
-    return Response.json({ data }, { status: StatusCodes.OK })
+    return Response.json({ data })
   } catch (error) {
     if ((error as Error).message == 'Not Found') {
       return Response.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
