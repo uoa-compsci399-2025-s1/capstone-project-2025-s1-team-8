@@ -4,7 +4,7 @@ import Capsule from './Capsule'
 const meta: Meta<typeof Capsule> = {
   title: 'Generic/Capsule',
   component: Capsule,
-  tags: ['autodocs'], // optional, helpful for auto-generated docs
+  tags: ['autodocs'],
   args: {
     text: 'Read Me',
     variant: 'light_beige',

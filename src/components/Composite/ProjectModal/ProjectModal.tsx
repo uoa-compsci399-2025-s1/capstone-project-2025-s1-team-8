@@ -1,13 +1,9 @@
-import React, { ReactNode } from 'react'
-import ReactDOM from 'react-dom'
-import Button from '../../Generic/Button/Button'
+import React from 'react'
 import Modal from '../../Generic/Modal/Modal'
 import Capsule from '@/components/Generic/Capsule/Capsule'
-import { XMarkIcon } from '@heroicons/react/16/solid'
 import { ModalProps } from '@/components/Generic/Modal/Modal'
-import { number } from 'node_modules/payload/dist/fields/validations'
 
-interface ProjectDetailProps extends ModalProps{
+interface ProjectModalProps extends ModalProps{
   projectTitle: string,
   projectClientDetails: [string, string],
   otherClientDetails?: Array<[string, string]>,
@@ -23,7 +19,7 @@ interface ProjectDetailProps extends ModalProps{
   submittedDate: Date,
 }
 
-const ProjectDetails: React.FC<ProjectDetailProps> = ({ 
+const ProjectModal: React.FC<ProjectModalProps> = ({ 
   open, 
   onClose, 
   className = '',
@@ -40,12 +36,6 @@ const ProjectDetails: React.FC<ProjectDetailProps> = ({
   Semesters: semesters,
   submittedDate,
 }) => {
-  // modal component closes when clicking outside of the modal
-  const handleClose = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose()
-    }
-  }
 
   const convertDatetoddmmYYYY = (date: Date) => {
     const dd = String(date.getDate()).padStart(2, '0')
@@ -67,13 +57,13 @@ const ProjectDetails: React.FC<ProjectDetailProps> = ({
       <div className="relative max-w-full flex flex-col p-15 rounded-t-2xl gap-5 pointer-events-none">
 
         {/* title */}
-        <h1 className="m-0 text-dark-blue font-dm-serif-display">{projectTitle}</h1>
+        <h1 className="text-5xl m-0 text-dark-blue font-dm-serif-display">{projectTitle}</h1>
 
         {/* client details */}
         <div className="flex flex-row gap-3">
-          <h2 className="flex m-0 text-steel-blue font-inter">{projectClientDetails[0]}</h2>
-          <h2 className="flex m-0 text-deeper-blue font-inter">|</h2>
-          <h2 className="flex m-0 text-deeper-blue font-inter">{projectClientDetails[1]}</h2>
+          <h2 className="flex text-steel-blue font-inter">{projectClientDetails[0]}</h2>
+          <h2 className="flex text-deeper-blue font-inter">|</h2>
+          <h2 className="flex text-deeper-blue font-inter">{projectClientDetails[1]}</h2>
         </div>
 
         {/* project description*/}
@@ -114,9 +104,9 @@ const ProjectDetails: React.FC<ProjectDetailProps> = ({
           {
             otherClientDetails.map(clientDetails => (
               <>
-                <h2 className="col-start-1 m-0 text-dark-blue font-inter alternate">{clientDetails[0]}</h2>
-                <h2 className="col-start-2 m-0 text-deeper-blue font-inter email">|</h2>
-                <h2 className="col-start-3 m-0 text-deeper-blue font-inter email">{clientDetails[1]}</h2>
+                <h2 className="col-start-1 text-dark-blue font-inter alternate">{clientDetails[0]}</h2>
+                <h2 className="col-start-2 text-deeper-blue font-inter email">|</h2>
+                <h2 className="col-start-3 text-deeper-blue font-inter email">{clientDetails[1]}</h2>
               </>
             ))
           }
@@ -131,4 +121,4 @@ const ProjectDetails: React.FC<ProjectDetailProps> = ({
   )
 }
 
-export default ProjectDetails
+export default ProjectModal
