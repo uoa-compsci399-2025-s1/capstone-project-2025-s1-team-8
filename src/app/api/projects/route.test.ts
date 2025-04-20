@@ -3,7 +3,6 @@ import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET } from '@/app/api/projects/route'
-import { NextRequest } from 'next/server'
 
 describe('get projects', () => {
   afterEach(async () => {
