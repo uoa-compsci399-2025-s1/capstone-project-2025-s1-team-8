@@ -49,6 +49,21 @@ describe('User service test', () => {
     expect(fetchedUsers.docs.length).toEqual(2)
   })
 
+  it('should return a paginated list of users', async () => {
+    await userService.createUser(clientCreateMock)
+    await userService.createUser(adminCreateMock)
+    const fetchedUsers = await userService.getAllUsers(1)
+
+    expect(fetchedUsers.docs.length).toEqual(1)
+    expect(fetchedUsers.hasNextPage).toBeTruthy()
+
+    const nextPage = await userService.getAllUsers(1, fetchedUsers.nextPage ? fetchedUsers.nextPage : undefined)
+    expect(nextPage.docs.length).toEqual(1)
+    expect(nextPage.hasNextPage).toBeFalsy()
+
+    expect(nextPage.docs[0].id).not.toEqual(fetchedUsers.docs[0].id)
+  })
+
   it('not found - find user with nonexistent id', async () => {
     await expect(userService.getUser('nonexistent_id')).rejects.toThrow('Not Found')
   })
