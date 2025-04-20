@@ -1,5 +1,5 @@
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
-import { SemesterService } from './SemesterService'
+import SemesterService from './SemesterService'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 
 describe('Semester service tests', () => {

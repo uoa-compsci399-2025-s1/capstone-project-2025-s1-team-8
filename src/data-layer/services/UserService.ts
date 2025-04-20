@@ -3,7 +3,7 @@ import { payload } from '../adapters/Payload'
 import { CreateUserData, UpdateUserData } from '@/types/Collections'
 import { PaginatedDocs } from 'payload'
 
-export class UserService {
+export default class UserService {
   /**
    * Creates a new user document in the database.
    *
@@ -28,6 +28,19 @@ export class UserService {
       collection: 'user',
       id: userID,
     })
+  }
+
+  public async getUserByEmail(email: string): Promise<User> {
+    return (
+      await payload.find({
+        collection: 'user',
+        where: {
+          email: {
+            equals: email,
+          },
+        },
+      })
+    ).docs[0]
   }
 
   /**
