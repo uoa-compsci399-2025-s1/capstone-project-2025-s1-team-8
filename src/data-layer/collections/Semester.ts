@@ -15,7 +15,7 @@ export const Semester: CollectionConfig = {
       type: 'relationship',
       relationTo: 'semesterProject',
       hasMany: true,
-      required: true,
+      required: false,
     },
     {
       name: 'deadline',

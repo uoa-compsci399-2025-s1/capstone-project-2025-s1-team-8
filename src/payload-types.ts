@@ -201,7 +201,7 @@ export interface SemesterProject {
 export interface Semester {
   id: string;
   name: string;
-  projects: (string | SemesterProject)[];
+  projects?: (string | SemesterProject)[] | null;
   deadline: string;
   startDate: string;
   endDate: string;
