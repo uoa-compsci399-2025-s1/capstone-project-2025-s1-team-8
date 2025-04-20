@@ -5,12 +5,11 @@ export const Authentication: CollectionConfig = {
   access: {},
   fields: [
     {
-      name: 'user',
-      type: 'relationship',
-      relationTo: 'user',
+      name: 'email',
+      type: 'text',
       required: true,
       admin: {
-        description: 'The user who owns this authentication',
+        description: 'The email who owns this authentication',
       },
     },
     {

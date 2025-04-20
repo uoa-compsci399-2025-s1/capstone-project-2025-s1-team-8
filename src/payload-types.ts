@@ -134,9 +134,9 @@ export interface UserAuthOperations {
 export interface Authentication {
   id: string;
   /**
-   * The user who owns this authentication
+   * The email who owns this authentication
    */
-  user: string | User;
+  email: string;
   /**
    * The type of authentication
    */
@@ -390,7 +390,7 @@ export interface PayloadMigration {
  * via the `definition` "authentication_select".
  */
 export interface AuthenticationSelect<T extends boolean = true> {
-  user?: T;
+  email?: T;
   type?: T;
   provider?: T;
   providerAccountId?: T;

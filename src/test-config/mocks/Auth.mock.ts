@@ -41,7 +41,7 @@ export const googleUserResponseMock: UserInfoResponse = {
 
 export const authMock: Authentication = {
   id: '67ff38a56a35e1b6cf43a681',
-  user: '67ff38a56a35e1b6cf43a681',
+  email: 'jeffery@gmail.com',
   type: 'OAuth',
   provider: 'google',
   providerAccountId: '1234567890',
@@ -53,7 +53,7 @@ export const authMock: Authentication = {
 }
 
 export const authCreateMock: CreateAuthenticationData = {
-  user: '67ff38a56a35e1b6cf43a681',
+  email: 'jeffery@gmail.com',
   type: 'OAuth',
   provider: 'google',
   providerAccountId: 'account_id',
