@@ -1,6 +1,11 @@
-import { User } from '@/payload-types'
+import { ClientAdditionalInfo, User } from '@/payload-types'
 import { payload } from '../adapters/Payload'
-import { CreateUserData, UpdateUserData } from '@/types/Collections'
+import {
+  CreateClientAdditionalInfoData,
+  CreateUserData,
+  UpdateClientAdditionalInfoData,
+  UpdateUserData,
+} from '@/types/Collections'
 import { PaginatedDocs } from 'payload'
 
 export default class UserService {
@@ -80,6 +85,72 @@ export default class UserService {
     await payload.delete({
       collection: 'user',
       id: userID,
+    })
+  }
+
+  /*
+   * Client Additional Info service methods
+   */
+
+  /**
+   * Creates a new client additional info document
+   *
+   * @param clientAdditionalInfo The additional client information
+   * @returns The created client additional info document
+   */
+  public async createClientAdditionalInfo(
+    clientAdditionalInfo: CreateClientAdditionalInfoData,
+  ): Promise<ClientAdditionalInfo> {
+    return await payload.create({
+      collection: 'clientAdditionalInfo',
+      data: clientAdditionalInfo,
+    })
+  }
+
+  /**
+   * Retrieves a client additional info document by ID
+   *
+   * @param clientID The ID of the client additional info document to retrieve
+   * @returns The client additional info document
+   */
+  public async getClientAdditionalInfo(clientID: string): Promise<ClientAdditionalInfo> {
+    return (
+      await payload.find({
+        collection: 'clientAdditionalInfo',
+        where: { client: { equals: clientID } },
+      })
+    ).docs[0]
+  }
+
+  /**
+   * Updates a client additional info document by ID
+   *
+   * @param clientID The ID of the client additional info document to update
+   * @param updatedClientAdditionalInfo The updated client additional info data
+   * @returns The updated client additional info document
+   */
+  public async updateClientAdditionalInfo(
+    clientID: string,
+    updatedClientAdditionalInfo: UpdateClientAdditionalInfoData,
+  ): Promise<ClientAdditionalInfo> {
+    const result = await payload.update({
+      collection: 'clientAdditionalInfo',
+      id: clientID,
+      data: updatedClientAdditionalInfo,
+    })
+    return result
+  }
+
+  /**
+   * Deletes a client additional info document by ID
+   *
+   * @param clientID The ID of the client additional info document to delete
+   * @returns A promise that resolves when the document is deleted
+   */
+  public async deleteClientAdditionalInfo(clientID: string): Promise<void> {
+    await payload.delete({
+      collection: 'clientAdditionalInfo',
+      id: clientID,
     })
   }
 }
