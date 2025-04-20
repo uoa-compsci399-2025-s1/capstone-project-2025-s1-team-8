@@ -71,10 +71,6 @@ describe('User service test', () => {
       await expect(userService.getUser('nonexistent_id')).rejects.toThrow('Not Found')
     })
 
-    it('not found - find user with nonexistent id', async () => {
-      await expect(userService.getUser('nonexistent_id')).rejects.toThrow('Not Found')
-    })
-
     it('update a user by ID', async () => {
       const createdUser = await userService.createUser(studentCreateMock)
       const updatedUser = await userService.updateUser(createdUser.id, {
