@@ -29,6 +29,11 @@ export const GET = async (
   }
 }
 
+/**
+ * Deletes a project by its ID.
+ * @param req - The request object.
+ * @param params - The parameters object containing the project ID.
+ */
 export const DELETE = async (
   req: NextRequest,
   { params }: { params: Promise<{ projectId: string }> },
