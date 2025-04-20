@@ -105,7 +105,7 @@ describe('GET /api/auth/google/callback', () => {
       maxAge: 3600,
       httpOnly: true,
       sameSite: 'strict',
-      secure: process.env.NODE_ENV === 'production',
+      // secure: process.env.NODE_ENV === 'production',
     })
   })
 

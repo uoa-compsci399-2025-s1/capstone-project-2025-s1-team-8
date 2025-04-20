@@ -8,7 +8,7 @@ export const GET = async () => {
   // Set state to prevent CSRF attacks
   cookieStore.set('state', state, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    // secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     /**
      * Should be set at less than 10 minutes but for security, best for 60 seconds or less
