@@ -252,7 +252,10 @@ export interface SemesterProject {
 export interface Semester {
   id: string;
   name: string;
-  projects?: (string | SemesterProject)[] | null;
+  /**
+   * Description of the semester
+   */
+  description?: string | null;
   deadline: string;
   startDate: string;
   endDate: string;
@@ -473,7 +476,7 @@ export interface SemesterProjectSelect<T extends boolean = true> {
  */
 export interface SemesterSelect<T extends boolean = true> {
   name?: T;
-  projects?: T;
+  description?: T;
   deadline?: T;
   startDate?: T;
   endDate?: T;
