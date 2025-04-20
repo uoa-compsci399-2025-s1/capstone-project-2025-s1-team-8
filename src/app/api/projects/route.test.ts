@@ -14,7 +14,7 @@ describe('get projects', () => {
   it('should get no projects if none are created', async () => {
     const res = await GET({} as NextRequest)
     expect(res.status).toBe(StatusCodes.OK)
-    expect(await res.json()).toEqual({data: []})
+    expect(await res.json()).toEqual({ data: [] })
   })
 
   it('should return a list of all projects created', async () => {

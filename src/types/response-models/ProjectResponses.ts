@@ -8,9 +8,8 @@ export const GetProjectResponseSchema = CommonResponse.extend({
 })
 
 export const GetAllProjectsResponseSchema = CommonResponse.extend({
-    data: z.array(z.custom<Project>()),
+  data: z.array(z.custom<Project>()),
 })
-
 
 export type GetProjectResponse = z.infer<typeof GetProjectResponseSchema>
 
