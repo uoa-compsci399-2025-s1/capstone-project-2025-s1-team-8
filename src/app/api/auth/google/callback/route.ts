@@ -96,7 +96,7 @@ export const GET = async (req: NextRequest) => {
 
   cookieStore.set('auth_token', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    // secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     maxAge: 60 * 60,
   })
