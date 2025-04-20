@@ -12,7 +12,7 @@ export const ClientAdditionalInfo: CollectionConfig = {
       required: true,
     },
     {
-      name: 'description',
+      name: 'introduction',
       type: 'text',
       required: false,
     },

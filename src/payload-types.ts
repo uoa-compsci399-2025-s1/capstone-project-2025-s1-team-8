@@ -225,7 +225,7 @@ export interface Media {
 export interface ClientAdditionalInfo {
   id: string;
   client: string | User;
-  description?: string | null;
+  introduction?: string | null;
   affiliation?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -449,7 +449,7 @@ export interface UserSelect<T extends boolean = true> {
  */
 export interface ClientAdditionalInfoSelect<T extends boolean = true> {
   client?: T;
-  description?: T;
+  introduction?: T;
   affiliation?: T;
   updatedAt?: T;
   createdAt?: T;
