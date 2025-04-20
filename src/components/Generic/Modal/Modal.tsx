@@ -33,13 +33,11 @@ const Modal: React.FC<ModalProps> = ({ children, open, onClose, className = '' }
       onClick={handleClose}
     >
       <div
-        className={`relative bg-light-beige max-w-full w-[1280px] flex flex-col rounded-[20px] p-20 ${className}`}
+        className={`relative bg-light-beige max-w-full flex flex-col rounded-2xl ${className}`}
       >
-        <div className={``}>
-          <Button className="absolute top-4 right-4 rounded-full" onClick={onClose}>
-            <XMarkIcon className="text-dark-blue w-5 h-5" />
-          </Button>
-        </div>
+        <Button className="absolute top-10 right-10 rounded-full" onClick={onClose}>
+          <XMarkIcon className="text-dark-blue w-5 h-5" />
+        </Button>
         {children}
       </div>
     </div>,

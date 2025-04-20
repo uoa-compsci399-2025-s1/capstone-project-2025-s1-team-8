@@ -40,7 +40,7 @@ export const Default: Story = {
   },
   args: {
     open: false,
-    className: 'h-[80%] my-auto',
+    className: 'h-[80%] my-auto p-20',
   },
 }
 
@@ -66,6 +66,6 @@ export const OverflowY: Story = {
   },
   args: {
     open: false,
-    className: 'min-h-[150%] my-[8%]',
+    className: 'w-[1200px] min-h-[150%] my-[8%] p-20',
   },
 }

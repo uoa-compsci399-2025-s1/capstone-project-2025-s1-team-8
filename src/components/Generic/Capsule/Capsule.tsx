@@ -20,7 +20,7 @@ const Capsule: React.FC<CapsuleProps> = ({ text, variant = 'beige', className = 
 
   return (
     <div
-      className={`px-2.5 py-1 rounded-xl text-base ${className} 
+      className={`h-fit w-fit px-2.5 py-1 rounded-xl text-sm ${className} 
         ${variantClasses[variant]}`}
     >
       {text}
