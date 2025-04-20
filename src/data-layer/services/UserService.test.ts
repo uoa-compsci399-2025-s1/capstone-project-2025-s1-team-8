@@ -123,7 +123,7 @@ describe('User service test', () => {
         clientAdditionalInfoCreateMock,
       )
       const updatedInfo = await userService.updateClientAdditionalInfo(createdInfo.id, {
-        description: 'im not actually very cool',
+        introduction: 'im not actually very cool',
       })
       const fetchedInfo = await testPayloadObject.findByID({
         collection: 'clientAdditionalInfo',
