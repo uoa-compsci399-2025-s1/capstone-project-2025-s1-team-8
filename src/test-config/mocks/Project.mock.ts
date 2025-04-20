@@ -41,6 +41,12 @@ export const projectCreateMock2: CreateProjectData = {
   timestamp: new Date().toISOString(),
 }
 
+export const invalidCreateProjectMock = {
+  description: 'Description 3',
+  clients: [mockClient1],
+  timestamp: new Date().toISOString(),
+}
+
 /*
  * SemesterProject mocks
  */
