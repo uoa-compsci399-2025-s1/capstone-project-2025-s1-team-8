@@ -1,5 +1,4 @@
 import { NextRequest } from 'next/server'
-import { StatusCodes } from 'http-status-codes'
 import ProjectService from '@/data-layer/services/ProjectService'
 
 /**
