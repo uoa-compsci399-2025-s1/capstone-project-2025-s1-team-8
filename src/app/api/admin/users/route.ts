@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import UserService from '@/data-layer/services/UserService'
-import { User } from '@/payload-types';
+import { User } from '@/payload-types'
 
 /**
  * Method to fetch all users
@@ -10,9 +10,7 @@ import { User } from '@/payload-types';
  * @param param1 The query parameters, including limit and cursor
  * @returns
  */
-export const GET = async (
-  req: NextRequest
-) => {
+export const GET = async (req: NextRequest) => {
   const searchParams = req.nextUrl.searchParams
   const limit = parseInt(searchParams.get('limit') || '10') // default value as fallback
   const cursor = parseInt(searchParams.get('cursor') || '0')
@@ -23,7 +21,7 @@ export const GET = async (
   const userService = new UserService()
   const { docs: rawUserData, nextPage } = await userService.getAllUsers(limit, cursor)
 
-  const combinedUserData: User[] = rawUserData.map(userInfo => {
+  const combinedUserData: User[] = rawUserData.map((userInfo) => {
     return userInfo
   })
 
