@@ -24,6 +24,6 @@ describe('get projects', () => {
     const res = await GET({} as NextRequest)
     expect(res.status).toBe(StatusCodes.OK)
     const data = await res.json()
-    expect(data.data.length).toEqual<GetAllProjectsResponse>(2)
+    expect(data.data.length).toEqual(2)
   })
 })
