@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
-import { GET } from '@/app/api/project/[projectId]/route'
+import { GET } from '@/app/api/projects/[projectId]/route'
 import { NextRequest } from 'next/server'
 
 describe('get user count', () => {
