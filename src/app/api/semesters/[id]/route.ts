@@ -2,6 +2,12 @@ import SemesterService from '@/data-layer/services/SemesterService'
 import { StatusCodes } from 'http-status-codes'
 import { NextResponse } from 'next/server'
 
+/**
+ * Fetches a semester by its ID.
+ *
+ * @param param0 The ID of the semester to fetch
+ * @returns The semester data
+ */
 export const GET = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params
   const semesterService = new SemesterService()
