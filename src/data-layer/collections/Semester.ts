@@ -16,7 +16,7 @@ export const Semester: CollectionConfig = {
       required: false,
       admin: {
         description: 'Description of the semester',
-      }
+      },
     },
     {
       name: 'deadline',
