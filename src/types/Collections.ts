@@ -51,9 +51,9 @@ export type CreateUserData = Omit<
 >
 export type UpdateUserData = Partial<CreateUserData>
 export type UserCombinedInfo = User & {
-  introduction?: string;
-  affiliation?: string;
-};
+  introduction?: string
+  affiliation?: string
+}
 
 export type CreateClientAdditionalInfoData = Omit<
   ClientAdditionalInfo,
