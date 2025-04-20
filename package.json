@@ -39,6 +39,7 @@
     "dotenv": "^16.4.7",
     "googleapis": "^148.0.0",
     "graphql": "^16.8.1",
+    "http-status-codes": "^2.3.0",
     "jsonwebtoken": "^9.0.2",
     "next": "15.2.4",
     "payload": "latest",
