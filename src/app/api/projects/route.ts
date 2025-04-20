@@ -7,20 +7,18 @@ import ProjectService from '@/data-layer/services/ProjectService'
  * @param req - The request object.
  */
 
-export const POST = async (
-  req: NextRequest): Promise<Response> => {
+export const POST = async (req: NextRequest): Promise<Response> => {
   const projectService = new ProjectService()
 
   try {
     const body = await req.json()
     const data = await projectService.createProject(body)
     return Response.json({ data }, { status: StatusCodes.CREATED })
-  } catch (error){
+  } catch (error) {
     console.error(error)
     return Response.json(
       { error: 'Bad request body' },
       { status: StatusCodes.INTERNAL_SERVER_ERROR },
     )
-
   }
 }
