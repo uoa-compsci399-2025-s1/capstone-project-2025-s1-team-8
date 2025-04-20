@@ -1,0 +1,14 @@
+import SemesterService from '@/data-layer/services/SemesterService'
+import { StatusCodes } from 'http-status-codes'
+import { NextResponse } from 'next/server'
+
+export const GET = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params
+  const semesterService = new SemesterService()
+  try {
+    const semester = await semesterService.getSemester(id)
+    return NextResponse.json({ data: semester })
+  } catch {
+    return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
+  }
+}
