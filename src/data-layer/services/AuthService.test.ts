@@ -28,6 +28,12 @@ describe('Project service methods test', () => {
     await expect(authService.getAuth('nonexistent_id')).rejects.toThrow('Not Found')
   })
 
+  it('should get an auth doc by email', async () => {
+    const newAuthentication = await authService.createAuth(authCreateMock)
+    const fetchedAuthentication = await authService.getAuthByEmail(newAuthentication.email)
+    expect(newAuthentication).toEqual(fetchedAuthentication)
+  })
+
   it('should update a auth', async () => {
     const newAuth = await authService.createAuth(authCreateMock)
     const updatedAuth = await authService.updateAuth(newAuth.id, {
