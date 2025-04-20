@@ -14,16 +14,16 @@ describe('admin fetch user', () => {
   it('fetch user by Id', async () => {
     const userService = new UserService()
     const user = await userService.createUser(adminCreateMock)
-    const slug = { userId: user.id }
+    const slug = { id: user.id }
     const res = await GET({} as NextRequest, {
       params: paramsToPromise(slug),
     })
     expect(res.status).toBe(StatusCodes.OK)
-    expect(await res.json()).toEqual({ data: user })
+    expect(await res.json()).toEqual(user)
   })
 
   it('should return a 404 error if the user does not exist', async () => {
-    const slug = { userId: 'nonexistent' }
+    const slug = { id: 'nonexistent' }
     const res = await GET({} as NextRequest, {
       params: paramsToPromise(slug),
     })
