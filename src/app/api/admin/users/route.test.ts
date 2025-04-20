@@ -3,7 +3,11 @@ import { StatusCodes } from 'http-status-codes'
 import { clearCollection, createMockNextRequest, testPayloadObject } from '@/test-config/utils'
 import { GET } from './route'
 import UserService from '@/data-layer/services/UserService'
-import { adminCreateMock, clientCreateMock } from '@/test-config/mocks/User.mock'
+import {
+  adminCreateMock,
+  clientAdditionalInfoCreateMock,
+  clientCreateMock,
+} from '@/test-config/mocks/User.mock'
 
 describe('get user count', () => {
   const userService = new UserService()
@@ -41,5 +45,24 @@ describe('get user count', () => {
     expect(res.status).toBe(StatusCodes.OK)
     expect(json.data.length).toEqual(1)
     expect(json.nextCursor).toBeNull()
+  })
+
+  it('should return client additional info as well', async () => {
+    const newClient = await userService.createUser(clientCreateMock)
+    const newClientInfo = await userService.createClientAdditionalInfo({
+      ...clientAdditionalInfoCreateMock,
+      client: newClient,
+    })
+    const req = createMockNextRequest(`/api/admin/users`)
+    const res = await GET(req)
+    const json = await res.json()
+    console.log(json.data)
+    expect(res.status).toBe(StatusCodes.OK)
+    expect(json.data.length).toEqual(1)
+    expect(json.data[0]).toStrictEqual({
+      ...newClient,
+      introduction: newClientInfo.introduction,
+      affiliation: newClientInfo.affiliation,
+    })
   })
 })
