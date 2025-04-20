@@ -9,7 +9,7 @@ import {
 } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 
-export class FormService {
+export default class FormService {
   /**
    * Creates a new form document in the database.
    *
