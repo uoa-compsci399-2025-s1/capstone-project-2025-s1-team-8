@@ -10,7 +10,7 @@ import ProjectService from '@/data-layer/services/ProjectService'
 
 export const GET = async (
   req: NextRequest,
-  { params }: { params: { projectId: string } },
+  { params }: { params: Promise<{ projectId: string }> },
 ): Promise<Response> => {
   const { projectId } = await params
   const projectService = new ProjectService()
