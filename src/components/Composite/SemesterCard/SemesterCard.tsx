@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/ProjectCard'
 import SemesterProjectCard from '@/components/Generic/ProjectCard/SemesterProjectCard'
+import Capsule from '@/components/Generic/Capsule/Capsule'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 
 export interface SemesterCardProps {
@@ -44,8 +45,8 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
           ? 'bg-muted-blue-op-45'
           : 'bg-gradient-to-r from-denim-blue to-deeper-blue'
       }
-      rounded-lg ring-1 ring-deeper-blue p-4 sm:p-6 cursor-pointer hover:shadow-md
-      flex flex-col gap-3 relative
+      rounded-lg ring-1 ring-deeper-blue p-4 py-5 sm:p-6 sm:py-7 cursor-pointer hover:shadow-md
+      flex flex-col gap-2.5 relative
     `}
       >
         <p
@@ -59,14 +60,12 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
         </p>
 
         {currentOrUpcoming && (
-          <div className="info-tag-beige uppercase absolute top-4 sm:top-6 right-4 sm:right-6 text-xs sm:text-sm">
-            {currentOrUpcoming}
-          </div>
+          <Capsule text={currentOrUpcoming} variant='beige' className='uppercase absolute top-5 sm:top-8 right-4 sm:right-6 text-xs pb-[3px]'/>
         )}
 
         <div className="flex flex-wrap sm:flex-nowrap gap-2">
-          <div className="info-tag-blue">{new Date(startDate).toLocaleDateString()}</div>
-          <div className="info-tag-blue">{new Date(endDate).toLocaleDateString()}</div>
+          <Capsule text={new Date(startDate).toLocaleDateString()} variant='muted_blue' className='text-xs pl-2 pr-2 rounded-b-lg rounded-t-lg'/>
+          <Capsule text={new Date(endDate).toLocaleDateString()} variant='muted_blue' className='text-xs pl-2 pr-2 rounded-b-lg rounded-t-lg'/>
         </div>
       </div>
 

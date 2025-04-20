@@ -55,8 +55,8 @@
     color: rgb(1000, 1000, 1000);
 
     @media (max-width: 1024px) {
-    font-size: 15px;
-    line-height: 24px;
+      font-size: 15px;
+      line-height: 24px;
     }
   }
 

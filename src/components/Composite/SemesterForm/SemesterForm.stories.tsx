@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { useArgs } from '@storybook/preview-api';
+import { useArgs } from '@storybook/preview-api'
 import SemesterForm from './SemesterForm'
 import Button from '../../Generic/Button/Button'
 
@@ -9,7 +9,7 @@ const meta: Meta<typeof SemesterForm> = {
   tags: ['autodocs'],
   args: {
     open: false,
-    className: "",
+    className: '',
   },
 }
 
@@ -18,60 +18,54 @@ type Story = StoryObj<typeof SemesterForm>
 
 export const Empty: Story = {
   render: (args) => {
-    const [{ open }, updateArgs] = useArgs();
-    
+    const [{ open }, updateArgs] = useArgs()
+
     function onChange() {
-      updateArgs({ open: !open });
+      updateArgs({ open: !open })
     }
-    
+
     return (
       <div>
         <Button onClick={() => onChange()} variant="dark" size="md">
           Open modal
         </Button>
-        <SemesterForm
-          {...args}
-          open = {open}
-          onClose={() => onChange()}
-        >
+        <SemesterForm {...args} open={open} onClose={() => onChange()}>
           <p className="text-black">This is a default modal.</p>
         </SemesterForm>
       </div>
     )
-  }, args: {
+  },
+  args: {
     open: false,
-    className: "w-[800px]",
-  }
+    className: 'w-[800px]',
+  },
 }
 
 export const WithData: Story = {
   render: (args) => {
-    const [{ open }, updateArgs] = useArgs();
-    
+    const [{ open }, updateArgs] = useArgs()
+
     function onChange() {
-      updateArgs({ open: !open });
+      updateArgs({ open: !open })
     }
-    
+
     return (
       <div>
         <Button onClick={() => onChange()} variant="dark" size="md">
           Open modal
         </Button>
-        <SemesterForm
-          {...args}
-          open = {open}
-          onClose={() => onChange()}
-        >
+        <SemesterForm {...args} open={open} onClose={() => onChange()}>
           <p className="text-black">This is a default modal.</p>
         </SemesterForm>
       </div>
     )
-  }, args: {
+  },
+  args: {
     open: false,
-    className: "w-[800px]",
-    semesterName: "Semester 1 2024",
-    startDate: new Date("2023-09-01"),
-    endDate: new Date("2024-01-31"),
-    submissionDeadline: new Date("2024-01-15"),
-  }
+    className: 'w-[800px]',
+    semesterName: 'Semester 1 2024',
+    startDate: new Date('2023-09-01'),
+    endDate: new Date('2024-01-31'),
+    submissionDeadline: new Date('2024-01-15'),
+  },
 }

@@ -20,13 +20,13 @@ const Modal: React.FC<ModalProps> = ({ children, open, onClose, className = '' }
   }
 
   useEffect(() => {
-      // lock page scroll
-      document.body.style.overflow = open ? 'hidden' : ''
-      return () => {
-        // cleanup if unmounted
-        document.body.style.overflow = ''
-      }
-    }, [open]) 
+    // lock page scroll
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => {
+      // cleanup if unmounted
+      document.body.style.overflow = ''
+    }
+  }, [open])
 
   return ReactDOM.createPortal(
     <div

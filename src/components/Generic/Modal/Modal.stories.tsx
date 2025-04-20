@@ -24,8 +24,6 @@ export const Default: Story = {
       updateArgs({ open: !open })
     }
 
-
-
     return (
       <div>
         <Button onClick={() => onChange()} variant="dark" size="md">
