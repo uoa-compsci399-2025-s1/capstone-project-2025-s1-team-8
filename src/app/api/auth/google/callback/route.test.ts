@@ -40,6 +40,8 @@ vi.mock('@/data-layer/services/AuthService', () => {
   return {
     default: vi.fn().mockImplementation(() => ({
       createAuth: vi.fn().mockResolvedValue(authMock),
+      getAuthByEmail: (email: string) => (email === authMock.email ? authMock : null),
+      updateAuth: vi.fn().mockResolvedValue(authMock),
     })),
   }
 })

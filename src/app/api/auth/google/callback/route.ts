@@ -63,22 +63,32 @@ export const GET = async (req: NextRequest) => {
       email,
       firstName,
       lastName: lastName || '',
-      role: UserRole.Student,
+      role: UserRole.Client,
     }
     user = await userService.createUser(newUserData)
   }
 
   const authService = new AuthService()
-  await authService.createAuth({
-    user,
-    type: 'oauth',
-    provider: 'google',
-    providerAccountId: sub,
-    accessToken: tokens.access_token,
-    expiresAt: tokens.expiry_date,
-    scope: scopes.join(' '),
-    idToken: tokens.id_token,
-  })
+  const fetchedAuth = await authService.getAuthByEmail(email)
+  if (fetchedAuth) {
+    await authService.updateAuth(fetchedAuth.id, {
+      accessToken: tokens.access_token,
+      expiresAt: tokens.expiry_date,
+      scope: scopes.join(' '),
+      idToken: tokens.id_token,
+    })
+  } else {
+    await authService.createAuth({
+      email,
+      type: 'oauth',
+      provider: 'google',
+      providerAccountId: sub,
+      accessToken: tokens.access_token,
+      expiresAt: tokens.expiry_date,
+      scope: scopes.join(' '),
+      idToken: tokens.id_token,
+    })
+  }
 
   const businessAuthService = new BusinessAuthService()
   const token = businessAuthService.generateJWT(user, tokens.access_token)
