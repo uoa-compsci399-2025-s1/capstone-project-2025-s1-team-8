@@ -92,7 +92,7 @@ describe('User service test', () => {
     })
   })
 
-  describe('client additional info methods', async () => {
+  describe('client additional info methods', () => {
     it('should create client additional info', async () => {
       const createdInfo = await userService.createClientAdditionalInfo(
         clientAdditionalInfoCreateMock,
