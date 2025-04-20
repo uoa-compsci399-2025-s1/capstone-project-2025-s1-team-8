@@ -33,7 +33,7 @@ const Modal: React.FC<ModalProps> = ({ children, open, onClose, className = '' }
       onClick={handleClose}
     >
       <div
-        className={`relative bg-light-beige max-w-full w-[1280px] flex flex-col items-center rounded-[20px] p-8 ${className}`}
+        className={`relative bg-light-beige max-w-full w-[1280px] flex flex-col rounded-[20px] p-20 ${className}`}
       >
         <div className={``}>
           <Button className="absolute top-4 right-4 rounded-full" onClick={onClose}>

@@ -32,7 +32,7 @@ export const Default: Story = {
           <Button variant="dark" children="Open modal" size="md" />
         </button>
 
-        <Modal {...args} open={open} onClose={() => onChange()}>
+        <Modal open={open} onClose={() => onChange()} className={args.className}>
           <p className="text-black pt-10">This is a default modal.</p>
         </Modal>
       </div>

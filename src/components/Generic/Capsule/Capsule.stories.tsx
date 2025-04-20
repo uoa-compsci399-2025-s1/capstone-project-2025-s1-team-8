@@ -6,7 +6,7 @@ const meta: Meta<typeof Capsule> = {
   component: Capsule,
   tags: ['autodocs'], // optional, helpful for auto-generated docs
   args: {
-    children: 'Click Me',
+    text: 'Read Me',
     variant: 'light_beige',
   },
   decorators: [
