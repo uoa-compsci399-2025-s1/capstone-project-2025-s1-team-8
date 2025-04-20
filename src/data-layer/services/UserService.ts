@@ -23,9 +23,11 @@ export default class UserService {
   }
 
   /**
-   * Retrieves a user document from the database by its ID.
+   * Retrieves a paginated list of user documents from the database.
    *
-   * @param userID The ID of the user to retrieve
+   * @param limit The maximum number of users to retrieve, defaults to 100
+   * @param pagingCounter The page number to retrieve
+   * @returns A paginated list of user documents
    * @returns The retrieved user document
    */
   public async getUser(userID: string): Promise<User> {
@@ -49,13 +51,22 @@ export default class UserService {
   }
 
   /**
-   * Retrieves all user documents from the database.
+   * Retrieves a paginated list of user documents from the database.
    *
+   * @param limit The maximum number of users to retrieve, defaults to 100
+   * @param pagingCounter The page number to retrieve
+   * @returns A paginated list of user documents
    * @returns The retrieved user documents
    */
-  public async getAllUsers(): Promise<PaginatedDocs<User>> {
+  public async getAllUsers(
+    limit: number = 100,
+    pagingCounter?: number,
+  ): Promise<PaginatedDocs<User>> {
     return await payload.find({
       collection: 'user',
+      limit,
+      pagination: true,
+      page: pagingCounter,
     })
   }
 
