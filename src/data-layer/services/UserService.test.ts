@@ -114,6 +114,10 @@ describe('User service test', () => {
       expect(createdInfo).toEqual(fetchedInfo)
     })
 
+    it('should return undefined if no client additional info is found', async () => {
+      expect(await userService.getClientAdditionalInfo('nonexistent_id')).toBeUndefined()
+    })
+
     it('should update client additional info', async () => {
       const createdInfo = await userService.createClientAdditionalInfo(
         clientAdditionalInfoCreateMock,
