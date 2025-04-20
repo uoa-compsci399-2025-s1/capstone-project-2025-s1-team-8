@@ -1,5 +1,7 @@
-import { mockClient1 } from '@/test-config/mocks/User.mock'
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
+import * as nextHeaders from 'next/headers'
 
+import { mockClient1 } from '@/test-config/mocks/User.mock'
 import {
   authMock,
   CODE_MOCK,
@@ -54,8 +56,6 @@ vi.mock('@/business-layer/services/AuthService', () => {
 })
 
 import { GET as callback } from '@/app/api/auth/google/callback/route'
-import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
-import * as nextHeaders from 'next/headers'
 
 const mockSet = vi.fn()
 
