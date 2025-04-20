@@ -123,7 +123,7 @@ describe('GET /api/auth/google/callback', () => {
 
   it('returns 400 if state does not match', async () => {
     const req = createMockNextRequest(
-      `/api/auth/google/callback?code=${CODE_MOCK}&state=wrong_state&scope=${SCOPES_MOCK}}`,
+      `/api/auth/google/callback?code=${CODE_MOCK}&state=wrong_state&scope=${SCOPES_MOCK}`,
     )
     req.cookies.set('state', STATE_MOCK)
 
