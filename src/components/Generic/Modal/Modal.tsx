@@ -1,9 +1,9 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import Button from '../Button/Button'
 import { XMarkIcon } from '@heroicons/react/16/solid'
 
-interface ModalProps {
+export interface ModalProps {
   children: ReactNode
   open: boolean // Whether the modal is open
   onClose: () => void // Function to close the modal
@@ -18,13 +18,22 @@ const Modal: React.FC<ModalProps> = ({ children, open, onClose, className = '' }
     }
   }
 
+  useEffect(() => {
+      // lock page scroll
+      document.body.style.overflow = open ? 'hidden' : ''
+      return () => {
+        // cleanup if unmounted
+        document.body.style.overflow = ''
+      }
+    }, [open]) 
+
   return ReactDOM.createPortal(
     <div
-      className={`absolute bg-[#1e6179]/59 w-full h-full left-0 top-0 ${open ? 'block' : 'hidden'}`}
+      className={`fixed bg-[#1e6179]/59 w-full h-full flex-col items-center overflow-y-scroll left-0 top-0 ${open ? 'flex' : 'hidden'}`}
       onClick={handleClose}
     >
       <div
-        className={`absolute bg-light-beige max-w-screen -translate-x-2/4 -translate-y-2/4 flex flex-col items-center rounded-2xl left-2/4 top-2/4 ${className}`}
+        className={`relative bg-light-beige max-w-full w-[1280px] flex flex-col items-center rounded-[20px] p-8 ${className}`}
       >
         <div className={``}>
           <Button className="absolute top-4 right-4 rounded-full" onClick={onClose}>

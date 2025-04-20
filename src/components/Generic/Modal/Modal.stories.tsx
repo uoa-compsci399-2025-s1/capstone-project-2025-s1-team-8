@@ -24,6 +24,8 @@ export const Default: Story = {
       updateArgs({ open: !open })
     }
 
+
+
     return (
       <div>
         <button onClick={() => onChange()}>
@@ -38,6 +40,32 @@ export const Default: Story = {
   },
   args: {
     open: false,
-    className: 'h-[500px]',
+    className: 'h-[80%] my-auto',
+  },
+}
+
+export const OverflowY: Story = {
+  render: (args) => {
+    const [{ open }, updateArgs] = useArgs()
+
+    function onChange() {
+      updateArgs({ open: !open })
+    }
+
+    return (
+      <div>
+        <button onClick={() => onChange()}>
+          <Button variant="dark" children="Open modal" size="md"/>
+        </button> 
+
+        <Modal {...args} open={open} onClose={() => onChange()}>
+          <p className="text-black pt-10">This is a default modal.</p>
+        </Modal>
+      </div>
+    )
+  },
+  args: {
+    open: false,
+    className: 'min-h-[150%] my-[8%]',
   },
 }
