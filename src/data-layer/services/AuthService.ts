@@ -34,6 +34,7 @@ export default class AuthService {
       })
     ).docs[0]
   }
+
   /**
    * Method to retrieve an authentication document.
    *
