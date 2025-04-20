@@ -19,6 +19,24 @@ export default class AuthService {
   /**
    * Method to retrieve an authentication document.
    *
+   * @param email The email of the authentication to retrieve
+   * @returns The Authentication document
+   */
+  public async getAuthByEmail(email: string): Promise<Authentication> {
+    return (
+      await payload.find({
+        collection: 'authentication',
+        where: {
+          email: {
+            equals: email,
+          },
+        },
+      })
+    ).docs[0]
+  }
+  /**
+   * Method to retrieve an authentication document.
+   *
    * @param authID The ID of the authentication to retrieve
    * @returns The Authentication document
    */
