@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server'
-import { ProjectService } from '@/data-layer/services/ProjectService'
 import { StatusCodes } from 'http-status-codes'
+import ProjectService from '@/data-layer/services/ProjectService'
 
 /**
  * Fetches a project by its ID.
