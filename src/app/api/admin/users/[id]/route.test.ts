@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 
 import { clearCollection, paramsToPromise, testPayloadObject } from '@/test-config/utils'
 import UserService from '@/data-layer/services/UserService'
-import { adminCreateMock } from '@/test-config/mocks/User.mock'
+import { clientAdditionalInfoCreateMock } from '@/test-config/mocks/User.mock'
 import { GET } from '@/app/api/admin/users/[id]/route'
 import { NextRequest } from 'next/server'
 
@@ -13,8 +13,9 @@ describe('admin fetch user', () => {
 
   it('fetch user by Id', async () => {
     const userService = new UserService()
-    const user = await userService.createUser(adminCreateMock)
-    const slug = { id: user.id }
+    const user = await userService.createClientAdditionalInfo(clientAdditionalInfoCreateMock)
+    const id = typeof user.client === 'object' ? user.client.id : user.client
+    const slug = { id }
     const res = await GET({} as NextRequest, {
       params: paramsToPromise(slug),
     })
