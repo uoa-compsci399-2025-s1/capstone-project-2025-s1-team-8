@@ -6,6 +6,12 @@ import { CreateSemesterData } from "@/types/Collections";
 import { CreateSemesterRequestBody } from "@/types/request-models/SemesterRequests";
 import { ZodError } from "zod";
 
+/**
+* POST Method to create a new semester.
+*
+* @param req The request object containing the request body
+* @returns The created semester.
+*/
 export const POST = async (req: NextRequest) => {
   try {
     const parsedBody = CreateSemesterRequestBody.parse(await req.json());
