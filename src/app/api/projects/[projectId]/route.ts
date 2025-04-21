@@ -45,7 +45,7 @@ export const DELETE = async (
     await projectService.deleteProject(projectId)
     return new Response(null, { status: StatusCodes.NO_CONTENT })
   } catch (error) {
-    if ((error as Error).message == 'Not Found') {
+    if ((error as Error).message === 'Not Found') {
       return Response.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
     }
     console.error(error)

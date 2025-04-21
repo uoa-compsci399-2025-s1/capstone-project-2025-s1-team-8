@@ -9,9 +9,9 @@ describe('get projects', () => {
   afterEach(async () => {
     await clearCollection(testPayloadObject, 'project')
   })
+  const projectService = new ProjectService()
 
   it('should get a project correctly', async () => {
-    const projectService = new ProjectService()
     const project = await projectService.createProject(projectCreateMock)
     const slug = { projectId: project.id }
     const res = await GET({} as NextRequest, {
@@ -31,7 +31,6 @@ describe('get projects', () => {
   })
 
   it('should delete a project correctly', async () => {
-    const projectService = new ProjectService()
     const project = await projectService.createProject(projectCreateMock)
     const slug = { projectId: project.id }
     const res = await DELETE({} as NextRequest, {
