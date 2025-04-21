@@ -11,12 +11,13 @@ import { GET } from '@/app/api/admin/users/[id]/route'
 import { NextRequest } from 'next/server'
 
 describe('admin fetch user', () => {
+  const userService = new UserService()
+
   afterEach(async () => {
     await clearCollection(testPayloadObject, 'user')
   })
 
   it('fetch client by Id', async () => {
-    const userService = new UserService()
     const newClient = await userService.createUser(clientCreateMock)
     const newClientInfo = await userService.createClientAdditionalInfo({
       ...clientAdditionalInfoCreateMock,
@@ -40,13 +41,13 @@ describe('admin fetch user', () => {
   })
 
   it('fetch generic user by Id', async () => {
-    const userService = new UserService()
     const newAdmin = await userService.createUser(adminCreateMock)
     const newAdminInfo = await userService.createClientAdditionalInfo({
       ...adminCreateMock,
       client: newAdmin,
     })
     console.log(newAdminInfo)
+    expect(newAdminInfo.client).toEqual(newAdmin)
     expect(newAdminInfo.introduction === undefined).toBe(true)
     expect(newAdminInfo.affiliation === undefined).toBe(true)
   })
