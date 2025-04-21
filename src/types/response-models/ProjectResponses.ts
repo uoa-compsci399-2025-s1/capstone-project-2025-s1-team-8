@@ -14,4 +14,3 @@ export const PostProjectResponseSchema = CommonResponse.extend({
 export type GetProjectResponse = z.infer<typeof GetProjectResponseSchema>
 
 export type PostProjectReponse = z.infer<typeof PostProjectResponseSchema>
-
