@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
-import { projectCreateMock, invalidCreateProjectMock } from '@/test-config/mocks/Project.mock'
+import { projectCreateMock} from '@/test-config/mocks/Project.mock'
 import { POST } from '@/app/api/projects/route'
 import { NextRequest } from 'next/server'
 
@@ -28,7 +28,7 @@ describe('get projects', () => {
   it('should fail to create a project', async () => {
     const req = new NextRequest('https://localhost:3000/api/projects', {
       method: 'POST',
-      body: JSON.stringify(invalidCreateProjectMock),
+      body: JSON.stringify({ ... projectCreateMock, description: undefined }),
       headers: {
         'Content-Type': 'application/json',
       },
