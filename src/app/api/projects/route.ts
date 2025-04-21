@@ -9,12 +9,11 @@ import { NextRequest } from 'next/server'
 export const GET = async (req: NextRequest): Promise<Response> => {
   const projectService = new ProjectService()
   const searchParams = req.nextUrl.searchParams
-  const clientId = searchParams.get('clientId')
   const name = searchParams.get('name')
-  if (clientId){
-   return Response.json({ data: await projectService.getProjectsByClientId(clientId) }) 
-  } else if (name) {
+  const page = parseInt(searchParams.get('page') || '1')
+  const limit = parseInt(searchParams.get('limit') || '100')
+  if (name) {
     return Response.json({ data: await projectService.getProjectByName(name) })
   }
-  return Response.json({ data: await projectService.getAllProjects() })
+  return Response.json({ data: await projectService.getAllProjects(limit, page) })
 }

@@ -3,6 +3,7 @@ import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET } from '@/app/api/projects/route'
+import { NextRequest } from 'next/server'
 
 describe('get projects', () => {
   afterEach(async () => {
@@ -10,7 +11,7 @@ describe('get projects', () => {
   })
 
   it('should get no projects if none are created', async () => {
-    const res = await GET()
+    const res = await GET({} as NextRequest)
     expect(res.status).toBe(StatusCodes.OK)
     expect(await res.json()).toEqual({ data: [] })
   })
@@ -19,7 +20,7 @@ describe('get projects', () => {
     const projectService = new ProjectService()
     await projectService.createProject(projectCreateMock)
     await projectService.createProject(projectCreateMock)
-    const res = await GET()
+    const res = await GET({} as NextRequest)
     expect(res.status).toBe(StatusCodes.OK)
     const data = await res.json()
     expect(data.data.length).toEqual(2)
