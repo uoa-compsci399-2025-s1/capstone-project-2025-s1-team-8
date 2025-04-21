@@ -49,11 +49,22 @@ describe('User service test', () => {
       expect(fetchedUser).toEqual(createdUser)
     })
 
-    it('find all users', async () => {
-      await userService.createUser(adminCreateMock)
+    it('should return a paginated list of users', async () => {
       await userService.createUser(clientCreateMock)
-      const fetchedUsers = await userService.getAllUsers()
-      expect(fetchedUsers.docs.length).toEqual(2)
+      await userService.createUser(adminCreateMock)
+      const fetchedUsers = await userService.getAllUsers(1)
+
+      expect(fetchedUsers.docs.length).toEqual(1)
+      expect(fetchedUsers.hasNextPage).toBeTruthy()
+
+      const nextPage = await userService.getAllUsers(
+        1,
+        fetchedUsers.nextPage ? fetchedUsers.nextPage : undefined,
+      )
+      expect(nextPage.docs.length).toEqual(1)
+      expect(nextPage.hasNextPage).toBeFalsy()
+
+      expect(nextPage.docs[0].id).not.toEqual(fetchedUsers.docs[0].id)
     })
 
     it('should return a paginated list of users', async () => {

@@ -1,12 +1,6 @@
 import { Authentication } from '@/payload-types'
 import { UserInfoResponse } from '@/types/Auth'
 import { CreateAuthenticationData } from '@/types/Collections'
-import { NextRequest } from 'next/server'
-
-// Mock Next Request
-export function createMockNextRequest(url: string) {
-  return new NextRequest(new URL(url, 'http://localhost:3000'))
-}
 
 export const CODE_MOCK = 'coolcode'
 export const STATE_MOCK = 'coolstate'

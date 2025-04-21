@@ -56,7 +56,6 @@ export default class UserService {
    * @param limit The maximum number of users to retrieve, defaults to 100
    * @param pagingCounter The page number to retrieve
    * @returns A paginated list of user documents
-   * @returns The retrieved user documents
    */
   public async getAllUsers(
     limit: number = 100,

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { StatusCodes } from 'http-status-codes'
 
 import UserService from '@/data-layer/services/UserService'
-import { User } from '@/payload-types'
+import { UserRole } from '@/types/User'
 
 /**
  * Method to fetch all users
@@ -16,14 +17,22 @@ export const GET = async (req: NextRequest) => {
   const cursor = parseInt(searchParams.get('cursor') || '0')
 
   if (limit > 100 || limit < 0) {
-    return NextResponse.json({ error: 'Invalid fetch limit' }, { status: 400 })
+    return NextResponse.json({ error: 'Invalid fetch limit' }, { status: StatusCodes.BAD_REQUEST })
   }
   const userService = new UserService()
   const { docs: rawUserData, nextPage } = await userService.getAllUsers(limit, cursor)
 
-  const combinedUserData: User[] = rawUserData.map((userInfo) => {
-    return userInfo
-  })
+  const combinedUserData = await Promise.all(
+    rawUserData.map(async (userInfo) => {
+      if (userInfo.role === UserRole.Client) {
+        const { introduction, affiliation } = {
+          ...(await userService.getClientAdditionalInfo(userInfo.id)),
+        }
+        return { ...userInfo, introduction, affiliation }
+      }
+      return userInfo
+    }),
+  )
 
   return NextResponse.json({ data: combinedUserData, nextCursor: nextPage })
 }
