@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { StatusCodes } from 'http-status-codes'
 
 import UserService from '@/data-layer/services/UserService'
 import { UserRole } from '@/types/User'
@@ -16,7 +17,7 @@ export const GET = async (req: NextRequest) => {
   const cursor = parseInt(searchParams.get('cursor') || '0')
 
   if (limit > 100 || limit < 0) {
-    return NextResponse.json({ error: 'Invalid fetch limit' }, { status: 400 })
+    return NextResponse.json({ error: 'Invalid fetch limit' }, { status: StatusCodes.BAD_REQUEST })
   }
   const userService = new UserService()
   const { docs: rawUserData, nextPage } = await userService.getAllUsers(limit, cursor)
