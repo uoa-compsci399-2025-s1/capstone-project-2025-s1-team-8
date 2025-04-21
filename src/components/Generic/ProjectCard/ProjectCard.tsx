@@ -58,7 +58,7 @@ const ProjectCard = ({ id, projectInfo }: ProjectCardType) => {
       <button {...listeners} className="text-left">
         <div className="absolute inset-0 bg-gradient-to-t from-bright-blue to-light-beige opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out z-0 rounded-2xl" />
         <div className="relative z-10">
-          <p className="text-dark-blue text-base font-bold pb-0.5">{projectInfo.projectName}</p>
+          <p className="text-dark-blue text-base font-semibold pb-0.5">{projectInfo.projectName}</p>
           <p className="text-dark-blue text-sm">{projectInfo.client.name}</p>
           <p className="text-grey-1 py-2 text-xs">{truncatedDescription}</p>
         </div>

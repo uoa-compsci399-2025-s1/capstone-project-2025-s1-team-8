@@ -199,10 +199,7 @@
   .nav-link-text-underline {
     @apply absolute left-0 bottom-0 w-full h-1 bg-muted-blue scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-lg;
   }
-  .info-tag-blue {
-    @apply rounded-lg text-xs py-1 px-2 bg-muted-blue text-dark-blue w-max h-max;
-  }
-  .info-tag-beige {
-    @apply rounded-lg text-xs py-1 px-2 bg-beige ring-1 ring-muted-blue text-dark-blue w-max h-max;
+  .small-info-tag {
+    @apply text-xs pl-2 pr-2 rounded-b-lg rounded-t-lg;
   }
 }

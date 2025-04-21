@@ -24,21 +24,12 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
-  const [height, setHeight] = useState('0px')
-
-  useEffect(() => {
-    if (isOpen && contentRef.current) {
-      setHeight(`${contentRef.current.scrollHeight}px`)
-    } else {
-      setHeight('0px')
-    }
-  }, [isOpen])
 
   return (
     <div className="relative w-full flex flex-col gap-4">
       {/* Semester Card */}
       <div
-        onClick={() => setIsOpen(true)}
+        onClick={() => setIsOpen(!isOpen)}
         className={`
       ${
         currentOrUpcoming === 'upcoming' || currentOrUpcoming === 'current'
@@ -64,43 +55,39 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
         )}
 
         <div className="flex flex-wrap sm:flex-nowrap gap-2">
-          <Capsule text={new Date(startDate).toLocaleDateString()} variant='muted_blue' className='text-xs pl-2 pr-2 rounded-b-lg rounded-t-lg'/>
-          <Capsule text={new Date(endDate).toLocaleDateString()} variant='muted_blue' className='text-xs pl-2 pr-2 rounded-b-lg rounded-t-lg'/>
+          <Capsule text={new Date(startDate).toLocaleDateString()} variant='muted_blue' className='small-info-tag'/>
+          <Capsule text={new Date(endDate).toLocaleDateString()} variant='muted_blue' className='small-info-tag'/>
         </div>
       </div>
 
       {/* Expandable Details */}
       <div
-        onClick={() => setIsOpen(false)}
-        className={`relative w-full cursor-pointer bg-muted-blue-op-45 ring-1 ring-deeper-blue rounded-lg transition-all duration-500 ${
-          isOpen ? 'opacity-100' : 'opacity-0'
+        className={`relative w-full h-fit bg-muted-blue-op-45 ring-1 ring-deeper-blue rounded-lg transition-all duration-500 mt-8 mb-4 px-6 py-4 ${
+          isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
-        style={{ maxHeight: height }}
       >
         <div ref={contentRef} className="p-4 sm:p-8 overflow-hidden">
           {/* Close Button */}
           <button
-            className="absolute top-4 sm:top-8 right-4 sm:right-8 text-steel-blue hover:text-deep-teal cursor-pointer"
-            aria-label="Close"
+            className="absolute top-8 right-8 text-steel-blue hover:text-deep-teal cursor-pointer"
+            aria-label="Close" onClick={() => setIsOpen(false)}
           >
             <XMarkIcon className="h-5 w-5 sm:h-6 sm:w-6" />
           </button>
 
           {/* Details Section */}
-          <div className="pb-6 sm:pb-10">
+          <div className="pb-4 sm:pb-6">
             <h2 className="text-2xl sm:text-3xl text-dark-blue font-dm-serif-display py-4">
               {semesterName}
             </h2>
 
-            <div className="grid grid-cols-[auto_1fr] grid-rows-3 gap-4 py-3 text-sm sm:text-base">
-              <div className="info-tag-blue">Starts</div>
-              <div className="info-tag-beige">{new Date(startDate).toLocaleDateString()}</div>
-              <div className="info-tag-blue">Ends</div>
-              <div className="info-tag-beige">{new Date(endDate).toLocaleDateString()}</div>
-              <div className="info-tag-blue">Submission deadline</div>
-              <div className="info-tag-beige">
-                {new Date(submissionDeadline).toLocaleDateString()}
-              </div>
+            <div className="grid grid-cols-[auto_1fr] grid-rows-3 gap-3 py-3 text-sm sm:text-base">
+              <Capsule text='Starts' variant='muted_blue' className='small-info-tag pb-0.5'/>
+              <Capsule text={new Date(startDate).toLocaleDateString()} variant='beige' className='small-info-tag pb-0.5'/>
+              <Capsule text='Ends' variant='muted_blue' className='small-info-tag pb-0.5'/>
+              <Capsule text={new Date(endDate).toLocaleDateString()} variant='beige' className='small-info-tag pb-0.5'/>
+              <Capsule text='Submission deadline' variant='muted_blue' className='small-info-tag pb-0.5'/>
+              <Capsule text={new Date(submissionDeadline).toLocaleDateString()} variant='beige' className='small-info-tag pb-0.5'/>
             </div>
           </div>
 
@@ -108,7 +95,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
           <h2 className="text-xl sm:text-2xl text-dark-blue font-inter py-4 sm:py-6">
             Approved projects
           </h2>
-          <div className="flex flex-col gap-4 overflow-y-auto max-h-[300px] sm:max-h-[400px] p-1">
+          <div className="flex flex-col gap-4 overflow-x-visible overflow-y-auto max-h-[490px] p-[1px] pb-3 sm:pb-4">
             {approvedProjects.map((project, index) => (
               <SemesterProjectCard key={index} projectInfo={project} />
             ))}
