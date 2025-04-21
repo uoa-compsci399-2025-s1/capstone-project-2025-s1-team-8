@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
 import ProjectModal from './ProjectModal'
 import Button from '../../Generic/Button/Button'
+import { ClientProps } from '@/components/Composite/ProjectModal/ProjectModal'
 
 const meta: Meta<typeof ProjectModal> = {
   title: 'Composite/ProjectModal',
@@ -15,6 +16,16 @@ const meta: Meta<typeof ProjectModal> = {
 
 export default meta
 type Story = StoryObj<typeof ProjectModal>
+
+const mockClientDetails: ClientProps = {
+  name: 'David Cumin',
+  email: 'davidcumin@gmail.com',
+}
+
+const mockOtherClientDetails: ClientProps[] = [
+  { name: 'Sam Pepper', email: 'sampepper@gmail.com' },
+  { name: 'Jack Salt', email: 'jacksalt@gmail.com' },
+]
 
 export const Exemplar: Story = {
   render: (args) => {
@@ -39,11 +50,8 @@ export const Exemplar: Story = {
     open: false,
     className: 'w-[1200px]',
     projectTitle: 'Chronobiology',
-    projectClientDetails: ['David Cumin', 'davidcumin@gmail.com'],
-    otherClientDetails: [
-      ['Sam Pepper', 'sampepper@gmail.com'],
-      ['Jack Salt', 'jacksalt@gmail.com'],
-    ],
+    projectClientDetails: mockClientDetails,
+    otherClientDetails: mockOtherClientDetails,
     projectDescription:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     desiredOutput:

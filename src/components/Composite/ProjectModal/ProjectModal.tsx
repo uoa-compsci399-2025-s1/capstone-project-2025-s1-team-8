@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Modal from '../../Generic/Modal/Modal'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import { ModalProps } from '@/components/Generic/Modal/Modal'
+import { FiCheck, FiCopy, FiEdit } from 'react-icons/fi'
+import Button from '@/components/Generic/Button/Button'
+
+export interface ClientProps {
+  name: string,
+  email: string
+}
 
 interface ProjectModalProps extends ModalProps {
   projectTitle: string
-  projectClientDetails: [string, string]
-  otherClientDetails?: Array<[string, string]>
+  projectClientDetails: ClientProps
+  otherClientDetails?: Array<ClientProps>
   projectDescription: string
   desiredOutput: string
   desiredTeamSkills: string
@@ -36,6 +43,22 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   Semesters: semesters,
   submittedDate,
 }) => {
+  const [copied, setCopied] = useState(false)
+  const [copiedAll, setCopiedAll] = useState(false)
+
+  const handleCopy = (email: string) => {
+    navigator.clipboard.writeText(email)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1000)
+  }
+
+  const handleCopyAll = (projectClientDetails: ClientProps, otherClientDetails: ClientProps[]) => {
+    const allEmails = [projectClientDetails.email, ...otherClientDetails.map(client => client.email)].join(', ')
+    navigator.clipboard.writeText(allEmails)
+    setCopiedAll(true)
+    setTimeout(() => setCopiedAll(false), 1000)
+  }
+
   const convertDatetoddmmYYYY = (date: Date) => {
     const dd = String(date.getDate()).padStart(2, '0')
     const mm = String(date.getMonth() + 1).padStart(2, '0') // January is 0!
@@ -54,14 +77,24 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   return (
     <Modal open={open} onClose={onClose} className={className + ' min-h-fit'}>
       <div className="relative max-w-full flex flex-col p-15 rounded-t-2xl gap-5 pointer-events-none">
+        <button style={{pointerEvents: "initial"}} className="absolute top-10 right-20 rounded-full hover:cursor-pointer" onClick={onClose}>
+          <FiEdit className="w-5 h-5 text-dark-blue hover:text-steel-blue" />
+        </button>
         {/* title */}
         <h1 className="text-5xl m-0 text-dark-blue font-dm-serif-display">{projectTitle}</h1>
 
         {/* client details */}
         <div className="flex flex-row gap-3">
-          <h2 className="flex text-steel-blue font-inter">{projectClientDetails[0]}</h2>
+          <h2 className="flex text-steel-blue font-inter">{projectClientDetails.name}</h2>
           <h2 className="flex text-deeper-blue font-inter">|</h2>
-          <h2 className="flex text-deeper-blue font-inter">{projectClientDetails[1]}</h2>
+          <h2 className="flex text-deeper-blue font-inter">{projectClientDetails.email}</h2>
+          <button className="flex" style={{pointerEvents: "initial"}} onClick={() => handleCopy(projectClientDetails.email)}>
+            {copied ? (
+              <FiCheck className="self-center size-4 text-dark-blue" />
+            ) : (
+              <FiCopy className="self-center size-4 text-steel-blue hover:text-dark-blue cursor-pointer" />
+            )}
+          </button>
         </div>
 
         {/* project description*/}
@@ -112,18 +145,26 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
       <div className="relative bg-muted-blue-op-45 max-w-full flex flex-col p-15 rounded-b-2xl gap-5">
         <div className="flex flex-col">
-          <div className="grid grid-cols-[max-content_max-content_max-content_auto] gap-x-3">
+          <div className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3`}>
             {otherClientDetails.map((clientDetails) => (
               <>
                 <h2 className="col-start-1 text-dark-blue font-inter alternate">
-                  {clientDetails[0]}
+                  {clientDetails.name}
                 </h2>
                 <h2 className="col-start-2 text-deeper-blue font-inter email">|</h2>
                 <h2 className="col-start-3 text-deeper-blue font-inter email">
-                  {clientDetails[1]}
+                  {clientDetails.email}
                 </h2>
               </>
             ))}
+            
+            <Button onClick={() => handleCopyAll(projectClientDetails, otherClientDetails)} className="w-[160px] h-fit col-start-5 row-start-1" variant="dark" size="sm">
+              {copiedAll ? (
+                <FiCheck className="self-center size-4" />
+              ) : (
+                <p className="text-xs">Copy All Emails</p>
+              )}
+            </Button>
           </div>
         </div>
         <Capsule variant="light_beige" text="Desired team skills" />

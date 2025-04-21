@@ -1,6 +1,5 @@
 import React, { ReactNode, useEffect } from 'react'
 import ReactDOM from 'react-dom'
-import Button from '../Button/Button'
 import { XMarkIcon } from '@heroicons/react/16/solid'
 
 export interface ModalProps {
@@ -36,9 +35,9 @@ const Modal: React.FC<ModalProps> = ({ children, open, onClose, className = '' }
       <div
         className={`relative bg-light-beige border-y-[9/10] max-w-full flex flex-col rounded-2xl my-auto ${className}`}
       >
-        <Button className="absolute top-10 right-10 rounded-full" onClick={onClose}>
-          <XMarkIcon className="text-dark-blue w-5 h-5" />
-        </Button>
+        <button className="absolute top-10 right-10 rounded-full hover:cursor-pointer" onClick={onClose}>
+          <XMarkIcon className="w-5 h-5 text-dark-blue hover:text-steel-blue" />
+        </button>
         {children}
       </div>
     </div>,
