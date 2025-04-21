@@ -1,9 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
-import {
-  clearCollection,
-  createMockNextPostRequest,
-  testPayloadObject,
-} from '@/test-config/utils'
+import { clearCollection, createMockNextPostRequest, testPayloadObject } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { POST } from '@/app/api/projects/route'
@@ -15,10 +11,7 @@ describe('test POST /api/projects', () => {
 
   it('should create a project', async () => {
     const projectService = new ProjectService()
-    const req = createMockNextPostRequest(
-      'https://localhost:3000/api/projects',
-      projectCreateMock,
-    )
+    const req = createMockNextPostRequest('https://localhost:3000/api/projects', projectCreateMock)
     const res = await POST(req)
     expect(res.status).toBe(StatusCodes.CREATED)
     const project = (await res.json()).data
