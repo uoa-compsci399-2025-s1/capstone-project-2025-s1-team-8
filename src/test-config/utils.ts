@@ -66,9 +66,9 @@ export function createMockNextRequest(url: string) {
 export function createMockNextPostRequest(url: string, body: Record<string, unknown>) {
   return new NextRequest(new URL(url, 'http://localhost:3000'), {
     method: 'POST',
+    body: JSON.stringify(body),
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body),
   })
 }
