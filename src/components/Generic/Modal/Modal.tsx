@@ -1,13 +1,13 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react'
 import ReactDOM from 'react-dom'
-import Button from '../Button/Button'
 import { XMarkIcon } from '@heroicons/react/16/solid'
 
-interface ModalProps {
+export interface ModalProps {
   children: ReactNode
   open: boolean // Whether the modal is open
   onClose: () => void // Function to close the modal
   className?: string // Additional classes for modal container
+  // generally needs padding, height and width to be passed
 }
 
 const Modal: React.FC<ModalProps> = ({ children, open, onClose, className = '' }) => {
@@ -18,19 +18,26 @@ const Modal: React.FC<ModalProps> = ({ children, open, onClose, className = '' }
     }
   }
 
+  useEffect(() => {
+    // lock page scroll
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => {
+      // cleanup if unmounted
+      document.body.style.overflow = ''
+    }
+  }, [open])
+
   return ReactDOM.createPortal(
     <div
-      className={`absolute bg-[#1E617959] w-full h-full left-0 top-0 ${open ? 'block' : 'hidden'}`}
+      className={`fixed bg-[#1e6179]/59 w-full h-full flex-col items-center overflow-y-scroll left-0 top-0 py-[8%] ${open ? 'flex' : 'hidden'}`}
       onClick={handleClose}
     >
       <div
-        className={`absolute bg-light-beige max-w-screen w-[1280px] max-h-960 -translate-x-2/4 -translate-y-2/4 flex flex-col items-center rounded-[20px] left-2/4 top-2/4 ${className}`}
+        className={`relative bg-light-beige border-y-[9/10] max-w-full flex flex-col rounded-2xl my-auto ${className}`}
       >
-        <div className={``}>
-          <Button variant="light" className="absolute top-4 right-4 rounded-full" onClick={onClose}>
-            <XMarkIcon className="text-dark-blue w-5 h-5" />
-          </Button>
-        </div>
+        <button className="absolute top-10 right-10 rounded-full hover:cursor-pointer" onClick={onClose}>
+          <XMarkIcon className="w-5 h-5 text-dark-blue hover:text-steel-blue" />
+        </button>
         {children}
       </div>
     </div>,

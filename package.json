@@ -73,6 +73,7 @@
     "mongodb-memory-server": "^10.1.4",
     "postcss": "^8.5.3",
     "prettier": "^3.4.2",
+    "storybook": "^8.6.12",
     "tailwindcss": "^4.1.2",
     "typescript": "5.7.3",
     "vite-tsconfig-paths": "^5.1.4",

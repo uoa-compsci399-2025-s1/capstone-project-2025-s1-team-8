@@ -1,7 +1,18 @@
-import React from 'react'
-import { Meta, Story } from '@storybook/react'
-import SemesterCard, { SemesterCardProps } from './SemesterCard'
+import type { Meta, StoryObj } from '@storybook/react'
+import { useArgs } from '@storybook/preview-api'
+import ClientModal from './ClientModal'
+import Button from '../../Generic/Button/Button'
 import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/DraggableProjectCard'
+
+const meta: Meta<typeof ClientModal> = {
+  title: 'Composite/ClientModal',
+  component: ClientModal,
+  tags: ['autodocs'],
+  args: {
+    open: false,
+    className: '',
+  },
+}
 
 const mockProjects: ProjectDTOPlaceholder[] = [
   {
@@ -36,34 +47,36 @@ const mockProjects: ProjectDTOPlaceholder[] = [
   },
 ]
 
-const mockProps: SemesterCardProps = {
-  semesterName: 'Semester 2 2025',
-  startDate: new Date('2025-07-01'),
-  endDate: new Date('2025-12-15'),
-  submissionDeadline: new Date('2025-01-30'),
-  approvedProjects: mockProjects,
-}
+export default meta
+type Story = StoryObj<typeof ClientModal>
 
-export default {
-  title: 'Composite/SemesterCard',
-  component: SemesterCard,
-  args: mockProps,
-} as Meta
+export const Exemplar: Story = {
+  render: (args) => {
+    const [{ open }, updateArgs] = useArgs()
 
-export const Default: Story = {}
+    function onChange() {
+      updateArgs({ open: !open })
+    }
 
-export const CurrentSemester: Story = {
-  args: {
-    ...Default.args,
-    semesterName: 'Current Semester',
-    currentOrUpcoming: 'current',
+    return (
+      <div>
+        <Button onClick={() => onChange()} variant="dark" size="md">
+          Open modal
+        </Button>
+        <ClientModal {...args} open={open} onClose={() => onChange()}>
+          <p className="text-black">This is a default modal.</p>
+        </ClientModal>
+      </div>
+    )
   },
-}
-
-export const UpcomingSemester: Story = {
   args: {
-    ...Default.args,
-    semesterName: 'Upcoming Semester',
-    currentOrUpcoming: 'upcoming',
+    open: false,
+    className: 'w-[1200px]',
+    clientFullName: 'John Doe',
+    clientEmail: 'johndoe@gmail.com',
+    affiliation: 'University of Auckland',
+    introduction:
+      'Hello! My name is John Doe and I am a lecturer at the University of Auckland. \n\nMy hobbies include snorkelling, fishing, reading, baking, eating, sleeping and taking various methods of transport to my destination!\n\n"John Doe" is a common placeholder name used to represent an unknown or anonymous individual, particularly in legal or informal contexts. It\'s often used as a stand-in when a person\'s real name is not known, needs to be protected, or when a general example is needed. The female equivalent is "Jane Doe".',
+    projects: mockProjects
   },
 }

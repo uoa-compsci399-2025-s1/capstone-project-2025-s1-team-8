@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
-import Modal from './Modal'
-import Button from '../Button/Button'
+import SemesterForm from './SemesterForm'
+import Button from '../../Generic/Button/Button'
 
-const meta: Meta<typeof Modal> = {
-  title: 'Generic/Modal',
-  component: Modal,
+const meta: Meta<typeof SemesterForm> = {
+  title: 'Composite/SemesterForm',
+  component: SemesterForm,
   tags: ['autodocs'],
   args: {
     open: false,
@@ -14,9 +14,9 @@ const meta: Meta<typeof Modal> = {
 }
 
 export default meta
-type Story = StoryObj<typeof Modal>
+type Story = StoryObj<typeof SemesterForm>
 
-export const Default: Story = {
+export const Empty: Story = {
   render: (args) => {
     const [{ open }, updateArgs] = useArgs()
 
@@ -29,20 +29,19 @@ export const Default: Story = {
         <Button onClick={() => onChange()} variant="dark" size="md">
           Open modal
         </Button>
-
-        <Modal open={open} onClose={() => onChange()} className={args.className}>
-          <p className="text-black pt-10">This is a default modal.</p>
-        </Modal>
+        <SemesterForm {...args} open={open} onClose={() => onChange()}>
+          <p className="text-black">This is a default modal.</p>
+        </SemesterForm>
       </div>
     )
   },
   args: {
     open: false,
-    className: 'h-[80%] p-20',
+    className: 'w-[800px]',
   },
 }
 
-export const OverflowY: Story = {
+export const WithData: Story = {
   render: (args) => {
     const [{ open }, updateArgs] = useArgs()
 
@@ -55,15 +54,18 @@ export const OverflowY: Story = {
         <Button onClick={() => onChange()} variant="dark" size="md">
           Open modal
         </Button>
-
-        <Modal {...args} open={open} onClose={() => onChange()}>
-          <p className="text-black pt-10">This is a default modal.</p>
-        </Modal>
+        <SemesterForm {...args} open={open} onClose={() => onChange()}>
+          <p className="text-black">This is a default modal.</p>
+        </SemesterForm>
       </div>
     )
   },
   args: {
     open: false,
-    className: 'w-[1200px] min-h-[150%] p-20',
+    className: 'w-[800px]',
+    semesterName: 'Semester 1 2024',
+    startDate: new Date('2023-09-01'),
+    endDate: new Date('2024-01-31'),
+    submissionDeadline: new Date('2024-01-15'),
   },
 }

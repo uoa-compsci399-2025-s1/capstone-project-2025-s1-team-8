@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useSortable, SortableContext } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import ProjectFilter from '../Filter/ProjectFilter'
-import ProjectCard from '@/components/Generic/ProjectCard/ProjectCard'
-import { ProjectCardType } from '@/components/Generic/ProjectCard/ProjectCard'
+import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProjectCard'
+import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { useFilter } from '@/contexts/FilterContext'
 import { UniqueIdentifier } from '@dnd-kit/core'
 
@@ -101,7 +101,7 @@ const ProjectContainer = ({
         <SortableContext items={projects.map((i) => i.id)}>
           <div className="flex items-start flex-col gap-y-4 w-full">
             {projects.map((i) => (
-              <ProjectCard key={i.id} id={i.id} projectInfo={i.projectInfo} />
+              <DraggableProjectCard key={i.id} id={i.id} projectInfo={i.projectInfo} />
             ))}
           </div>
         </SortableContext>
