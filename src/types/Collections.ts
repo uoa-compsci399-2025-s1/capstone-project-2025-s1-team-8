@@ -50,6 +50,10 @@ export type CreateUserData = Omit<
   | 'resetPasswordExpiration'
 >
 export type UpdateUserData = Partial<CreateUserData>
+export type UserCombinedInfo = User & {
+  introduction?: string
+  affiliation?: string
+}
 
 export type CreateClientAdditionalInfoData = Omit<
   ClientAdditionalInfo,

@@ -5,7 +5,6 @@ import { mockClient1 } from '@/test-config/mocks/User.mock'
 import {
   authMock,
   CODE_MOCK,
-  createMockNextRequest,
   googleUserResponseMock,
   JWT_MOCK,
   JWT_SECRET_MOCK,
@@ -14,6 +13,7 @@ import {
   STATE_MOCK,
   tokensMock,
 } from '@/test-config/mocks/Auth.mock'
+import { createMockNextRequest } from '@/test-config/utils'
 
 vi.mock('@/business-layer/security/google', async () => {
   const actual = await vi.importActual<typeof import('@/business-layer/security/google')>(
