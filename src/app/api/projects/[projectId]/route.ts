@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 import ProjectService from '@/data-layer/services/ProjectService'
 
@@ -37,19 +37,19 @@ export const GET = async (
 export const DELETE = async (
   req: NextRequest,
   { params }: { params: Promise<{ projectId: string }> },
-): Promise<Response> => {
+): Promise<NextResponse> => {
   const { projectId } = await params
   const projectService = new ProjectService()
 
   try {
     await projectService.deleteProject(projectId)
-    return new Response(null, { status: StatusCodes.NO_CONTENT })
+    return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
   } catch (error) {
     if ((error as Error).message === 'Not Found') {
-      return Response.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
+      return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
     }
     console.error(error)
-    return Response.json(
+    return NextResponse.json(
       { error: 'Internal Server Error' },
       { status: StatusCodes.INTERNAL_SERVER_ERROR },
     )
