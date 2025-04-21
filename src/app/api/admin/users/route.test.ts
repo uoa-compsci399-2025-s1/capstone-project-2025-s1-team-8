@@ -62,7 +62,6 @@ describe('tests GET /api/admin/users', () => {
     const req = createMockNextRequest(`/api/admin/users`)
     const res = await GET(req)
     const json = await res.json()
-    console.log(json.data)
     expect(res.status).toBe(StatusCodes.OK)
     expect(json.data.length).toEqual(1)
     expect(json.data[0]).toStrictEqual({
