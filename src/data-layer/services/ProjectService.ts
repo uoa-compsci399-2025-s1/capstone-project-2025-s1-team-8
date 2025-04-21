@@ -7,7 +7,7 @@ import { PaginatedDocs } from 'payload'
 
 export default class ProjectService {
   /**
-   * This function returns a list of all projects
+   * This function returns a paginated doc of all projects
    *
    * @returns The list of projects
    */
