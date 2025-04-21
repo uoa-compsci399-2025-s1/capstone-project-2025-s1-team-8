@@ -1,4 +1,5 @@
 // setup-teardown-hook.js
+import { NextRequest } from 'next/server'
 import { CollectionSlug, getPayload, Payload } from 'payload'
 import configPromise from '@payload-config'
 
@@ -43,4 +44,14 @@ export const clearCollection = async (payloadObject: Payload, collectionName: Co
  */
 export const paramsToPromise = <T extends Record<string, unknown>>(params: T): Promise<T> => {
   return Promise.resolve(params)
+}
+
+/**
+ * Create a mock NextRequest object
+ *
+ * @param url The URL to use for the mock request
+ * @returns A mock NextRequest object
+ */
+export function createMockNextRequest(url: string) {
+  return new NextRequest(new URL(url, 'http://localhost:3000'))
 }
