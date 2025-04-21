@@ -5,14 +5,20 @@ export const UpdateSemesterRequestBody = z.object({
   description: z.string().optional(),
   deadline: z
     .string()
-    .refine((val) => !isNaN(Date.parse(val)))
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: 'Invalid date format, should be in ISO 8601 format',
+    })
     .optional(),
   startDate: z
     .string()
-    .refine((val) => !isNaN(Date.parse(val)))
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: 'Invalid date format, should be in ISO 8601 format',
+    })
     .optional(),
   endDate: z
     .string()
-    .refine((val) => !isNaN(Date.parse(val)))
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: 'Invalid date format, should be in ISO 8601 format',
+    })
     .optional(),
 })
