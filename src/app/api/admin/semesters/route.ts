@@ -13,7 +13,7 @@ export const POST = async (req: NextRequest) => {
     const semesterService = new SemesterService();
     const newSemester = await semesterService.createSemester(parsedBody as CreateSemesterData);
 
-    return NextResponse.json(newSemester);
+    return NextResponse.json(newSemester, { status: StatusCodes.CREATED });
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json(
