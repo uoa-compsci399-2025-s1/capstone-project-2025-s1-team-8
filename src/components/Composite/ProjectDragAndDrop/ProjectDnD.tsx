@@ -16,12 +16,12 @@ import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 
 // Components
 import ProjectContainer from './ProjectContainer'
-import ProjectCard from '@/components/Generic/ProjectCard/ProjectCard'
+import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { FilterProvider } from '@/contexts/FilterContext'
 import {
   ProjectCardType,
   ProjectDTOPlaceholder,
-} from '@/components/Generic/ProjectCard/ProjectCard'
+} from '@/components/Generic/ProjectCard/DraggableProjectCard'
 
 type DNDType = {
   id: UniqueIdentifier
@@ -331,7 +331,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
           <DragOverlay adjustScale={false}>
             {/* Drag Overlay For item ProjectCard */}
             {activeId && activeId.toString().includes('item') && (
-              <ProjectCard id={activeId} projectInfo={findItemInfo(activeId)} />
+              <DraggableProjectCard id={activeId} projectInfo={findItemInfo(activeId)} />
             )}
           </DragOverlay>
         </DndContext>

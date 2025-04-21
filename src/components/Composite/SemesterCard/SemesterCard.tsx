@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useRef, useEffect } from 'react'
-import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/ProjectCard'
-import SemesterProjectCard from '@/components/Generic/ProjectCard/SemesterProjectCard'
+import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/DraggableProjectCard'
+import ProjectCard from '@/components/Generic/ProjectCard/ProjectCard'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 
@@ -126,7 +126,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
           </h2>
           <div className="flex flex-col gap-4 overflow-x-visible overflow-y-auto max-h-[490px] p-[1px] pb-3 sm:pb-4">
             {approvedProjects.map((project, index) => (
-              <SemesterProjectCard key={index} projectInfo={project} />
+              <ProjectCard key={index} projectInfo={project} />
             ))}
           </div>
         </div>
