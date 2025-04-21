@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import {
   clearCollection,
-  createMockNextRequestWithBody,
+  createMockNextPostRequest,
   testPayloadObject,
 } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
@@ -15,7 +15,7 @@ describe('test POST /api/projects', () => {
 
   it('should create a project', async () => {
     const projectService = new ProjectService()
-    const req = createMockNextRequestWithBody(
+    const req = createMockNextPostRequest(
       'https://localhost:3000/api/projects',
       projectCreateMock,
     )
@@ -26,7 +26,7 @@ describe('test POST /api/projects', () => {
   })
 
   it('should fail to create a project', async () => {
-    const req = createMockNextRequestWithBody('https://localhost:3000/api/projects', {
+    const req = createMockNextPostRequest('https://localhost:3000/api/projects', {
       ...projectCreateMock,
       description: undefined,
     })

@@ -63,7 +63,7 @@ export function createMockNextRequest(url: string) {
  * @param body The body to use for the mock request
  * @returns A mock NextRequest object with a body
  */
-export function createMockNextRequestWithBody(url: string, body: Record<string, unknown>) {
+export function createMockNextPostRequest(url: string, body: Record<string, unknown>) {
   return new NextRequest(new URL(url, 'http://localhost:3000'), {
     method: 'POST',
     body: JSON.stringify(body),
