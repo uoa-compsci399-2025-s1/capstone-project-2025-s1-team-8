@@ -7,4 +7,4 @@ export const GetAllUsersResponseSchema = CommonResponse.extend({
   data: z.custom<UserCombinedInfo>().optional(),
 })
 
-export type GetAllUsersResponseResponse = z.infer<typeof GetAllUsersResponseSchema>
+export type GetAllUsersResponse = z.infer<typeof GetAllUsersResponseSchema>
