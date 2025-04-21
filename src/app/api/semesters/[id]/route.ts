@@ -47,7 +47,7 @@ export const PATCH = async (
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { error: 'Invalid request body' },
+        { error: 'Invalid request body', details: error.flatten() },
         { status: StatusCodes.BAD_REQUEST },
       )
     } else if (error instanceof NotFound) {
