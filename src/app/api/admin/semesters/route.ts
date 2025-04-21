@@ -23,7 +23,7 @@ export const POST = async (req: NextRequest) => {
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { error: 'Invalid request body' },
+        { error: 'Invalid request body', details: error.flatten() },
         { status: StatusCodes.BAD_REQUEST },
       )
     } else {
