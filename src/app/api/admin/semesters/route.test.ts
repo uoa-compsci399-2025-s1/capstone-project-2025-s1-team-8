@@ -12,7 +12,7 @@ const testBody = {
 describe("tests /api/admin/semesters", () => {
   const semesterService = new SemesterService();
 
-  describe("PATCH /api/admin/semesters", () => {
+  describe("POST /api/admin/semesters", () => {
     it("should create a semester", async () => {
       const res = await POST(createMockNextPostRequest("", testBody));
       expect(res.status).toBe(200);

@@ -3,12 +3,12 @@ import { StatusCodes } from 'http-status-codes'
 
 import SemesterService from "@/data-layer/services/SemesterService";
 import { CreateSemesterData } from "@/types/Collections";
-import { CreateProjectRequestBody } from "@/types/request-models/SemesterRequests";
+import { CreateSemesterRequestBody } from "@/types/request-models/SemesterRequests";
 import { ZodError } from "zod";
 
 export const POST = async (req: NextRequest) => {
   try {
-    const parsedBody = CreateProjectRequestBody.parse(await req.json());
+    const parsedBody = CreateSemesterRequestBody.parse(await req.json());
 
     const semesterService = new SemesterService();
     const newSemester = await semesterService.createSemester(parsedBody as CreateSemesterData);

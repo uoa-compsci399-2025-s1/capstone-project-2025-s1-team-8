@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const CreateProjectRequestBody = z.object({
+export const CreateSemesterRequestBody = z.object({
   name: z.string(),
   description: z.string().optional(),
   deadline: z.string().refine(val => !isNaN(Date.parse(val))),
