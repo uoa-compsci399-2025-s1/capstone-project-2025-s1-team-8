@@ -54,7 +54,7 @@ describe('/api/admin/semesters/[id]', () => {
       expect(fetchedSem.createdAt).toEqual(newSem.createdAt)
     })
 
-    it("should return a 400 error if the request body is invalid", async () => {
+    it('should return a 400 error if the request body is invalid', async () => {
       const newSem = await semesterService.createSemester(semesterCreateMock)
       const updatedSem = { deadline: 1 }
 
@@ -65,7 +65,7 @@ describe('/api/admin/semesters/[id]', () => {
       expect(await res.json()).toEqual({ error: 'Invalid request body' })
     })
 
-    it("should return a 404 error if the semester does not exist", async () => {
+    it('should return a 404 error if the semester does not exist', async () => {
       const res = await PATCH(createMockNextPostRequest('', { name: 'Updated Semester' }), {
         params: paramsToPromise({ id: 'nonexistent' }),
       })
