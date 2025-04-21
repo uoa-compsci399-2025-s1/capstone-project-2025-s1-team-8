@@ -2,6 +2,12 @@ import { StatusCodes } from 'http-status-codes'
 
 import { clearCollection, paramsToPromise, testPayloadObject } from '@/test-config/utils'
 import UserService from '@/data-layer/services/UserService'
+import {
+  clientAdditionalInfoCreateMock,
+  clientCreateMock,
+  studentCreateMock,
+} from '@/test-config/mocks/User.mock'
+import { PATCH } from '@/app/api/admin/users/[id]/route'
 import { NextRequest } from 'next/server'
 
 describe('tests PATCH /api/admin/users/[id]', () => {

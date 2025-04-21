@@ -11,7 +11,9 @@ import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 import { GET, PATCH } from '@/app/api/semesters/[id]/route'
 import { NextRequest } from 'next/server'
 
-describe('tests GET /api/semesters/[id]', () => {
+describe('/api/admin/semesters/[id]', () => {
+  const semesterService = new SemesterService()
+
   afterEach(async () => {
     await clearCollection(testPayloadObject, 'semester')
   })
