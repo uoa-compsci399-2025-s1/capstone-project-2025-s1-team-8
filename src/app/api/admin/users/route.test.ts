@@ -9,7 +9,7 @@ import {
   clientCreateMock,
 } from '@/test-config/mocks/User.mock'
 
-describe('get user count', () => {
+describe('tests GET /api/admin/users', () => {
   const userService = new UserService()
 
   afterEach(async () => {
