@@ -23,6 +23,9 @@ describe('tests /api/admin/semesters', () => {
         createMockNextPostRequest('', { ...semesterCreateMock, name: undefined }),
       )
       expect(res.status).toBe(StatusCodes.BAD_REQUEST)
+      const json = await res.json()
+      expect(json.error).toEqual("Invalid request body")
+      expect(json.details.fieldErrors.name[0]).toEqual("Required")
     })
 
     it('should error if an invalid date is provided', async () => {
@@ -30,6 +33,9 @@ describe('tests /api/admin/semesters', () => {
         createMockNextPostRequest('', { ...semesterCreateMock, startDate: 'invalid date' }),
       )
       expect(res.status).toBe(StatusCodes.BAD_REQUEST)
+      const json = await res.json()
+      expect(json.error).toEqual("Invalid request body")
+      expect(json.details.fieldErrors.startDate[0]).toEqual("Invalid date format, should be in ISO 8601 format")
     })
   })
 })
