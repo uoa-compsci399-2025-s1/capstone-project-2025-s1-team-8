@@ -87,7 +87,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
         className={`relative w-full bg-muted-blue-op-45 ring-1 ring-deeper-blue rounded-lg transition-all duration-500 overflow-hidden ${isOpen ? 'opacity-100 mt-8 mb-4' : 'opacity-0'}`}
         style={{maxHeight : height}}
       >
-        <div ref={contentRef} className="md:p-12 p-6 overflow-hidden">
+        <div ref={contentRef} className="px-10 py-8 sm:px-14 sm:py-12 overflow-hidden">
           {/* Close Button */}
           <button
             className="absolute top-8 right-8 text-steel-blue hover:text-deep-teal cursor-pointer"
