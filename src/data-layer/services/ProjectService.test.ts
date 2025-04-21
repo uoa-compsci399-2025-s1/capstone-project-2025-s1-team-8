@@ -27,6 +27,24 @@ describe('Project service methods test', () => {
     )
   })
 
+  it('should get all projects with pagination', async () => {
+    const project1 = await testPayloadObject.create({
+      collection: 'project',
+      data: projectMock,
+    })
+    
+    const project2 = await testPayloadObject.create({
+      collection: 'project',
+      data: projectMock2,
+    })
+
+    const page1 = await projectService.getAllProjects(1, 1)
+    const page2 = await projectService.getAllProjects(2, 1)
+
+    expect(page1).toEqual([project2])
+    expect(page2).toEqual([project2, project1])
+  })
+
   it('should get project by ID', async () => {
     const project1 = await testPayloadObject.create({
       collection: 'project',
