@@ -7,8 +7,8 @@ import { UserRole } from '@/types/User'
  * Fetches a single user by ID if the request is made by an admin
  *
  * @param param0 The ID of the user to fetch
+ * @param _req the NextRequest obj
  * @returns The user data
- * @param _req
  */
 
 export const GET = async (
@@ -23,10 +23,8 @@ export const GET = async (
   const userService = new UserService()
   try {
     const user = await userService.getUser(id)
-    console.log(user)
     if (user.role === UserRole.Client) {
       const { introduction, affiliation } = { ...(await userService.getClientAdditionalInfo(id)) }
-      console.log(introduction, affiliation)
       return Response.json({ ...user, introduction, affiliation })
     }
     return Response.json(user)

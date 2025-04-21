@@ -2,7 +2,11 @@ import { StatusCodes } from 'http-status-codes'
 
 import { clearCollection, paramsToPromise, testPayloadObject } from '@/test-config/utils'
 import UserService from '@/data-layer/services/UserService'
-import { clientAdditionalInfoCreateMock, clientCreateMock } from '@/test-config/mocks/User.mock'
+import {
+  adminCreateMock,
+  clientAdditionalInfoCreateMock,
+  clientCreateMock,
+} from '@/test-config/mocks/User.mock'
 import { GET } from '@/app/api/admin/users/[id]/route'
 import { NextRequest } from 'next/server'
 
@@ -11,7 +15,7 @@ describe('admin fetch user', () => {
     await clearCollection(testPayloadObject, 'user')
   })
 
-  it('fetch user by Id', async () => {
+  it('fetch client by Id', async () => {
     const userService = new UserService()
     const newClient = await userService.createUser(clientCreateMock)
     const newClientInfo = await userService.createClientAdditionalInfo({
@@ -26,12 +30,25 @@ describe('admin fetch user', () => {
     })
 
     const json = await res.json()
+    console.log(json)
     expect(res.status).toBe(StatusCodes.OK)
     expect(json).toEqual({
       ...newClient,
       introduction: newClientInfo.introduction,
       affiliation: newClientInfo.affiliation,
     })
+  })
+
+  it('fetch generic user by Id', async () => {
+    const userService = new UserService()
+    const newAdmin = await userService.createUser(adminCreateMock)
+    const newAdminInfo = await userService.createClientAdditionalInfo({
+      ...adminCreateMock,
+      client: newAdmin,
+    })
+    console.log(newAdminInfo)
+    expect(newAdminInfo.introduction === undefined).toBe(true)
+    expect(newAdminInfo.affiliation === undefined).toBe(true)
   })
 
   it('should return a 404 error if the user does not exist', async () => {
