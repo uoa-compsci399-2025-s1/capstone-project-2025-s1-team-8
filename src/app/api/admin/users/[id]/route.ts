@@ -25,13 +25,16 @@ export const GET = async (
     const user = await userService.getUser(id)
     console.log(user)
     if (user.role === UserRole.Client) {
-      const { introduction, affiliation } = {...(await userService.getClientAdditionalInfo(id))}
-      return Response.json({ ...user, introduction, affiliation, })
+      const { introduction, affiliation } = { ...(await userService.getClientAdditionalInfo(id)) }
+      console.log(introduction, affiliation)
+      return Response.json({ ...user, introduction, affiliation })
     }
     return Response.json(user)
-
   } catch (error) {
-    if ((error as Error).message == 'Value is not JSON serializable' || (error as Error).message == 'Not Found') {
+    if (
+      (error as Error).message == 'Value is not JSON serializable' ||
+      (error as Error).message == 'Not Found'
+    ) {
       return Response.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })
     }
     return Response.json(
