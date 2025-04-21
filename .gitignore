@@ -138,3 +138,6 @@ dist
 .pnp.*
 
 .swc/
+
+.DS_Store
+src/.DS_Store
