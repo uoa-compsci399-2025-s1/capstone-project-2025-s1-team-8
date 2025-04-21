@@ -1,10 +1,8 @@
 import { z } from 'zod'
-
+import { Project } from '@/payload-types'
 import { CommonResponse } from './CommonResponse'
-import { UserCombinedInfo } from '../Collections'
 
-export const GetAllUsersResponseSchema = CommonResponse.extend({
-  data: z.custom<UserCombinedInfo>().optional(),
+export const GetUserResponseSchema = CommonResponse.extend({
+  data: z.custom<Project>().optional(),
 })
-
-export type GetAllUsersResponse = z.infer<typeof GetAllUsersResponseSchema>
+export type GetUserResponse = z.infer<typeof GetUserResponseSchema>

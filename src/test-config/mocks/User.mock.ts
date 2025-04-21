@@ -49,7 +49,7 @@ export const studentCreateMock: CreateUserData = {
 }
 
 export const clientAdditionalInfoCreateMock: CreateClientAdditionalInfoData = {
-  client: '67ff38a56a35e1b6cf43a680' as string,
+  client: '67fdc27019dd81b68db9bb64',
   introduction: "Hello i'm a very cool client. My project cool.",
   affiliation: 'Very cool company',
 }
