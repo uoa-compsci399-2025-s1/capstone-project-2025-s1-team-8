@@ -26,5 +26,10 @@ describe("tests /api/admin/semesters", () => {
       const res = await POST(createMockNextPostRequest("", { ...testBody, name: undefined }));
       expect(res.status).toBe(400);
     });
+
+    it("should error if an invalid date is provided", async () => {
+      const res = await POST(createMockNextPostRequest("", { ...testBody, startDate: "invalid date" }));
+      expect(res.status).toBe(400);
+    });
   });
 })
