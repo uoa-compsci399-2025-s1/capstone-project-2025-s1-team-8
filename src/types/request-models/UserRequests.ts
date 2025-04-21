@@ -7,4 +7,6 @@ export const UpdateUserRequestBody = z.object({
   updatedAt: z.string().optional(),
   createdAt: z.string().optional(),
   email: z.string().optional(),
+  introduction: z.string().optional(),
+  affiliation: z.string().optional(),
 })

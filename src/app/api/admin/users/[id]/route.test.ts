@@ -76,8 +76,8 @@ describe('tests PATCH /api/admin/users/[id]', () => {
     expect(json).toEqual({
       ...newClient,
       firstName: 'Sheena Lin',
-      introduction: newClientInfo.introduction,
-      affiliation: newClientInfo.affiliation,
+      introduction: 'new intro',
+      affiliation: 'new affiliation',
       updatedAt: json.updatedAt,
     })
   })

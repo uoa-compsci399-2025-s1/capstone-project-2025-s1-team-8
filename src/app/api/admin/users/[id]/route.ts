@@ -27,13 +27,9 @@ export const PATCH = async (
     const body = UpdateUserRequestBody.parse(await _req.json())
     const updatedUser = await userService.updateUser(id, body)
     if (user.role === UserRole.Client) {
-      // if (body.introduction === undefined) {
-      //   const introduction = { ...(await userService.getClientAdditionalInfo(id)) }
-      // }
-      // if (body.affiliation === undefined) {
-      //   const affiliation = { ...(await userService.getClientAdditionalInfo(id)) }
-      // }
-      const { introduction, affiliation } = { ...(await userService.getClientAdditionalInfo(id)) }
+      const clientInfo = await userService.getClientAdditionalInfo(id)
+      const introduction = body.introduction ?? clientInfo.introduction
+      const affiliation = body.affiliation ?? clientInfo.affiliation
       return Response.json({ ...updatedUser, introduction, affiliation })
     } else if (user.role === UserRole.Student) {
       return Response.json(updatedUser)
