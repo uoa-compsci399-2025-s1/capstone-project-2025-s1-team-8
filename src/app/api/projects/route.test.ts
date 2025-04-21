@@ -5,7 +5,7 @@ import { projectCreateMock} from '@/test-config/mocks/Project.mock'
 import { POST } from '@/app/api/projects/route'
 import { NextRequest } from 'next/server'
 
-describe('get projects', () => {
+describe('test POST /api/projects', () => {
   afterEach(async () => {
     await clearCollection(testPayloadObject, 'project')
   })
