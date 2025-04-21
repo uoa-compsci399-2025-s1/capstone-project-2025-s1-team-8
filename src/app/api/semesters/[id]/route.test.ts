@@ -6,7 +6,7 @@ import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 import { GET } from '@/app/api/semesters/[id]/route'
 import { NextRequest } from 'next/server'
 
-describe('get semester tests', () => {
+describe('tests GET /api/semesters/[id]', () => {
   afterEach(async () => {
     await clearCollection(testPayloadObject, 'semester')
   })
