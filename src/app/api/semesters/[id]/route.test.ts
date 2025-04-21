@@ -62,7 +62,9 @@ describe('/api/admin/semesters/[id]', () => {
         params: paramsToPromise({ id: newSem.id }),
       })
       expect(res.status).toBe(StatusCodes.BAD_REQUEST)
-      expect(await res.json()).toEqual({ error: 'Invalid request body' })
+      const json = await res.json()
+      expect(json.error).toEqual('Invalid request body')
+      expect(json.details.fieldErrors.deadline[0]).toEqual('Expected string, received number')
     })
 
     it('should return a 404 error if the semester does not exist', async () => {
@@ -70,7 +72,8 @@ describe('/api/admin/semesters/[id]', () => {
         params: paramsToPromise({ id: 'nonexistent' }),
       })
       expect(res.status).toBe(StatusCodes.NOT_FOUND)
-      expect(await res.json()).toEqual({ error: 'Semester not found' })
+      const json = await res.json()
+      expect(json.error).toEqual('Semester not found')
     })
   })
 })
