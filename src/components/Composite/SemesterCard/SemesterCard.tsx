@@ -51,12 +51,24 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
         </p>
 
         {currentOrUpcoming && (
-          <Capsule text={currentOrUpcoming} variant='beige' className='uppercase absolute top-5 sm:top-8 right-4 sm:right-6 text-xs pb-[3px]'/>
+          <Capsule
+            text={currentOrUpcoming}
+            variant="beige"
+            className="uppercase absolute top-5 sm:top-8 right-4 sm:right-6 text-xs pb-[3px]"
+          />
         )}
 
         <div className="flex flex-wrap sm:flex-nowrap gap-2">
-          <Capsule text={new Date(startDate).toLocaleDateString()} variant='muted_blue' className='small-info-tag'/>
-          <Capsule text={new Date(endDate).toLocaleDateString()} variant='muted_blue' className='small-info-tag'/>
+          <Capsule
+            text={new Date(startDate).toLocaleDateString()}
+            variant="muted_blue"
+            className="small-info-tag"
+          />
+          <Capsule
+            text={new Date(endDate).toLocaleDateString()}
+            variant="muted_blue"
+            className="small-info-tag"
+          />
         </div>
       </div>
 
@@ -70,7 +82,8 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
           {/* Close Button */}
           <button
             className="absolute top-8 right-8 text-steel-blue hover:text-deep-teal cursor-pointer"
-            aria-label="Close" onClick={() => setIsOpen(false)}
+            aria-label="Close"
+            onClick={() => setIsOpen(false)}
           >
             <XMarkIcon className="h-5 w-5 sm:h-6 sm:w-6" />
           </button>
@@ -82,12 +95,28 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
             </h2>
 
             <div className="grid grid-cols-[auto_1fr] grid-rows-3 gap-3 py-3 text-sm sm:text-base">
-              <Capsule text='Starts' variant='muted_blue' className='small-info-tag pb-0.5'/>
-              <Capsule text={new Date(startDate).toLocaleDateString()} variant='beige' className='small-info-tag pb-0.5'/>
-              <Capsule text='Ends' variant='muted_blue' className='small-info-tag pb-0.5'/>
-              <Capsule text={new Date(endDate).toLocaleDateString()} variant='beige' className='small-info-tag pb-0.5'/>
-              <Capsule text='Submission deadline' variant='muted_blue' className='small-info-tag pb-0.5'/>
-              <Capsule text={new Date(submissionDeadline).toLocaleDateString()} variant='beige' className='small-info-tag pb-0.5'/>
+              <Capsule text="Starts" variant="muted_blue" className="small-info-tag pb-0.5" />
+              <Capsule
+                text={new Date(startDate).toLocaleDateString()}
+                variant="beige"
+                className="small-info-tag pb-0.5"
+              />
+              <Capsule text="Ends" variant="muted_blue" className="small-info-tag pb-0.5" />
+              <Capsule
+                text={new Date(endDate).toLocaleDateString()}
+                variant="beige"
+                className="small-info-tag pb-0.5"
+              />
+              <Capsule
+                text="Submission deadline"
+                variant="muted_blue"
+                className="small-info-tag pb-0.5"
+              />
+              <Capsule
+                text={new Date(submissionDeadline).toLocaleDateString()}
+                variant="beige"
+                className="small-info-tag pb-0.5"
+              />
             </div>
           </div>
 
