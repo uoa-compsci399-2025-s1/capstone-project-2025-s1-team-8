@@ -22,7 +22,7 @@ describe('Project service methods test', () => {
       data: projectMock2,
     })
 
-    expect(await projectService.getAllProjects()).toEqual(
+    expect((await projectService.getAllProjects()).docs).toEqual(
       expect.arrayContaining([project1, project2]),
     )
   })
@@ -41,8 +41,8 @@ describe('Project service methods test', () => {
     const page1 = await projectService.getAllProjects(1, 1)
     const page2 = await projectService.getAllProjects(2, 1)
 
-    expect(page1).toEqual([project2])
-    expect(page2).toEqual([project2, project1])
+    expect(page1.docs).toEqual([project2])
+    expect(page2.docs).toEqual([project2, project1])
   })
 
   it('should get project by ID', async () => {
@@ -129,9 +129,9 @@ describe('Project service methods test', () => {
       data: projectMock2,
     })
 
-    expect((await projectService.getAllProjects()).length).toBe(2)
+    expect((await projectService.getAllProjects()).docs.length).toBe(2)
     await projectService.deleteProject(project1.id)
-    expect(await projectService.getAllProjects()).toStrictEqual([project2])
+    expect((await projectService.getAllProjects()).docs).toStrictEqual([project2])
   })
 
   it('should throw an error if deleting a non existent project', async () => {

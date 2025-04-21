@@ -3,6 +3,7 @@ import { CreateProjectData, UpdateProjectData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 import { CreateSemesterProjectData, UpdateSemesterProjectData } from '@/types/Collections'
 import { SemesterProject } from '@/payload-types'
+import { PaginatedDocs } from 'payload'
 
 export default class ProjectService {
   /**
@@ -10,14 +11,17 @@ export default class ProjectService {
    *
    * @returns The list of projects
    */
-  public async getAllProjects(limit: number = 100, page: number = 1): Promise<Project[]> {
+  public async getAllProjects(
+    limit: number = 100,
+    page: number = 1,
+  ): Promise<PaginatedDocs<Project>> {
     const data = await payload.find({
       collection: 'project',
       limit,
       pagination: true,
       page: page,
     })
-    return data.docs
+    return data
   }
 
   /**

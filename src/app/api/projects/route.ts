@@ -14,9 +14,11 @@ export const GET = async (req: NextRequest): Promise<Response> => {
   const page = parseInt(searchParams.get('page') || '1')
   const limit = parseInt(searchParams.get('limit') || '100')
   if (name) {
-    return Response.json({ data: await projectService.getProjectByName(name) })
+    const project = await projectService.getProjectByName(name)
+    return Response.json({ data: project })
   }
-  return Response.json({ data: await projectService.getAllProjects(limit, page) })
+  const { docs: projects, nextPage } = await projectService.getAllProjects(limit, page)
+  return Response.json({ data: projects, nextPage })
 }
 
 /**

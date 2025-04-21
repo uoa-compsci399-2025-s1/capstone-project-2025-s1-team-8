@@ -13,7 +13,7 @@ describe('test /api/projects', () => {
   it('should get no projects if none are created', async () => {
     const res = await GET(createMockNextRequest('http://localhost:3000/api/projects'))
     expect(res.status).toBe(StatusCodes.OK)
-    expect(await res.json()).toEqual({ data: [] })
+    expect((await res.json()).data).toEqual([])
   })
 
   it('should return a list of all projects created', async () => {
