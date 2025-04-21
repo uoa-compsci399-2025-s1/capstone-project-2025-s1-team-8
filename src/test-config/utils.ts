@@ -55,3 +55,13 @@ export const paramsToPromise = <T extends Record<string, unknown>>(params: T): P
 export function createMockNextRequest(url: string) {
   return new NextRequest(new URL(url, 'http://localhost:3000'))
 }
+
+export function createMockNextRequestWithBody(url: string, body: Record<string, unknown>) {
+  return new NextRequest(new URL(url, 'http://localhost:3000'), {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+}
