@@ -32,7 +32,7 @@ describe('Project service methods test', () => {
       collection: 'project',
       data: projectMock,
     })
-    
+
     const project2 = await testPayloadObject.create({
       collection: 'project',
       data: projectMock2,
