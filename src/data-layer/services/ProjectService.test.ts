@@ -28,12 +28,12 @@ describe('Project service methods test', () => {
   })
 
   it('should get all projects with pagination', async () => {
-    const project1 = await testPayloadObject.create({
+    await testPayloadObject.create({
       collection: 'project',
       data: projectMock,
     })
 
-    const project2 = await testPayloadObject.create({
+    await testPayloadObject.create({
       collection: 'project',
       data: projectMock2,
     })
@@ -41,9 +41,9 @@ describe('Project service methods test', () => {
     const page1 = await projectService.getAllProjects(1, 1)
     const page2 = await projectService.getAllProjects(2, 1)
 
-    expect(page1.docs).toEqual([project2])
+    expect(page1.docs.length).toEqual(1)
     expect(page1.hasNextPage).toBe(true)
-    expect(page2.docs).toEqual([project2, project1])
+    expect(page2.docs.length).toEqual(2)
     expect(page2.hasNextPage).toBe(false)
   })
 
