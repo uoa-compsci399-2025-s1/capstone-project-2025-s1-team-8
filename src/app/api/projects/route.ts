@@ -5,6 +5,7 @@ import ProjectService from '@/data-layer/services/ProjectService'
 /**
  * Fetches all projects
  * @param req - The request object.
+ * @returns A JSON response containing the list of projects and the next page cursor.
  */
 
 export const GET = async (req: NextRequest): Promise<Response> => {
@@ -25,6 +26,7 @@ export const GET = async (req: NextRequest): Promise<Response> => {
 /**
  * Creates a project by its ID..
  * @param req - The request object.
+ * @returns A JSON response containing the created project.
  */
 
 export const POST = async (req: NextRequest): Promise<Response> => {
