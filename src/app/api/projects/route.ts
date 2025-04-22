@@ -42,7 +42,10 @@ export const POST = async (req: NextRequest): Promise<Response> => {
   } catch (error) {
     console.error(error)
     if (error instanceof ZodError) {
-      return NextResponse.json({ error }, { status: StatusCodes.BAD_REQUEST })
+      return NextResponse.json(
+        { error: (error as ZodError).message },
+        { status: StatusCodes.BAD_REQUEST },
+      )
     }
     console.error(error)
     return NextResponse.json(
