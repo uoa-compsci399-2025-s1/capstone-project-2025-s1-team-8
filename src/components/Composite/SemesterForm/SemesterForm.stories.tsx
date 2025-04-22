@@ -37,7 +37,7 @@ export const Empty: Story = {
   },
   args: {
     open: false,
-    className: 'w-[800px]',
+    className: '',
   },
 }
 
@@ -62,7 +62,7 @@ export const WithData: Story = {
   },
   args: {
     open: false,
-    className: 'w-[800px]',
+    className: '',
     semesterName: 'Semester 1 2024',
     startDate: new Date('2023-09-01'),
     endDate: new Date('2024-01-31'),
