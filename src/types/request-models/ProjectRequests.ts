@@ -20,8 +20,6 @@ export const MediaSchema = z.object({
 export const UserSchema = z
   .object({
     id: z.string(),
-    updatedAt: z.string(),
-    createdAt: z.string(),
     email: z.string(),
     firstName: z.string(),
     lastName: z.string(),
