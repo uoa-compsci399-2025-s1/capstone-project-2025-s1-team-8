@@ -75,13 +75,14 @@ describe('test /api/admin/users/[id]', () => {
           ? clientAdditionalInfoMock.client.id
           : clientAdditionalInfoMock.client
       const slug = { id }
-      const body = '{ "firstName": "Sheena Lin" }'
+      const body = { firstName: 'Sheena Lin' }
+      const bodyJson = JSON.stringify(body)
       const request = new NextRequest('http://localhost:3000/api/admin/users/' + id, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body,
+        body: bodyJson,
       })
       const res = await PATCH(request, {
         params: paramsToPromise(slug),
@@ -111,14 +112,18 @@ describe('test /api/admin/users/[id]', () => {
           ? clientAdditionalInfoMock.client.id
           : clientAdditionalInfoMock.client
       const slug = { id }
-      const body =
-        '{ "firstName": "Sheena Lin", "introduction": "new intro", "affiliation": "new affiliation"}'
+      const body = {
+        firstName: 'Sheena Lin',
+        introduction: 'new intro',
+        affiliation: 'new affiliation',
+      }
+      const bodyJson = JSON.stringify(body)
       const request = new NextRequest('http://localhost:3000/api/admin/users/' + id, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body,
+        body: bodyJson,
       })
       const res = await PATCH(request, {
         params: paramsToPromise(slug),
@@ -135,6 +140,29 @@ describe('test /api/admin/users/[id]', () => {
         affiliation: 'new affiliation',
         updatedAt: json.updatedAt,
       })
+    })
+
+    it('update client user by Id with no AdditionalClientInfo', async () => {
+      const clientMock = await userService.createUser(clientCreateMock)
+      const id = clientMock.id
+      const slug = { id }
+      const body = { firstName: 'Sheenaaaaaa' }
+      const bodyJson = JSON.stringify(body)
+      const request = new NextRequest('http://localhost:3000/api/admin/users/' + id, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: bodyJson,
+      })
+      const res = await PATCH(request, {
+        params: paramsToPromise(slug),
+      })
+      const json = await res.json()
+      expect(res.status).toBe(StatusCodes.OK)
+      // the existence of introduction/affiliation shows that clientAdditionalInfo was created
+      expect(json.introduction).toEqual(null)
+      expect(json.affiliation).toEqual(null)
     })
 
     it('update student user by Id', async () => {

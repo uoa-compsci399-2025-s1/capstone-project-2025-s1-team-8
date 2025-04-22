@@ -4,6 +4,7 @@ import { NextRequest } from 'next/server'
 import { UserRole } from '@/types/User'
 import { NotFound } from 'payload'
 import { UpdateUserRequestBody } from '@/types/request-models/UserRequests'
+import { User } from '@/payload-types'
 
 /**
  * Fetches a single user by ID if the request is made by an admin
@@ -69,9 +70,21 @@ export const PATCH = async (
     const updatedUser = await userService.updateUser(id, body)
     if (user.role === UserRole.Client) {
       const clientInfo = await userService.getClientAdditionalInfo(id)
-      clientInfo.introduction = body.introduction ?? clientInfo.introduction
-      clientInfo.affiliation = body.affiliation ?? clientInfo.affiliation
-      return Response.json(clientInfo)
+      /** @Todo write test for when clientInfo doesn't exist **/
+      if (clientInfo === null || clientInfo === undefined) {
+        const newClientInfo = await userService.createClientAdditionalInfo({
+          client: id,
+          introduction: null,
+          affiliation: null,
+        })
+        return Response.json(newClientInfo)
+      } else {
+        const updatedClientInfo = await userService.updateClientAdditionalInfo(clientInfo.id, {
+          introduction: body.introduction,
+          affiliation: body.affiliation,
+        })
+        return Response.json(updatedClientInfo)
+      }
     } else if (user.role === UserRole.Student) {
       return Response.json(updatedUser)
     }
