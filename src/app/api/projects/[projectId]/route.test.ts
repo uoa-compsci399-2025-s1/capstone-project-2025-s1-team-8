@@ -2,7 +2,6 @@ import { StatusCodes } from 'http-status-codes'
 import {
   clearCollection,
   createMockNextPatchRequest,
-  createMockNextRequest,
   paramsToPromise,
   testPayloadObject,
 } from '@/test-config/utils'
