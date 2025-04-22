@@ -51,7 +51,10 @@ export const PATCH = async (
     if (error instanceof NotFound) {
       return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
     } else if (error instanceof ZodError) {
-      return NextResponse.json({ error }, { status: StatusCodes.BAD_REQUEST })
+      return NextResponse.json(
+        { error: 'Invalid request body', details: error.flatten() },
+        { status: StatusCodes.BAD_REQUEST },
+      )
     }
     console.error(error)
     return NextResponse.json(
