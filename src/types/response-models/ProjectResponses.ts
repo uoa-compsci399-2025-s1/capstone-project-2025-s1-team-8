@@ -17,6 +17,6 @@ export const PatchProjectResponseSchema = CommonResponse.extend({
 
 export type GetProjectResponse = z.infer<typeof GetProjectResponseSchema>
 
-export type PostProjectReponse = z.infer<typeof PostProjectResponseSchema>
+export type PostProjectResponse = z.infer<typeof PostProjectResponseSchema>
 
 export type PatchProjectResponse = z.infer<typeof PatchProjectResponseSchema>
