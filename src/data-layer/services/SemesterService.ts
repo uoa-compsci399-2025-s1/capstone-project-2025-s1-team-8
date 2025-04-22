@@ -34,10 +34,14 @@ export default class SemesterService {
    *
    * @returns The retrieved semester documents
    */
-  public async getAllSemesters(): Promise<PaginatedDocs<Semester>> {
-    return await payload.find({
+  public async getAllSemesters(page: number = 1, limit: number = 100): Promise<PaginatedDocs<Semester>> {
+    const data = await payload.find({
       collection: 'semester',
+      limit,
+      pagination: true,
+      page: page,
     })
+    return data
   }
 
   /**
