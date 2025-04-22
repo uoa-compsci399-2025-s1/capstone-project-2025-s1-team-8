@@ -47,6 +47,6 @@ export const GET = async (req: NextRequest) => {
   const page = parseInt(searchParams.get('page') || '1')
   const limit = parseInt(searchParams.get('limit') || '100')
   const semesterService = new SemesterService()
-  const {docs: semester, nextPage} = await semesterService.getAllSemesters(page, limit)
-  return NextResponse.json({data: semester, nextPage})
+  const { docs: semester, nextPage } = await semesterService.getAllSemesters(page, limit)
+  return NextResponse.json({ data: semester, nextPage })
 }

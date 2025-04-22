@@ -51,7 +51,6 @@ describe('tests /api/admin/semesters', () => {
   })
 
   describe('GET /api/admin/semesters', () => {
-
     it('should get no semesters if none exist', async () => {
       const res = await GET(createMockNextRequest('http://localhost:3000/api/semesters'))
       expect(res.status).toBe(StatusCodes.OK)

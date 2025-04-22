@@ -47,7 +47,7 @@ export const GET = async (req: NextRequest) => {
   const page = parseInt(searchParams.get('page') || '1')
   const limit = parseInt(searchParams.get('limit') || '100')
   const semesterService = new SemesterService()
-  const {docs: semester, nextPage} = await semesterService.getAllSemesters(page, limit)
+  const { docs: semester, nextPage } = await semesterService.getAllSemesters(page, limit)
   const filteredSemesters = semester.map(({ name, startDate, endDate, deadline }) => ({
     name,
     startDate,
@@ -55,5 +55,5 @@ export const GET = async (req: NextRequest) => {
     deadline,
   }))
   console.log(filteredSemesters)
-  return NextResponse.json({data: filteredSemesters, nextPage})
+  return NextResponse.json({ data: filteredSemesters, nextPage })
 }
