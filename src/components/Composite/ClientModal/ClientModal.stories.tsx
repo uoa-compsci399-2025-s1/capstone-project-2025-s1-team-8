@@ -51,7 +51,7 @@ export default meta
 type Story = StoryObj<typeof ClientModal>
 
 export const Exemplar: Story = {
-  render: (args) => {
+  render: function RenderClientModal(args) {
     const [{ open }, updateArgs] = useArgs()
 
     function onChange() {

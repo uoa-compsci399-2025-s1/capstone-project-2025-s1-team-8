@@ -28,7 +28,7 @@ const mockOtherClientDetails: ClientProps[] = [
 ]
 
 export const Exemplar: Story = {
-  render: (args) => {
+  render: function RenderProjectModal(args) {
     const [{ open }, updateArgs] = useArgs()
 
     function onChange() {

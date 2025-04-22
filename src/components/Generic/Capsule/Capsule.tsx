@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 
 interface CapsuleProps {
   text: string // Text to be displayed inside the capsule

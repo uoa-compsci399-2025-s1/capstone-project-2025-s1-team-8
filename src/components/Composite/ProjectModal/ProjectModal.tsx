@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Modal from '../../Generic/Modal/Modal'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import { ModalProps } from '@/components/Generic/Modal/Modal'
-import { FiCheck, FiCopy, FiEdit } from 'react-icons/fi'
+import { FiCheck, FiCopy } from 'react-icons/fi'
 import Button from '@/components/Generic/Button/Button'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 
@@ -157,7 +157,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />
           <div className="col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
             {semesters.map((semester) => (
-              <Capsule variant="beige" text={semester} />
+              <Capsule variant="beige" text={semester} key={semester} />
             ))}
           </div>
         </div>

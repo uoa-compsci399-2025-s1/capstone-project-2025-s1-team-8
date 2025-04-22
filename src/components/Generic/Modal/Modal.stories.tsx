@@ -17,7 +17,7 @@ export default meta
 type Story = StoryObj<typeof Modal>
 
 export const Default: Story = {
-  render: (args) => {
+  render: function RenderModal(args) {
     const [{ open }, updateArgs] = useArgs()
 
     function onChange() {
@@ -43,7 +43,7 @@ export const Default: Story = {
 }
 
 export const OverflowY: Story = {
-  render: (args) => {
+  render: function RenderScrollableModal(args) {
     const [{ open }, updateArgs] = useArgs()
 
     function onChange() {

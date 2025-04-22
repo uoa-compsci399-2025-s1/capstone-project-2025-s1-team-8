@@ -1,4 +1,3 @@
-import React from 'react'
 import { Meta, Story } from '@storybook/react'
 import SemesterCard, { SemesterCardProps } from './SemesterCard'
 import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/DraggableProjectCard'
