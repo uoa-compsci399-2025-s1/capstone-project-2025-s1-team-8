@@ -43,7 +43,7 @@ export const POST = async (req: NextRequest): Promise<Response> => {
     console.error(error)
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { error: (error as ZodError).message },
+        { error: 'Invalid request body', details: error.flatten() },
         { status: StatusCodes.BAD_REQUEST },
       )
     }
