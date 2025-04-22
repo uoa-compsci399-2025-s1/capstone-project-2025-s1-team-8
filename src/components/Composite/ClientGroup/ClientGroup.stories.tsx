@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import ClientGroup from './ClientGroup'
-import { ClientDTOPlaceholder } from './ClientCard'
+import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
 
 const meta: Meta<typeof ClientGroup> = {
   component: ClientGroup,
-  title: 'Generic/ClientGroup',
+  title: 'Composite/ClientGroup',
   tags: ['autodocs'],
 }
 

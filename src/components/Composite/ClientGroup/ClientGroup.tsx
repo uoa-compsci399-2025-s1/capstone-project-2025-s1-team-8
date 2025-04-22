@@ -1,6 +1,6 @@
 import React from 'react'
-import { ClientDTOPlaceholder } from './ClientCard'
-import ClientCard from './ClientCard'
+import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
+import ClientCard from '@/components/Generic/ClientCard/ClientCard'
 
 export interface ClientGroupProps {
   clients: ClientDTOPlaceholder[]
