@@ -17,16 +17,18 @@ export const MediaSchema = z.object({
   focalY: z.number().nullable().optional(),
 })
 
-export const UserSchema = z.object({
-  id: z.string(),
-  updatedAt: z.string(),
-  createdAt: z.string(),
-  email: z.string(),
-  firstName: z.string(),
-  lastName: z.string(),
-  role: z.nativeEnum(UserRole),
-  image: MediaSchema.nullable().optional(),
-}).passthrough()
+export const UserSchema = z
+  .object({
+    id: z.string(),
+    updatedAt: z.string(),
+    createdAt: z.string(),
+    email: z.string(),
+    firstName: z.string(),
+    lastName: z.string(),
+    role: z.nativeEnum(UserRole),
+    image: MediaSchema.nullable().optional(),
+  })
+  .passthrough()
 
 export const UpdateProjectRequestBody = z.object({
   name: z.string().optional(),
@@ -43,7 +45,12 @@ export const UpdateProjectRequestBody = z.object({
       message: 'Invalid date format, should be in ISO 8601 format',
     })
     .optional(),
-    clients: z.union([z.array(z.string()).nonempty('At least one client is required'), z.array(UserSchema).nonempty('At least one client is required')]).optional(),
+  clients: z
+    .union([
+      z.array(z.string()).nonempty('At least one client is required'),
+      z.array(UserSchema).nonempty('At least one client is required'),
+    ])
+    .optional(),
   attachments: z.array(MediaSchema).max(5).optional(),
 })
 
@@ -59,6 +66,9 @@ export const CreateProjectRequestBody = z.object({
   timestamp: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: 'Invalid date format, should be in ISO 8601 format',
   }),
-  clients: z.union([z.array(z.string()).nonempty('At least one client is required'), z.array(UserSchema).nonempty('At least one client is required')]),
+  clients: z.union([
+    z.array(z.string()).nonempty('At least one client is required'),
+    z.array(UserSchema).nonempty('At least one client is required'),
+  ]),
   attachments: z.array(MediaSchema).max(5).optional(),
 })
