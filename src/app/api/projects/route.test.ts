@@ -34,8 +34,7 @@ describe('test /api/projects', () => {
   it('should return bad Request if limit is more than 100 or less than 1', async () => {
     const res = await GET(createMockNextRequest('http://localhost:3000/api/projects?limit=101'))
     expect(res.status).toBe(StatusCodes.BAD_REQUEST)
-    const res2 = await GET(
-      createMockNextRequest('http://localhost:3000/api/projects?limit=0'))
+    const res2 = await GET(createMockNextRequest('http://localhost:3000/api/projects?limit=0'))
     expect(res2.status).toBe(StatusCodes.BAD_REQUEST)
   })
 
