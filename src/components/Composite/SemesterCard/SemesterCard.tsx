@@ -24,16 +24,15 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
-  const [height, setHeight] = useState('0px');
-
+  const [height, setHeight] = useState('0px')
 
   useEffect(() => {
     if (isOpen && contentRef.current) {
-      setHeight(`${contentRef.current.scrollHeight}px`);
+      setHeight(`${contentRef.current.scrollHeight}px`)
     } else {
-      setHeight('0px');
+      setHeight('0px')
     }
-  }, [isOpen]);
+  }, [isOpen])
 
   return (
     <div className="relative w-full flex flex-col gap-4">
@@ -85,7 +84,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
       {/* Expandable Details */}
       <div
         className={`relative w-full bg-muted-blue-op-45 ring-1 ring-deeper-blue rounded-lg transition-all duration-500 overflow-hidden ${isOpen ? 'opacity-100 mt-8 mb-4' : 'opacity-0'}`}
-        style={{maxHeight : height}}
+        style={{ maxHeight: height }}
       >
         <div ref={contentRef} className="px-10 py-8 sm:px-14 sm:py-12 overflow-hidden">
           {/* Close Button */}

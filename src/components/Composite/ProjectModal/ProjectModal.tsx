@@ -6,7 +6,7 @@ import { FiCheck, FiCopy, FiEdit } from 'react-icons/fi'
 import Button from '@/components/Generic/Button/Button'
 
 export interface ClientProps {
-  name: string,
+  name: string
   email: string
 }
 
@@ -53,7 +53,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   }
 
   const handleCopyAll = (projectClientDetails: ClientProps, otherClientDetails: ClientProps[]) => {
-    const allEmails = [projectClientDetails.email, ...otherClientDetails.map(client => client.email)].join(', ')
+    const allEmails = [
+      projectClientDetails.email,
+      ...otherClientDetails.map((client) => client.email),
+    ].join(', ')
     navigator.clipboard.writeText(allEmails)
     setCopiedAll(true)
     setTimeout(() => setCopiedAll(false), 1000)
@@ -77,7 +80,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   return (
     <Modal open={open} onClose={onClose} className={className + ' min-h-fit'}>
       <div className="relative max-w-full flex flex-col p-15 rounded-t-2xl gap-5 pointer-events-none">
-        <button style={{pointerEvents: "initial"}} className="absolute top-10 right-20 rounded-full hover:cursor-pointer" onClick={onClose}>
+        <button
+          style={{ pointerEvents: 'initial' }}
+          className="absolute top-10 right-20 rounded-full hover:cursor-pointer"
+          onClick={onClose}
+        >
           <FiEdit className="w-5 h-5 text-dark-blue hover:text-steel-blue" />
         </button>
         {/* title */}
@@ -88,7 +95,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           <h2 className="flex text-steel-blue font-inter">{projectClientDetails.name}</h2>
           <h2 className="flex text-deeper-blue font-inter">|</h2>
           <h2 className="flex text-deeper-blue font-inter">{projectClientDetails.email}</h2>
-          <button className="flex" style={{pointerEvents: "initial"}} onClick={() => handleCopy(projectClientDetails.email)}>
+          <button
+            className="flex"
+            style={{ pointerEvents: 'initial' }}
+            onClick={() => handleCopy(projectClientDetails.email)}
+          >
             {copied ? (
               <FiCheck className="self-center size-4 text-dark-blue" />
             ) : (
@@ -145,7 +156,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
       <div className="relative bg-muted-blue-op-45 max-w-full flex flex-col p-15 rounded-b-2xl gap-5">
         <div className="flex flex-col">
-          <div className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3`}>
+          <div
+            className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3`}
+          >
             {otherClientDetails.map((clientDetails) => (
               <>
                 <h2 className="col-start-1 text-dark-blue font-inter alternate">
@@ -157,8 +170,13 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 </h2>
               </>
             ))}
-            
-            <Button onClick={() => handleCopyAll(projectClientDetails, otherClientDetails)} className="w-[160px] h-fit col-start-5 row-start-1" variant="dark" size="sm">
+
+            <Button
+              onClick={() => handleCopyAll(projectClientDetails, otherClientDetails)}
+              className="w-[160px] h-fit col-start-5 row-start-1"
+              variant="dark"
+              size="sm"
+            >
               {copiedAll ? (
                 <FiCheck className="self-center size-4" />
               ) : (

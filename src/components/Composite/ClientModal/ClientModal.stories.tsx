@@ -71,12 +71,12 @@ export const Exemplar: Story = {
   },
   args: {
     open: false,
-    className: 'w-[1200px]',
+    className: '',
     clientFullName: 'John Doe',
     clientEmail: 'johndoe@gmail.com',
     affiliation: 'University of Auckland',
     introduction:
       'Hello! My name is John Doe and I am a lecturer at the University of Auckland. \n\nMy hobbies include snorkelling, fishing, reading, baking, eating, sleeping and taking various methods of transport to my destination!\n\n"John Doe" is a common placeholder name used to represent an unknown or anonymous individual, particularly in legal or informal contexts. It\'s often used as a stand-in when a person\'s real name is not known, needs to be protected, or when a general example is needed. The female equivalent is "Jane Doe".',
-    projects: mockProjects
+    projects: mockProjects,
   },
 }

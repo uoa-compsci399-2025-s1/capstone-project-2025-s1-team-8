@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useState } from 'react'
 import { ExclamationTriangleIcon } from '@heroicons/react/16/solid'
-import { LuEyeOff, LuEye } from "react-icons/lu";
+import { LuEyeOff, LuEye } from 'react-icons/lu'
 
 interface InputProps {
   type?: 'text' | 'number' | 'email' | 'password' | 'date' | 'time' | string
@@ -62,16 +62,14 @@ const Input: FC<InputProps> = ({
         {isPasswordType ? (
           <button
             type="button"
-            onClick={() => setShowPassword(prev => !prev)}
+            onClick={() => setShowPassword((prev) => !prev)}
             className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-blue cursor-pointer"
             aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
             {showPassword ? <LuEyeOff className="w-5 h-5" /> : <LuEye className="w-5 h-5" />}
           </button>
         ) : endIcon ? (
-          <span className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5">
-            {endIcon}
-          </span>
+          <span className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5">{endIcon}</span>
         ) : null}
       </div>
       {error && (
