@@ -43,7 +43,7 @@ export const PATCH = async (
   try {
     const body = await req.json()
     const data = await projectService.updateProject(projectId, body)
-    return NextResponse.json({data: data})
+    return NextResponse.json({ data: data })
   } catch (error) {
     if ((error as Error).message === 'Not Found') {
       return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })

@@ -1,5 +1,11 @@
 import { StatusCodes } from 'http-status-codes'
-import { clearCollection, createMockNextPatchRequest, createMockNextRequest, paramsToPromise, testPayloadObject } from '@/test-config/utils'
+import {
+  clearCollection,
+  createMockNextPatchRequest,
+  createMockNextRequest,
+  paramsToPromise,
+  testPayloadObject,
+} from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET, DELETE, PATCH } from '@/app/api/projects/[projectId]/route'
@@ -49,31 +55,34 @@ describe('get projects', () => {
     expect(await res.json()).toEqual({ error: 'Project not found' })
   })
 
-  it("should update a project correctly", async () => {
+  it('should update a project correctly', async () => {
     const project = await projectService.createProject(projectCreateMock)
     const slug = { projectId: project.id }
-    const res = await PATCH(createMockNextPatchRequest("", {name: "Updated project"}), {
+    const res = await PATCH(createMockNextPatchRequest('', { name: 'Updated project' }), {
       params: paramsToPromise(slug),
     })
     expect(res.status).toBe(StatusCodes.OK)
     const body = await res.json()
-    expect(body.data.name).toEqual("Updated project")
-  
-    const res1 = await PATCH(createMockNextPatchRequest("", {name: "Updated project 1", description: "Hi hi"}), {
-      params: paramsToPromise(slug),
-    })
+    expect(body.data.name).toEqual('Updated project')
+
+    const res1 = await PATCH(
+      createMockNextPatchRequest('', { name: 'Updated project 1', description: 'Hi hi' }),
+      {
+        params: paramsToPromise(slug),
+      },
+    )
     expect(res1.status).toBe(StatusCodes.OK)
     const body1 = await res1.json()
-    expect(body1.data.name).toEqual("Updated project 1")
-    expect(body1.data.description).toEqual("Hi hi")
+    expect(body1.data.name).toEqual('Updated project 1')
+    expect(body1.data.description).toEqual('Hi hi')
   })
 
-  it("should return a 404 error if the project does not exist", async () => {
-    const slug = { projectId: "nonexistent" }
-    const res = await PATCH(createMockNextPatchRequest("", {name: "Updated project"}), {
+  it('should return a 404 error if the project does not exist', async () => {
+    const slug = { projectId: 'nonexistent' }
+    const res = await PATCH(createMockNextPatchRequest('', { name: 'Updated project' }), {
       params: paramsToPromise(slug),
     })
     expect(res.status).toBe(StatusCodes.NOT_FOUND)
-    expect(await res.json()).toEqual({ error: "Project not found" })
+    expect(await res.json()).toEqual({ error: 'Project not found' })
   })
 })
