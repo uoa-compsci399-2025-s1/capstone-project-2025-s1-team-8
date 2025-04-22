@@ -1,3 +1,4 @@
+
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import UserService from './UserService'
 import {
@@ -47,24 +48,6 @@ describe('User service test', () => {
       const createdUser = await userService.createUser(studentCreateMock)
       const fetchedUser = await userService.getUser(createdUser.id)
       expect(fetchedUser).toEqual(createdUser)
-    })
-
-    it('should return a paginated list of users', async () => {
-      await userService.createUser(clientCreateMock)
-      await userService.createUser(adminCreateMock)
-      const fetchedUsers = await userService.getAllUsers(1)
-
-      expect(fetchedUsers.docs.length).toEqual(1)
-      expect(fetchedUsers.hasNextPage).toBeTruthy()
-
-      const nextPage = await userService.getAllUsers(
-        1,
-        fetchedUsers.nextPage ? fetchedUsers.nextPage : undefined,
-      )
-      expect(nextPage.docs.length).toEqual(1)
-      expect(nextPage.hasNextPage).toBeFalsy()
-
-      expect(nextPage.docs[0].id).not.toEqual(fetchedUsers.docs[0].id)
     })
 
     it('should return a paginated list of users', async () => {

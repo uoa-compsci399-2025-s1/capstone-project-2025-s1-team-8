@@ -23,11 +23,9 @@ export default class UserService {
   }
 
   /**
-   * Retrieves a paginated list of user documents from the database.
+   * Retrieves a user document from the database by its ID.
    *
-   * @param limit The maximum number of users to retrieve, defaults to 100
-   * @param pagingCounter The page number to retrieve
-   * @returns A paginated list of user documents
+   * @param userID The ID of the user to retrieve
    * @returns The retrieved user document
    */
   public async getUser(userID: string): Promise<User> {
