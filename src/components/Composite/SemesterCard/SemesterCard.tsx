@@ -42,8 +42,8 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
         className={`
       ${
         currentOrUpcoming === 'upcoming' || currentOrUpcoming === 'current'
-          ? 'bg-muted-blue-op-45'
-          : 'bg-gradient-to-r from-denim-blue to-deeper-blue'
+          ? 'bg-muted-blue-op-45 hover:bg-[#d2e3e1]'
+          : 'bg-gradient-to-r from-denim-blue to-deeper-blue hover:from-[#35474c] hover:to-[#6d939d]'
       }
       rounded-lg ring-1 ring-deeper-blue p-4 py-5 sm:p-6 sm:py-7 cursor-pointer hover:shadow-md
       flex flex-col gap-2.5 relative
