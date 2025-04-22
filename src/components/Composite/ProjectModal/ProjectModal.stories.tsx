@@ -48,7 +48,7 @@ export const Exemplar: Story = {
   },
   args: {
     open: false,
-    className: 'w-[1200px]',
+    className: '',
     projectTitle: 'Chronobiology',
     projectClientDetails: mockClientDetails,
     otherClientDetails: mockOtherClientDetails,

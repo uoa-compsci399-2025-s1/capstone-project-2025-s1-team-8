@@ -53,7 +53,7 @@ const ClientModal: React.FC<ClientModalProps> = ({
             )}
           </button>
         </div>
-        <div className="flex flex-row gap-5 items-center mb-6">
+        <div className="flex flex-row gap-3 items-center mb-6">
           <Capsule variant="muted_blue" text="Affiliation" />
           <Capsule variant="beige" text={affiliation} />
         </div>

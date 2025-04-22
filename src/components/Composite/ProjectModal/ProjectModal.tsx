@@ -78,55 +78,61 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   }
 
   return (
-    <Modal open={open} onClose={onClose} className={className + ' min-h-fit'}>
-      <div className="relative max-w-full flex flex-col p-15 rounded-t-2xl gap-5 pointer-events-none">
+    <Modal open={open} onClose={onClose} className={className + ' min-h-fit w-[75%] top-5'}>
+      <div className="relative max-w-full flex flex-col p-15 pt-19 rounded-t-2xl gap-5 pointer-events-none">
         <button
           style={{ pointerEvents: 'initial' }}
-          className="absolute top-10 right-20 rounded-full hover:cursor-pointer"
+          className="absolute top-10.5 right-20 rounded-full hover:cursor-pointer"
           onClick={onClose}
         >
-          <FiEdit className="w-5 h-5 text-dark-blue hover:text-steel-blue" />
+          <FiEdit className="w-4 h-4 text-dark-blue hover:text-steel-blue" />
         </button>
         {/* title */}
-        <h1 className="text-5xl m-0 text-dark-blue font-dm-serif-display">{projectTitle}</h1>
+        <h1 className="text-4xl font-normal m-0 text-dark-blue font-dm-serif-display">
+          {projectTitle}
+        </h1>
 
         {/* client details */}
         <div className="flex flex-row gap-3">
-          <h2 className="flex text-steel-blue font-inter">{projectClientDetails.name}</h2>
-          <h2 className="flex text-deeper-blue font-inter">|</h2>
-          <h2 className="flex text-deeper-blue font-inter">{projectClientDetails.email}</h2>
+          <h2 className="flex text-lg font-normal text-steel-blue font-inter">
+            {projectClientDetails.name}
+          </h2>
+          <h2 className="flex text-lg font-normal text-deeper-blue font-inter">|</h2>
+          <h2 className="flex text-lg font-normal text-deeper-blue font-inter">
+            {projectClientDetails.email}
+          </h2>
           <button
             className="flex"
             style={{ pointerEvents: 'initial' }}
             onClick={() => handleCopy(projectClientDetails.email)}
           >
             {copied ? (
-              <FiCheck className="self-center size-4 text-dark-blue" />
+              <FiCheck className="self-center size-5.5 text-dark-blue" />
             ) : (
-              <FiCopy className="self-center size-4 text-steel-blue hover:text-dark-blue cursor-pointer" />
+              <FiCopy className="self-center size-5.5 text-steel-blue hover:text-dark-blue cursor-pointer" />
             )}
           </button>
         </div>
 
         {/* project description*/}
-        <p className="text-sm text-dark-blue font-inter text-left">{projectDescription}</p>
+        <p className="text-sm text-dark-blue font-inter text-left pb-3">{projectDescription}</p>
 
         {/* desired output */}
         <Capsule variant="muted_blue" text="Desired output" />
-        <p className="text-sm text-dark-blue font-inter text-left mb-5">{desiredOutput}</p>
+        <p className="text-sm text-dark-blue font-inter text-left mb-7">{desiredOutput}</p>
 
         {/* capsules for information */}
-        <div className="grid grid-cols-[max-content_auto_max-content_max-content] grid-flow-row gap-2">
-          <Capsule className="col-start-1" variant="muted_blue" text="Special requirements" />
+        <div className="grid grid-cols-[max-content_auto_max-content_max-content] grid-flow-row gap-2.5">
+          <Capsule className="col-start-1 mr-2" variant="muted_blue" text="Special requirements" />
           <Capsule
             className="col-start-2"
             variant="beige"
             text={specialRequirements ? 'Yes' : 'No'}
           />
 
-          <Capsule className="col-start-3 " variant="muted_blue" text="Submitted" />
+          <Capsule className="col-start-3 mr-2" variant="muted_blue" text="Submitted" />
           <Capsule
-            className="col-start-4"
+            className="col-start-4 mr-2"
             variant="gradient"
             text={convertDatetoddmmYYYY(submittedDate)}
           />
@@ -154,18 +160,20 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         </div>
       </div>
 
-      <div className="relative bg-muted-blue-op-45 max-w-full flex flex-col p-15 rounded-b-2xl gap-5">
+      <div className="relative bg-transparent-blue max-w-full flex flex-col px-15 pt-12 py-19 rounded-b-2xl gap-5">
         <div className="flex flex-col">
           <div
-            className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3`}
+            className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3 pb-3`}
           >
             {otherClientDetails.map((clientDetails) => (
               <>
-                <h2 className="col-start-1 text-dark-blue font-inter alternate">
+                <h2 className="col-start-1 text-lg font-normal text-dark-blue font-inter alternate">
                   {clientDetails.name}
                 </h2>
-                <h2 className="col-start-2 text-deeper-blue font-inter email">|</h2>
-                <h2 className="col-start-3 text-deeper-blue font-inter email">
+                <h2 className="col-start-2 text-lg font-normal text-deeper-blue font-inter email">
+                  |
+                </h2>
+                <h2 className="col-start-3 text-lg font-normal text-deeper-blue font-inter email">
                   {clientDetails.email}
                 </h2>
               </>
@@ -173,20 +181,16 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
             <Button
               onClick={() => handleCopyAll(projectClientDetails, otherClientDetails)}
-              className="w-[160px] h-fit col-start-5 row-start-1"
-              variant="dark"
+              className="col-start-5 row-start-1"
+              variant="muted_blue"
               size="sm"
             >
-              {copiedAll ? (
-                <FiCheck className="self-center size-4" />
-              ) : (
-                <p className="text-xs">Copy All Emails</p>
-              )}
+              {copiedAll ? <FiCheck className="self-center size-4" /> : <p>Copy All Emails</p>}
             </Button>
           </div>
         </div>
         <Capsule variant="light_beige" text="Desired team skills" />
-        <p className="text-sm text-dark-blue font-inter text-left">{desiredTeamSkills}</p>
+        <p className="text-sm text-dark-blue font-inter text-left mb-3">{desiredTeamSkills}</p>
         <Capsule variant="light_beige" text="Available resources" />
         <p className="text-sm text-dark-blue font-inter text-left">{availableResources}</p>
       </div>
