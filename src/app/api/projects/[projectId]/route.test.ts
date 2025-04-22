@@ -37,7 +37,7 @@ describe('get projects', () => {
       params: paramsToPromise(slug),
     })
     expect(res.status).toBe(StatusCodes.NO_CONTENT)
-    expect((await projectService.getAllProjects()).length).toEqual(0)
+    expect((await projectService.getAllProjects()).docs.length).toEqual(0)
   })
 
   it('should return a 404 error if the project does not exist', async () => {
