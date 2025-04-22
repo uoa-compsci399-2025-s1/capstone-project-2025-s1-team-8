@@ -34,6 +34,14 @@ describe('test /api/projects', () => {
     const projectService = new ProjectService()
     await projectService.createProject(projectCreateMock)
     await projectService.createProject(projectCreateMock)
+    await projectService.createProject(projectCreateMock)
+    const res1 = await GET(
+      createMockNextRequest('http://localhost:3000/api/projects?page=2&limit=2'),
+    )
+    expect(res1.status).toBe(StatusCodes.OK)
+    const data1 = await res1.json()
+    expect(data1.data.length).toEqual(1)
+
     const res = await GET(
       createMockNextRequest('http://localhost:3000/api/projects?page=1&limit=1'),
     )
@@ -41,18 +49,7 @@ describe('test /api/projects', () => {
     const data = await res.json()
     expect(data.data.length).toEqual(1)
   })
-  it('should return a list of all projects created with pagination, page 2, and page limit 2', async () => {
-    const projectService = new ProjectService()
-    await projectService.createProject(projectCreateMock)
-    await projectService.createProject(projectCreateMock)
-    await projectService.createProject(projectCreateMock)
-    const res = await GET(
-      createMockNextRequest('http://localhost:3000/api/projects?page=2&limit=2'),
-    )
-    expect(res.status).toBe(StatusCodes.OK)
-    const data = await res.json()
-    expect(data.data.length).toEqual(1)
-  })
+
   it('should create a project', async () => {
     const projectService = new ProjectService()
     const req = createMockNextPostRequest('https://localhost:3000/api/projects', projectCreateMock)

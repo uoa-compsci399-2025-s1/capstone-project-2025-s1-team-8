@@ -8,7 +8,8 @@ import { PaginatedDocs } from 'payload'
 export default class ProjectService {
   /**
    * This function returns a paginated doc of all projects
-   *
+   * @param limit The number of projects to return
+   * @param page The page number to return
    * @returns The list of projects
    */
   public async getAllProjects(

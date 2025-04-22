@@ -42,7 +42,9 @@ describe('Project service methods test', () => {
     const page2 = await projectService.getAllProjects(2, 1)
 
     expect(page1.docs).toEqual([project2])
+    expect(page1.hasNextPage).toBe(true)
     expect(page2.docs).toEqual([project2, project1])
+    expect(page2.hasNextPage).toBe(false)
   })
 
   it('should get project by ID', async () => {
