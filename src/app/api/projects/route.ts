@@ -5,6 +5,7 @@ import ProjectService from '@/data-layer/services/ProjectService'
 /**
  * Creates a project by its ID..
  * @param req - The request object.
+ * @returns The response object containing the created project data.
  */
 
 export const POST = async (req: NextRequest): Promise<Response> => {
