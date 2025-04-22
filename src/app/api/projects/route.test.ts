@@ -14,6 +14,8 @@ describe('test /api/projects', () => {
     await clearCollection(testPayloadObject, 'project')
   })
 
+  const projectService = new ProjectService()
+
   it('should get no projects if none are created', async () => {
     const res = await GET(createMockNextRequest('http://localhost:3000/api/projects'))
     expect(res.status).toBe(StatusCodes.OK)
@@ -21,7 +23,6 @@ describe('test /api/projects', () => {
   })
 
   it('should return a list of all projects created', async () => {
-    const projectService = new ProjectService()
     await projectService.createProject(projectCreateMock)
     await projectService.createProject(projectCreateMock)
     const res = await GET(createMockNextRequest('http://localhost:3000/api/projects'))
@@ -31,7 +32,6 @@ describe('test /api/projects', () => {
   })
 
   it('should return a list of all projects created with pagination', async () => {
-    const projectService = new ProjectService()
     await projectService.createProject(projectCreateMock)
     await projectService.createProject(projectCreateMock)
     await projectService.createProject(projectCreateMock)
@@ -41,6 +41,7 @@ describe('test /api/projects', () => {
     expect(res1.status).toBe(StatusCodes.OK)
     const data1 = await res1.json()
     expect(data1.data.length).toEqual(1)
+    expect(data1.nextPage).toBeNull()
 
     const res = await GET(
       createMockNextRequest('http://localhost:3000/api/projects?page=1&limit=1'),
@@ -48,10 +49,10 @@ describe('test /api/projects', () => {
     expect(res.status).toBe(StatusCodes.OK)
     const data = await res.json()
     expect(data.data.length).toEqual(1)
+    expect(data.nextPage).not.toBeNull()
   })
 
   it('should create a project', async () => {
-    const projectService = new ProjectService()
     const req = createMockNextPostRequest('https://localhost:3000/api/projects', projectCreateMock)
     const res = await POST(req)
     expect(res.status).toBe(StatusCodes.CREATED)
