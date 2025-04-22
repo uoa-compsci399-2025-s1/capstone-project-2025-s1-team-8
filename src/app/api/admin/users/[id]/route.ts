@@ -4,11 +4,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { UserRole } from '@/types/User'
 import { NotFound } from 'payload'
 import { UpdateUserRequestBody } from '@/types/request-models/UserRequests'
-
-// also return UserCombinedInfo object instead of ClientInfo
-// admins can edit themselves lmaoooo
-
-// remove slug and remove bodyJson varaiable
+import { UserCombinedInfo } from '@/types/Collections'
+import { ZodError } from 'zod'
 
 /**
  * Fetches a single user by ID if the request is made by an admin
@@ -72,34 +69,48 @@ export const PATCH = async (
     const user = await userService.getUser(id)
     const body = UpdateUserRequestBody.parse(await _req.json())
     const updatedUser = await userService.updateUser(id, body)
-
+    let introduction = undefined,
+      affiliation = undefined
+    let userCombinedInfo: UserCombinedInfo
     if (user.role === UserRole.Client) {
       const clientInfo = await userService.getClientAdditionalInfo(id)
-      if (!clientInfo) {
-        const newClientInfo = await userService.createClientAdditionalInfo({
-          client: id,
-          introduction: null,
-          affiliation: null,
+      if (clientInfo) {
+        introduction = clientInfo.introduction
+        affiliation = clientInfo.affiliation
+        await userService.updateClientAdditionalInfo(clientInfo.id, {
+          ...updatedUser,
+          introduction: body.introduction === undefined ? introduction : body.introduction,
+          affiliation: body.affiliation === undefined ? affiliation : body.affiliation,
         })
-        return NextResponse.json(newClientInfo)
+        userCombinedInfo = {
+          ...updatedUser,
+          introduction: body.introduction === undefined ? introduction : body.introduction,
+          affiliation: body.affiliation === undefined ? affiliation : body.affiliation,
+        }
       } else {
-        const updatedClientInfo = await userService.updateClientAdditionalInfo(clientInfo.id, {
-          introduction: body.introduction,
-          affiliation: body.affiliation,
-        })
-        return NextResponse.json(updatedClientInfo)
+        userCombinedInfo = {
+          ...updatedUser,
+          introduction: body.introduction ? body.introduction : undefined,
+          affiliation: body.affiliation ? body.affiliation : undefined,
+        }
+      }
+    } else {
+      userCombinedInfo = {
+        ...updatedUser,
+        introduction: body.introduction ? body.introduction : undefined,
+        affiliation: body.affiliation ? body.affiliation : undefined,
       }
     }
-    else if (user.role === UserRole.Student) {
-      return NextResponse.json(updatedUser)
-    }
-
+    return NextResponse.json(userCombinedInfo)
   } catch (error) {
-    if (
-      (error as Error).message == 'Value is not JSON serializable' ||
-      (error as Error).message == 'Not Found'
-    ) {
+    if (error instanceof NotFound) {
       return NextResponse.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })
+    }
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { error: 'Invalid request body', details: error.flatten() },
+        { status: StatusCodes.BAD_REQUEST },
+      )
     }
     return NextResponse.json(
       { error: 'Internal Server Error' },

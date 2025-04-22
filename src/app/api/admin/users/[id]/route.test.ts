@@ -10,6 +10,7 @@ import {
 } from '@/test-config/mocks/User.mock'
 import { GET, PATCH } from '@/app/api/admin/users/[id]/route'
 import { NextRequest } from 'next/server'
+import { UserCombinedInfo } from '@/types/Collections'
 
 describe('test /api/admin/users/[id]', () => {
   const userService = new UserService()
@@ -28,9 +29,8 @@ describe('test /api/admin/users/[id]', () => {
         typeof clientAdditionalInfoMock.client === 'object'
           ? clientAdditionalInfoMock.client.id
           : clientAdditionalInfoMock.client
-      const slug = { id }
       const res = await GET({} as NextRequest, {
-        params: paramsToPromise(slug),
+        params: paramsToPromise({ id }),
       })
 
       const json = await res.json()
@@ -54,9 +54,8 @@ describe('test /api/admin/users/[id]', () => {
     })
 
     it('should return a 404 error if the user does not exist', async () => {
-      const slug = { id: 'nonexistent' }
       const res = await GET({} as NextRequest, {
-        params: paramsToPromise(slug),
+        params: paramsToPromise({ id: 'nonexistent' }),
       })
       expect(res.status).toBe(StatusCodes.NOT_FOUND)
       expect(await res.json()).toEqual({ error: 'User not found' })
@@ -74,31 +73,31 @@ describe('test /api/admin/users/[id]', () => {
         typeof clientAdditionalInfoMock.client === 'object'
           ? clientAdditionalInfoMock.client.id
           : clientAdditionalInfoMock.client
-      const slug = { id }
       const body = { firstName: 'Sheena Lin' }
-      const bodyJson = JSON.stringify(body)
       const request = new NextRequest('http://localhost:3000/api/admin/users/' + id, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: bodyJson,
+        body: JSON.stringify(body),
       })
       const res = await PATCH(request, {
-        params: paramsToPromise(slug),
+        params: paramsToPromise({ id }),
       })
       const json = await res.json()
-      if (typeof clientAdditionalInfoMock.client === 'object') {
-        clientAdditionalInfoMock.client.firstName = 'Sheena Lin'
-        clientAdditionalInfoMock.client.updatedAt = json.client.updatedAt
+      clientMock.firstName = 'Sheena Lin'
+      const combinedClientInfo: UserCombinedInfo = {
+        ...clientMock,
+        introduction: clientAdditionalInfoCreateMock.introduction
+          ? clientAdditionalInfoCreateMock.introduction
+          : undefined,
+        affiliation: clientAdditionalInfoCreateMock.affiliation
+          ? clientAdditionalInfoCreateMock.affiliation
+          : undefined,
+        updatedAt: json.updatedAt,
       }
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json).toEqual({
-        ...clientAdditionalInfoMock,
-        introduction: clientAdditionalInfoMock.introduction,
-        affiliation: clientAdditionalInfoMock.affiliation,
-        updatedAt: json.updatedAt,
-      })
+      expect(json).toEqual(combinedClientInfo)
     })
 
     it('update client user by Id with new introduction and affiliation', async () => {
@@ -111,65 +110,93 @@ describe('test /api/admin/users/[id]', () => {
         typeof clientAdditionalInfoMock.client === 'object'
           ? clientAdditionalInfoMock.client.id
           : clientAdditionalInfoMock.client
-      const slug = { id }
       const body = {
         firstName: 'Sheena Lin',
         introduction: 'new intro',
         affiliation: 'new affiliation',
       }
-      const bodyJson = JSON.stringify(body)
       const request = new NextRequest('http://localhost:3000/api/admin/users/' + id, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: bodyJson,
+        body: JSON.stringify(body),
       })
       const res = await PATCH(request, {
-        params: paramsToPromise(slug),
+        params: paramsToPromise({ id }),
       })
       const json = await res.json()
-      if (typeof clientAdditionalInfoMock.client === 'object') {
-        clientAdditionalInfoMock.client.firstName = 'Sheena Lin'
-        clientAdditionalInfoMock.client.updatedAt = json.client.updatedAt
-      }
-      expect(res.status).toBe(StatusCodes.OK)
-      expect(json).toEqual({
-        ...clientAdditionalInfoMock,
+      clientMock.firstName = 'Sheena Lin'
+      const combinedClientInfo: UserCombinedInfo = {
+        ...clientMock,
+        // introduction: clientAdditionalInfoCreateMock.introduction ? clientAdditionalInfoCreateMock.introduction : undefined,
+        // affiliation: clientAdditionalInfoCreateMock.affiliation ? clientAdditionalInfoCreateMock.affiliation : undefined,
         introduction: 'new intro',
         affiliation: 'new affiliation',
         updatedAt: json.updatedAt,
-      })
+      }
+      expect(res.status).toBe(StatusCodes.OK)
+      expect(json).toEqual(combinedClientInfo)
     })
 
     it('update client user by Id with no AdditionalClientInfo', async () => {
       const clientMock = await userService.createUser(clientCreateMock)
       const id = clientMock.id
-      const slug = { id }
-      const body = { firstName: 'Sheenaaaaaa' }
-      const bodyJson = JSON.stringify(body)
       const request = new NextRequest('http://localhost:3000/api/admin/users/' + id, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: bodyJson,
+        body: JSON.stringify({ firstName: 'Sheenaaaaaa' }),
       })
       const res = await PATCH(request, {
-        params: paramsToPromise(slug),
+        params: paramsToPromise({ id }),
       })
       const json = await res.json()
+      clientMock.firstName = 'Sheenaaaaaa'
+      const combinedClientInfo: UserCombinedInfo = {
+        ...clientMock,
+        introduction: undefined,
+        affiliation: undefined,
+        updatedAt: json.updatedAt,
+      }
       expect(res.status).toBe(StatusCodes.OK)
-      // the existence of introduction/affiliation shows that clientAdditionalInfo was created
-      expect(json.introduction).toEqual(null)
-      expect(json.affiliation).toEqual(null)
+      expect(json).toEqual(combinedClientInfo)
+    })
+
+    it('update name, intro, affiliation of client user by Id with no AdditionalClientInfo', async () => {
+      const clientMock = await userService.createUser(clientCreateMock)
+      const id = clientMock.id
+      const request = new NextRequest('http://localhost:3000/api/admin/users/' + id, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: 'Sheenaaaaaa',
+          introduction: 'introooo',
+          affiliation: 'afil',
+        }),
+      })
+      const res = await PATCH(request, {
+        params: paramsToPromise({ id }),
+      })
+      const json = await res.json()
+      clientMock.firstName = 'Sheenaaaaaa'
+      const combinedClientInfo: UserCombinedInfo = {
+        ...clientMock,
+        introduction: 'introooo',
+        affiliation: 'afil',
+        updatedAt: json.updatedAt,
+      }
+      expect(res.status).toBe(StatusCodes.OK)
+      expect(json).toEqual(combinedClientInfo)
     })
 
     it('update student user by Id', async () => {
       const userService = new UserService()
       const newStudent = await userService.createUser(studentCreateMock)
       const id = newStudent.id
-      const slug = { id }
       const body = '{ "firstName": "Sheena" }'
       const request = new NextRequest('http://localhost:3000/api/admin/users/' + id, {
         method: 'PATCH',
@@ -179,7 +206,7 @@ describe('test /api/admin/users/[id]', () => {
         body,
       })
       const res = await PATCH(request, {
-        params: paramsToPromise(slug),
+        params: paramsToPromise({ id }),
       })
       const json = await res.json()
       expect(res.status).toBe(StatusCodes.OK)
@@ -191,9 +218,8 @@ describe('test /api/admin/users/[id]', () => {
     })
 
     it('should return a 404 error if the user does not exist', async () => {
-      const slug = { id: 'nonexistent' }
       const res = await PATCH({} as NextRequest, {
-        params: paramsToPromise(slug),
+        params: paramsToPromise({ id: 'nonexistent' }),
       })
       expect(res.status).toBe(StatusCodes.NOT_FOUND)
       expect(await res.json()).toEqual({ error: 'User not found' })
