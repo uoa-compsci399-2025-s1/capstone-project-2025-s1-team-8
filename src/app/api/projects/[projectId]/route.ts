@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 import ProjectService from '@/data-layer/services/ProjectService'
+import { NotFound } from 'payload'
 
 /**
  * Fetches a project by its ID.
@@ -19,7 +20,7 @@ export const GET = async (
     const data = await projectService.getProjectById(projectId)
     return NextResponse.json({ data })
   } catch (error) {
-    if ((error as Error).message === 'Not Found') {
+    if (error instanceof NotFound) {
       return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
     }
     return NextResponse.json(
@@ -45,7 +46,7 @@ export const PATCH = async (
     const data = await projectService.updateProject(projectId, body)
     return NextResponse.json({ data: data })
   } catch (error) {
-    if ((error as Error).message === 'Not Found') {
+    if (error instanceof NotFound) {
       return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
     }
     console.error(error)
@@ -72,7 +73,7 @@ export const DELETE = async (
     await projectService.deleteProject(projectId)
     return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
   } catch (error) {
-    if ((error as Error).message === 'Not Found') {
+    if (error instanceof NotFound) {
       return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
     }
     console.error(error)
