@@ -25,7 +25,9 @@ describe('test /api/admin/users/[id]', () => {
         client: clientMock,
       })
       const id =
-        typeof clientAdditionalInfoMock.client === 'object' ? clientAdditionalInfoMock.client.id : clientAdditionalInfoMock.client
+        typeof clientAdditionalInfoMock.client === 'object'
+          ? clientAdditionalInfoMock.client.id
+          : clientAdditionalInfoMock.client
       const slug = { id }
       const res = await GET({} as NextRequest, {
         params: paramsToPromise(slug),
@@ -62,14 +64,16 @@ describe('test /api/admin/users/[id]', () => {
   })
 
   describe('tests PATCH /api/admin/users/[id]', () => {
-    it('update client user\'s firstName by Id', async () => {
+    it("update client user's firstName by Id", async () => {
       const clientMock = await userService.createUser(clientCreateMock)
       const clientAdditionalInfoMock = await userService.createClientAdditionalInfo({
         ...clientAdditionalInfoCreateMock,
         client: clientMock,
       })
       const id =
-        typeof clientAdditionalInfoMock.client === 'object' ? clientAdditionalInfoMock.client.id : clientAdditionalInfoMock.client
+        typeof clientAdditionalInfoMock.client === 'object'
+          ? clientAdditionalInfoMock.client.id
+          : clientAdditionalInfoMock.client
       const slug = { id }
       const body = '{ "firstName": "Sheena Lin" }'
       const request = new NextRequest('http://localhost:3000/api/admin/users/' + id, {
@@ -103,7 +107,9 @@ describe('test /api/admin/users/[id]', () => {
         client: clientMock,
       })
       const id =
-        typeof clientAdditionalInfoMock.client === 'object' ? clientAdditionalInfoMock.client.id : clientAdditionalInfoMock.client
+        typeof clientAdditionalInfoMock.client === 'object'
+          ? clientAdditionalInfoMock.client.id
+          : clientAdditionalInfoMock.client
       const slug = { id }
       const body =
         '{ "firstName": "Sheena Lin", "introduction": "new intro", "affiliation": "new affiliation"}'
@@ -131,30 +137,30 @@ describe('test /api/admin/users/[id]', () => {
       })
     })
 
-  it('update student user by Id', async () => {
-    const userService = new UserService()
-    const newStudent = await userService.createUser(studentCreateMock)
-    const id = newStudent.id
-    const slug = { id }
-    const body = '{ "firstName": "Sheena" }'
-    const request = new NextRequest('http://localhost:3000/api/admin/users/' + id, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body,
+    it('update student user by Id', async () => {
+      const userService = new UserService()
+      const newStudent = await userService.createUser(studentCreateMock)
+      const id = newStudent.id
+      const slug = { id }
+      const body = '{ "firstName": "Sheena" }'
+      const request = new NextRequest('http://localhost:3000/api/admin/users/' + id, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body,
+      })
+      const res = await PATCH(request, {
+        params: paramsToPromise(slug),
+      })
+      const json = await res.json()
+      expect(res.status).toBe(StatusCodes.OK)
+      expect(json).toEqual({
+        ...newStudent,
+        firstName: 'Sheena',
+        updatedAt: json.updatedAt,
+      })
     })
-    const res = await PATCH(request, {
-      params: paramsToPromise(slug),
-    })
-    const json = await res.json()
-    expect(res.status).toBe(StatusCodes.OK)
-    expect(json).toEqual({
-      ...newStudent,
-      firstName: 'Sheena',
-      updatedAt: json.updatedAt,
-    })
-  })
 
     it('should return a 404 error if the user does not exist', async () => {
       const slug = { id: 'nonexistent' }
