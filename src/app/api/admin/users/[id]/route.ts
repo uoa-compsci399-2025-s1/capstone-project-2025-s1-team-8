@@ -69,9 +69,9 @@ export const PATCH = async (
     const updatedUser = await userService.updateUser(id, body)
     if (user.role === UserRole.Client) {
       const clientInfo = await userService.getClientAdditionalInfo(id)
-      const introduction = body.introduction ?? clientInfo.introduction
-      const affiliation = body.affiliation ?? clientInfo.affiliation
-      return Response.json({ ...updatedUser, introduction, affiliation })
+      clientInfo.introduction = body.introduction ?? clientInfo.introduction
+      clientInfo.affiliation = body.affiliation ?? clientInfo.affiliation
+      return Response.json(clientInfo)
     } else if (user.role === UserRole.Student) {
       return Response.json(updatedUser)
     }
