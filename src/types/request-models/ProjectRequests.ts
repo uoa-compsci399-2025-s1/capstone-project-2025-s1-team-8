@@ -1,6 +1,5 @@
 import { z } from 'zod'
 import { UserRole } from '../User'
-import { User } from '@/data-layer/collections/User'
 
 export const MediaSchema = z.object({
   id: z.string(),
@@ -21,18 +20,12 @@ export const MediaSchema = z.object({
 export const UserSchema = z
   .object({
     id: z.string(),
-    updatedAt: z
-      .string()
-      .refine((val) => !isNaN(Date.parse(val)), {
-        message: 'Invalid date format, should be in ISO 8601 format',
-      })
-      .optional(),
-    createdAt: z
-      .string()
-      .refine((val) => !isNaN(Date.parse(val)), {
-        message: 'Invalid date format, should be in ISO 8601 format',
-      })
-      .optional(),
+    updatedAt: z.string().refine((val) => !isNaN(Date.parse(val)), {
+      message: 'Invalid date format, should be in ISO 8601 format',
+    }),
+    createdAt: z.string().refine((val) => !isNaN(Date.parse(val)), {
+      message: 'Invalid date format, should be in ISO 8601 format',
+    }),
     email: z.string(),
     firstName: z.string(),
     lastName: z.string(),
