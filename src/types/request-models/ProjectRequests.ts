@@ -22,17 +22,17 @@ export const UserSchema = z
   .object({
     id: z.string(),
     updatedAt: z
-    .string()
-    .refine((val) => !isNaN(Date.parse(val)), {
-      message: 'Invalid date format, should be in ISO 8601 format',
-    })
-    .optional(),
-  createdAt: z
-    .string()
-    .refine((val) => !isNaN(Date.parse(val)), {
-      message: 'Invalid date format, should be in ISO 8601 format',
-    })
-    .optional(),
+      .string()
+      .refine((val) => !isNaN(Date.parse(val)), {
+        message: 'Invalid date format, should be in ISO 8601 format',
+      })
+      .optional(),
+    createdAt: z
+      .string()
+      .refine((val) => !isNaN(Date.parse(val)), {
+        message: 'Invalid date format, should be in ISO 8601 format',
+      })
+      .optional(),
     email: z.string(),
     firstName: z.string(),
     lastName: z.string(),
