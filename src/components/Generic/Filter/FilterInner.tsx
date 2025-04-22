@@ -12,17 +12,10 @@ const FilterInner: React.FC<DropdownOptionType> = ({ icon, text, isActive }) => 
   return (
     <div
       className={`p-2 rounded-sm flex items-center justify-start gap-2 
-        ${isActive ? 'bg-deeper-blue' : 'bg-deep-teal'} 
+        ${isActive ? 'bg-deeper-blue' : 'bg-deep-teal hover:bg-deeper-blue'} 
         hover:cursor-pointer text-sm`}
     >
-      {icon && (
-        <span
-          className={`flex items-center 
-            ${isActive ? 'text-white' : 'text-muted-blue'}`}
-        >
-          {icon}
-        </span>
-      )}
+      {icon && <span className={'flex items-center text-white'}>{icon}</span>}
       {!icon && (
         <span className={`flex items-center`}>
           <svg
