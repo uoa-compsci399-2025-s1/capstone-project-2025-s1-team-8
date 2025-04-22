@@ -4,7 +4,6 @@ import { NextRequest } from 'next/server'
 import { UserRole } from '@/types/User'
 import { NotFound } from 'payload'
 import { UpdateUserRequestBody } from '@/types/request-models/UserRequests'
-import { User } from '@/payload-types'
 
 /**
  * Fetches a single user by ID if the request is made by an admin
