@@ -13,7 +13,7 @@ export const projectMock: Project = {
   createdAt: new Date().toISOString(),
   name: 'Project 1',
   description: 'Description 1',
-  clients: [mockClient1.id],
+  clients: [mockClient1],
   timestamp: new Date().toISOString(),
 }
 
@@ -23,21 +23,21 @@ export const projectMock2: Project = {
   createdAt: new Date().toISOString(),
   name: 'Project 2',
   description: 'Description 2',
-  clients: [mockClient1.id, mockClient2.id],
+  clients: [mockClient1, mockClient2],
   timestamp: new Date().toISOString(),
 }
 
 export const projectCreateMock: CreateProjectData = {
   name: 'Project 1',
   description: 'Description 1',
-  clients: [mockClient1.id],
+  clients: [mockClient1],
   timestamp: new Date().toISOString(),
 }
 
 export const projectCreateMock2: CreateProjectData = {
   name: 'Project 2',
   description: 'Description 2',
-  clients: [mockClient1.id, mockClient2.id],
+  clients: [mockClient1, mockClient2],
   timestamp: new Date().toISOString(),
 }
 
