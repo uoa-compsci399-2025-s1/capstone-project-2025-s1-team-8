@@ -82,6 +82,8 @@ export const PATCH = async (
           introduction: body.introduction === undefined ? introduction : body.introduction,
           affiliation: body.affiliation === undefined ? affiliation : body.affiliation,
         })
+        introduction = introduction === null ? undefined : introduction
+        affiliation = affiliation === null ? undefined : affiliation
         userCombinedInfo = {
           ...updatedUser,
           introduction: body.introduction === undefined ? introduction : body.introduction,
