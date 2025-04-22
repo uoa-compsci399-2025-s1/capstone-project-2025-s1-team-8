@@ -5,7 +5,7 @@
   "license": "ISC",
   "type": "module",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "build": "cross-env NODE_OPTIONS=--no-deprecation next build --experimental-build-mode compile",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
@@ -44,8 +44,11 @@
     "@tailwindcss/postcss": "^4.1.2",
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
+    "googleapis": "^148.0.0",
     "graphql": "^16.8.1",
-    "next": "15.2.3",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "next": "15.2.4",
     "payload": "latest",
     "react": "19.0.0",
     "react-dom": "19.0.0",
@@ -53,6 +56,7 @@
     "sharp": "0.32.6",
     "storybook-preset-inline-svg": "^1.0.1",
     "svg-inline-loader": "^0.8.2"
+    "zod": "^3.24.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -63,6 +67,7 @@
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.5.4",
     "@types/react": "19.0.12",
     "@types/react-dom": "19.0.4",
@@ -80,16 +85,16 @@
     "vitest": "^3.1.1"
   },
   "engines": {
-    "node": "^18.20.2 || >=20.9.0",
-    "pnpm": ">=9"
+    "node": ">=22",
+    "pnpm": "^9"
   },
   "volta": {
-    "node": "18.20.2"
+    "node": "22.14.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "sharp"
     ]
   },
-  "packageManager": "pnpm@10.7.0"
+  "packageManager": "pnpm@9.0.0"
 }

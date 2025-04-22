@@ -11,10 +11,12 @@ export const Semester: CollectionConfig = {
       required: true,
     },
     {
-      name: 'projects',
-      type: 'relationship',
-      relationTo: 'semesterProject',
-      required: true,
+      name: 'description',
+      type: 'textarea',
+      required: false,
+      admin: {
+        description: 'Description of the semester',
+      },
     },
     {
       name: 'deadline',

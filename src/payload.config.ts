@@ -15,6 +15,8 @@ import { Semester } from './data-layer/collections/Semester'
 import { FormQuestion } from './data-layer/collections/FormQuestion'
 import { FormResponse } from './data-layer/collections/FormResponse'
 import { Form } from './data-layer/collections/Form'
+import { Authentication } from './data-layer/collections/Authentication'
+import { ClientAdditionalInfo } from './data-layer/collections/ClientAdditionalInfo'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -27,7 +29,18 @@ export default buildConfig({
       importMapFile: path.resolve(dirname) + '/app/payload/admin/importMap.js',
     },
   },
-  collections: [User, Media, Project, SemesterProject, Semester, FormQuestion, FormResponse, Form],
+  collections: [
+    Authentication,
+    User,
+    ClientAdditionalInfo,
+    Media,
+    Project,
+    SemesterProject,
+    Semester,
+    FormQuestion,
+    FormResponse,
+    Form,
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

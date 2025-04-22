@@ -14,6 +14,7 @@ const nextConfig = {
 
     return config
   },
+  output: 'standalone',
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })

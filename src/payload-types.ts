@@ -67,7 +67,9 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    authentication: Authentication;
     user: User;
+    clientAdditionalInfo: ClientAdditionalInfo;
     media: Media;
     project: Project;
     semesterProject: SemesterProject;
@@ -81,7 +83,9 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    authentication: AuthenticationSelect<false> | AuthenticationSelect<true>;
     user: UserSelect<false> | UserSelect<true>;
+    clientAdditionalInfo: ClientAdditionalInfoSelect<false> | ClientAdditionalInfoSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     project: ProjectSelect<false> | ProjectSelect<true>;
     semesterProject: SemesterProjectSelect<false> | SemesterProjectSelect<true>;
@@ -127,6 +131,55 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authentication".
+ */
+export interface Authentication {
+  id: string;
+  /**
+   * The email who owns this authentication
+   */
+  email: string;
+  /**
+   * The type of authentication
+   */
+  type: string;
+  /**
+   * The type of authentication
+   */
+  provider: 'google';
+  /**
+   * The provider account id of the user authentication
+   */
+  providerAccountId?: string | null;
+  /**
+   * The refresh token of the user authentication
+   */
+  refreshToken?: string | null;
+  /**
+   * The access token of the user authentication
+   */
+  accessToken: string;
+  /**
+   * The expiration time of the access token
+   */
+  expiresAt: number;
+  /**
+   * The type of token
+   */
+  tokenType?: string | null;
+  /**
+   * The scope of the token
+   */
+  scope?: string | null;
+  /**
+   * The id token of the user authentication
+   */
+  idToken?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "user".
  */
 export interface User {
@@ -167,6 +220,18 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "clientAdditionalInfo".
+ */
+export interface ClientAdditionalInfo {
+  id: string;
+  client: string | User;
+  introduction?: string | null;
+  affiliation?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "project".
  */
 export interface Project {
@@ -201,7 +266,10 @@ export interface SemesterProject {
 export interface Semester {
   id: string;
   name: string;
-  projects: string | SemesterProject;
+  /**
+   * Description of the semester
+   */
+  description?: string | null;
   deadline: string;
   startDate: string;
   endDate: string;
@@ -257,8 +325,16 @@ export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
+        relationTo: 'authentication';
+        value: string | Authentication;
+      } | null)
+    | ({
         relationTo: 'user';
         value: string | User;
+      } | null)
+    | ({
+        relationTo: 'clientAdditionalInfo';
+        value: string | ClientAdditionalInfo;
       } | null)
     | ({
         relationTo: 'media';
@@ -332,6 +408,24 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authentication_select".
+ */
+export interface AuthenticationSelect<T extends boolean = true> {
+  email?: T;
+  type?: T;
+  provider?: T;
+  providerAccountId?: T;
+  refreshToken?: T;
+  accessToken?: T;
+  expiresAt?: T;
+  tokenType?: T;
+  scope?: T;
+  idToken?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "user_select".
  */
 export interface UserSelect<T extends boolean = true> {
@@ -348,6 +442,17 @@ export interface UserSelect<T extends boolean = true> {
   hash?: T;
   loginAttempts?: T;
   lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "clientAdditionalInfo_select".
+ */
+export interface ClientAdditionalInfoSelect<T extends boolean = true> {
+  client?: T;
+  introduction?: T;
+  affiliation?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -400,7 +505,7 @@ export interface SemesterProjectSelect<T extends boolean = true> {
  */
 export interface SemesterSelect<T extends boolean = true> {
   name?: T;
-  projects?: T;
+  description?: T;
   deadline?: T;
   startDate?: T;
   endDate?: T;
