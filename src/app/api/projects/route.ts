@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 import ProjectService from '@/data-layer/services/ProjectService'
 
@@ -13,10 +13,10 @@ export const POST = async (req: NextRequest): Promise<Response> => {
   try {
     const body = await req.json()
     const data = await projectService.createProject(body)
-    return Response.json({ data }, { status: StatusCodes.CREATED })
+    return NextResponse.json({ data }, { status: StatusCodes.CREATED })
   } catch (error) {
     console.error(error)
-    return Response.json(
+    return NextResponse.json(
       { error: 'Bad request body' },
       { status: StatusCodes.INTERNAL_SERVER_ERROR },
     )
