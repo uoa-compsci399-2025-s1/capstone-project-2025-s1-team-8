@@ -28,7 +28,7 @@ const EditDropdownOptions: DropdownOptionType[] = [
 
 const ProjectFilter: React.FC<ProjectFilterProps> = ({
   className,
-  containerWidth = 200,
+  containerWidth,
   onEdit,
   onDelete,
 }) => {
@@ -52,7 +52,7 @@ const ProjectFilter: React.FC<ProjectFilterProps> = ({
         className=" hover:cursor-pointer flex items-center"
         onClick={() => setShowDropdown(!showDropdown)}
       >
-        <BsThreeDots className="size-4 text-dark-blue hover:text-deeper-blue pr-1" />
+        <BsThreeDots className="size-6 pr-1" />
       </div>
       {showDropdown && (
         <div

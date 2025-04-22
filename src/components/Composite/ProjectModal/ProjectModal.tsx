@@ -4,6 +4,8 @@ import Capsule from '@/components/Generic/Capsule/Capsule'
 import { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy, FiEdit } from 'react-icons/fi'
 import Button from '@/components/Generic/Button/Button'
+import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
+
 
 export interface ClientProps {
   name: string
@@ -80,13 +82,15 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   return (
     <Modal open={open} onClose={onClose} className={className + ' min-h-fit w-[75%] top-5'}>
       <div className="relative max-w-full flex flex-col p-15 pt-19 rounded-t-2xl gap-5 pointer-events-none">
+        {/* edit button */}
         <button
-          style={{ pointerEvents: 'initial' }}
-          className="absolute top-10.5 right-20 rounded-full hover:cursor-pointer"
-          onClick={onClose}
-        >
-          <FiEdit className="w-4 h-4 text-dark-blue hover:text-steel-blue" />
-        </button>
+            className="absolute top-10 right-20 text-dark-blue hover:text-steel-blue cursor-pointer"
+            style={{ pointerEvents: 'initial' }}
+            aria-label="Edit"
+          >
+            <EditDropdown containerWidth={200}/>
+          </button>
+
         {/* title */}
         <h1 className="text-4xl font-normal m-0 text-dark-blue font-dm-serif-display">
           {projectTitle}

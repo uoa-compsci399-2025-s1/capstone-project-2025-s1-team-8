@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import ProjectCard from '@/components/Generic/ProjectCard/ProjectCard'
 import Capsule from '@/components/Generic/Capsule/Capsule'
+import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 
 export interface SemesterCardProps {
@@ -94,6 +95,14 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
             onClick={() => setIsOpen(false)}
           >
             <XMarkIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+          </button>
+
+          {/* Edit Button */}
+          <button
+            className="absolute top-8.25 right-19 text-steel-blue hover:text-deep-teal cursor-pointer"
+            aria-label="Edit"
+          >
+            <EditDropdown containerWidth={200} />
           </button>
 
           {/* Details Section */}

@@ -7,7 +7,7 @@ const meta: Meta<typeof EditDropdown> = {
   component: EditDropdown,
   decorators: [
     (Story: StoryFn) => (
-      <div className="p-4 bg-beige h-10 w-50 flex items-center justify-end rounded-lg">
+      <div className="p-4 bg-steel-blue h-10 w-50 flex items-center justify-end rounded-lg">
         <Story />
       </div>
     ),
@@ -20,7 +20,7 @@ type Story = StoryObj<typeof EditDropdown>
 export const Default: Story = {
   args: {
     className: '',
-    containerWidth: 200,
+    containerWidth: 500,
     onEdit: () => {
       console.log('edit')
     },
