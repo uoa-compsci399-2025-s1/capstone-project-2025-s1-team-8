@@ -73,6 +73,6 @@ describe('test /api/projects', () => {
       description: undefined,
     })
     const res = await POST(req)
-    expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
+    expect(res.status).toBe(StatusCodes.BAD_REQUEST)
   })
 })

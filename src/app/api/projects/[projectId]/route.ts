@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { NotFound } from 'payload'
+import { UpdateProjectRequestBody } from '@/types/request-models/ProjectRequests'
+import { ZodError } from 'zod'
 
 /**
  * Fetches a project by its ID.
@@ -42,12 +44,17 @@ export const PATCH = async (
   const { projectId } = await params
   const projectService = new ProjectService()
   try {
-    const body = await req.json()
+    const body = UpdateProjectRequestBody.parse(await req.json())
     const data = await projectService.updateProject(projectId, body)
     return NextResponse.json({ data: data })
   } catch (error) {
     if (error instanceof NotFound) {
       return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
+    } else if (error instanceof ZodError) {
+      return NextResponse.json(
+        { error },
+        { status: StatusCodes.BAD_REQUEST },
+      )
     }
     console.error(error)
     return NextResponse.json(
