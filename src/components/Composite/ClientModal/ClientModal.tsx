@@ -36,12 +36,12 @@ const ClientModal: React.FC<ClientModalProps> = ({
     <Modal open={open} onClose={onClose} className={className + ' min-h-fit w-[75%] top-5'}>
       <div className="relative max-w-full flex flex-col p-15 py-19 rounded-t-2xl gap-5 pointer-events-none">
         <button
-            className="absolute top-10 right-20 text-dark-blue hover:text-steel-blue cursor-pointer"
-            aria-label="Edit"
-            style={{ pointerEvents: 'initial' }}
-          >
-            <EditDropdown containerWidth={200}/>
-          </button>
+          className="absolute top-10 right-20 text-dark-blue hover:text-steel-blue cursor-pointer"
+          aria-label="Edit"
+          style={{ pointerEvents: 'initial' }}
+        >
+          <EditDropdown containerWidth={200} />
+        </button>
         <div className="flex flex-row gap-5">
           <h1 className="text-4xl font-normal m-0 text-dark-blue font-dm-serif-display">
             {clientFullName}
