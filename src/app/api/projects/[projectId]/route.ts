@@ -17,12 +17,12 @@ export const GET = async (
 
   try {
     const data = await projectService.getProjectById(projectId)
-    return Response.json({ data })
+    return NextResponse.json({ data })
   } catch (error) {
     if ((error as Error).message == 'Not Found') {
-      return Response.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
+      return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
     }
-    return Response.json(
+    return NextResponse.json(
       { error: 'Internal Server Error' },
       { status: StatusCodes.INTERNAL_SERVER_ERROR },
     )
