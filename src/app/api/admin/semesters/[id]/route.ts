@@ -4,6 +4,12 @@ import { NotFound } from 'payload'
 
 import SemesterService from '@/data-layer/services/SemesterService'
 
+/**
+ * DELETE method to delete a semester.
+ *
+ * @param req The request object containing the request body
+ * @returns No content status code
+ */
 export const DELETE = async (
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
