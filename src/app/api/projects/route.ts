@@ -27,7 +27,7 @@ export const GET = async (req: NextRequest): Promise<Response> => {
 }
 
 /**
- * Creates a project by its ID..
+ * Creates a project by its ID.
  * @param req - The request object.
  * @returns A JSON response containing the created project.
  */
