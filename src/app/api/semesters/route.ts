@@ -18,12 +18,5 @@ export const GET = async (req: NextRequest) => {
   }
   const semesterService = new SemesterService()
   const { docs: semester, nextPage } = await semesterService.getAllSemesters(page, limit)
-  const filteredSemesters = semester.map(({ name, startDate, endDate, deadline }) => ({
-    name,
-    startDate,
-    endDate,
-    deadline,
-  }))
-  console.log(filteredSemesters)
-  return NextResponse.json({ data: filteredSemesters, nextPage })
+  return NextResponse.json({ data: semester, nextPage })
 }
