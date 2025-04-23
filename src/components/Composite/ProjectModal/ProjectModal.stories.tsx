@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
 import ProjectModal from './ProjectModal'
 import Button from '@/components/Generic/Button/Button'
-import { ClientProps } from '@/components/Composite/ProjectModal/ProjectModal'
 import { mockProjects2 } from '@/mocks/Projects.mock'
 
 const meta: Meta<typeof ProjectModal> = {

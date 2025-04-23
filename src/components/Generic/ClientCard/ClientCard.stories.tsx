@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import ClientCard from './ClientCard'
-import { ClientDTOPlaceholder } from './ClientCard'
 import { mockClients } from '@/mocks/Clients.mock'
 
 const meta: Meta<typeof ClientCard> = {
