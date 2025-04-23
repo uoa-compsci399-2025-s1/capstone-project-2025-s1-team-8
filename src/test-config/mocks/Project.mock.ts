@@ -37,7 +37,7 @@ export const projectCreateMock: CreateProjectData = {
 export const projectCreateMock2: CreateProjectData = {
   name: 'Project 2',
   description: 'Description 2',
-  clients: [mockClient1, mockClient2],
+  clients: [mockClient1.id, mockClient2.id],
   timestamp: new Date().toISOString(),
 }
 
