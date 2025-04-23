@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Modal from '../../Generic/Modal/Modal'
+import Modal from '@/components/Generic/Modal/Modal'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'

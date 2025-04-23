@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
 import ClientModal from './ClientModal'
-import Button from '../../Generic/Button/Button'
+import Button from '@/components/Generic/Button/Button'
 import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 
 const meta: Meta<typeof ClientModal> = {

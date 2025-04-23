@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
 import ProjectModal from './ProjectModal'
-import Button from '../../Generic/Button/Button'
+import Button from '@/components/Generic/Button/Button'
 import { ClientProps } from '@/components/Composite/ProjectModal/ProjectModal'
 
 const meta: Meta<typeof ProjectModal> = {

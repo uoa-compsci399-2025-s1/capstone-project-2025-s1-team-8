@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
 import Modal from './Modal'
-import Button from '../Button/Button'
+import Button from '@/components/Generic/Button/Button'
 
 const meta: Meta<typeof Modal> = {
   title: 'Generic/Modal',

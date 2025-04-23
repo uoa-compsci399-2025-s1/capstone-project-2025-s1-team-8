@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
 import SemesterForm from './SemesterForm'
-import Button from '../../Generic/Button/Button'
+import Button from '@/components/Generic/Button/Button'
 
 const meta: Meta<typeof SemesterForm> = {
   title: 'Composite/SemesterForm',
