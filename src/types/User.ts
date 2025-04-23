@@ -1,6 +1,6 @@
-import { ClientAdditionalInfo, UserSchema } from "./Payload";
+import { ClientAdditionalInfoSchema, UserSchema } from "./Payload";
 
-export const ClientCombinedInfo = UserSchema.merge(ClientAdditionalInfo)
+export const ClientCombinedInfo = UserSchema.merge(ClientAdditionalInfoSchema)
 
 export enum UserRole {
   Admin = 'admin',

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { ClientAdditionalInfo, Media, Project, Semester, SemesterProject, User } from '@/payload-types'
+import { ClientAdditionalInfo, Form, FormQuestion, FormResponse, Media, Project, Semester, SemesterProject, User } from '@/payload-types'
 import { UserRole } from './User'
 import { ProjectStatus } from './Project';
 
@@ -70,6 +70,38 @@ export const SemesterProjectSchema = z.object({
   updatedAt: z.string(),
   createdAt: z.string(),
 }) satisfies z.ZodType<SemesterProject>;
+
+export const FormQuestionSchema = z.object({
+  id: z.string(),
+  question: z.string(),
+  updatedAt: z.string(),
+  createdAt: z.string(),
+}) satisfies z.ZodType<FormQuestion>;
+
+// Note that this schema isn't a payload schema but required to be defined here as FormQuestionSchema is defined above
+export const QuestionResponseSchema = z.object({
+  question: z.union([z.string(), FormQuestionSchema]),
+  answer: z.string(),
+});
+
+export const FormSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string(),
+  questions: z.array(z.union([FormQuestionSchema, z.string()])),
+  updatedAt: z.string(),
+  createdAt: z.string(),
+}) satisfies z.ZodType<Form>;
+
+export const FormResponseSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string(),
+  clients: z.array(z.union([UserSchema, z.string()])),
+  questionResponses: z.array(QuestionResponseSchema),
+  updatedAt: z.string(),
+  createdAt: z.string(),
+}) satisfies z.ZodType<FormResponse>;
 
 export const ClientAdditionalInfoSchema = z.object({
   id: z.string(),
