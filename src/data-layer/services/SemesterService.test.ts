@@ -1,6 +1,6 @@
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import SemesterService from './SemesterService'
-import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
+import { semesterCreateMock, semesterCreateMock2 } from '@/test-config/mocks/Semester.mock'
 
 describe('Semester service tests', () => {
   const semesterService = new SemesterService()
@@ -61,7 +61,7 @@ describe('Semester service tests', () => {
 
   it('should return a paginated list of semesters', async () => {
     await semesterService.createSemester(semesterCreateMock)
-    await semesterService.createSemester(semesterCreateMock)
+    await semesterService.createSemester(semesterCreateMock2)
     const fetchedUsers = await semesterService.getAllSemesters(1)
 
     expect(fetchedUsers.docs.length).toEqual(1)

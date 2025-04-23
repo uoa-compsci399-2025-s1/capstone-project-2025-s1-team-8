@@ -17,6 +17,6 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.json({ error: 'Invalid page number' }, { status: StatusCodes.NOT_FOUND })
   }
   const semesterService = new SemesterService()
-  const { docs: semester, nextPage } = await semesterService.getAllSemesters(page, limit)
+  const { docs: semester, nextPage } = await semesterService.getAllSemesters(limit, page)
   return NextResponse.json({ data: semester, nextPage })
 }

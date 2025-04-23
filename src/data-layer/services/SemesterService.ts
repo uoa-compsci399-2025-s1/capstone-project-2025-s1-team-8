@@ -35,8 +35,8 @@ export default class SemesterService {
    * @returns The retrieved semester documents
    */
   public async getAllSemesters(
-    page: number = 1,
     limit: number = 100,
+    page: number = 1,
   ): Promise<PaginatedDocs<Semester>> {
     const data = await payload.find({
       collection: 'semester',
