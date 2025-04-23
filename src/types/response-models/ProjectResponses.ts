@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { Project } from '@/payload-types'
+import { Project, SemesterProject } from '@/payload-types'
 import { CommonResponse } from './CommonResponse'
 
 export const GetProjectResponseSchema = CommonResponse.extend({
@@ -18,6 +18,12 @@ export const PostProjectResponseSchema = CommonResponse.extend({
 export const PatchProjectResponseSchema = CommonResponse.extend({
   data: z.custom<Project>().optional(),
 })
+
+export const GetSemesterProjectResponseSchema = CommonResponse.extend({
+  data: z.array(z.custom<SemesterProject>()),
+  nextPage: z.number().nullable(),
+})
+
 
 export type GetProjectResponse = z.infer<typeof GetProjectResponseSchema>
 export type PostProjectResponse = z.infer<typeof PostProjectResponseSchema>
