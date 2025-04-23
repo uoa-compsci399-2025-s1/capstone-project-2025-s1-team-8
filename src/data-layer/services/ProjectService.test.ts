@@ -159,26 +159,20 @@ describe('Project service methods test', () => {
     })
 
     it('should return undefined if semesterProject does not exist', async () => {
-      await expect(projectService.getSemesterProject('nonexistent_id')).rejects.toThrow(
-        'Not Found',
-      )
+      await expect(projectService.getSemesterProject('nonexistent_id')).rejects.toThrow('Not Found')
     })
 
     it('should update a semesterProject', async () => {
       const newSemesterProject =
         await projectService.createSemesterProject(semesterProjectCreateMock)
-      const updatedSemester = await projectService.updateSemesterProject(
-        newSemesterProject.id,
-        {
-          published: true,
-        },
-      )
+      const updatedSemester = await projectService.updateSemesterProject(newSemesterProject.id, {
+        published: true,
+      })
       expect(updatedSemester.published).toEqual(true)
     })
 
     it('should delete a semesterProject', async () => {
-      const newSemester =
-        await projectService.createSemesterProject(semesterProjectCreateMock)
+      const newSemester = await projectService.createSemesterProject(semesterProjectCreateMock)
       await projectService.deleteSemesterProject(newSemester.id)
       await expect(
         testPayloadObject.findByID({

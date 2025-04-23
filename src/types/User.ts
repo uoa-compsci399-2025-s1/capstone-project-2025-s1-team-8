@@ -1,4 +1,4 @@
-import { ClientAdditionalInfoSchema, UserSchema } from "./Payload";
+import { ClientAdditionalInfoSchema, UserSchema } from './Payload'
 
 export const ClientCombinedInfo = UserSchema.merge(ClientAdditionalInfoSchema)
 

@@ -1,5 +1,5 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
-import { QuestionResponseSchema } from './Payload';
+import { QuestionResponseSchema } from './Payload'
 
-export type QuestionResponse = z.infer<typeof QuestionResponseSchema>;
+export type QuestionResponse = z.infer<typeof QuestionResponseSchema>

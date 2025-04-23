@@ -109,7 +109,7 @@ describe('Form service tests', () => {
     })
   })
 
-  describe("Form question tests", () => {
+  describe('Form question tests', () => {
     it('create a formQuestion', async () => {
       const newFormQuestion = await formService.createFormQuestion(formQuestionCreateMock)
       const res = await testPayloadObject.findByID({
