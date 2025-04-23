@@ -1,6 +1,8 @@
 import { z } from 'zod'
+
+import { ClientAdditionalInfo, Media, Project, Semester, SemesterProject, User } from '@/payload-types'
 import { UserRole } from './User'
-import { ClientAdditionalInfo, Media, Project, Semester, User } from '@/payload-types'
+import { ProjectStatus } from './Project';
 
 export const MediaSchema = z.object({
   id: z.string(),
@@ -57,6 +59,17 @@ export const SemesterSchema = z.object({
   updatedAt: z.string(),
   createdAt: z.string(),
 }) satisfies z.ZodType<Semester>;
+
+export const SemesterProjectSchema = z.object({
+  id: z.string(),
+  number: z.number().optional(),
+  semester: z.union([z.string(), SemesterSchema]),
+  project: z.union([z.string(), ProjectSchema]),
+  status: z.nativeEnum(ProjectStatus),
+  published: z.boolean(),
+  updatedAt: z.string(),
+  createdAt: z.string(),
+}) satisfies z.ZodType<SemesterProject>;
 
 export const ClientAdditionalInfoSchema = z.object({
   id: z.string(),
