@@ -24,7 +24,6 @@ export const GetSemesterProjectResponseSchema = CommonResponse.extend({
   nextPage: z.number().nullable(),
 })
 
-
 export type GetProjectResponse = z.infer<typeof GetProjectResponseSchema>
 export type PostProjectResponse = z.infer<typeof PostProjectResponseSchema>
 export type PatchProjectResponse = z.infer<typeof PatchProjectResponseSchema>
