@@ -63,7 +63,7 @@ export default class ProjectService {
    * @param clientId The ID of the client that the projects are associated with
    * @param limit The number of projects to return
    * @param page The page number to return
-   * @returns The pagionated doc of projects that the client is associated with
+   * @returns The paginated doc of projects that the client is associated with
    */
   public async getProjectsByClientId(
     clientId: string,
