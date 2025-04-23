@@ -152,23 +152,23 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       )
 
       // Find the index of the active and over item
-      const activeitemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
-      const overitemIndex = overContainer.items.findIndex((item) => item.id === over.id)
+      const activeItemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
+      const overItemIndex = overContainer.items.findIndex((item) => item.id === over.id)
       // In the same container
       if (activeContainerIndex === overContainerIndex) {
         const newItems = [...containers]
         newItems[activeContainerIndex].items = arrayMove(
           newItems[activeContainerIndex].items,
-          activeitemIndex,
-          overitemIndex,
+          activeItemIndex,
+          overItemIndex,
         )
 
         setContainers(newItems)
       } else {
         // In different containers
         const newItems = [...containers]
-        const [removeditem] = newItems[activeContainerIndex].items.splice(activeitemIndex, 1)
-        newItems[overContainerIndex].items.splice(overitemIndex, 0, removeditem)
+        const [removeditem] = newItems[activeContainerIndex].items.splice(activeItemIndex, 1)
+        newItems[overContainerIndex].items.splice(overItemIndex, 0, removeditem)
         setContainers(newItems)
       }
     }
@@ -197,11 +197,11 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       )
 
       // Find the index of the active and over item
-      const activeitemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
+      const activeItemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
 
       // Remove the active item from the active container and add it to the over container
       const newItems = [...containers]
-      const [removeditem] = newItems[activeContainerIndex].items.splice(activeitemIndex, 1)
+      const [removeditem] = newItems[activeContainerIndex].items.splice(activeItemIndex, 1)
       newItems[overContainerIndex].items.push(removeditem)
       setContainers(newItems)
     }
@@ -251,23 +251,23 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
         (container) => container.id === overContainer.id,
       )
       // Find the index of the active and over item
-      const activeitemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
-      const overitemIndex = overContainer.items.findIndex((item) => item.id === over.id)
+      const activeItemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
+      const overItemIndex = overContainer.items.findIndex((item) => item.id === over.id)
 
       // In the same container
       if (activeContainerIndex === overContainerIndex) {
         const newItems = [...containers]
         newItems[activeContainerIndex].items = arrayMove(
           newItems[activeContainerIndex].items,
-          activeitemIndex,
-          overitemIndex,
+          activeItemIndex,
+          overItemIndex,
         )
         setContainers(newItems)
       } else {
         // In different containers
         const newItems = [...containers]
-        const [removeditem] = newItems[activeContainerIndex].items.splice(activeitemIndex, 1)
-        newItems[overContainerIndex].items.splice(overitemIndex, 0, removeditem)
+        const [removeditem] = newItems[activeContainerIndex].items.splice(activeItemIndex, 1)
+        newItems[overContainerIndex].items.splice(overItemIndex, 0, removeditem)
         setContainers(newItems)
       }
     }
@@ -293,10 +293,10 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
         (container) => container.id === overContainer.id,
       )
       // Find the index of the active and over item
-      const activeitemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
+      const activeItemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
 
       const newItems = [...containers]
-      const [removeditem] = newItems[activeContainerIndex].items.splice(activeitemIndex, 1)
+      const [removeditem] = newItems[activeContainerIndex].items.splice(activeItemIndex, 1)
       newItems[overContainerIndex].items.push(removeditem)
       setContainers(newItems)
     }
@@ -304,7 +304,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
   }
 
   return (
-    <div className="mx-auto mx-auto w-full">
+    <div className="mx-auto w-full">
       <div className="flex gap-7 mt-10 flex-wrap md:flex-nowrap">
         <DndContext
           sensors={sensors}

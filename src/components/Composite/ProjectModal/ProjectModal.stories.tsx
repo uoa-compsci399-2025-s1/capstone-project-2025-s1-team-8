@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
 import ProjectModal from './ProjectModal'
 import Button from '@/components/Generic/Button/Button'
-import { ClientProps } from '@/components/Composite/ProjectModal/ProjectModal'
+import { mockProjects2 } from '@/mocks/Projects.mock'
 
 const meta: Meta<typeof ProjectModal> = {
   title: 'Composite/ProjectModal',
@@ -16,16 +16,6 @@ const meta: Meta<typeof ProjectModal> = {
 
 export default meta
 type Story = StoryObj<typeof ProjectModal>
-
-const mockClientDetails: ClientProps = {
-  name: 'David Cumin',
-  email: 'davidcumin@gmail.com',
-}
-
-const mockOtherClientDetails: ClientProps[] = [
-  { name: 'Sam Pepper', email: 'sampepper@gmail.com' },
-  { name: 'Jack Salt', email: 'jacksalt@gmail.com' },
-]
 
 export const Exemplar: Story = {
   render: function RenderProjectModal(args) {
@@ -49,22 +39,6 @@ export const Exemplar: Story = {
   args: {
     open: false,
     className: '',
-    projectTitle: 'Chronobiology',
-    projectClientDetails: mockClientDetails,
-    otherClientDetails: mockOtherClientDetails,
-    projectDescription:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    desiredOutput:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    desiredTeamSkills:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    availableResources:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-
-    specialRequirements: false,
-    numberOfTeams: 2,
-    futureConsideration: true,
-    Semesters: ['Semester 1 2024', 'Semester 2 2024', 'Semester 1 2025'],
-    submittedDate: new Date('2023-10-01'),
+    ...mockProjects2[0],
   },
 }
