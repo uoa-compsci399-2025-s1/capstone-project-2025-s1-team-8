@@ -66,25 +66,39 @@ describe('Project service methods test', () => {
     expect(client2Projects.docs.length).toBe(0)
   })
 
-  /*it('should get all projects by a client with pagination', async () => {
+  it('should get all projects by a client with pagination', async () => {
     const userService = new UserService()
     const client1 = await userService.createUser(mockClient1)
     const client2 = await userService.createUser({
       ...mockClient1,
       email: 'hi@gmail.com',
-      name: 'hi',
+      firstName: 'hi',
     })
-    await projectService.createProject(projectMock)
-    await projectService.createProject(projectMock2)
+    await projectService.createProject({
+      ...projectMock,
+      clients: [client1, client2],
+      name: 'Project 1',
+    })
+    await projectService.createProject({
+      ...projectMock2,
+      clients: [client1, client2],
+      name: 'Project 2',
+    })
+    await projectService.createProject({
+      ...projectMock,
+      clients: [client1],
+      name: 'Project 3',
+    })
 
-    const page1 = await projectService.getProjectsByClientId(1, 1)
-    const page2 = await projectService.getAllProjects(2, 1)
 
-    expect(page1.docs.length).toEqual(1)
-    expect(page1.hasNextPage).toBe(true)
-    expect(page2.docs.length).toEqual(2)
+    const page1 = await projectService.getProjectsByClientId(client2.id, 2, 1)
+    const page2 = await projectService.getProjectsByClientId(client1.id, 2, 2)
+
+    expect(page1.docs.length).toEqual(2)
+    expect(page1.hasNextPage).toBe(false)
+    expect(page2.docs.length).toEqual(1)
     expect(page2.hasNextPage).toBe(false)
-  })*/
+  })
 
   it('should create a project', async () => {
     const project1 = await projectService.createProject(projectCreateMock)

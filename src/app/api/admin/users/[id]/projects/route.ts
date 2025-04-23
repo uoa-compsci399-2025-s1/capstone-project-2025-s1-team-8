@@ -20,6 +20,6 @@ export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: 
       { status: StatusCodes.BAD_REQUEST },
     )
   }
-  const { docs: projects, nextPage } = await projectService.getAllProjects(limit, page)
+  const { docs: projects, nextPage } = await projectService.getProjectsByClientId(id,limit, page)
   return Response.json({ data: projects, nextPage })
 }

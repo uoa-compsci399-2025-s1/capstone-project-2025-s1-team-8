@@ -61,7 +61,9 @@ export default class ProjectService {
    * This function returns a list of all projects for a specific client
    *
    * @param clientId The ID of the client that the projects are associated with
-   * @returns The list of projects that the client is associated with
+   * @param limit The number of projects to return
+   * @param page The page number to return
+   * @returns The pagionated doc of projects that the client is associated with
    */
   public async getProjectsByClientId(clientId: string, limit: number = 100, page: number = 1): Promise<PaginatedDocs<Project>> {
     const data = await payload.find({
@@ -71,7 +73,7 @@ export default class ProjectService {
           equals: clientId,
         },
       },
-      limit,
+      limit: limit,
       pagination: true,
       page: page,
     })
