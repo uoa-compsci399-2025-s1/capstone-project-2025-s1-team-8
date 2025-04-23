@@ -57,7 +57,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       return prevContainers.map((container) => {
         if (container.id !== containerId) return container
 
-        let sortedItems = [...container.items]
+        const sortedItems = [...container.items]
 
         switch (filter) {
           case 'projectName':
@@ -156,7 +156,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       const overitemIndex = overContainer.items.findIndex((item) => item.id === over.id)
       // In the same container
       if (activeContainerIndex === overContainerIndex) {
-        let newItems = [...containers]
+        const newItems = [...containers]
         newItems[activeContainerIndex].items = arrayMove(
           newItems[activeContainerIndex].items,
           activeitemIndex,
@@ -166,7 +166,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
         setContainers(newItems)
       } else {
         // In different containers
-        let newItems = [...containers]
+        const newItems = [...containers]
         const [removeditem] = newItems[activeContainerIndex].items.splice(activeitemIndex, 1)
         newItems[overContainerIndex].items.splice(overitemIndex, 0, removeditem)
         setContainers(newItems)
@@ -200,7 +200,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       const activeitemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
 
       // Remove the active item from the active container and add it to the over container
-      let newItems = [...containers]
+      const newItems = [...containers]
       const [removeditem] = newItems[activeContainerIndex].items.splice(activeitemIndex, 1)
       newItems[overContainerIndex].items.push(removeditem)
       setContainers(newItems)
@@ -224,7 +224,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       const activeContainerIndex = containers.findIndex((container) => container.id === active.id)
       const overContainerIndex = containers.findIndex((container) => container.id === over.id)
       // Swap the active and over container
-      let newItems = [...containers]
+      const newItems = [...containers]
       newItems = arrayMove(newItems, activeContainerIndex, overContainerIndex)
       setContainers(newItems)
     }
@@ -256,7 +256,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
 
       // In the same container
       if (activeContainerIndex === overContainerIndex) {
-        let newItems = [...containers]
+        const newItems = [...containers]
         newItems[activeContainerIndex].items = arrayMove(
           newItems[activeContainerIndex].items,
           activeitemIndex,
@@ -265,7 +265,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
         setContainers(newItems)
       } else {
         // In different containers
-        let newItems = [...containers]
+        const newItems = [...containers]
         const [removeditem] = newItems[activeContainerIndex].items.splice(activeitemIndex, 1)
         newItems[overContainerIndex].items.splice(overitemIndex, 0, removeditem)
         setContainers(newItems)
@@ -295,7 +295,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       // Find the index of the active and over item
       const activeitemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
 
-      let newItems = [...containers]
+      const newItems = [...containers]
       const [removeditem] = newItems[activeContainerIndex].items.splice(activeitemIndex, 1)
       newItems[overContainerIndex].items.push(removeditem)
       setContainers(newItems)
@@ -314,11 +314,10 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
           onDragEnd={handleDragEnd}
         >
           {containers.map((container) => (
-            <FilterProvider>
+            <FilterProvider key={container.id}>
               <ProjectContainer
                 id={container.id}
                 containerName={container.title}
-                key={container.id}
                 projects={container.items}
                 onChange={(newFilter) => {
                   sortProjects(container.id, newFilter)

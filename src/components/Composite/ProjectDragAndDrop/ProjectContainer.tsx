@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useSortable, SortableContext } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import ProjectFilter from '../Filter/ProjectFilter'
+import ProjectFilter from '@/components/Composite/Filter/ProjectFilter'
 import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { useFilter } from '@/contexts/FilterContext'

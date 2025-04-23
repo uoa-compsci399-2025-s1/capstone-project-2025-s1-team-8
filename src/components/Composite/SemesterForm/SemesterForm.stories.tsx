@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
 import SemesterForm from './SemesterForm'
-import Button from '../../Generic/Button/Button'
+import Button from '@/components/Generic/Button/Button'
 
 const meta: Meta<typeof SemesterForm> = {
   title: 'Composite/SemesterForm',
@@ -17,7 +17,7 @@ export default meta
 type Story = StoryObj<typeof SemesterForm>
 
 export const Empty: Story = {
-  render: (args) => {
+  render: function RenderEmptySemesterForm(args) {
     const [{ open }, updateArgs] = useArgs()
 
     function onChange() {
@@ -42,7 +42,7 @@ export const Empty: Story = {
 }
 
 export const WithData: Story = {
-  render: (args) => {
+  render: function RenderSemesterFormWithData(args) {
     const [{ open }, updateArgs] = useArgs()
 
     function onChange() {

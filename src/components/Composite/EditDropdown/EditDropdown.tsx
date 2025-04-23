@@ -7,8 +7,8 @@ import { BsThreeDots } from 'react-icons/bs'
 interface ProjectFilterProps {
   className?: string
   containerWidth?: number
-  onEdit?: Function
-  onDelete?: Function
+  onEdit?: (e: React.MouseEvent<HTMLDivElement>) => void
+  onDelete?: (e: React.MouseEvent<HTMLDivElement>) => void
 }
 
 const EditDropdownOptions: DropdownOptionType[] = [
@@ -64,7 +64,11 @@ const ProjectFilter: React.FC<ProjectFilterProps> = ({
               <div
                 key={index}
                 onClick={(e) => {
-                  index === 1 ? onDelete?.(e) : onEdit?.(e)
+                  if (index === 0) {
+                    onEdit?.(e)
+                  } else {
+                    onDelete?.(e)
+                  }
                 }}
                 className="cursor-pointer"
               >

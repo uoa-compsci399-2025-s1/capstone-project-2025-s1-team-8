@@ -1,5 +1,5 @@
 import React from 'react'
-import Modal from '../../Generic/Modal/Modal'
+import Modal from '@/components/Generic/Modal/Modal'
 import Button from '@/components/Generic/Button/Button'
 import { ModalProps } from '@/components/Generic/Modal/Modal'
 import Input from '@/components/Generic/Input/InputField'

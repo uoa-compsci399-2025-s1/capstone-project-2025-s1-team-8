@@ -2,6 +2,7 @@ import { UniqueIdentifier } from '@dnd-kit/core'
 import React from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { BsThreeDots } from 'react-icons/bs'
 
 interface BasicClientDTOPlaceholder {
   name: string
@@ -65,7 +66,7 @@ const DraggableProjectCard = ({ id, projectInfo }: ProjectCardType) => {
       </button>
 
       <button className="absolute top-5 right-5 text-dark-blue hover:text-black focus:outline-none">
-        <img src="/three-dots.svg" alt="Three dots icon" className="h-5 w-5" />
+        <BsThreeDots className="size-5 pr-1" />
       </button>
     </div>
   )
