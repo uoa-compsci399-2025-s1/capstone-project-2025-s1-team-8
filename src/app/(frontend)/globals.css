@@ -90,16 +90,12 @@
   }
 
   p {
-    /* margin: 24px 0; */
-
     @media (max-width: 1024px) {
       margin: calc(var(--base) * 0.75) 0;
     }
   }
 
   a {
-    /* color: currentColor; */
-
     &:focus {
       opacity: 0.8;
       outline: none;
