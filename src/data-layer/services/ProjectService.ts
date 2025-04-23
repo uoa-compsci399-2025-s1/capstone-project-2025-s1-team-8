@@ -4,6 +4,7 @@ import { payload } from '../adapters/Payload'
 import { CreateSemesterProjectData, UpdateSemesterProjectData } from '@/types/Collections'
 import { SemesterProject } from '@/payload-types'
 import { PaginatedDocs } from 'payload'
+import { ProjectStatus } from '@/types/Project'
 
 export default class ProjectService {
   /**
@@ -223,5 +224,77 @@ export default class ProjectService {
       collection: 'semesterProject',
       id: id,
     })
+  }
+
+  public async getSemesterProjectsByStatus(
+    id: string,
+    status: ProjectStatus,
+    limit: number = 100,
+    page: number = 1,
+  ): Promise<PaginatedDocs<SemesterProject>> {
+    const semesterProjects = await payload.find({
+      collection: 'semesterProject',
+      where: {
+        status: {
+          equals: status,
+        },
+        semester: {
+          equals: id,
+        },
+      },
+      limit,
+      pagination: true,
+      page,
+    })
+    return semesterProjects
+  }
+  public async getSemesterProjectsByPublished(
+    id: string,
+    published: boolean,
+    limit: number = 100,
+    page: number = 1,
+  ): Promise<PaginatedDocs<SemesterProject>> {
+    const semesterProjects = await payload.find({
+      collection: 'semesterProject',
+      where: {
+        published: {
+          equals: published,
+        },
+        semester: {
+          equals: id,
+        },
+      },
+      limit,
+      pagination: true,
+      page,
+    })
+    return semesterProjects
+  }
+
+  public async getSemesterProjectsByPublishedAndStatus(
+    id: string,
+    published: boolean,
+    status: ProjectStatus,
+    limit: number = 100,
+    page: number = 1,
+  ): Promise<PaginatedDocs<SemesterProject>> {
+    const semesterProjects = await payload.find({
+      collection: 'semesterProject',
+      where: {
+        published: {
+          equals: published,
+        },
+        status: {
+          equals: status,
+        },
+        semester: {
+          equals: id,
+        },
+      },
+      limit,
+      pagination: true,
+      page,
+    })
+    return semesterProjects
   }
 }
