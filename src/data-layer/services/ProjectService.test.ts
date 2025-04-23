@@ -1,4 +1,4 @@
-import { mockClient1 } from '@/test-config/mocks/User.mock'
+import { clientCreateMock, mockClient1 } from '@/test-config/mocks/User.mock'
 import { projectMock, projectMock2, projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import ProjectService from './ProjectService'
@@ -68,11 +68,10 @@ describe('Project service methods test', () => {
 
   it('should get all projects by a client with pagination', async () => {
     const userService = new UserService()
-    const client1 = await userService.createUser(mockClient1)
+    const client1 = await userService.createUser(clientCreateMock)
     const client2 = await userService.createUser({
-      ...mockClient1,
-      email: 'hi@gmail.com',
-      firstName: 'hi',
+      ...clientCreateMock,
+      email: 'john@gmail.com'
     })
     await projectService.createProject({
       ...projectMock,
