@@ -9,6 +9,7 @@ import ProjectService from '@/data-layer/services/ProjectService'
 import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET } from '@/app/api/semesters/[id]/projects/route'
 import { semesterMock } from '@/test-config/mocks/Semester.mock'
+import { ProjectStatus } from '@/types/Project'
 
 describe('test /api/semesters/[id]/projects', () => {
   afterEach(async () => {
@@ -78,5 +79,95 @@ describe('test /api/semesters/[id]/projects', () => {
     const data = await res.json()
     expect(data.data.length).toEqual(1)
     expect(data.nextPage).not.toBeNull()
+  })
+
+  it('Should return a list of semesterprojects filtered by status', async () => {
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      status: ProjectStatus.Accepted,
+    })
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      status: ProjectStatus.Rejected,
+    })
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      status: ProjectStatus.Accepted,
+    })
+
+    const res = await GET(
+      createMockNextRequest(`api/semesters/${semesterMock.id}/projects?status=accepted`),
+      { params: paramsToPromise({ id: semesterMock.id }) },
+    )
+    expect(res.status).toBe(StatusCodes.OK)
+    const data = await res.json()
+    expect(data.data.length).toEqual(2)
+  })
+
+  it('Should return a list of semesterprojects filtered by published status', async () => {
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      published: true,
+    })
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      published: false,
+    })
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      published: true,
+    })
+
+    const res = await GET(
+      createMockNextRequest(`api/semesters/${semesterMock.id}/projects?published=true`),
+      { params: paramsToPromise({ id: semesterMock.id }) },
+    )
+    expect(res.status).toBe(StatusCodes.OK)
+    const data = await res.json()
+    expect(data.data.length).toEqual(2)
+  })
+
+  it('should return bad Request if status is not valid', async () => {
+    const res = await GET(
+      createMockNextRequest(`api/semesters/${semesterMock.id}/projects?status=invalid`),
+      { params: paramsToPromise({ id: semesterMock.id }) },
+    )
+    expect(res.status).toBe(StatusCodes.BAD_REQUEST)
+  })
+
+  it('should return bad Request if published is not true or false', async () => {
+    const res = await GET(
+      createMockNextRequest(`api/semesters/${semesterMock.id}/projects?published=invalid`),
+      { params: paramsToPromise({ id: semesterMock.id }) },
+    )
+    expect(res.status).toBe(StatusCodes.BAD_REQUEST)
+  })
+
+  it('Should return a list of semesterprojects filtered by status and published status', async () => {
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      status: ProjectStatus.Accepted,
+      published: true,
+    })
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      status: ProjectStatus.Rejected,
+      published: false,
+    })
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      status: ProjectStatus.Accepted,
+      published: true,
+    })
+
+    const res = await GET(
+      createMockNextRequest(
+        `api/semesters/${semesterMock.id}/projects?status=accepted&published=true`,
+      ),
+      { params: paramsToPromise({ id: semesterMock.id }) },
+    )
+    expect(res.status).toBe(StatusCodes.OK)
+    const data = await res.json()
+    expect(data.data.length).toEqual(2)
   })
 })
