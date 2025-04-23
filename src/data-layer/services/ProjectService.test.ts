@@ -71,6 +71,8 @@ describe('Project service methods test', () => {
     const client1 = await userService.createUser(mockClient1)
     const client2 = await userService.createUser({
       ...mockClient1,
+      email: 'hi@gmail.com',
+      firstName: 'hi',
     })
     await projectService.createProject({
       ...projectMock,
