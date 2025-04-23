@@ -2,6 +2,7 @@ import { CreateProjectData, CreateSemesterProjectData } from '@/types/Collection
 import { mockClient1, mockClient2 } from './User.mock'
 import { Project, SemesterProject } from '@/payload-types'
 import { ProjectStatus } from '@/types/Project'
+import { formResponseMock } from './Form.mock'
 
 /*
  * Project mocks
@@ -14,7 +15,7 @@ export const projectMock: Project = {
   name: 'Project 1',
   description: 'Description 1',
   clients: [mockClient1],
-  formResponse: '67ff38a56a35e1b6cf43a682',
+  formResponse: formResponseMock,
   timestamp: new Date().toISOString(),
 }
 
