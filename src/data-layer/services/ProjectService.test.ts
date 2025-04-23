@@ -1,8 +1,9 @@
-import { mockClient1 } from '@/test-config/mocks/User.mock'
+import { clientCreateMock, mockClient1 } from '@/test-config/mocks/User.mock'
 import { projectMock, projectMock2, projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import ProjectService from './ProjectService'
 import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
+import UserService from './UserService'
 
 describe('Project service methods test', () => {
   const projectService = new ProjectService()
@@ -61,8 +62,40 @@ describe('Project service methods test', () => {
 
     const client1Projects = await projectService.getProjectsByClientId(mockClient1.id)
     const client2Projects = await projectService.getProjectsByClientId('1234567890')
-    expect(client1Projects.length).toBe(2)
-    expect(client2Projects.length).toBe(0)
+    expect(client1Projects.docs.length).toBe(2)
+    expect(client2Projects.docs.length).toBe(0)
+  })
+
+  it('should get all projects by a client with pagination', async () => {
+    const userService = new UserService()
+    const client1 = await userService.createUser(clientCreateMock)
+    const client2 = await userService.createUser({
+      ...clientCreateMock,
+      email: 'john@gmail.com',
+    })
+    await projectService.createProject({
+      ...projectMock,
+      clients: [client1, client2],
+      name: 'Project 1',
+    })
+    await projectService.createProject({
+      ...projectMock2,
+      clients: [client1, client2],
+      name: 'Project 2',
+    })
+    await projectService.createProject({
+      ...projectMock,
+      clients: [client1],
+      name: 'Project 3',
+    })
+
+    const page1 = await projectService.getProjectsByClientId(client2.id, 2, 1)
+    const page2 = await projectService.getProjectsByClientId(client1.id, 2, 2)
+
+    expect(page1.docs.length).toEqual(2)
+    expect(page1.hasNextPage).toBe(false)
+    expect(page2.docs.length).toEqual(1)
+    expect(page2.hasNextPage).toBe(false)
   })
 
   it('should create a project', async () => {
