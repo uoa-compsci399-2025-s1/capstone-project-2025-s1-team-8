@@ -89,7 +89,7 @@ web_modules/
 .next
 out
 
-# Next.js build / generate output
+# Nuxt.js build / generate output
 .nuxt
 dist
 
