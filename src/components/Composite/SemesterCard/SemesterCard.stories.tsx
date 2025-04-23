@@ -1,5 +1,4 @@
-import React from 'react'
-import { Meta, Story } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import SemesterCard, { SemesterCardProps } from './SemesterCard'
 import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 
@@ -49,6 +48,8 @@ export default {
   component: SemesterCard,
   args: mockProps,
 } as Meta
+
+type Story = StoryObj<typeof SemesterCard>
 
 export const Default: Story = {}
 

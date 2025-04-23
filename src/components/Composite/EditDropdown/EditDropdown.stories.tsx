@@ -1,12 +1,12 @@
 import React from 'react'
-import { Meta, StoryObj, StoryFn } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import EditDropdown from './EditDropdown'
 
 const meta: Meta<typeof EditDropdown> = {
   title: 'Composite/EditDropdown',
   component: EditDropdown,
   decorators: [
-    (Story: StoryFn) => (
+    (Story) => (
       <div className="p-4 bg-steel-blue h-10 w-50 flex items-center justify-end rounded-lg">
         <Story />
       </div>
@@ -15,6 +15,7 @@ const meta: Meta<typeof EditDropdown> = {
 }
 
 export default meta
+
 type Story = StoryObj<typeof EditDropdown>
 
 export const Default: Story = {

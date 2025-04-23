@@ -1,4 +1,3 @@
-import React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import ProjectDnD from './ProjectDnD'
 import { UniqueIdentifier } from '@dnd-kit/core'
@@ -7,7 +6,7 @@ const containers = [
   {
     id: 'container-1' as UniqueIdentifier,
     title: 'Rejected',
-    containerColor: 'light',
+    containerColor: 'light' as const,
     items: [
       {
         id: `item-1`,
@@ -46,13 +45,13 @@ const containers = [
   {
     id: 'container-2' as UniqueIdentifier,
     title: 'Pending',
-    containerColor: 'medium',
+    containerColor: 'medium' as const,
     items: [],
   },
   {
     id: 'container-3' as UniqueIdentifier,
     title: 'Accepted',
-    containerColor: 'dark',
+    containerColor: 'dark' as const,
     items: [],
   },
 ]

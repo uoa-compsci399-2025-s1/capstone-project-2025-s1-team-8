@@ -7,7 +7,7 @@ const meta: Meta<typeof ProjectFilter> = {
   title: 'Composite/ProjectFilter',
   component: ProjectFilter,
   decorators: [
-    (Story: StoryFn) => (
+    (Story) => (
       <FilterProvider>
         <div className="p-4 bg-beige h-10 w-50 flex items-center justify-end rounded-lg">
           <Story />
