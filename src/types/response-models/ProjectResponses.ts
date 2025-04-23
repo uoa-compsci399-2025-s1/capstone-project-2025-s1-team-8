@@ -9,7 +9,7 @@ export const GetProjectResponseSchema = CommonResponse.extend({
 
 export const GetAllProjectsResponseSchema = CommonResponse.extend({
   data: z.array(z.custom<Project>()),
-  nextPage: z.number(),
+  nextPage: z.number().nullable(),
 })
 export const PostProjectResponseSchema = CommonResponse.extend({
   data: z.custom<Project>().optional(),
