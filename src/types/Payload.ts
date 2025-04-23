@@ -100,7 +100,7 @@ export const ProjectSchema = z.object({
   timestamp: z.string(),
   updatedAt: z.string(),
   createdAt: z.string(),
-  formResponse: z.union([z.string(), FormResponseSchema])
+  formResponse: z.union([z.string(), FormResponseSchema]),
 }) satisfies z.ZodType<Project>
 
 export const SemesterProjectSchema = z.object({
