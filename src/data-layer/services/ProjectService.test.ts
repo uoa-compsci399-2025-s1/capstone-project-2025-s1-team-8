@@ -6,6 +6,7 @@ import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import UserService from './UserService'
 import SemesterService from './SemesterService'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
+import { ProjectStatus } from '@/types/Project'
 
 describe('Project service methods test', () => {
   const projectService = new ProjectService()
@@ -241,5 +242,127 @@ describe('Project service methods test', () => {
     const res = await projectService.getSemesterProjectsBySemesterId(semester1.id)
     expect(res.docs.length).toEqual(0)
     expect(res.nextPage).toBeNull()
+  })
+
+  it('Should get all semesterProjects by semesterId and publish status with pagination', async () => {
+    const semester1 = await semesterService.createSemester(semesterCreateMock)
+    const semester2 = await semesterService.createSemester({
+      ...semesterCreateMock,
+      name: 'Semester 2',
+    })
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      semester: semester1.id,
+      published: true,
+    })
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      semester: semester1.id,
+      published: false,
+    })
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      semester: semester2.id,
+      published: true,
+    })
+
+    const res = await projectService.getSemesterProjectsByPublished(semester1.id, true)
+    expect(res.docs.length).toEqual(1)
+    expect(res.nextPage).toBeNull()
+    const res2 = await projectService.getSemesterProjectsByPublished(semester1.id, true, 2, 1)
+    expect(res2.docs.length).toEqual(1)
+    expect(res2.nextPage).toBe(null)
+    const res3 = await projectService.getSemesterProjectsByPublished(semester1.id, false, 2, 1)
+    expect(res3.docs.length).toEqual(1)
+    expect(res3.nextPage).toBe(null)
+  })
+
+  it('Should get all semesterProjects by semesterId and status with pagination', async () => {
+    const semester1 = await semesterService.createSemester(semesterCreateMock)
+    const semester2 = await semesterService.createSemester({
+      ...semesterCreateMock,
+      name: 'Semester 2',
+    })
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      semester: semester1.id,
+      status: ProjectStatus.Accepted,
+    })
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      semester: semester1.id,
+      status: ProjectStatus.Rejected,
+    })
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      semester: semester2.id,
+      status: ProjectStatus.Accepted,
+    })
+
+    const res = await projectService.getSemesterProjectsByStatus(
+      semester1.id,
+      ProjectStatus.Accepted,
+    )
+    expect(res.docs.length).toEqual(1)
+    expect(res.nextPage).toBeNull()
+    const res2 = await projectService.getSemesterProjectsByStatus(
+      semester1.id,
+      ProjectStatus.Accepted,
+      2,
+      1,
+    )
+    expect(res2.docs.length).toEqual(1)
+    expect(res2.nextPage).toBeNull()
+    const res3 = await projectService.getSemesterProjectsByStatus(
+      semester1.id,
+      ProjectStatus.Rejected,
+      2,
+      1,
+    )
+    expect(res3.docs.length).toEqual(1)
+    expect(res3.nextPage).toBeNull()
+  })
+
+  it('Should get all semesterProjects by semesterId and status and publish status', async () => {
+    const semester1 = await semesterService.createSemester(semesterCreateMock)
+    const semester2 = await semesterService.createSemester({
+      ...semesterCreateMock,
+      name: 'Semester 2',
+    })
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      semester: semester1.id,
+      status: ProjectStatus.Accepted,
+      published: true,
+    })
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      semester: semester1.id,
+      status: ProjectStatus.Rejected,
+      published: false,
+    })
+    await projectService.createSemesterProject({
+      ...semesterProjectCreateMock,
+      semester: semester2.id,
+      status: ProjectStatus.Accepted,
+      published: true,
+    })
+
+    const res = await projectService.getSemesterProjectsByPublishedAndStatus(
+      semester1.id,
+      true,
+      ProjectStatus.Accepted,
+    )
+    expect(res.docs.length).toEqual(1)
+    expect(res.nextPage).toBeNull()
+    const res2 = await projectService.getSemesterProjectsByPublishedAndStatus(
+      semester1.id,
+      false,
+      ProjectStatus.Rejected,
+      2,
+      1,
+    )
+    expect(res2.docs.length).toEqual(1)
+    expect(res2.nextPage).toBeNull()
   })
 })
