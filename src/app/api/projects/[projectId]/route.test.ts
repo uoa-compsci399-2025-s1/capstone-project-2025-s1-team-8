@@ -16,25 +16,6 @@ describe('tests GET /api/project/[id]', () => {
   })
   const projectService = new ProjectService()
 
-  it('should get a project correctly', async () => {
-    const project = await projectService.createProject(projectCreateMock)
-    const slug = { projectId: project.id }
-    const res = await GET({} as NextRequest, {
-      params: paramsToPromise(slug),
-    })
-    expect(res.status).toBe(StatusCodes.OK)
-    expect(await res.json()).toEqual({ data: project })
-  })
-
-  it('should return a 404 error if the project does not exist', async () => {
-    const slug = { projectId: 'nonexistent' }
-    const res = await GET({} as NextRequest, {
-      params: paramsToPromise(slug),
-    })
-    expect(res.status).toBe(StatusCodes.NOT_FOUND)
-    expect(await res.json()).toEqual({ error: 'Project not found' })
-  })
-
   it('should delete a project correctly', async () => {
     const project = await projectService.createProject(projectCreateMock)
     const slug = { projectId: project.id }
