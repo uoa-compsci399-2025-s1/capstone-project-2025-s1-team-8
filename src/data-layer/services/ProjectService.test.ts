@@ -90,7 +90,6 @@ describe('Project service methods test', () => {
       name: 'Project 3',
     })
 
-
     const page1 = await projectService.getProjectsByClientId(client2.id, 2, 1)
     const page2 = await projectService.getProjectsByClientId(client1.id, 2, 2)
 

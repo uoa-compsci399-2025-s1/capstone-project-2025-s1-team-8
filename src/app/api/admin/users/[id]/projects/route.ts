@@ -1,6 +1,6 @@
-import { NextRequest } from "next/server"
-import ProjectService from "@/data-layer/services/ProjectService"
-import { StatusCodes } from "http-status-codes"
+import { NextRequest } from 'next/server'
+import ProjectService from '@/data-layer/services/ProjectService'
+import { StatusCodes } from 'http-status-codes'
 
 /**
  * Fetches all projects
@@ -8,8 +8,11 @@ import { StatusCodes } from "http-status-codes"
  * @returns A JSON response containing the list of projects and the next page cursor.
  */
 
-export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }): Promise<Response> => {
-    const {id} = await params
+export const GET = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+): Promise<Response> => {
+  const { id } = await params
   const projectService = new ProjectService()
   const searchParams = req.nextUrl.searchParams
   const page = parseInt(searchParams.get('page') || '1')
@@ -20,6 +23,6 @@ export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: 
       { status: StatusCodes.BAD_REQUEST },
     )
   }
-  const { docs: projects, nextPage } = await projectService.getProjectsByClientId(id,limit, page)
+  const { docs: projects, nextPage } = await projectService.getProjectsByClientId(id, limit, page)
   return Response.json({ data: projects, nextPage })
 }
