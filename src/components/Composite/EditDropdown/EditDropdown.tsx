@@ -66,7 +66,7 @@ const ProjectFilter: React.FC<ProjectFilterProps> = ({
                 onClick={(e) => {
                   if (index === 0) {
                     onEdit?.(e)
-                  } else {
+                  } else if (index === 1) {
                     onDelete?.(e)
                   }
                 }}

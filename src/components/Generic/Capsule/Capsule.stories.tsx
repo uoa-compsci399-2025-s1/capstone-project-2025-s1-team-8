@@ -12,7 +12,7 @@ const meta: Meta<typeof Capsule> = {
   decorators: [
     (Story, { args }) => (
       <div
-        className={`w-full h-[50px] flex items-center justify-center ${args.variant != 'light_beige' ? 'bg-[#F8F6E9]' : 'bg-[#E5EFED]'}`} // Change background color based on variant
+        className={`w-full h-[50px] flex items-center justify-center ${args.variant != 'light_beige' ? 'bg-light-beige' : 'bg-muted-blue'}`} // Change background color based on variant
       >
         <Story />
       </div>

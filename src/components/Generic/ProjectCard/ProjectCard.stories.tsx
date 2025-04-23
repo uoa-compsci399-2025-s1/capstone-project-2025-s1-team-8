@@ -4,7 +4,7 @@ import { ProjectDTOPlaceholder } from './DraggableProjectCard'
 
 const meta: Meta<typeof ProjectCard> = {
   component: ProjectCard,
-  title: 'Generic/SemesterProjectCard',
+  title: 'Generic/ProjectCard',
   tags: ['autodocs'],
 }
 

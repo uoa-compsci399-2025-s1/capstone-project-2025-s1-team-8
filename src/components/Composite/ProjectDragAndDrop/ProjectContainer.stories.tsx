@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
-import ProjectContainer, { ProjectContainerType } from './ProjectContainer'
+import ProjectContainer from './ProjectContainer'
 import { DndContext } from '@dnd-kit/core'
 import { FilterProvider } from '@/contexts/FilterContext'
 import { fn } from '@storybook/test'

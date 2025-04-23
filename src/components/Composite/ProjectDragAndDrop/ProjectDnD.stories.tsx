@@ -9,10 +9,10 @@ const containers = [
     containerColor: 'light' as const,
     items: [
       {
-        id: `item-1`,
+        id: 'item-1',
         projectInfo: {
           projectId: 'P1',
-          projectName: `Project Alpha`,
+          projectName: 'Project Alpha',
           projectDescription: 'First test project',
           client: {
             name: 'Alice Smith',
@@ -25,10 +25,10 @@ const containers = [
         },
       },
       {
-        id: `item-2`,
+        id: 'item-2',
         projectInfo: {
           projectId: 'P2',
-          projectName: `Project Beta`,
+          projectName: 'Project Beta',
           projectDescription: 'Second test project',
           client: {
             name: 'Bob Johnson',

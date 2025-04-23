@@ -30,7 +30,7 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
         <div className="hidden md:flex space-x-15">
           {navElements?.map((navElement, index) => (
             <div key={index} className="relative group p-2">
-              <Link href={navElement.href} className={`nav-link-text`}>
+              <Link href={navElement.href} className="nav-link-text">
                 {navElement.text}
               </Link>
               <span
@@ -40,13 +40,13 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
           ))}
           {/* TODO: add link to About page */}
           <div className="relative group p-2">
-            <Link href="/" className={`nav-link-text`}>
+            <Link href="/" className="nav-link-text">
               About
             </Link>
             <span className={`nav-link-text-underline ${pathname === '/' ? 'scale-x-100' : ''}`} />
           </div>
           <div className="relative group p-2">
-            <Link href="/auth/signin" className={`nav-link-text font-bold`}>
+            <Link href="/auth/signin" className="nav-link-text font-bold">
               Login
             </Link>
             <span
@@ -91,9 +91,9 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
         }`}
       >
         {navElements?.map((navElement, index) => (
-          <div key={index} className={`p-[5%]`}>
+          <div key={index} className="p-[5%]">
             {/* {navElement} */}
-            <Link href={navElement.href} className={`nav-link-text`}>
+            <Link href={navElement.href} className="nav-link-text">
               {navElement.text}
             </Link>
           </div>
