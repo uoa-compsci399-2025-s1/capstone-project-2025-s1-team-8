@@ -58,4 +58,26 @@ describe('Semester service tests', () => {
   it('should throw an error if semester does not exist', async () => {
     await expect(semesterService.deleteSemester('nonexistent_id')).rejects.toThrow('Not Found')
   })
+
+  it('should return a paginated list of semesters', async () => {
+    await semesterService.createSemester(semesterCreateMock)
+    await semesterService.createSemester(semesterCreateMock)
+    const fetchedUsers = await semesterService.getAllSemesters(1)
+
+    expect(fetchedUsers.docs.length).toEqual(1)
+    expect(fetchedUsers.hasNextPage).toBeTruthy()
+
+    const nextPage = await semesterService.getAllSemesters(
+      1,
+      fetchedUsers.nextPage ? fetchedUsers.nextPage : undefined,
+    )
+    expect(nextPage.docs.length).toEqual(1)
+    expect(nextPage.hasNextPage).toBeFalsy()
+
+    expect(nextPage.docs[0].id).not.toEqual(fetchedUsers.docs[0].id)
+  })
+
+  it('not found - find user with nonexistent id', async () => {
+    await expect(semesterService.getSemester('nonexistent_id')).rejects.toThrow('Not Found')
+  })
 })

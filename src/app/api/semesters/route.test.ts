@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes'
 import SemesterService from '@/data-layer/services/SemesterService'
 import { GET } from './route'
 import { clearCollection, createMockNextRequest, testPayloadObject } from '@/test-config/utils'
-import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
+import { semesterCreateMock, semesterCreateMock2 } from '@/test-config/mocks/Semester.mock'
 
 describe('tests /api/admin/semesters', () => {
   const semesterService = new SemesterService()
@@ -21,7 +21,7 @@ describe('tests /api/admin/semesters', () => {
 
     it('should return a list of all semester created', async () => {
       await semesterService.createSemester(semesterCreateMock)
-      await semesterService.createSemester(semesterCreateMock)
+      await semesterService.createSemester(semesterCreateMock2)
       const res = await GET(createMockNextRequest('http://localhost:3000/api/semesters'))
       expect(res.status).toBe(StatusCodes.OK)
       const data = await res.json()
