@@ -3,9 +3,9 @@ import ProjectService from '@/data-layer/services/ProjectService'
 import { StatusCodes } from 'http-status-codes'
 
 /**
- * Fetches all projects
+ * Fetches all projects for a semester
  * @param req - The request object.
- * @param params - The parameters object containing the user ID.
+ * @param params - The parameters object containing the semester ID.
  * @returns A JSON response containing the list of projects and the next page cursor.
  */
 
@@ -24,6 +24,10 @@ export const GET = async (
       { status: StatusCodes.BAD_REQUEST },
     )
   }
-  const { docs: projects, nextPage } = await projectService.getProjectsByClientId(id, limit, page)
+  const { docs: projects, nextPage } = await projectService.getSemesterProjectsBySemesterId(
+    id,
+    limit,
+    page,
+  )
   return NextResponse.json({ data: projects, nextPage })
 }

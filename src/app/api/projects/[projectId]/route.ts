@@ -14,7 +14,7 @@ import { ZodError } from 'zod'
 export const GET = async (
   req: NextRequest,
   { params }: { params: Promise<{ projectId: string }> },
-): Promise<Response> => {
+): Promise<NextResponse> => {
   const { projectId } = await params
   const projectService = new ProjectService()
 

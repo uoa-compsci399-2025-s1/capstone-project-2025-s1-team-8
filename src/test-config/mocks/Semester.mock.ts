@@ -1,3 +1,4 @@
+import { Semester } from '@/payload-types'
 import { CreateSemesterData } from '@/types/Collections'
 
 /*
@@ -10,4 +11,14 @@ export const semesterCreateMock: CreateSemesterData = {
   deadline: new Date().toISOString(),
   startDate: new Date().toISOString(),
   endDate: new Date().toISOString(),
+}
+export const semesterMock: Semester = {
+  id: '67ff38a56a35e1b6cf43a68d',
+  name: 'Semester 2 2025',
+  description: 'Description of the semester',
+  deadline: new Date().toISOString(),
+  startDate: new Date().toISOString(),
+  endDate: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 }

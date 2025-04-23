@@ -170,6 +170,31 @@ export default class ProjectService {
   }
 
   /**
+   * Retrieves all semesterProjects for a specific semester
+   *
+   * @param semesterId The ID of the semester to retrieve projects for
+   * @returns An array of semesterProjects for the specified semester
+   */
+  public async getSemesterProjectsBySemesterId(
+    semesterId: string,
+    limit: number = 100,
+    page: number = 1,
+  ): Promise<PaginatedDocs<SemesterProject>> {
+    const semesterProjects = await payload.find({
+      collection: 'semesterProject',
+      where: {
+        semester: {
+          equals: semesterId,
+        },
+      },
+      limit,
+      pagination: true,
+      page,
+    })
+    return semesterProjects
+  }
+
+  /**
    * Updates a semesterProject.
    *
    * @param id The semesterProject ID
