@@ -1,6 +1,11 @@
 import { StatusCodes } from 'http-status-codes'
 
-import { clearCollection, createMockNextPatchRequest, paramsToPromise, testPayloadObject } from '@/test-config/utils'
+import {
+  clearCollection,
+  createMockNextPatchRequest,
+  paramsToPromise,
+  testPayloadObject,
+} from '@/test-config/utils'
 import UserService from '@/data-layer/services/UserService'
 import {
   adminCreateMock,
@@ -75,7 +80,10 @@ describe('test /api/admin/users/[id]', () => {
           ? clientAdditionalInfoMock.client.id
           : clientAdditionalInfoMock.client
       const payload = { firstName: 'Sheena Lin' }
-      const mockedReq = createMockNextPatchRequest('http://localhost:3000/api/admin/users/' + id, payload)
+      const mockedReq = createMockNextPatchRequest(
+        'http://localhost:3000/api/admin/users/' + id,
+        payload,
+      )
       const res = await PATCH(mockedReq, {
         params: paramsToPromise({ id }),
       })
@@ -106,7 +114,10 @@ describe('test /api/admin/users/[id]', () => {
         introduction: 'new intro',
         affiliation: 'new affiliation',
       }
-      const mockedReq = createMockNextPatchRequest('http://localhost:3000/api/admin/users/' + id, payload)
+      const mockedReq = createMockNextPatchRequest(
+        'http://localhost:3000/api/admin/users/' + id,
+        payload,
+      )
       const res = await PATCH(mockedReq, {
         params: paramsToPromise({ id }),
       })
@@ -126,7 +137,10 @@ describe('test /api/admin/users/[id]', () => {
       const clientMock = await userService.createUser(clientCreateMock)
       const id = clientMock.id
       const payload = { firstName: 'Sheenaaaaaa' }
-      const mockedReq = createMockNextPatchRequest('http://localhost:3000/api/admin/users/' + id, payload)
+      const mockedReq = createMockNextPatchRequest(
+        'http://localhost:3000/api/admin/users/' + id,
+        payload,
+      )
       const res = await PATCH(mockedReq, {
         params: paramsToPromise({ id }),
       })
@@ -148,7 +162,10 @@ describe('test /api/admin/users/[id]', () => {
         introduction: 'introooo',
         affiliation: 'afil',
       }
-      const mockedReq = createMockNextPatchRequest('http://localhost:3000/api/admin/users/' + id, payload)
+      const mockedReq = createMockNextPatchRequest(
+        'http://localhost:3000/api/admin/users/' + id,
+        payload,
+      )
       const res = await PATCH(mockedReq, {
         params: paramsToPromise({ id }),
       })
@@ -168,8 +185,11 @@ describe('test /api/admin/users/[id]', () => {
       const userService = new UserService()
       const newStudent = await userService.createUser(studentCreateMock)
       const id = newStudent.id
-      const payload = { "firstName": "Sheena" }
-      const mockedReq = createMockNextPatchRequest('http://localhost:3000/api/admin/users/' + id, payload)
+      const payload = { firstName: 'Sheena' }
+      const mockedReq = createMockNextPatchRequest(
+        'http://localhost:3000/api/admin/users/' + id,
+        payload,
+      )
       const res = await PATCH(mockedReq, {
         params: paramsToPromise({ id }),
       })
