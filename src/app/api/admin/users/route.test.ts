@@ -39,7 +39,7 @@ describe('tests GET /api/admin/users', () => {
     const json = await res.json()
     expect(res.status).toBe(StatusCodes.OK)
     expect(json.data.length).toEqual(1)
-    expect(json.nextCursor).toBeDefined()
+    expect(json.nextPage).toBeDefined()
   })
 
   it('should get all users correctly with limits and cursor', async () => {
@@ -50,7 +50,7 @@ describe('tests GET /api/admin/users', () => {
     const json = await res.json()
     expect(res.status).toBe(StatusCodes.OK)
     expect(json.data.length).toEqual(1)
-    expect(json.nextCursor).toBeNull()
+    expect(json.nextPage).toBeNull()
   })
 
   it('should return client additional info as well', async () => {
@@ -77,12 +77,12 @@ describe('tests GET /api/admin/users', () => {
     const json = await res.json()
     expect(res.status).toBe(StatusCodes.OK)
     expect(json.data).toEqual([])
-    expect(json.nextCursor).toBeNull()
+    expect(json.nextPage).toBeNull()
 
     const outOfRangeReq = createMockNextRequest(`/api/admin/users?cursor=100`)
     const res2 = await GET(outOfRangeReq)
     const json2 = await res2.json()
     expect(json2.data).toEqual([])
-    expect(json2.nextCursor).toBeNull()
+    expect(json2.nextPage).toBeNull()
   })
 })
