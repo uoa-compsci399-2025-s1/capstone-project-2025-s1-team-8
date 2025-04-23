@@ -99,7 +99,7 @@ describe('test /api/admin/users/[id]', () => {
       expect(json).toEqual(combinedClientInfo)
     })
 
-    it('update client user by Id with new introduction and affiliation', async () => {
+    it('update client user by Id with existing introduction and affiliation', async () => {
       const clientMock = await userService.createUser(clientCreateMock)
       const clientAdditionalInfoMock = await userService.createClientAdditionalInfo({
         ...clientAdditionalInfoCreateMock,
