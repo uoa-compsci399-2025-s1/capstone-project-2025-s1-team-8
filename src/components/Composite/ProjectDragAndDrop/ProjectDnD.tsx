@@ -224,7 +224,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       const activeContainerIndex = containers.findIndex((container) => container.id === active.id)
       const overContainerIndex = containers.findIndex((container) => container.id === over.id)
       // Swap the active and over container
-      const newItems = [...containers]
+      let newItems = [...containers]
       newItems = arrayMove(newItems, activeContainerIndex, overContainerIndex)
       setContainers(newItems)
     }
