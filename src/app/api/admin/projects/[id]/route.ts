@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
-import ProjectService from '@/data-layer/services/ProjectService'
+import { NextRequest, NextResponse } from 'next/server'
 import { NotFound } from 'payload'
-import { UpdateProjectRequestBody } from '@/types/request-models/ProjectRequests'
 import { ZodError } from 'zod'
+
+import ProjectService from '@/data-layer/services/ProjectService'
+import { UpdateProjectRequestBody } from '@/types/request-models/ProjectRequests'
 
 /**
  * Patches a project by its ID.
@@ -12,13 +13,13 @@ import { ZodError } from 'zod'
  */
 export const PATCH = async (
   req: NextRequest,
-  { params }: { params: Promise<{ projectId: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ): Promise<NextResponse> => {
-  const { projectId } = await params
+  const { id } = await params
   const projectService = new ProjectService()
   try {
     const body = UpdateProjectRequestBody.parse(await req.json())
-    const data = await projectService.updateProject(projectId, body)
+    const data = await projectService.updateProject(id, body)
     return NextResponse.json({ data: data })
   } catch (error) {
     if (error instanceof NotFound) {
@@ -44,13 +45,13 @@ export const PATCH = async (
  */
 export const DELETE = async (
   req: NextRequest,
-  { params }: { params: Promise<{ projectId: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ): Promise<NextResponse> => {
-  const { projectId } = await params
+  const { id } = await params
   const projectService = new ProjectService()
 
   try {
-    await projectService.deleteProject(projectId)
+    await projectService.deleteProject(id)
     return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
   } catch (error) {
     if (error instanceof NotFound) {

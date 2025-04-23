@@ -1,9 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
-import {
-  clearCollection,
-  paramsToPromise,
-  testPayloadObject,
-} from '@/test-config/utils'
+import { clearCollection, paramsToPromise, testPayloadObject } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET } from '@/app/api/projects/[id]/route'

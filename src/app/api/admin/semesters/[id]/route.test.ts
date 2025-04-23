@@ -2,7 +2,12 @@ import { NextRequest } from 'next/server'
 
 import SemesterService from '@/data-layer/services/SemesterService'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
-import { clearCollection, createMockNextPostRequest, paramsToPromise, testPayloadObject } from '@/test-config/utils'
+import {
+  clearCollection,
+  createMockNextPostRequest,
+  paramsToPromise,
+  testPayloadObject,
+} from '@/test-config/utils'
 import { PATCH, DELETE } from './route'
 import { StatusCodes } from 'http-status-codes'
 
