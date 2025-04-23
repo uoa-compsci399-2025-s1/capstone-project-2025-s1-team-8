@@ -28,10 +28,9 @@ describe('test /api/admin/users/[id]/projects', () => {
   it('should return a list of all projects for a user', async () => {
     await projectService.createProject(projectCreateMock)
     await projectService.createProject(projectCreateMock)
-    const res = await GET(
-      createMockNextRequest(`api/admin/users/${mockClient1.id}/projects`),
-      { params: paramsToPromise({ id: mockClient1.id }) },
-    )
+    const res = await GET(createMockNextRequest(`api/admin/users/${mockClient1.id}/projects`), {
+      params: paramsToPromise({ id: mockClient1.id }),
+    })
     expect(res.status).toBe(StatusCodes.OK)
     const data = await res.json()
     expect(data.data.length).toEqual(2)
