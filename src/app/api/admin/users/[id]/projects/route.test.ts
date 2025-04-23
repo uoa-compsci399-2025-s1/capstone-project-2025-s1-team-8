@@ -8,8 +8,9 @@ import {
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET } from '@/app/api/admin/users/[id]/projects/route'
+import { mockClient1 } from '@/test-config/mocks/User.mock'
 
-describe('test /api/projects', () => {
+describe('test /api/admin/users/[id]/projects', () => {
   afterEach(async () => {
     await clearCollection(testPayloadObject, 'project')
   })
@@ -28,8 +29,8 @@ describe('test /api/projects', () => {
     await projectService.createProject(projectCreateMock)
     await projectService.createProject(projectCreateMock)
     const res = await GET(
-      createMockNextRequest('api/admin/users/67ff38a56a35e1b6cf43a68b/projects'),
-      { params: paramsToPromise({ id: '67ff38a56a35e1b6cf43a68b' }) },
+      createMockNextRequest(`api/admin/users/${mockClient1.id}/projects`),
+      { params: paramsToPromise({ id: mockClient1.id }) },
     )
     expect(res.status).toBe(StatusCodes.OK)
     const data = await res.json()
@@ -62,8 +63,8 @@ describe('test /api/projects', () => {
     await projectService.createProject(projectCreateMock)
     await projectService.createProject(projectCreateMock)
     const res1 = await GET(
-      createMockNextRequest('api/admin/users/67ff38a56a35e1b6cf43a68b/projects?page=2&limit=2'),
-      { params: paramsToPromise({ id: '67ff38a56a35e1b6cf43a68b' }) },
+      createMockNextRequest(`api/admin/users/${mockClient1.id}/projects?page=2&limit=2`),
+      { params: paramsToPromise({ id: mockClient1.id }) },
     )
     expect(res1.status).toBe(StatusCodes.OK)
     const data1 = await res1.json()
@@ -71,8 +72,8 @@ describe('test /api/projects', () => {
     expect(data1.nextPage).toBeNull()
 
     const res = await GET(
-      createMockNextRequest('api/admin/users/67ff38a56a35e1b6cf43a68b/projects?page=1&limit=1'),
-      { params: paramsToPromise({ id: '67ff38a56a35e1b6cf43a68b' }) },
+      createMockNextRequest(`api/admin/users/${mockClient1.id}/projects?page=1&limit=1`),
+      { params: paramsToPromise({ id: mockClient1.id }) },
     )
     expect(res.status).toBe(StatusCodes.OK)
     const data = await res.json()
