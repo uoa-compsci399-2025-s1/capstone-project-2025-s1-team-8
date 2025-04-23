@@ -1,17 +1,6 @@
 import { z } from 'zod'
 import { UserRole } from './User'
-import { ClientAdditionalInfo, Media, Semester, User } from '@/payload-types'
-
-export const SemesterSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.string().optional(),
-  deadline: z.string(),
-  startDate: z.string(),
-  endDate: z.string(),
-  updatedAt: z.string(),
-  createdAt: z.string(),
-}) satisfies z.ZodType<Semester>;
+import { ClientAdditionalInfo, Media, Project, Semester, User } from '@/payload-types'
 
 export const MediaSchema = z.object({
   id: z.string(),
@@ -45,6 +34,29 @@ export const UserSchema = z.object({
   lockUntil: z.string().optional(),
   password: z.string().optional(),
 }) satisfies z.ZodType<User>
+
+export const ProjectSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  clients: z.array(z.union([z.string(), UserSchema])),
+  description: z.string(),
+  attachments: z.array(z.union([z.string(), MediaSchema])).optional(),
+  deadline: z.string().nullable(),
+  timestamp: z.string(),
+  updatedAt: z.string(),
+  createdAt: z.string(),
+}) satisfies z.ZodType<Project>;
+
+export const SemesterSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string().optional(),
+  deadline: z.string(),
+  startDate: z.string(),
+  endDate: z.string(),
+  updatedAt: z.string(),
+  createdAt: z.string(),
+}) satisfies z.ZodType<Semester>;
 
 export const ClientAdditionalInfoSchema = z.object({
   id: z.string(),
