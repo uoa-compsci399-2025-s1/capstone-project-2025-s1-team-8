@@ -69,12 +69,13 @@ describe('test /api/projects', () => {
     // Project with client ID's instead of client objects
     const req2 = createMockNextPostRequest(
       'https://localhost:3000/api/projects',
-      projectCreateMock2)
+      projectCreateMock2,
+    )
     const res2 = await POST(req2)
     expect(res2.status).toBe(StatusCodes.CREATED)
     const project2 = (await res2.json()).data
     expect(project2).toEqual(await projectService.getProjectById(project2.id))
-})
+  })
 
   it('should fail to create a project', async () => {
     const req = createMockNextPostRequest('https://localhost:3000/api/projects', {
