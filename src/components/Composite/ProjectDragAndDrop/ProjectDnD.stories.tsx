@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
 import ProjectDnD from './ProjectDnD'
 import { UniqueIdentifier } from '@dnd-kit/core'
+import { mockProjects1 } from '@/mocks/Projects.mock'
 
 const containers = [
   {
@@ -10,35 +11,11 @@ const containers = [
     items: [
       {
         id: `item-1`,
-        projectInfo: {
-          projectId: 'P1',
-          projectName: `Project Alpha`,
-          projectDescription: 'First test project',
-          client: {
-            name: 'Alice Smith',
-            email: 'alice@example.com',
-          },
-          desiredOutput: 'Web app',
-          teamNumber: 1,
-          semesters: ['S1 2025'],
-          submissionDate: new Date('2025-06-01'),
-        },
+        projectInfo: mockProjects1[0],
       },
       {
         id: `item-2`,
-        projectInfo: {
-          projectId: 'P2',
-          projectName: `Project Beta`,
-          projectDescription: 'Second test project',
-          client: {
-            name: 'Bob Johnson',
-            email: 'bob@example.com',
-          },
-          desiredOutput: 'Mobile app',
-          teamNumber: 2,
-          semesters: ['S2 2025'],
-          submissionDate: new Date('2025-08-15'),
-        },
+        projectInfo: mockProjects1[1],
       },
     ],
   },
