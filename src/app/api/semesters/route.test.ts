@@ -2,11 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 
 import SemesterService from '@/data-layer/services/SemesterService'
 import { GET } from './route'
-import {
-  clearCollection,
-  createMockNextRequest,
-  testPayloadObject,
-} from '@/test-config/utils'
+import { clearCollection, createMockNextRequest, testPayloadObject } from '@/test-config/utils'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 
 describe('tests /api/admin/semesters', () => {
