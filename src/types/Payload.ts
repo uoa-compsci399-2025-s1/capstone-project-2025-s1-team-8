@@ -1,5 +1,17 @@
 import { z } from 'zod'
 import { UserRole } from './User'
+import { ClientAdditionalInfo, Media, Semester, User } from '@/payload-types'
+
+export const SemesterSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  description: z.string().optional(),
+  deadline: z.string(),
+  startDate: z.string(),
+  endDate: z.string(),
+  updatedAt: z.string(),
+  createdAt: z.string(),
+}) satisfies z.ZodType<Semester>;
 
 export const MediaSchema = z.object({
   id: z.string(),
@@ -15,13 +27,13 @@ export const MediaSchema = z.object({
   height: z.number().nullable().optional(),
   focalX: z.number().nullable().optional(),
   focalY: z.number().nullable().optional(),
-})
+}) satisfies z.ZodType<Media>;
 
 export const UserSchema = z.object({
   id: z.string(),
   firstName: z.string(),
   lastName: z.string(),
-  role: z.enum(Object.values(UserRole) as [string, ...string[]]),
+  role: z.nativeEnum(UserRole),
   image: z.union([z.string(), MediaSchema]).nullable().optional(),
   updatedAt: z.string(),
   createdAt: z.string(),
@@ -32,10 +44,13 @@ export const UserSchema = z.object({
   hash: z.string().optional(),
   lockUntil: z.string().optional(),
   password: z.string().optional(),
-})
+}) satisfies z.ZodType<User>
 
-export const ClientAdditionalInfo = z.object({
+export const ClientAdditionalInfoSchema = z.object({
   id: z.string(),
+  client: z.union([z.string(), UserSchema]),
   introduction: z.string().optional(),
   affiliation: z.string().optional(),
-})
+  updatedAt: z.string(),
+  createdAt: z.string(),
+}) satisfies z.ZodType<ClientAdditionalInfo>

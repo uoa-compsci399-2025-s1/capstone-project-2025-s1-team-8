@@ -1,23 +1,5 @@
 import { z } from 'zod'
-import { UserRole } from '../User'
-import { MediaSchema } from '../Payload'
-
-export const UserSchema = z
-  .object({
-    id: z.string(),
-    updatedAt: z.string().refine((val) => !isNaN(Date.parse(val)), {
-      message: 'Invalid date format, should be in ISO 8601 format',
-    }),
-    createdAt: z.string().refine((val) => !isNaN(Date.parse(val)), {
-      message: 'Invalid date format, should be in ISO 8601 format',
-    }),
-    email: z.string(),
-    firstName: z.string(),
-    lastName: z.string(),
-    role: z.nativeEnum(UserRole),
-    image: MediaSchema.nullable().optional(),
-  })
-  .passthrough()
+import { MediaSchema, UserSchema } from '../Payload'
 
 export const UpdateProjectRequestBody = z.object({
   name: z.string().optional(),
