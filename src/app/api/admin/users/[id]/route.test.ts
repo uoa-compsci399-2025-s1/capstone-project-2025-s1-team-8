@@ -73,13 +73,12 @@ describe('test /api/admin/users/[id]', () => {
         typeof clientAdditionalInfoMock.client === 'object'
           ? clientAdditionalInfoMock.client.id
           : clientAdditionalInfoMock.client
-      const body = { firstName: 'Sheena Lin' }
       const request = new NextRequest('http://localhost:3000/api/admin/users/' + id, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ firstName: 'Sheena Lin' }),
       })
       const res = await PATCH(request, {
         params: paramsToPromise({ id }),
@@ -88,12 +87,8 @@ describe('test /api/admin/users/[id]', () => {
       clientMock.firstName = 'Sheena Lin'
       const combinedClientInfo: UserCombinedInfo = {
         ...clientMock,
-        introduction: clientAdditionalInfoCreateMock.introduction
-          ? clientAdditionalInfoCreateMock.introduction
-          : undefined,
-        affiliation: clientAdditionalInfoCreateMock.affiliation
-          ? clientAdditionalInfoCreateMock.affiliation
-          : undefined,
+        introduction: clientAdditionalInfoCreateMock.introduction,
+        affiliation: clientAdditionalInfoCreateMock.affiliation,
         updatedAt: json.updatedAt,
       }
       expect(res.status).toBe(StatusCodes.OK)
@@ -110,17 +105,16 @@ describe('test /api/admin/users/[id]', () => {
         typeof clientAdditionalInfoMock.client === 'object'
           ? clientAdditionalInfoMock.client.id
           : clientAdditionalInfoMock.client
-      const body = {
-        firstName: 'Sheena Lin',
-        introduction: 'new intro',
-        affiliation: 'new affiliation',
-      }
       const request = new NextRequest('http://localhost:3000/api/admin/users/' + id, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify({
+          firstName: 'Sheena Lin',
+          introduction: 'new intro',
+          affiliation: 'new affiliation',
+        }),
       })
       const res = await PATCH(request, {
         params: paramsToPromise({ id }),
@@ -129,8 +123,6 @@ describe('test /api/admin/users/[id]', () => {
       clientMock.firstName = 'Sheena Lin'
       const combinedClientInfo: UserCombinedInfo = {
         ...clientMock,
-        // introduction: clientAdditionalInfoCreateMock.introduction ? clientAdditionalInfoCreateMock.introduction : undefined,
-        // affiliation: clientAdditionalInfoCreateMock.affiliation ? clientAdditionalInfoCreateMock.affiliation : undefined,
         introduction: 'new intro',
         affiliation: 'new affiliation',
         updatedAt: json.updatedAt,
@@ -156,8 +148,6 @@ describe('test /api/admin/users/[id]', () => {
       clientMock.firstName = 'Sheenaaaaaa'
       const combinedClientInfo: UserCombinedInfo = {
         ...clientMock,
-        introduction: undefined,
-        affiliation: undefined,
         updatedAt: json.updatedAt,
       }
       expect(res.status).toBe(StatusCodes.OK)

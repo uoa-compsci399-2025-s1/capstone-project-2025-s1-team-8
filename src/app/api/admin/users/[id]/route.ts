@@ -69,41 +69,26 @@ export const PATCH = async (
     const user = await userService.getUser(id)
     const body = UpdateUserRequestBody.parse(await _req.json())
     const updatedUser = await userService.updateUser(id, body)
-    let introduction = undefined,
-      affiliation = undefined
-    let userCombinedInfo: UserCombinedInfo
-    if (user.role === UserRole.Client) {
-      const clientInfo = await userService.getClientAdditionalInfo(id)
-      if (clientInfo) {
-        introduction = clientInfo.introduction
-        affiliation = clientInfo.affiliation
-        await userService.updateClientAdditionalInfo(clientInfo.id, {
-          ...updatedUser,
-          introduction: body.introduction === undefined ? introduction : body.introduction,
-          affiliation: body.affiliation === undefined ? affiliation : body.affiliation,
+    const { introduction: bodyIntroduction, affiliation: bodyAffiliation } = body
+    if (user.role === UserRole.Client || user.role === UserRole.Admin) {
+      let clientInfo = await userService.getClientAdditionalInfo(id)
+      if (!clientInfo) {
+        clientInfo = await userService.createClientAdditionalInfo({
+          client: updatedUser,
+          introduction: bodyIntroduction,
+          affiliation: bodyAffiliation,
         })
-        introduction = introduction === null ? undefined : introduction
-        affiliation = affiliation === null ? undefined : affiliation
-        userCombinedInfo = {
-          ...updatedUser,
-          introduction: body.introduction === undefined ? introduction : body.introduction,
-          affiliation: body.affiliation === undefined ? affiliation : body.affiliation,
-        }
       } else {
-        userCombinedInfo = {
+        clientInfo = await userService.updateClientAdditionalInfo(clientInfo.id, {
           ...updatedUser,
-          introduction: body.introduction ? body.introduction : undefined,
-          affiliation: body.affiliation ? body.affiliation : undefined,
-        }
+          introduction: bodyIntroduction,
+          affiliation: bodyAffiliation,
+        })
       }
-    } else {
-      userCombinedInfo = {
-        ...updatedUser,
-        introduction: body.introduction ? body.introduction : undefined,
-        affiliation: body.affiliation ? body.affiliation : undefined,
-      }
+      const { introduction, affiliation } = { ...clientInfo }
+      return NextResponse.json({ ...updatedUser, introduction, affiliation } as UserCombinedInfo)
     }
-    return NextResponse.json(userCombinedInfo)
+    return NextResponse.json(updatedUser as UserCombinedInfo)
   } catch (error) {
     if (error instanceof NotFound) {
       return NextResponse.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })
