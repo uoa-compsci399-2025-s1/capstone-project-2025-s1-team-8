@@ -6,7 +6,7 @@ import {
   createMockNextRequest,
 } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
-import { projectCreateMock } from '@/test-config/mocks/Project.mock'
+import { projectCreateMock, projectCreateMock2 } from '@/test-config/mocks/Project.mock'
 import { GET, POST } from '@/app/api/projects/route'
 
 describe('test /api/projects', () => {
@@ -65,6 +65,16 @@ describe('test /api/projects', () => {
     expect(res.status).toBe(StatusCodes.CREATED)
     const project = (await res.json()).data
     expect(project).toEqual(await projectService.getProjectById(project.id))
+
+    // Project with client ID's instead of client objects
+    const req2 = createMockNextPostRequest(
+      'https://localhost:3000/api/projects',
+      projectCreateMock2,
+    )
+    const res2 = await POST(req2)
+    expect(res2.status).toBe(StatusCodes.CREATED)
+    const project2 = (await res2.json()).data
+    expect(project2).toEqual(await projectService.getProjectById(project2.id))
   })
 
   it('should fail to create a project', async () => {
@@ -73,6 +83,6 @@ describe('test /api/projects', () => {
       description: undefined,
     })
     const res = await POST(req)
-    expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
+    expect(res.status).toBe(StatusCodes.BAD_REQUEST)
   })
 })
