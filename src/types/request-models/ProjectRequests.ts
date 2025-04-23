@@ -29,7 +29,7 @@ export const UserSchema = z
     email: z.string(),
     firstName: z.string(),
     lastName: z.string(),
-    role: z.enum([UserRole.Client]),
+    role: z.nativeEnum(UserRole),
     image: MediaSchema.nullable().optional(),
   })
   .passthrough()
