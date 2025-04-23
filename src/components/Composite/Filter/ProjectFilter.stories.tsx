@@ -1,5 +1,5 @@
 import React from 'react'
-import { Meta, StoryObj, StoryFn } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 import ProjectFilter from './ProjectFilter'
 import { FilterProvider } from '@/contexts/FilterContext' // adjust the import if needed
 

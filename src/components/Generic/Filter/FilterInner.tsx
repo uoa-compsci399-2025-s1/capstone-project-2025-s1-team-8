@@ -15,9 +15,9 @@ const FilterInner: React.FC<DropdownOptionType> = ({ icon, text, isActive }) => 
         ${isActive ? 'bg-deeper-blue' : 'bg-deep-teal hover:bg-deeper-blue'} 
         hover:cursor-pointer text-sm`}
     >
-      {icon && <span className={'flex items-center text-white'}>{icon}</span>}
+      {icon && <span className="flex items-center text-white">{icon}</span>}
       {!icon && (
-        <span className={`flex items-center`}>
+        <span className="flex items-center">
           <svg
             width="24"
             height="24"
@@ -31,7 +31,7 @@ const FilterInner: React.FC<DropdownOptionType> = ({ icon, text, isActive }) => 
           </svg>
         </span>
       )}
-      <div className={`text-white`}>{text}</div>
+      <div className="text-white">{text}</div>
     </div>
   )
 }
