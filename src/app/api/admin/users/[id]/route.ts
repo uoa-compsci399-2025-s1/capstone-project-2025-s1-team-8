@@ -49,7 +49,6 @@ export const GET = async (
 
 /**
  * Updates a single user by ID if the request is made by an admin
- * Admins cannot update users with the role of admin
  *
  * @param param0 The ID of the user to update
  * @returns The updated user

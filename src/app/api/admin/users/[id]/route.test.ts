@@ -211,7 +211,7 @@ describe('test /api/admin/users/[id]', () => {
     })
   })
 
-  describe('DELETE /api/admin/users/[id]', () => {
+  describe('tests DELETE /api/admin/users/[id]', () => {
     it('should delete a user', async () => {
       const newSemester = await userService.createUser(clientCreateMock)
       const res = await DELETE({} as NextRequest, {
