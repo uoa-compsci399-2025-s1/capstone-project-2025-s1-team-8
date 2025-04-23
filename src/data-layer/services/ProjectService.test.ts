@@ -3,6 +3,7 @@ import { projectMock, projectMock2, projectCreateMock } from '@/test-config/mock
 import { clearCollection, testPayloadObject } from '@/test-config/utils'
 import ProjectService from './ProjectService'
 import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
+import UserService from './UserService'
 
 describe('Project service methods test', () => {
   const projectService = new ProjectService()
@@ -61,9 +62,29 @@ describe('Project service methods test', () => {
 
     const client1Projects = await projectService.getProjectsByClientId(mockClient1.id)
     const client2Projects = await projectService.getProjectsByClientId('1234567890')
-    expect(client1Projects.length).toBe(2)
-    expect(client2Projects.length).toBe(0)
+    expect(client1Projects.docs.length).toBe(2)
+    expect(client2Projects.docs.length).toBe(0)
   })
+
+  /*it('should get all projects by a client with pagination', async () => {
+    const userService = new UserService()
+    const client1 = await userService.createUser(mockClient1)
+    const client2 = await userService.createUser({
+      ...mockClient1,
+      email: 'hi@gmail.com',
+      name: 'hi',
+    })
+    await projectService.createProject(projectMock)
+    await projectService.createProject(projectMock2)
+
+    const page1 = await projectService.getProjectsByClientId(1, 1)
+    const page2 = await projectService.getAllProjects(2, 1)
+
+    expect(page1.docs.length).toEqual(1)
+    expect(page1.hasNextPage).toBe(true)
+    expect(page2.docs.length).toEqual(2)
+    expect(page2.hasNextPage).toBe(false)
+  })*/
 
   it('should create a project', async () => {
     const project1 = await projectService.createProject(projectCreateMock)
