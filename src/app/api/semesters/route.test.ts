@@ -5,14 +5,14 @@ import { GET } from './route'
 import { clearCollection, createMockNextRequest, testPayloadObject } from '@/test-config/utils'
 import { semesterCreateMock, semesterCreateMock2 } from '@/test-config/mocks/Semester.mock'
 
-describe('tests /api/admin/semesters', () => {
+describe('tests /api/semesters', () => {
   const semesterService = new SemesterService()
 
   afterEach(async () => {
     await clearCollection(testPayloadObject, 'semester')
   })
 
-  describe('GET /api/admin/semesters', () => {
+  describe('GET /api/semesters', () => {
     it('should get no semesters if none exist', async () => {
       const res = await GET(createMockNextRequest('http://localhost:3000/api/semesters'))
       expect(res.status).toBe(StatusCodes.OK)
