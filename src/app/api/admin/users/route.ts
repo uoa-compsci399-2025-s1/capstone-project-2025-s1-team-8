@@ -34,5 +34,5 @@ export const GET = async (req: NextRequest) => {
     }),
   )
 
-  return NextResponse.json({ data: combinedUserData, nextCursor: nextPage })
+  return NextResponse.json({ data: combinedUserData, nextPage })
 }
