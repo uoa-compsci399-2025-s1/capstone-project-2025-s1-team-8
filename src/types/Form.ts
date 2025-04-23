@@ -1,6 +1,5 @@
-import { FormQuestion } from '@/payload-types'
+import { z } from 'zod'
 
-export interface QuestionResponse {
-  question: FormQuestion
-  answer: string
-}
+import { QuestionResponseSchema } from './Payload'
+
+export type QuestionResponse = z.infer<typeof QuestionResponseSchema>
