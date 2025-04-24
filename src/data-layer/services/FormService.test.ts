@@ -1,4 +1,4 @@
-import { clearCollection, testPayloadObject } from '@/test-config/utils'
+import { testPayloadObject } from '@/test-config/utils'
 import FormService from './FormService'
 import { formResponseCreateMock } from '@/test-config/mocks/Form.mock'
 import { formMock } from '@/test-config/mocks/Form.mock'
@@ -6,12 +6,6 @@ import { formQuestionCreateMock, formQuestionUpdateMock } from '@/test-config/mo
 
 describe('Form service tests', () => {
   const formService = new FormService()
-
-  afterEach(async () => {
-    await clearCollection(testPayloadObject, 'form')
-    await clearCollection(testPayloadObject, 'formResponse')
-    await clearCollection(testPayloadObject, 'formQuestion')
-  })
 
   describe('Form service test', () => {
     it('create a new form', async () => {

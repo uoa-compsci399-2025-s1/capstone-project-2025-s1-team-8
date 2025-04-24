@@ -1,10 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
-import {
-  clearCollection,
-  createMockNextPatchRequest,
-  paramsToPromise,
-  testPayloadObject,
-} from '@/test-config/utils'
+import { createMockNextPatchRequest, paramsToPromise } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { DELETE, PATCH } from './route'
@@ -12,10 +7,6 @@ import { NextRequest } from 'next/server'
 
 describe('tests /api/admin/projects/[id]', () => {
   const projectService = new ProjectService()
-
-  afterEach(async () => {
-    await clearCollection(testPayloadObject, 'project')
-  })
 
   describe('PATCH /api/admin/projects/[id]', () => {
     it('should update a project correctly', async () => {
