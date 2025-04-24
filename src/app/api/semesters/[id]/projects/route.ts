@@ -9,7 +9,6 @@ import { ProjectStatus } from '@/types/Project'
  * @param params - The parameters object containing the semester ID.
  * @returns A JSON response containing the list of projects and the next page cursor.
  */
-
 export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params
   const projectService = new ProjectService()
