@@ -1,17 +1,17 @@
 'use client'
 import React, { useState, useRef, useEffect } from 'react'
-import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import ProjectCard from '@/components/Generic/ProjectCard/ProjectCard'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 import { XMarkIcon } from '@heroicons/react/24/solid'
+import { PlaceholderProjectDetailsType } from '@/types/Project'
 
 export interface SemesterCardProps {
   semesterName: string
   startDate: Date
   endDate: Date
   submissionDeadline: Date
-  approvedProjects: ProjectDTOPlaceholder[]
+  approvedProjects: PlaceholderProjectDetailsType[]
   currentOrUpcoming?: 'current' | 'upcoming' | string //Used for styling the current and upcoming semesters. If not current or upcoming semester, leave blank
 }
 

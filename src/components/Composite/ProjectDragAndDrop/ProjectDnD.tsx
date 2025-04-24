@@ -18,10 +18,8 @@ import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import ProjectContainer from './ProjectContainer'
 import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { FilterProvider } from '@/contexts/FilterContext'
-import {
-  ProjectCardType,
-  ProjectDTOPlaceholder,
-} from '@/components/Generic/ProjectCard/DraggableProjectCard'
+import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
+import { PlaceholderProjectDetailsType } from '@/types/Project'
 
 type DNDType = {
   id: UniqueIdentifier
@@ -35,18 +33,23 @@ type DndComponentProps = {
   presetContainers: DNDType[]
 }
 
-const defaultProjectInfo: ProjectDTOPlaceholder = {
+const defaultProjectInfo: PlaceholderProjectDetailsType = {
   projectId: '',
-  projectName: '',
-  projectDescription: '',
-  client: {
+  projectTitle: '',
+  projectClientDetails: {
     name: '',
     email: '',
   },
+  otherClientDetails: [],
+  projectDescription: '',
   desiredOutput: '',
-  teamNumber: 0,
-  semesters: [],
-  submissionDate: new Date(),
+  desiredTeamSkills: '',
+  availableResources: '',
+  specialRequirements: false,
+  numberOfTeams: 0,
+  futureConsideration: false,
+  Semesters: [],
+  submittedDate: new Date(),
 }
 
 const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
@@ -86,19 +89,21 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
             if (filter === 'projectName') {
               console.log('projectName')
               sorted.sort((a, b) =>
-                a.projectInfo.projectName.localeCompare(b.projectInfo.projectName),
+                a.projectInfo.projectTitle.localeCompare(b.projectInfo.projectTitle),
               )
             } else if (filter === 'clientName') {
               console.log('clientName')
               sorted.sort((a, b) =>
-                a.projectInfo.client.name.localeCompare(b.projectInfo.client.name),
+                a.projectInfo.projectClientDetails.name.localeCompare(
+                  b.projectInfo.projectClientDetails.name,
+                ),
               )
             } else if (filter === 'submissionDate') {
               console.log('submissionDate')
               sorted.sort(
                 (a, b) =>
-                  new Date(a.projectInfo.submissionDate).getTime() -
-                  new Date(b.projectInfo.submissionDate).getTime(),
+                  new Date(a.projectInfo.submittedDate).getTime() -
+                  new Date(b.projectInfo.submittedDate).getTime(),
               )
             }
 
@@ -130,7 +135,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
     }
   }
 
-  const findItemInfo = (id: UniqueIdentifier | undefined): ProjectDTOPlaceholder => {
+  const findItemInfo = (id: UniqueIdentifier | undefined): PlaceholderProjectDetailsType => {
     if (!id) return defaultProjectInfo
 
     const container = findValueOfItems(id, 'item')

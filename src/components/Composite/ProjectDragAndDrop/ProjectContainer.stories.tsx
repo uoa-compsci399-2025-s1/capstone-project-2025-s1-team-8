@@ -2,7 +2,8 @@ import { Meta, StoryObj } from '@storybook/react'
 import ProjectContainer from './ProjectContainer'
 import { DndContext } from '@dnd-kit/core'
 import { FilterProvider } from '@/contexts/FilterContext'
-import { mockProjects1 } from '@/mocks/Projects.mock'
+import { mockProjects } from '@/mocks/Projects.mock'
+import { SortableKeys } from '@/components/Generic/Filter/ProjectFilterAssets'
 
 export default {
   title: 'Composite/ProjectContainer',
@@ -10,7 +11,14 @@ export default {
   decorators: [
     (Story) => (
       <DndContext>
-        <FilterProvider>
+        <FilterProvider
+          value={{
+            selectedFilter: undefined,
+            setSelectedFilter: function (filter: SortableKeys): void {
+              throw new Error('Function not implemented.')
+            },
+          }}
+        >
           <Story />
         </FilterProvider>
       </DndContext>
@@ -28,11 +36,11 @@ export const Default: Story = {
     projects: [
       {
         id: 'proj-1',
-        projectInfo: mockProjects1[0],
+        projectInfo: mockProjects[0],
       },
       {
         id: 'proj-2',
-        projectInfo: mockProjects1[1],
+        projectInfo: mockProjects[1],
       },
     ],
     onChange: () => {},
