@@ -12,11 +12,11 @@ import {
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
-describe('tests /api/admin/users', async() => {
+describe('tests /api/admin/users', async () => {
   const userService = new UserService()
   const cookieStore = await cookies()
 
-  describe("GET /api/admin/users", ()=>{
+  describe('GET /api/admin/users', () => {
     it('should return a 401 if no token is provided', async () => {
       const req = createMockNextRequest(`/api/admin/users`)
       const res = await GET(req)
@@ -113,6 +113,5 @@ describe('tests /api/admin/users', async() => {
       expect(json2.data).toEqual([])
       expect(json2.nextPage).toBeNull()
     })
-
   })
 })
