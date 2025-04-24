@@ -280,29 +280,29 @@ export default class ProjectService {
       status?: ProjectStatus | null
     },
   ): Promise<PaginatedDocs<SemesterProject>> {
-    //console.log(options?.published, options?.status)
     let query: Where = {
       semester: {
         equals: id,
       },
     }
+
     if (options)
       query = {
         semester: {
           equals: id,
         },
       }
-    if (options?.published && options.published !== null) {
+    if (options?.published != undefined && options.published !== null) {
       query.published = {
         equals: options.published,
       }
     }
-    if (options?.status && options.status !== null) {
+    if (options?.status != undefined && options.status !== null) {
       query.status = {
         equals: options.status,
       }
     }
-    console.log(query)
+
     const semesterProjects = await payload.find({
       collection: 'semesterProject',
       where: query,

@@ -226,20 +226,20 @@ describe('Project service methods test', () => {
       ...semesterProjectCreateMock,
       semester: semester1.id,
     })
-    const res = await projectService.getSemesterProjectsBySemesterId(semester1.id)
+    const res = await projectService.getSemesterProjectsByPublishedAndStatus(semester1.id)
     expect(res.docs.length).toEqual(3)
     expect(res.nextPage).toBeNull()
-    const res2 = await projectService.getSemesterProjectsBySemesterId(semester1.id, 2, 1)
+    const res2 = await projectService.getSemesterProjectsByPublishedAndStatus(semester1.id, 2, 1)
     expect(res2.docs.length).toEqual(2)
     expect(res2.hasNextPage).toBe(true)
-    const res3 = await projectService.getSemesterProjectsBySemesterId(semester1.id, 2, 2)
+    const res3 = await projectService.getSemesterProjectsByPublishedAndStatus(semester1.id, 2, 2)
     expect(res3.docs.length).toEqual(1)
     expect(res3.hasNextPage).toBe(false)
   })
 
   it('Should return nothing if no projects for a semester', async () => {
     const semester1 = await semesterService.createSemester(semesterCreateMock)
-    const res = await projectService.getSemesterProjectsBySemesterId(semester1.id)
+    const res = await projectService.getSemesterProjectsByPublishedAndStatus(semester1.id)
     expect(res.docs.length).toEqual(0)
     expect(res.nextPage).toBeNull()
   })
@@ -266,13 +266,19 @@ describe('Project service methods test', () => {
       published: true,
     })
 
-    const res = await projectService.getSemesterProjectsByPublished(semester1.id, true)
+    const res = await projectService.getSemesterProjectsByPublishedAndStatus(semester1.id, 100, 1, {
+      published: true,
+    })
     expect(res.docs.length).toEqual(1)
     expect(res.nextPage).toBeNull()
-    const res2 = await projectService.getSemesterProjectsByPublished(semester1.id, true, 2, 1)
+    const res2 = await projectService.getSemesterProjectsByPublishedAndStatus(semester1.id, 2, 1, {
+      published: true,
+    })
     expect(res2.docs.length).toEqual(1)
     expect(res2.nextPage).toBe(null)
-    const res3 = await projectService.getSemesterProjectsByPublished(semester1.id, false, 2, 1)
+    const res3 = await projectService.getSemesterProjectsByPublishedAndStatus(semester1.id, 2, 1, {
+      published: false,
+    })
     expect(res3.docs.length).toEqual(1)
     expect(res3.nextPage).toBe(null)
   })
