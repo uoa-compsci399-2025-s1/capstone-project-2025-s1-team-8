@@ -11,25 +11,20 @@ export class UnauthorizedAuthError extends Error {
   }
 }
 
-export function payloadAuthentication(securityName: string, scopes?: string[]) {
+export async function payloadAuthentication(securityName: string, scopes?: string[]) {
   if (securityName === 'jwt') {
-    return new Promise((resolve, reject) => {
-      cookies().then((cookies) => {
-        const token = cookies.get(AUTH_COOKIE_NAME)?.value
-        if (!token) {
-          return reject(new UnauthorizedAuthError('No token provided'))
-        }
-        const authService = new AuthService()
-        const decodedToken = authService.decodeJWT(token) as JWTResponse
-        const { user } = decodedToken
-        for (const scope of scopes || []) {
-          if (!(user.role.includes(scope))) {
-            return reject(new UnauthorizedAuthError('No scope'))
-          }
-        }
-        return resolve(user)
-      })
-    })
+    const cookieStore = await cookies()
+    const token = cookieStore.get(AUTH_COOKIE_NAME)?.value
+    if(!token)
+      throw new UnauthorizedAuthError('No token provided')
+    const authService = new AuthService()
+    const decodedToken = authService.decodeJWT(token) as JWTResponse
+    const { user } = decodedToken
+    for (const scope of scopes || []) {
+      if (!(user.role.includes(scope))) {
+        throw new UnauthorizedAuthError('No scope')
+      }
+    }
+    return user
   }
-  return Promise.reject(new Error('Unknown Error'))
 }
