@@ -1,4 +1,3 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import CreateProjectCard from '@/components/Composite/CreateProjectCard/CreateProjectCard'
 import GradientTextArea from '@/components/Generic/GradientTextArea/GradientTextArea'
 import ClientProfile from '@/components/Composite/ClientProfile/ClientProfile'
