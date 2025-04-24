@@ -31,8 +31,7 @@ export const GET = async (req: NextRequest): Promise<NextResponse> => {
  * @param req - The request object.
  * @returns A JSON response containing the created project.
  */
-
-export const POST = async (req: NextRequest): Promise<NextResponse> => {
+export const POST = async (req: NextRequest): Promise<Response> => {
   const projectService = new ProjectService()
 
   try {
