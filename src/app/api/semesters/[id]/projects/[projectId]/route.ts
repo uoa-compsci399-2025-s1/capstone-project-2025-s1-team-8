@@ -11,29 +11,37 @@ import { SemesterSchema } from '@/types/Payload'
  * @param params - The parameters object containing the semester ID and project ID.
  * @returns A JSON response containing the list of projects and the next page cursor.
  */
-export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: string, projectId: string }> }) => {
-  const {id, projectId} = await params
+export const GET = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string; projectId: string }> },
+) => {
+  const { id, projectId } = await params
   console.log('id', id)
-    console.log('projectId', projectId)
+  console.log('projectId', projectId)
   const projectService = new ProjectService()
-  try{
+  try {
     const project = await projectService.getSemesterProject(projectId)
     if (project.semester instanceof String && project.semester !== id) {
-        return NextResponse.json({ error: 'Project not found in this semester' }, { status: StatusCodes.NOT_FOUND })
-    } 
-    
+      return NextResponse.json(
+        { error: 'Project not found in this semester' },
+        { status: StatusCodes.NOT_FOUND },
+      )
+    }
+
     const semester = SemesterSchema.safeParse(project.semester)
     if (semester.success) {
-        if (semester.data.id !== id) {
-            return NextResponse.json({ error: 'Project not found in this semester' }, { status: StatusCodes.NOT_FOUND })
-        }
+      if (semester.data.id !== id) {
+        return NextResponse.json(
+          { error: 'Project not found in this semester' },
+          { status: StatusCodes.NOT_FOUND },
+        )
+      }
     }
     return NextResponse.json({ data: project })
-    
   } catch (error) {
     if (error instanceof NotFound) {
       return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
-    } 
+    }
     console.error('Error fetching project:', error)
     return NextResponse.json(
       { error: 'Internal Server Error' },
