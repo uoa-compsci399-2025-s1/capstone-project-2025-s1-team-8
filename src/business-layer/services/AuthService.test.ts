@@ -15,7 +15,7 @@ describe('Auth service tests', () => {
     const token = authService.generateJWT(mockClient1, ACCESS_TOKEN_MOCK)
     const decoded = jwt.verify(token, process.env.JWT_SECRET!)
     expect(decoded).toMatchObject({
-      profile: mockClient1,
+      user: mockClient1,
       accessToken: ACCESS_TOKEN_MOCK,
     })
   })
@@ -24,7 +24,7 @@ describe('Auth service tests', () => {
     const token = authService.generateJWT(mockClient1, ACCESS_TOKEN_MOCK)
     const decoded = authService.decodeJWT(token)
     expect(decoded).toMatchObject({
-      profile: mockClient1,
+      user: mockClient1,
       accessToken: ACCESS_TOKEN_MOCK,
     })
   })

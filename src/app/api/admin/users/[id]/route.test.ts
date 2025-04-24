@@ -13,7 +13,7 @@ import {
   clientAdditionalInfoCreateMock,
   clientCreateMock,
 } from '@/test-config/mocks/User.mock'
-import { GET, PATCH, DELETE } from '@/app/api/admin/users/[id]/route'
+import { GET, PATCH } from '@/app/api/admin/users/[id]/route'
 import { NextRequest } from 'next/server'
 import { UserCombinedInfo } from '@/types/Collections'
 
@@ -208,22 +208,6 @@ describe('test /api/admin/users/[id]', () => {
       })
       expect(res.status).toBe(StatusCodes.NOT_FOUND)
       expect(await res.json()).toEqual({ error: 'User not found' })
-    })
-  })
-
-  describe('tests DELETE /api/admin/users/[id]', () => {
-    it('should delete a user', async () => {
-      const newSemester = await userService.createUser(clientCreateMock)
-      const res = await DELETE({} as NextRequest, {
-        params: paramsToPromise({ id: newSemester.id }),
-      })
-      expect(res.status).toBe(StatusCodes.NO_CONTENT)
-      await expect(userService.getUser(newSemester.id)).rejects.toThrow('Not Found')
-    })
-
-    it('should return a 404 error if the user does not exist', async () => {
-      const res = await DELETE({} as NextRequest, { params: paramsToPromise({ id: 'noid' }) })
-      expect(res.status).toBe(StatusCodes.NOT_FOUND)
     })
   })
 })

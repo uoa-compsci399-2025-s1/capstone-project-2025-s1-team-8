@@ -1,6 +1,7 @@
-import { Authentication } from '@/payload-types'
+import { Authentication, User } from '@/payload-types'
 import { UserInfoResponse } from '@/types/Auth'
 import { CreateAuthenticationData } from '@/types/Collections'
+import { UserRole } from '@/types/User'
 
 export const CODE_MOCK = 'coolcode'
 export const STATE_MOCK = 'coolstate'
@@ -57,4 +58,44 @@ export const authCreateMock: CreateAuthenticationData = {
   refreshToken: 'refreshToken',
   accessToken: ACCESS_TOKEN_MOCK,
   expiresAt: Date.now(),
+}
+
+/*
+ * Create auth user mock
+ */
+export const ADMIN_USER_UID = '000000000000000000000001'
+export const CLIENT_USER_UID = '000000000000000000000002'
+export const STUDENT_USER_UID = '000000000000000000000003'
+
+export const adminMock: User = {
+  id: ADMIN_USER_UID,
+  updatedAt: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
+  role: UserRole.Client,
+  firstName: 'Admin',
+  lastName: '1',
+  email: 'admin123@gmail.com',
+  password: 'abcdefg',
+}
+
+export const clientMock: User = {
+  id: CLIENT_USER_UID,
+  updatedAt: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
+  role: UserRole.Client,
+  firstName: 'Client',
+  lastName: '1',
+  email: 'client123@gmail.com',
+  password: 'abcdefg',
+}
+
+export const studentMock: User = {
+  id: STUDENT_USER_UID,
+  updatedAt: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
+  role: UserRole.Client,
+  firstName: 'Student',
+  lastName: '1',
+  email: 'student123@gmail.com',
+  password: 'abcdefg',
 }

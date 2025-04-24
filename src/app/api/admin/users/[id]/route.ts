@@ -6,54 +6,50 @@ import { NotFound } from 'payload'
 import { UpdateUserRequestBody } from '@/types/request-models/UserRequests'
 import { UserCombinedInfo } from '@/types/Collections'
 import { ZodError } from 'zod'
-import { Security } from '@/business-layer/middleware/Security'
 
-class RouteHandler {
-  /**
-   * Fetches a single user by ID if the request is made by an admin
-   *
-   * @param param0 The ID of the user to fetch
-   * @param _req the NextRequest obj
-   * @returns The user data
-   */
-  @Security('jwt', ['admin'])
-  static async GET(
-    _req: NextRequest,
-    {
-      params,
-    }: {
-      params: Promise<{ id: string }>
-    },
-  ) {
-    const { id } = await params
-    const userService = new UserService()
-    try {
-      const user = await userService.getUser(id)
-      if (user.role === UserRole.Client) {
-        const { introduction, affiliation } = { ...(await userService.getClientAdditionalInfo(id)) }
-        return NextResponse.json({ ...user, introduction, affiliation })
-      }
-      return NextResponse.json(user)
-    } catch (error) {
-      if (
-        (error as Error).message === 'Value is not JSON serializable' ||
-        (error as Error).message === 'Not Found' ||
-        error === NotFound
-      ) {
-        return NextResponse.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })
-      }
-      return NextResponse.json(
-        { error: 'Internal Server Error' },
-        { status: StatusCodes.INTERNAL_SERVER_ERROR },
-      )
+/**
+ * Fetches a single user by ID if the request is made by an admin
+ *
+ * @param param0 The ID of the user to fetch
+ * @param _req the NextRequest obj
+ * @returns The user data
+ */
+
+export const GET = async (
+  _req: NextRequest,
+  {
+    params,
+  }: {
+    params: Promise<{ id: string }>
+  },
+) => {
+  const { id } = await params
+  const userService = new UserService()
+  try {
+    const user = await userService.getUser(id)
+    if (user.role === UserRole.Client) {
+      const { introduction, affiliation } = { ...(await userService.getClientAdditionalInfo(id)) }
+      return NextResponse.json({ ...user, introduction, affiliation })
     }
+    return NextResponse.json(user)
+  } catch (error) {
+    if (
+      (error as Error).message === 'Value is not JSON serializable' ||
+      (error as Error).message === 'Not Found' ||
+      error === NotFound
+    ) {
+      return NextResponse.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })
+    }
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: StatusCodes.INTERNAL_SERVER_ERROR },
+    )
   }
 }
 
-export const GET = RouteHandler.GET
-
 /**
  * Updates a single user by ID if the request is made by an admin
+ * Admins cannot update users with the role of admin
  *
  * @param param0 The ID of the user to update
  * @returns The updated user
@@ -107,33 +103,5 @@ export const PATCH = async (
       { error: 'Internal Server Error' },
       { status: StatusCodes.INTERNAL_SERVER_ERROR },
     )
-  }
-}
-
-/**
- * DELETE method to delete a user by Id.
- *
- * @param req The request object containing the request body
- * @returns No content status code
- */
-export const DELETE = async (
-  _req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) => {
-  try {
-    const { id } = await params
-    const userService = new UserService()
-    await userService.deleteUser(id)
-    return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
-  } catch (error) {
-    if (error instanceof NotFound) {
-      return NextResponse.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })
-    } else {
-      console.error(error)
-      return NextResponse.json(
-        { error: 'Internal server error' },
-        { status: StatusCodes.INTERNAL_SERVER_ERROR },
-      )
-    }
   }
 }
