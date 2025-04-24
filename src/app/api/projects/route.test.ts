@@ -1,19 +1,10 @@
 import { StatusCodes } from 'http-status-codes'
-import {
-  clearCollection,
-  createMockNextPostRequest,
-  testPayloadObject,
-  createMockNextRequest,
-} from '@/test-config/utils'
+import { createMockNextPostRequest, createMockNextRequest } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock, projectCreateMock2 } from '@/test-config/mocks/Project.mock'
 import { GET, POST } from './route'
 
 describe('test /api/projects', () => {
-  afterEach(async () => {
-    await clearCollection(testPayloadObject, 'project')
-  })
-
   const projectService = new ProjectService()
 
   it('should get no projects if none are created', async () => {

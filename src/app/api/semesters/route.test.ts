@@ -2,15 +2,11 @@ import { StatusCodes } from 'http-status-codes'
 
 import SemesterService from '@/data-layer/services/SemesterService'
 import { GET } from './route'
-import { clearCollection, createMockNextRequest, testPayloadObject } from '@/test-config/utils'
+import { createMockNextRequest } from '@/test-config/utils'
 import { semesterCreateMock, semesterCreateMock2 } from '@/test-config/mocks/Semester.mock'
 
 describe('tests /api/semesters', () => {
   const semesterService = new SemesterService()
-
-  afterEach(async () => {
-    await clearCollection(testPayloadObject, 'semester')
-  })
 
   describe('GET /api/semesters', () => {
     it('should get no semesters if none exist', async () => {

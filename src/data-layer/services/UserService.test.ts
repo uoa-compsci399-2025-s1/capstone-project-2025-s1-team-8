@@ -1,4 +1,4 @@
-import { clearCollection, testPayloadObject } from '@/test-config/utils'
+import { testPayloadObject } from '@/test-config/utils'
 import UserService from './UserService'
 import {
   adminCreateMock,
@@ -9,11 +9,6 @@ import {
 
 describe('User service test', () => {
   const userService = new UserService()
-
-  afterEach(async () => {
-    await clearCollection(testPayloadObject, 'user')
-    await clearCollection(testPayloadObject, 'clientAdditionalInfo')
-  })
 
   describe('user service methods', () => {
     it('create a new admin user', async () => {

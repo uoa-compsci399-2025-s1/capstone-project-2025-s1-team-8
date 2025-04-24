@@ -10,6 +10,7 @@ export default defineConfig({
       'dotenv/config',
       './src/test-config/mongodb-setup.ts',
       './src/test-config/dom-setup',
+      './src/test-config/routes-setup.ts',
     ],
     globals: true,
     /**
