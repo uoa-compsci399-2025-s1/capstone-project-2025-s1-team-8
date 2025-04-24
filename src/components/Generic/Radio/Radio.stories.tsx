@@ -5,8 +5,7 @@ const meta: Meta<typeof Radio> = {
   title: 'Generic/Radio',
   component: Radio,
   tags: ['autodocs'],
-  argTypes: {
-  },
+  argTypes: {},
 }
 
 export default meta

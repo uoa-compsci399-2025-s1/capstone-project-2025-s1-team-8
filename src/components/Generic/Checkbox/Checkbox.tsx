@@ -1,50 +1,36 @@
 import React, { FC } from 'react'
-import { FiCheck } from "react-icons/fi";
+import { FiCheck } from 'react-icons/fi'
 
 interface CheckboxProps {
-  values: string[],
-  customInput?: boolean, 
+  values: string[]
+  customInput?: boolean
 }
 
-const Checkbox: FC<CheckboxProps> = ({
-  values,
-}) => {
-
+const Checkbox: FC<CheckboxProps> = ({ values }) => {
   return (
     <div className={`flex flex-col`}>
       {values.map((value, index) => (
         <label key={index} className="flex items-center mb-2">
-          <input 
-            type="checkbox" 
-            name="checkbox" 
-            value={value} 
+          <input
+            type="checkbox"
+            name="checkbox"
+            value={value}
             style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
-            className={`mr-2 w-[15px] h-[15px] content-[''] flex content-center bg-white rounded-xs border-2 border-solid border-steel-blue 
-            checked:after:w-[100px] checked:after:h-[100px] checked:after:flex 
-            checked:after:m-auto 
-            checked:after:relative checked:after:content-[${<p>hi</p>}] 
-            checked:after:bg-orange-100
-            `} 
+            className="opacity-0 peer"
           />
-          <input type="checkbox" name="checkbox" />
-          <span>
-
+          <span
+            className="w-[16px] h-[16px] inline-flex mr-2 border-2 border-steel-blue rounded-sm 
+                peer-checked:bg-steel-blue 
+                [&>*]:opacity-0
+                peer-checked:[&>*]:opacity-100
+                peer-focus:outline-2 peer-focus:outline-offset-1 peer-focus:outline-muted-blue/80
+                transition-colors duration-150"
+          >
+            <FiCheck className="stroke-4 w-[12px] h-[12px] self-center m-auto" />
           </span>
           <p className="text-steel-blue">{value}</p>
         </label>
       ))}
-      <label className="inline-flex items-center cursor-pointer">
-        <input type="checkbox" className="hidden peer" />
-        <span
-          className="w-6 h-6 inline-block mr-2 border-2 border-gray-300 rounded-sm 
-                peer-checked:bg-indigo-600 peer-checked:border-indigo-600 
-                peer-focus:ring-2 peer-focus:ring-indigo-300 
-                transition-colors duration-150 flex-shrink-0"
-        >
-          <FiCheck className="w-4 h-4 text-white m-auto" />
-        </span>
-        <span className="select-none">Custom Checkbox</span>
-      </label>
     </div>
   )
 }

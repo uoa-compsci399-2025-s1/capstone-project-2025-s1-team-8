@@ -5,8 +5,7 @@ const meta: Meta<typeof Checkbox> = {
   title: 'Generic/Checkbox',
   component: Checkbox,
   tags: ['autodocs'],
-  argTypes: {
-  },
+  argTypes: {},
 }
 
 export default meta
