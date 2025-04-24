@@ -4,14 +4,14 @@ import { StatusCodes } from 'http-status-codes'
 import { UserCombinedInfo } from '@/types/Collections'
 
 type RouteHandlerContext = {
-  params: Promise<Record<string, string>> // Expect params to be a promise of a record with string keys/values
+  params: Promise<Record<string, string>>
 }
 
 export function Security(securityName: string, scopes?: string[]) {
   return function (
     // eslint-disable-next-line
-    target: any,
-    propertyKey: string | symbol,
+    _target: any,
+    _propertyKey: string | symbol,
     descriptor: PropertyDescriptor,
   ) {
     const originalMethod = descriptor.value

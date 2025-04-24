@@ -62,7 +62,6 @@ afterEach(async () => {
   await clearCollection(testPayloadObject, 'project')
   await clearCollection(testPayloadObject, 'formQuestion')
   await clearCollection(testPayloadObject, 'formResponse')
-  vi.clearAllMocks()
 })
 
 export { adminToken, clientToken, studentToken }

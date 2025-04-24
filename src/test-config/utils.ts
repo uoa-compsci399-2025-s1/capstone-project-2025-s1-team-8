@@ -3,6 +3,7 @@ import { NextRequest } from 'next/server'
 import { CollectionSlug, getPayload, Payload } from 'payload'
 import configPromise from '@payload-config'
 import { ADMIN_JWT_MOCK, CLIENT_JWT_MOCK, STUDENT_JWT_MOCK } from './mocks/Auth.mock'
+import { UserCombinedInfo } from '@/types/Collections'
 
 /**
  * Payload object to use in integration tests
@@ -67,7 +68,7 @@ export const paramsToPromise = <T extends Record<string, unknown>>(params: T): P
  * @returns A mock NextRequest object
  */
 export function createMockNextRequest(url: string) {
-  return new NextRequest(new URL(url, 'http://localhost:3000'))
+  return new NextRequest(new URL(url, 'http://localhost:3000')) as NextRequest & { user: UserCombinedInfo };
 }
 
 /**
@@ -84,7 +85,7 @@ export function createMockNextPostRequest(url: string, body: Record<string, unkn
     headers: {
       'Content-Type': 'application/json',
     },
-  })
+  }) as NextRequest & { user: UserCombinedInfo };
 }
 /**
  * Create a mock NextRequest object with a body for PATCH requests
@@ -100,5 +101,5 @@ export function createMockNextPatchRequest(url: string, body: Record<string, unk
     headers: {
       'Content-Type': 'application/json',
     },
-  })
+  }) as NextRequest & { user: UserCombinedInfo };
 }

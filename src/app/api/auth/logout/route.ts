@@ -2,11 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
-import { Security } from '@/business-layer/middleware/Security'
 import { StatusCodes } from 'http-status-codes'
 
 class RouteWrapper {
-  @Security('jwt', [])
   static async GET(_req: NextRequest) {
     const cookieStore = await cookies()
     cookieStore.delete(AUTH_COOKIE_NAME)
