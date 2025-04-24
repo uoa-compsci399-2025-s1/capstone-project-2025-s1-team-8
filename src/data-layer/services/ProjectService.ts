@@ -3,7 +3,7 @@ import { CreateProjectData, UpdateProjectData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 import { CreateSemesterProjectData, UpdateSemesterProjectData } from '@/types/Collections'
 import { SemesterProject } from '@/payload-types'
-import { PaginatedDocs } from 'payload'
+import { PaginatedDocs, Where } from 'payload'
 import { ProjectStatus } from '@/types/Project'
 
 export default class ProjectService {
@@ -273,24 +273,39 @@ export default class ProjectService {
 
   public async getSemesterProjectsByPublishedAndStatus(
     id: string,
-    published: boolean,
-    status: ProjectStatus,
     limit: number = 100,
     page: number = 1,
+    options?: {
+      published?: boolean | null
+      status?: ProjectStatus | null
+    },
   ): Promise<PaginatedDocs<SemesterProject>> {
-    const semesterProjects = await payload.find({
-      collection: 'semesterProject',
-      where: {
-        published: {
-          equals: published,
-        },
-        status: {
-          equals: status,
-        },
+    //console.log(options?.published, options?.status)
+    let query: Where = {
+      semester: {
+        equals: id,
+      },
+    }
+    if (options)
+      query = {
         semester: {
           equals: id,
         },
-      },
+      }
+    if (options?.published && options.published !== null) {
+      query.published = {
+        equals: options.published,
+      }
+    }
+    if (options?.status && options.status !== null) {
+      query.status = {
+        equals: options.status,
+      }
+    }
+    console.log(query)
+    const semesterProjects = await payload.find({
+      collection: 'semesterProject',
+      where: query,
       limit,
       pagination: true,
       page,

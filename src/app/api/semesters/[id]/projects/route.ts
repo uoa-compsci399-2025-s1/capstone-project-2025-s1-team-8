@@ -38,15 +38,16 @@ export const GET = async (
       { status: StatusCodes.BAD_REQUEST },
     )
   }
+  //console.log(status, published)
 
-  if (published !== null && status !== null) {
+  /*if (published !== null && status !== null) {
     const { docs: projects, nextPage } =
       await projectService.getSemesterProjectsByPublishedAndStatus(
         id,
-        JSON.parse(published),
-        status as ProjectStatus,
         limit,
         page,
+        JSON.parse(published),
+        status as ProjectStatus,
       )
     return NextResponse.json({ data: projects, nextPage })
   } else if (published !== null) {
@@ -65,12 +66,16 @@ export const GET = async (
       page,
     )
     return NextResponse.json({ data: projects, nextPage })
-  }
+  }*/
 
-  const { docs: projects, nextPage } = await projectService.getSemesterProjectsBySemesterId(
+  const { docs: projects, nextPage } = await projectService.getSemesterProjectsByPublishedAndStatus(
     id,
     limit,
     page,
+    {
+      published: published ? JSON.parse(published) : null,
+      status: status ? (status as ProjectStatus) : null,
+    },
   )
   return NextResponse.json({ data: projects, nextPage })
 }
