@@ -30,7 +30,6 @@ describe('tests /api/projects/[id]', async () => {
       const project = await projectService.createProject(projectCreateMock)
       const slug = { id: project.id }
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await GET(createMockNextRequest(''), {
         params: paramsToPromise(slug),
       })
