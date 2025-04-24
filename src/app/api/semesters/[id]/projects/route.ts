@@ -10,10 +10,7 @@ import { ProjectStatus } from '@/types/Project'
  * @returns A JSON response containing the list of projects and the next page cursor.
  */
 
-export const GET = async (
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) => {
+export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params
   const projectService = new ProjectService()
   const searchParams = req.nextUrl.searchParams

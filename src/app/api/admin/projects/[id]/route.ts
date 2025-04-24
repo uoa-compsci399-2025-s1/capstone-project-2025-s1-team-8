@@ -37,10 +37,7 @@ export const GET = async (
  * @param req - The request object.
  * @param params - The parameters object containing the project ID.
  */
-export const PATCH = async (
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) => {
+export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params
   const projectService = new ProjectService()
   try {
@@ -69,10 +66,7 @@ export const PATCH = async (
  * @param req - The request object.
  * @param params - The parameters object containing the project ID.
  */
-export const DELETE = async (
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) => {
+export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params
   const projectService = new ProjectService()
 
