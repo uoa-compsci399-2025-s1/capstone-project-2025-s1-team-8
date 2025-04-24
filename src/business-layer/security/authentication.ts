@@ -22,11 +22,11 @@ export async function payloadAuthentication(securityName: string, scopes?: strin
         const decodedToken = authService.decodeJWT(token) as JWTResponse
         const { user } = decodedToken
         for (const scope of scopes || []) {
-          if (!user.role.includes(scope)) {
-            reject(new UnauthorizedAuthError('No scope'))
+          if (user.role.includes(scope)) {
+            resolve(user)
           }
         }
-        return resolve(user)
+        return reject(new UnauthorizedAuthError('No scope'))
       } catch (error) {
         console.error(error)
         return reject(new UnauthorizedAuthError(String(error)))
