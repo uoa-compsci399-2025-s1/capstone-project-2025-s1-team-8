@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
+import { NextRequest } from 'next/server'
 
 import { createMockNextPatchRequest, paramsToPromise } from '@/test-config/utils'
 import UserService from '@/data-layer/services/UserService'
@@ -9,7 +10,6 @@ import {
   clientCreateMock,
 } from '@/test-config/mocks/User.mock'
 import { GET, PATCH, DELETE } from '@/app/api/admin/users/[id]/route'
-import { NextRequest } from 'next/server'
 import { UserCombinedInfo } from '@/types/Collections'
 import { cookies } from 'next/headers'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'

@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes'
+import { NextRequest } from 'next/server'
 
 import { paramsToPromise } from '@/test-config/utils'
 import SemesterService from '@/data-layer/services/SemesterService'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 import { GET } from '@/app/api/semesters/[id]/route'
-import { NextRequest } from 'next/server'
 
 describe('/api/admin/semesters/[id]', () => {
   const semesterService = new SemesterService()
