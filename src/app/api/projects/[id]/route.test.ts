@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
-import {  paramsToPromise } from '@/test-config/utils'
+import { paramsToPromise } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET } from '@/app/api/projects/[id]/route'

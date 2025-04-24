@@ -14,10 +14,10 @@ let studentToken: string
 
 beforeEach(async () => {
   const authService = new AuthService()
+  process.env.JWT_SECRET = JWT_SECRET_MOCK
   adminToken = authService.generateJWT(adminMock, ACCESS_TOKEN_MOCK)
   clientToken = authService.generateJWT(clientMock, ACCESS_TOKEN_MOCK)
   studentToken = authService.generateJWT(studentMock, ACCESS_TOKEN_MOCK)
-  process.env.JWT_SECRET = JWT_SECRET_MOCK
 })
 
 afterEach(async () => {

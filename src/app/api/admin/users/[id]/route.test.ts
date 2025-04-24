@@ -1,9 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 
-import {
-  createMockNextPatchRequest,
-  paramsToPromise,
-} from '@/test-config/utils'
+import { createMockNextPatchRequest, paramsToPromise } from '@/test-config/utils'
 import UserService from '@/data-layer/services/UserService'
 import {
   adminCreateMock,

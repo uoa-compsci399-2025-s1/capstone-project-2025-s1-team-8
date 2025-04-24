@@ -1,8 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
-import {
-  createMockNextPostRequest,
-  createMockNextRequest,
-} from '@/test-config/utils'
+import { createMockNextPostRequest, createMockNextRequest } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock, projectCreateMock2 } from '@/test-config/mocks/Project.mock'
 import { GET, POST } from './route'
