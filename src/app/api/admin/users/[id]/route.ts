@@ -54,7 +54,6 @@ export const GET = RouteHandler.GET
 
 /**
  * Updates a single user by ID if the request is made by an admin
- * Admins cannot update users with the role of admin
  *
  * @param param0 The ID of the user to update
  * @returns The updated user
@@ -108,5 +107,33 @@ export const PATCH = async (
       { error: 'Internal Server Error' },
       { status: StatusCodes.INTERNAL_SERVER_ERROR },
     )
+  }
+}
+
+/**
+ * DELETE method to delete a user by Id.
+ *
+ * @param req The request object containing the request body
+ * @returns No content status code
+ */
+export const DELETE = async (
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) => {
+  try {
+    const { id } = await params
+    const userService = new UserService()
+    await userService.deleteUser(id)
+    return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
+  } catch (error) {
+    if (error instanceof NotFound) {
+      return NextResponse.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })
+    } else {
+      console.error(error)
+      return NextResponse.json(
+        { error: 'Internal server error' },
+        { status: StatusCodes.INTERNAL_SERVER_ERROR },
+      )
+    }
   }
 }
