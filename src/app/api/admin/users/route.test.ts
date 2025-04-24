@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 
-import { clearCollection, createMockNextRequest, testPayloadObject } from '@/test-config/utils'
+import { createMockNextRequest } from '@/test-config/utils'
 import { GET } from './route'
 import UserService from '@/data-layer/services/UserService'
 import {
@@ -11,10 +11,6 @@ import {
 
 describe('tests GET /api/admin/users', () => {
   const userService = new UserService()
-
-  afterEach(async () => {
-    await clearCollection(testPayloadObject, 'user')
-  })
 
   it('should get all users correctly', async () => {
     const newUser1 = await userService.createUser(clientCreateMock)

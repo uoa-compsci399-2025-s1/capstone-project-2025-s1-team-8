@@ -12,7 +12,7 @@ export default class AuthService {
   public generateJWT(user: User, accessToken: string): string {
     return jwt.sign(
       {
-        profile: user,
+        user,
         accessToken,
       },
       process.env.JWT_SECRET,
