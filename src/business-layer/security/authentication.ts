@@ -17,7 +17,6 @@ export async function payloadAuthentication(securityName: string, scopes?: strin
     return new Promise((resolve, reject) => {
       try {
         const token = cookieStore.get(AUTH_COOKIE_NAME)?.value
-        console.log(token)
         if (!token) return reject(new UnauthorizedAuthError('No token provided'))
         const authService = new AuthService()
         const decodedToken = authService.decodeJWT(token) as JWTResponse

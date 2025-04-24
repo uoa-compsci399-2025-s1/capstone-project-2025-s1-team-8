@@ -4,12 +4,6 @@ import { GET } from './route'
 import { createMockNextRequest, mockToken } from '@/test-config/utils'
 
 describe('/api/auth/logout', () => {
-  beforeEach(() => {
-    // Reset the mocks before each test to prevent cross-test contamination
-    vi.clearAllMocks();
-    vi.restoreAllMocks();
-  });
-
   it('should delete auth cookie', async () => {
     vi.mock("next/headers", () => ({
       cookies: vi.fn(() => ({
