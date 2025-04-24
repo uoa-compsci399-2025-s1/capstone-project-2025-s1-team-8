@@ -13,7 +13,7 @@ import { ProjectStatus } from '@/types/Project'
 export const GET = async (
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
-): Promise<NextResponse> => {
+) => {
   const { id } = await params
   const projectService = new ProjectService()
   const searchParams = req.nextUrl.searchParams
@@ -38,35 +38,6 @@ export const GET = async (
       { status: StatusCodes.BAD_REQUEST },
     )
   }
-  //console.log(status, published)
-
-  /*if (published !== null && status !== null) {
-    const { docs: projects, nextPage } =
-      await projectService.getSemesterProjectsByPublishedAndStatus(
-        id,
-        limit,
-        page,
-        JSON.parse(published),
-        status as ProjectStatus,
-      )
-    return NextResponse.json({ data: projects, nextPage })
-  } else if (published !== null) {
-    const { docs: projects, nextPage } = await projectService.getSemesterProjectsByPublished(
-      id,
-      JSON.parse(published),
-      limit,
-      page,
-    )
-    return NextResponse.json({ data: projects, nextPage })
-  } else if (status !== null) {
-    const { docs: projects, nextPage } = await projectService.getSemesterProjectsByStatus(
-      id,
-      status as ProjectStatus,
-      limit,
-      page,
-    )
-    return NextResponse.json({ data: projects, nextPage })
-  }*/
 
   const { docs: projects, nextPage } = await projectService.getSemesterProjectsByPublishedAndStatus(
     id,

@@ -11,7 +11,7 @@ import { ZodError } from 'zod'
  * @returns A JSON response containing the list of projects and the next page cursor.
  */
 
-export const GET = async (req: NextRequest): Promise<NextResponse> => {
+export const GET = async (req: NextRequest) => {
   const projectService = new ProjectService()
   const searchParams = req.nextUrl.searchParams
   const page = parseInt(searchParams.get('page') || '1')
@@ -31,7 +31,7 @@ export const GET = async (req: NextRequest): Promise<NextResponse> => {
  * @param req - The request object.
  * @returns A JSON response containing the created project.
  */
-export const POST = async (req: NextRequest): Promise<Response> => {
+export const POST = async (req: NextRequest) => {
   const projectService = new ProjectService()
 
   try {

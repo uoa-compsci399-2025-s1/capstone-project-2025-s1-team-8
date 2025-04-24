@@ -12,7 +12,7 @@ import { NotFound } from 'payload'
 export const GET = async (
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
-): Promise<Response> => {
+) => {
   const { id } = await params
   const projectService = new ProjectService()
 
