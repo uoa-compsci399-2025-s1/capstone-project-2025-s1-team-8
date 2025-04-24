@@ -2,6 +2,8 @@ import { StatusCodes } from 'http-status-codes'
 import { NextRequest, NextResponse } from 'next/server'
 import { NotFound } from 'payload'
 import { ZodError } from 'zod'
+import ProjectService from '@/data-layer/services/ProjectService'
+import { UpdateProjectRequestBody } from '@/types/request-models/ProjectRequests'
 
 /**
  * Fetches a project by its ID.
@@ -29,8 +31,6 @@ export const GET = async (
     )
   }
 }
-import ProjectService from '@/data-layer/services/ProjectService'
-import { UpdateProjectRequestBody } from '@/types/request-models/ProjectRequests'
 
 /**
  * Patches a project by its ID.
