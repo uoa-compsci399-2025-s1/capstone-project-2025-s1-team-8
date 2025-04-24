@@ -36,11 +36,7 @@ class RouteWrapper {
       }
       return NextResponse.json(user)
     } catch (error) {
-      if (
-        (error as Error).message === 'Value is not JSON serializable' ||
-        (error as Error).message === 'Not Found' ||
-        error === NotFound
-      ) {
+      if (error instanceof NotFound) {
         return NextResponse.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })
       }
       return NextResponse.json(
@@ -95,13 +91,13 @@ class RouteWrapper {
     } catch (error) {
       if (error instanceof NotFound) {
         return NextResponse.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })
-      }
-      if (error instanceof ZodError) {
+      } else if (error instanceof ZodError) {
         return NextResponse.json(
           { error: 'Invalid request body', details: error.flatten() },
           { status: StatusCodes.BAD_REQUEST },
         )
       }
+      console.error(error)
       return NextResponse.json(
         { error: 'Internal Server Error' },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
