@@ -4,10 +4,14 @@ import {
   testPayloadObject,
   createMockNextRequest,
   paramsToPromise,
+  createMockNextPostRequest,
 } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
-import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
-import { GET } from '@/app/api/semesters/[id]/projects/route'
+import {
+  semesterProjectCreateMock,
+  semesterProjectCreateMock2,
+} from '@/test-config/mocks/Project.mock'
+import { GET, POST } from '@/app/api/semesters/[id]/projects/route'
 import { semesterMock } from '@/test-config/mocks/Semester.mock'
 import { ProjectStatus } from '@/types/Project'
 
@@ -169,5 +173,29 @@ describe('test /api/semesters/[id]/projects', () => {
     expect(res.status).toBe(StatusCodes.OK)
     const data = await res.json()
     expect(data.data.length).toEqual(2)
+  })
+
+  it('should create a new semester project', async () => {
+    const res = await POST(
+      createMockNextPostRequest(
+        `api/semesters/${semesterMock.id}/projects`,
+        semesterProjectCreateMock2,
+      ),
+      { params: paramsToPromise({ id: semesterMock.id }) },
+    )
+    expect(res.status).toBe(StatusCodes.CREATED)
+    const data = await res.json()
+    expect(data.data).toEqual(await projectService.getSemesterProject(data.data.id))
+  })
+
+  it('Should fail to create a new semester project if body is invalid', async () => {
+    const res = await POST(
+      createMockNextPostRequest(`api/semesters/${semesterMock.id}/projects`, {
+        ...semesterProjectCreateMock2,
+        number: undefined,
+      }),
+      { params: paramsToPromise({ id: semesterMock.id }) },
+    )
+    expect(res.status).toBe(StatusCodes.BAD_REQUEST)
   })
 })

@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { StatusCodes } from 'http-status-codes'
 import { ProjectStatus } from '@/types/Project'
+import { ZodError } from 'zod'
+import { CreateSemesterProjectRequestBody } from '@/types/request-models/ProjectRequests'
+import { CreateSemesterProjectData } from '@/types/Collections'
 
 /**
  * Fetches all projects for a semester
@@ -45,4 +48,35 @@ export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: 
     },
   )
   return NextResponse.json({ data: projects, nextPage })
+}
+
+/**
+ * Creates a new project for a semester
+ * @param req - The request object.
+ * @param params - The parameters object containing the semester ID.
+ * @return A JSON response containing the created semester project.
+ */
+
+export const POST = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
+  const projectService = new ProjectService()
+  const { id } = await params
+
+  try {
+    const body = CreateSemesterProjectRequestBody.parse({ ...(await req.json()), semester: id })
+    const data = await projectService.createSemesterProject(body as CreateSemesterProjectData)
+    return NextResponse.json({ data }, { status: StatusCodes.CREATED })
+  } catch (error) {
+    console.error(error)
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { error: 'Invalid request body', details: error.flatten() },
+        { status: StatusCodes.BAD_REQUEST },
+      )
+    }
+    console.error(error)
+    return NextResponse.json(
+      { error: 'Bad request body' },
+      { status: StatusCodes.INTERNAL_SERVER_ERROR },
+    )
+  }
 }
