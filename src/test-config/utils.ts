@@ -46,7 +46,7 @@ export function mockToken(role: string = 'student') {
     case 'student':
       return STUDENT_JWT_MOCK
     default:
-      return "lol"
+      return 'lol'
   }
 }
 

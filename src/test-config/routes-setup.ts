@@ -43,7 +43,7 @@ beforeEach(async () => {
       set: vi.fn(),
       delete: vi.fn(),
     })),
-  }));
+  }))
 
   const authService = new AuthService()
   process.env.JWT_SECRET = JWT_SECRET_MOCK

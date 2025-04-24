@@ -5,12 +5,12 @@ import { createMockNextRequest, mockToken } from '@/test-config/utils'
 
 describe('/api/auth/logout', () => {
   it('should delete auth cookie', async () => {
-    vi.mock("next/headers", () => ({
+    vi.mock('next/headers', () => ({
       cookies: vi.fn(() => ({
-        get: vi.fn(()=>{
-          return{value:mockToken("client")}
+        get: vi.fn(() => {
+          return { value: mockToken('client') }
         }),
-        delete: vi.fn()
+        delete: vi.fn(),
       })),
     }))
     const req = createMockNextRequest('/api/auth/logout')
