@@ -22,7 +22,11 @@ export function payloadAuthentication(securityName: string, scopes?: string[]) {
         const authService = new AuthService()
         const decodedToken = authService.decodeJWT(token) as JWTResponse
         const { user } = decodedToken
-        if (!scopes?.includes(user.role)) return reject(new UnauthorizedAuthError('No scope'))
+        for (const scope of scopes || []) {
+          if (!(user.role.includes(scope))) {
+            return reject(new UnauthorizedAuthError('No scope'))
+          }
+        }
         return resolve(user)
       })
     })
