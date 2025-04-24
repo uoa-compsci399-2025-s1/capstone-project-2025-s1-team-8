@@ -305,28 +305,19 @@ describe('Project service methods test', () => {
       status: ProjectStatus.Accepted,
     })
 
-    const res = await projectService.getSemesterProjectsByPublishedAndStatus(
-      semester1.id,
-      100,
-      1,
-      {status: ProjectStatus.Accepted},
-    )
+    const res = await projectService.getSemesterProjectsByPublishedAndStatus(semester1.id, 100, 1, {
+      status: ProjectStatus.Accepted,
+    })
     expect(res.docs.length).toEqual(1)
     expect(res.nextPage).toBeNull()
-    const res2 = await projectService.getSemesterProjectsByPublishedAndStatus(
-      semester1.id,
-      2,
-      1,
-      {status: ProjectStatus.Accepted},
-    )
+    const res2 = await projectService.getSemesterProjectsByPublishedAndStatus(semester1.id, 2, 1, {
+      status: ProjectStatus.Accepted,
+    })
     expect(res2.docs.length).toEqual(1)
     expect(res2.nextPage).toBeNull()
-    const res3 = await projectService.getSemesterProjectsByPublishedAndStatus(
-      semester1.id,
-      2,
-      1,
-      {status: ProjectStatus.Rejected},
-    )
+    const res3 = await projectService.getSemesterProjectsByPublishedAndStatus(semester1.id, 2, 1, {
+      status: ProjectStatus.Rejected,
+    })
     expect(res3.docs.length).toEqual(1)
     expect(res3.nextPage).toBeNull()
   })
