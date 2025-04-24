@@ -17,7 +17,7 @@ class RouteWrapper {
    * @param _req the NextRequest obj
    * @returns The user data
    */
-  @Security("jwt", ["admin"])
+  @Security('jwt', ['admin'])
   static async GET(
     _req: NextRequest,
     {
@@ -53,7 +53,7 @@ class RouteWrapper {
    * @returns The updated user
    * @param _req
    */
-  @Security("jwt", ["admin"])
+  @Security('jwt', ['admin'])
   static async PATCH(
     _req: NextRequest,
     {
@@ -111,7 +111,7 @@ class RouteWrapper {
    * @param req The request object containing the request body
    * @returns No content status code
    */
-  @Security("jwt", ["admin"])
+  @Security('jwt', ['admin'])
   static async DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
       const { id } = await params

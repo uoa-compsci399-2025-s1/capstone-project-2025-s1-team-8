@@ -15,9 +15,9 @@ import { cookies } from 'next/headers'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
-describe('test /api/admin/users/[id]', async() => {
+describe('test /api/admin/users/[id]', async () => {
   const userService = new UserService()
-  const cookieStore = await cookies();
+  const cookieStore = await cookies()
 
   describe('test GET /api/admin/users/[id]', () => {
     it('should return a 401 if no auth cookie', async () => {
@@ -31,14 +31,14 @@ describe('test /api/admin/users/[id]', async() => {
     it('should return a 401 if the user is a student or client', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
       const res = await GET({} as NextRequest, {
-        params: paramsToPromise({ id: "test" }),
+        params: paramsToPromise({ id: 'test' }),
       })
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
       expect(await res.json()).toEqual({ error: 'No scope' })
 
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
       const res2 = await GET({} as NextRequest, {
-        params: paramsToPromise({ id: "test" }),
+        params: paramsToPromise({ id: 'test' }),
       })
       expect(res2.status).toBe(StatusCodes.UNAUTHORIZED)
       expect(await res2.json()).toEqual({ error: 'No scope' })
@@ -112,14 +112,14 @@ describe('test /api/admin/users/[id]', async() => {
     it('should return a 401 if the user is a student or client', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
       const res = await PATCH({} as NextRequest, {
-        params: paramsToPromise({ id: "eee" }),
+        params: paramsToPromise({ id: 'eee' }),
       })
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
       expect(await res.json()).toEqual({ error: 'No scope' })
 
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
       const res2 = await PATCH({} as NextRequest, {
-        params: paramsToPromise({ id: "eee" }),
+        params: paramsToPromise({ id: 'eee' }),
       })
       expect(res2.status).toBe(StatusCodes.UNAUTHORIZED)
       expect(await res2.json()).toEqual({ error: 'No scope' })
@@ -274,7 +274,7 @@ describe('test /api/admin/users/[id]', async() => {
   })
 
   describe('tests DELETE /api/admin/users/[id]', () => {
-    it("should return a 401 if the user is not authenticated", async () => {
+    it('should return a 401 if the user is not authenticated', async () => {
       const res = await DELETE({} as NextRequest, {
         params: paramsToPromise({ id: 'nonexistent' }),
       })
@@ -282,7 +282,7 @@ describe('test /api/admin/users/[id]', async() => {
       expect(await res.json()).toEqual({ error: 'No token provided' })
     })
 
-    it("should return a 401 if the user is a client or student", async () => {
+    it('should return a 401 if the user is a client or student', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
       const res = await DELETE({} as NextRequest, {
         params: paramsToPromise({ id: 'nonexistent' }),
