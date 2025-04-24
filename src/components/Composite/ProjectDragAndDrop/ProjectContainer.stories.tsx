@@ -4,25 +4,30 @@ import { DndContext } from '@dnd-kit/core'
 import { FilterProvider } from '@/contexts/FilterContext'
 import { mockProjects } from '@/mocks/Projects.mock'
 import { SortableKeys } from '@/components/Generic/Filter/ProjectFilterAssets'
+import { useState } from 'react'
 
 export default {
   title: 'Composite/ProjectContainer',
   component: ProjectContainer,
   decorators: [
-    (Story) => (
-      <DndContext>
-        <FilterProvider
-          value={{
-            selectedFilter: undefined,
-            setSelectedFilter: function (filter: SortableKeys): void {
-              throw new Error('Function not implemented.')
-            },
-          }}
-        >
-          <Story />
-        </FilterProvider>
-      </DndContext>
-    ),
+    (Story) => {
+      const [selectedFilter, setSelectedFilter] = useState<SortableKeys | undefined>(
+        'originalOrder',
+      )
+
+      return (
+        <DndContext>
+          <FilterProvider
+            value={{
+              selectedFilter: selectedFilter,
+              setSelectedFilter: setSelectedFilter,
+            }}
+          >
+            <Story />
+          </FilterProvider>
+        </DndContext>
+      )
+    },
   ],
 } as Meta
 
