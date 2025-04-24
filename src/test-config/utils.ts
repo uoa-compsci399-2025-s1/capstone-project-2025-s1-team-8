@@ -2,6 +2,7 @@
 import { NextRequest } from 'next/server'
 import { CollectionSlug, getPayload, Payload } from 'payload'
 import configPromise from '@payload-config'
+import { ADMIN_JWT_MOCK, CLIENT_JWT_MOCK, STUDENT_JWT_MOCK } from './mocks/Auth.mock'
 
 /**
  * Payload object to use in integration tests
@@ -34,6 +35,19 @@ export const clearCollection = async (payloadObject: Payload, collectionName: Co
       },
     },
   })
+}
+
+export function mockToken(role: string = 'student') {
+  switch (role) {
+    case 'admin':
+      return ADMIN_JWT_MOCK
+    case 'client':
+      return CLIENT_JWT_MOCK
+    case 'student':
+      return STUDENT_JWT_MOCK
+    default:
+      return "lol"
+  }
 }
 
 /**

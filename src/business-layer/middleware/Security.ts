@@ -24,7 +24,8 @@ export function Security(securityName: string, scopes?: string[]) {
 
         return await originalMethod.call(this, reqWithUser, context)
       } catch (err) {
-        // console.error(err)
+        console.error(err)
+        console.log("THIS SHOULD NOT RUN THE CODE")
         if (err instanceof UnauthorizedAuthError) {
           return NextResponse.json({ error: err.message }, { status: StatusCodes.UNAUTHORIZED })
         }

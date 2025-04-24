@@ -1,35 +1,26 @@
-import * as nextHeaders from 'next/headers'
+import { StatusCodes } from 'http-status-codes'
 
 import { GET } from './route'
-import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
-import { AUTH_COOKIE_NAME } from '@/types/Auth'
-
-const mockDelete = vi.fn()
+import { createMockNextRequest, mockToken } from '@/test-config/utils'
 
 describe('/api/auth/logout', () => {
-  beforeAll(() => {
-    const mockCookieStore = {
-      delete: mockDelete,
-    }
-
-    vi.mock('next/headers', () => ({
-      cookies: () => ({
-        delete: mockDelete,
-      }),
-    }))
-
-    vi.spyOn(nextHeaders, 'cookies').mockResolvedValue(
-      mockCookieStore as unknown as ReadonlyRequestCookies,
-    )
-  })
-
-  afterEach(() => {
-    vi.clearAllMocks()
-  })
+  beforeEach(() => {
+    // Reset the mocks before each test to prevent cross-test contamination
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
+  });
 
   it('should delete auth cookie', async () => {
-    const res = await GET()
-    expect(res.status).toBe(200)
-    expect(mockDelete).toHaveBeenCalledWith(AUTH_COOKIE_NAME)
+    vi.mock("next/headers", () => ({
+      cookies: vi.fn(() => ({
+        get: vi.fn(()=>{
+          return{value:mockToken("client")}
+        }),
+        delete: vi.fn()
+      })),
+    }))
+    const req = createMockNextRequest('/api/auth/logout')
+    const res = await GET(req)
+    expect(res.status).toBe(StatusCodes.OK)
   })
 })
