@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
-import { Security } from '@/business-layer/middleware/Security'
 import { StatusCodes } from 'http-status-codes'
+import { Security } from '@/business-layer/middleware/Security'
 
 class RouteWrapper {
   @Security('jwt', [])
