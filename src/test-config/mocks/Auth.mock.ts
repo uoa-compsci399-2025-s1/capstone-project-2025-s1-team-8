@@ -23,6 +23,8 @@ export const tokensMock = {
   id_token: ID_TOKEN_MOCK,
 }
 
+export const AUTH_COOKIE_MOCK = 'auth_cookie_mock'
+
 export const googleUserResponseMock: UserInfoResponse = {
   sub: '1234567890',
   name: 'jeffery ji',

@@ -1,5 +1,7 @@
 import z from 'zod'
 
+export const AUTH_COOKIE_NAME = 'auth_token'
+
 export const UserInfoResponseSchema = z.object({
   /**
    * The unique ID of a Google user
