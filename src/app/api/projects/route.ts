@@ -13,7 +13,7 @@ class RouteWrapper {
    * @param req - The request object.
    * @returns A JSON response containing the list of projects and the next page cursor.
    */
-  @Security("jwt", ['client', 'admin'])
+  @Security('jwt', ['client', 'admin'])
   static async GET(req: NextRequest) {
     const projectService = new ProjectService()
     const searchParams = req.nextUrl.searchParams
@@ -35,7 +35,7 @@ class RouteWrapper {
    * @param req - The request object.
    * @returns A JSON response containing the created project.
    */
-  @Security("jwt", ['client', 'admin'])
+  @Security('jwt', ['client', 'admin'])
   static async POST(req: NextRequest) {
     const projectService = new ProjectService()
 

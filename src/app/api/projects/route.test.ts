@@ -8,11 +8,11 @@ import { GET, POST } from './route'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
-describe('test /api/projects', async() => {
+describe('test /api/projects', async () => {
   const projectService = new ProjectService()
   const cookieStore = await cookies()
 
-  describe('GET /api/projects', ()=>{
+  describe('GET /api/projects', () => {
     it('should return a 401 if user is not authenticated', async () => {
       const res = await GET(createMockNextRequest('http://localhost:3000/api/projects'))
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
@@ -74,7 +74,7 @@ describe('test /api/projects', async() => {
     })
   })
 
-  describe('POST /api/projects', ()=>{
+  describe('POST /api/projects', () => {
     it('should return a 401 if user is not authenticated', async () => {
       const res = await POST(createMockNextRequest('http://localhost:3000/api/projects'))
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
