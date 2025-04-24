@@ -7,9 +7,9 @@ interface TextAreaProps {
 
 const GradientTextArea: React.FC<TextAreaProps> = ({ heading, text }) => {
   return (
-    <div>
-      <div className="absolute inset-0 flex justify-center items-center -z-10">
-        <div className="w-3/4 h-1/2 bg-muted-blue rounded-full blur-[200px]" />
+    <div className="relative w-full h-full min-h-[200px]">
+      <div className="absolute inset-0 flex justify-center items-center">
+        <div className="w-5/4 h-3/5 bg-muted-blue rounded-full blur-[80px]" />
       </div>
       <div className="absolute inset-0 flex justify-center items-center p-13">
         <div className="relative z-10 flex flex-col justify-center -mt-8">

@@ -12,11 +12,12 @@ export default meta
 type Story = StoryObj<typeof GradientTextArea>
 
 export const Default: Story = {
-  parameters: {
-    viewport: {
-      defaultViewport: 'responsive', // or your custom one
-    },
-    layout: 'fullscreen', // optional but nice
+  render: function RenderGradientText(args) {
+    return (
+      <div className="w-full min-h-[400px] relative p-8 bg-white flex items-center justify-center">
+        <GradientTextArea {...args} />
+      </div>
+    )
   },
   args: {
     heading: 'Tips for choosing a good project name:',
