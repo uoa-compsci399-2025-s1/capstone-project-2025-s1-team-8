@@ -62,5 +62,11 @@ export const Project: CollectionConfig = {
       type: 'date',
       required: true,
     },
+    {
+      name: 'formResponse',
+      type: 'relationship',
+      relationTo: 'formResponse',
+      required: true,
+    },
   ],
 }

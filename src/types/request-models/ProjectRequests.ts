@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { MediaSchema, UserSchema } from '../Payload'
+import { FormResponseSchema, MediaSchema, UserSchema } from '../Payload'
 
 export const UpdateProjectRequestBody = z.object({
   name: z.string().optional(),
@@ -42,4 +42,5 @@ export const CreateProjectRequestBody = z.object({
     z.array(UserSchema).nonempty('At least one client is required'),
   ]),
   attachments: z.array(MediaSchema).max(5).optional(),
+  formResponse: z.union([z.string(), FormResponseSchema]),
 })
