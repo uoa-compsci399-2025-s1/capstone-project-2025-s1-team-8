@@ -1,7 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
 import {
-  clearCollection,
-  testPayloadObject,
   createMockNextRequest,
   paramsToPromise,
 } from '@/test-config/utils'
@@ -11,10 +9,6 @@ import { GET } from '@/app/api/admin/users/[id]/projects/route'
 import { mockClient1 } from '@/test-config/mocks/User.mock'
 
 describe('test /api/admin/users/[id]/projects', () => {
-  afterEach(async () => {
-    await clearCollection(testPayloadObject, 'project')
-  })
-
   const projectService = new ProjectService()
 
   it('should get no projects if none are created', async () => {

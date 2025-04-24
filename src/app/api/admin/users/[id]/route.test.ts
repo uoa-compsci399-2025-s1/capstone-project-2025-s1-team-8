@@ -1,10 +1,8 @@
 import { StatusCodes } from 'http-status-codes'
 
 import {
-  clearCollection,
   createMockNextPatchRequest,
   paramsToPromise,
-  testPayloadObject,
 } from '@/test-config/utils'
 import UserService from '@/data-layer/services/UserService'
 import {
@@ -19,9 +17,6 @@ import { UserCombinedInfo } from '@/types/Collections'
 
 describe('test /api/admin/users/[id]', () => {
   const userService = new UserService()
-  afterEach(async () => {
-    await clearCollection(testPayloadObject, 'user')
-  })
 
   describe('test GET /api/admin/users/[id]', () => {
     it('fetch client by Id', async () => {

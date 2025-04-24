@@ -1,13 +1,9 @@
-import { clearCollection, testPayloadObject } from '@/test-config/utils'
+import { testPayloadObject } from '@/test-config/utils'
 import AuthService from './AuthService'
 import { authCreateMock } from '@/test-config/mocks/Auth.mock'
 
 describe('Project service methods test', () => {
   const authService = new AuthService()
-
-  afterEach(async () => {
-    await clearCollection(testPayloadObject, 'authentication')
-  })
 
   it('should create an auth', async () => {
     const newAuthentication = await authService.createAuth(authCreateMock)

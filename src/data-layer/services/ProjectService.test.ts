@@ -1,17 +1,12 @@
 import { clientCreateMock, mockClient1 } from '@/test-config/mocks/User.mock'
 import { projectMock, projectMock2, projectCreateMock } from '@/test-config/mocks/Project.mock'
-import { clearCollection, testPayloadObject } from '@/test-config/utils'
+import { testPayloadObject } from '@/test-config/utils'
 import ProjectService from './ProjectService'
 import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import UserService from './UserService'
 
 describe('Project service methods test', () => {
   const projectService = new ProjectService()
-
-  afterEach(async () => {
-    await clearCollection(testPayloadObject, 'project')
-    await clearCollection(testPayloadObject, 'semesterProject')
-  })
 
   it('should get all projects', async () => {
     const project1 = await projectService.createProject(projectMock)
