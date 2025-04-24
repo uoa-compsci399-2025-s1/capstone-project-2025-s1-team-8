@@ -2,20 +2,20 @@ import React, { createContext, useContext, useState } from 'react'
 import { SortableKeys } from '@/components/Generic/Filter/ProjectFilterAssets'
 
 type FilterContextType = {
-  selectedFilter: string
+  selectedFilter: string | undefined
   setSelectedFilter: (filter: SortableKeys) => void
 }
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined)
 
-export const FilterProvider = ({ children }: { children: React.ReactNode }) => {
-  const [selectedFilter, setSelectedFilter] = useState<SortableKeys>('submissionDate')
-
-  return (
-    <FilterContext.Provider value={{ selectedFilter, setSelectedFilter }}>
-      {children}
-    </FilterContext.Provider>
-  )
+export const FilterProvider = ({
+  children,
+  value,
+}: {
+  children: React.ReactNode
+  value: FilterContextType
+}) => {
+  return <FilterContext.Provider value={value}>{children}</FilterContext.Provider>
 }
 
 export const useFilter = () => {

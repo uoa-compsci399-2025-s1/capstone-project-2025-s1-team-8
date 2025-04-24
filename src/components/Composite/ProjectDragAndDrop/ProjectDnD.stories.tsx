@@ -8,7 +8,7 @@ const containers = [
     id: 'container-1' as UniqueIdentifier,
     title: 'Rejected',
     containerColor: 'light' as const,
-    items: [
+    currentItems: [
       {
         id: `item-1`,
         projectInfo: mockProjects1[0],
@@ -18,18 +18,21 @@ const containers = [
         projectInfo: mockProjects1[1],
       },
     ],
+    originalItems: [],
   },
   {
     id: 'container-2' as UniqueIdentifier,
     title: 'Pending',
     containerColor: 'medium' as const,
-    items: [],
+    currentItems: [],
+    originalItems: [],
   },
   {
     id: 'container-3' as UniqueIdentifier,
     title: 'Accepted',
     containerColor: 'dark' as const,
-    items: [],
+    currentItems: [],
+    originalItems: [],
   },
 ]
 

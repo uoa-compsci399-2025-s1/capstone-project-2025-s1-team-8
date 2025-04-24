@@ -11,7 +11,7 @@ export interface ProjectContainerType {
   id: UniqueIdentifier
   containerName?: string
   projects: ProjectCardType[]
-  onChange?: (val: string) => void
+  onChange?: (val?: string) => void
   containerColor: 'light' | 'medium' | 'dark'
 }
 

@@ -27,7 +27,8 @@ type DNDType = {
   id: UniqueIdentifier
   title: string
   containerColor: 'light' | 'medium' | 'dark'
-  items: ProjectCardType[]
+  currentItems: ProjectCardType[]
+  originalItems: ProjectCardType[]
 }
 
 type DndComponentProps = {
@@ -52,38 +53,68 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
   const [containers, setContainers] = useState<DNDType[]>(presetContainers.presetContainers)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
 
+  //TODO: onlick of save changes button, send all container originalItems (and their order) to the backend.
+  //TODO: make wrapper container fetch the current ordering of items from the backend and display as the presetContainers
+  //TODO: when items are moved around, remove the active filter styles
+
+  const [containerFilters, setContainerFilters] = useState<Record<string, string | undefined>>(() =>
+    Object.fromEntries(containers.map((c) => [c.id, 'originalOrder'])),
+  )
+
+  const handleFilterChange = (containerId: UniqueIdentifier, newFilter?: string) => {
+    setContainerFilters((prev) => ({
+      ...prev,
+      [containerId]: newFilter, // `undefined` clears it
+    }))
+
+    if (newFilter) {
+      sortProjects(containerId, newFilter)
+    }
+  }
+
   function sortProjects(containerId: UniqueIdentifier, filter: string): void {
+    console.log('sorting')
     setContainers((prevContainers) => {
       return prevContainers.map((container) => {
         if (container.id !== containerId) return container
 
-        const sortedItems = [...container.items]
-
         switch (filter) {
           case 'projectName':
-            sortedItems.sort((a, b) =>
-              a.projectInfo.projectName.localeCompare(b.projectInfo.projectName),
-            )
-            break
           case 'clientName':
-            sortedItems.sort((a, b) =>
-              a.projectInfo.client.name.localeCompare(b.projectInfo.client.name),
-            )
-            break
           case 'submissionDate':
-            sortedItems.sort(
-              (a, b) =>
-                new Date(a.projectInfo.submissionDate).getTime() -
-                new Date(b.projectInfo.submissionDate).getTime(),
-            )
-            break
-          default:
-            return container // return unchanged if unknown filter
-        }
+            const sorted = [...container.currentItems]
+            if (filter === 'projectName') {
+              console.log('projectName')
+              sorted.sort((a, b) =>
+                a.projectInfo.projectName.localeCompare(b.projectInfo.projectName),
+              )
+            } else if (filter === 'clientName') {
+              console.log('clientName')
+              sorted.sort((a, b) =>
+                a.projectInfo.client.name.localeCompare(b.projectInfo.client.name),
+              )
+            } else if (filter === 'submissionDate') {
+              console.log('submissionDate')
+              sorted.sort(
+                (a, b) =>
+                  new Date(a.projectInfo.submissionDate).getTime() -
+                  new Date(b.projectInfo.submissionDate).getTime(),
+              )
+            }
 
-        return {
-          ...container,
-          items: sortedItems,
+            return {
+              ...container,
+              currentItems: sorted,
+            }
+
+          case 'originalOrder':
+            return {
+              ...container,
+              currentItems: [...container.originalItems],
+            }
+
+          default:
+            return container
         }
       })
     })
@@ -95,7 +126,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       return containers.find((item) => item.id === id)
     }
     if (type === 'item') {
-      return containers.find((container) => container.items.find((item) => item.id === id))
+      return containers.find((container) => container.currentItems.find((item) => item.id === id))
     }
   }
 
@@ -105,7 +136,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
     const container = findValueOfItems(id, 'item')
     if (!container) return defaultProjectInfo
 
-    const item = container.items.find((item) => item.id === id)
+    const item = container.currentItems.find((item) => item.id === id)
     if (!item || !item.projectInfo) return defaultProjectInfo
 
     return item.projectInfo
@@ -152,13 +183,15 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       )
 
       // Find the index of the active and over item
-      const activeItemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
-      const overItemIndex = overContainer.items.findIndex((item) => item.id === over.id)
+      const activeItemIndex = activeContainer.currentItems.findIndex(
+        (item) => item.id === active.id,
+      )
+      const overItemIndex = overContainer.currentItems.findIndex((item) => item.id === over.id)
       // In the same container
       if (activeContainerIndex === overContainerIndex) {
         const newItems = [...containers]
-        newItems[activeContainerIndex].items = arrayMove(
-          newItems[activeContainerIndex].items,
+        newItems[activeContainerIndex].currentItems = arrayMove(
+          newItems[activeContainerIndex].currentItems,
           activeItemIndex,
           overItemIndex,
         )
@@ -167,8 +200,20 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       } else {
         // In different containers
         const newItems = [...containers]
-        const [removeditem] = newItems[activeContainerIndex].items.splice(activeItemIndex, 1)
-        newItems[overContainerIndex].items.splice(overItemIndex, 0, removeditem)
+        const [removeditem] = newItems[activeContainerIndex].currentItems.splice(activeItemIndex, 1)
+        newItems[overContainerIndex].currentItems.splice(overItemIndex, 0, removeditem)
+
+        // Handle moving in originalItems array
+        const activeItemIndexOriginal = activeContainer.originalItems.findIndex(
+          (item) => item.id === active.id,
+        )
+        const [removedItemOriginal] = newItems[activeContainerIndex].originalItems.splice(
+          activeItemIndexOriginal,
+          1,
+        )
+        newItems[overContainerIndex].originalItems.unshift(removedItemOriginal)
+
+        // handleFilterChange(activeContainerIndex)
         setContainers(newItems)
       }
     }
@@ -197,37 +242,31 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       )
 
       // Find the index of the active and over item
-      const activeItemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
+      const activeItemIndex = activeContainer.currentItems.findIndex(
+        (item) => item.id === active.id,
+      )
 
       // Remove the active item from the active container and add it to the over container
       const newItems = [...containers]
-      const [removeditem] = newItems[activeContainerIndex].items.splice(activeItemIndex, 1)
-      newItems[overContainerIndex].items.push(removeditem)
+      const [removeditem] = newItems[activeContainerIndex].currentItems.splice(activeItemIndex, 1)
+      newItems[overContainerIndex].currentItems.push(removeditem)
+      if (activeContainer != overContainer) {
+        const activeItemIndexOriginal = activeContainer.originalItems.findIndex(
+          (item) => item.id === active.id,
+        )
+        const [removedItemOriginal] = newItems[activeContainerIndex].originalItems.splice(
+          activeItemIndexOriginal,
+          1,
+        )
+        newItems[overContainerIndex].originalItems.unshift(removedItemOriginal)
+      }
       setContainers(newItems)
     }
   }
 
-  // This is the function that handles the sorting of the containers and items when the user is done dragging.
+  // This is the function that handles the sorting of items when the user is done dragging.
   function handleDragEnd(event: DragEndEvent) {
-    //TODO: pass new status to backend and at same time, update backend with approval list ordering
     const { active, over } = event
-
-    // Handling Container Sorting
-    if (
-      active.id.toString().includes('container') &&
-      over?.id.toString().includes('container') &&
-      active &&
-      over &&
-      active.id !== over.id
-    ) {
-      // Find the index of the active and over container
-      const activeContainerIndex = containers.findIndex((container) => container.id === active.id)
-      const overContainerIndex = containers.findIndex((container) => container.id === over.id)
-      // Swap the active and over container
-      let newItems = [...containers]
-      newItems = arrayMove(newItems, activeContainerIndex, overContainerIndex)
-      setContainers(newItems)
-    }
 
     // Handling item Sorting
     if (
@@ -251,14 +290,16 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
         (container) => container.id === overContainer.id,
       )
       // Find the index of the active and over item
-      const activeItemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
-      const overItemIndex = overContainer.items.findIndex((item) => item.id === over.id)
+      const activeItemIndex = activeContainer.currentItems.findIndex(
+        (item) => item.id === active.id,
+      )
+      const overItemIndex = overContainer.currentItems.findIndex((item) => item.id === over.id)
 
       // In the same container
       if (activeContainerIndex === overContainerIndex) {
         const newItems = [...containers]
-        newItems[activeContainerIndex].items = arrayMove(
-          newItems[activeContainerIndex].items,
+        newItems[activeContainerIndex].currentItems = arrayMove(
+          newItems[activeContainerIndex].currentItems,
           activeItemIndex,
           overItemIndex,
         )
@@ -266,12 +307,24 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       } else {
         // In different containers
         const newItems = [...containers]
-        const [removeditem] = newItems[activeContainerIndex].items.splice(activeItemIndex, 1)
-        newItems[overContainerIndex].items.splice(overItemIndex, 0, removeditem)
+        const [removeditem] = newItems[activeContainerIndex].currentItems.splice(activeItemIndex, 1)
+        newItems[overContainerIndex].currentItems.splice(overItemIndex, 0, removeditem)
+        // Handle the changing of the original containers
+
+        const activeItemIndexOriginal = activeContainer.originalItems.findIndex(
+          (item) => item.id === active.id,
+        )
+        const [removedItemOriginal] = newItems[activeContainerIndex].originalItems.splice(
+          activeItemIndexOriginal,
+          1,
+        )
+        newItems[overContainerIndex].originalItems.unshift(removedItemOriginal)
+
         setContainers(newItems)
       }
     }
     // Handling item dropping into Container
+    // TODO: if item is being moved between containers, then update the original order
     if (
       active.id.toString().includes('item') &&
       over?.id.toString().includes('container') &&
@@ -293,11 +346,25 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
         (container) => container.id === overContainer.id,
       )
       // Find the index of the active and over item
-      const activeItemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
+      const activeItemIndex = activeContainer.currentItems.findIndex(
+        (item) => item.id === active.id,
+      )
 
       const newItems = [...containers]
-      const [removeditem] = newItems[activeContainerIndex].items.splice(activeItemIndex, 1)
-      newItems[overContainerIndex].items.push(removeditem)
+      const [removeditem] = newItems[activeContainerIndex].currentItems.splice(activeItemIndex, 1)
+      newItems[overContainerIndex].currentItems.push(removeditem)
+
+      // Handle the changing of the original containers
+      if (activeContainer != overContainer) {
+        const activeItemIndexOriginal = activeContainer.originalItems.findIndex(
+          (item) => item.id === active.id,
+        )
+        const [removedItemOriginal] = newItems[activeContainerIndex].originalItems.splice(
+          activeItemIndexOriginal,
+          1,
+        )
+        newItems[overContainerIndex].originalItems.unshift(removedItemOriginal)
+      }
       setContainers(newItems)
     }
     setActiveId(null)
@@ -314,14 +381,18 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
           onDragEnd={handleDragEnd}
         >
           {containers.map((container) => (
-            <FilterProvider key={container.id}>
+            <FilterProvider
+              key={container.id}
+              value={{
+                selectedFilter: containerFilters[container.id],
+                setSelectedFilter: (newFilter) => handleFilterChange(container.id, newFilter),
+              }}
+            >
               <ProjectContainer
                 id={container.id}
                 containerName={container.title}
-                projects={container.items}
-                onChange={(newFilter) => {
-                  sortProjects(container.id, newFilter)
-                }}
+                projects={container.currentItems}
+                onChange={(newFilter) => handleFilterChange(container.id, newFilter)}
                 containerColor={container.containerColor}
               />
             </FilterProvider>
