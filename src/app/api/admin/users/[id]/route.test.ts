@@ -299,13 +299,13 @@ describe('test /api/admin/users/[id]', async() => {
     })
 
     it('should delete a user', async () => {
-      const newSemester = await userService.createUser(clientCreateMock)
+      const newUser = await userService.createUser(clientCreateMock)
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await DELETE({} as NextRequest, {
-        params: paramsToPromise({ id: newSemester.id }),
+        params: paramsToPromise({ id: newUser.id }),
       })
       expect(res.status).toBe(StatusCodes.NO_CONTENT)
-      await expect(userService.getUser(newSemester.id)).rejects.toThrow('Not Found')
+      await expect(userService.getUser(newUser.id)).rejects.toThrow('Not Found')
     })
 
     it('should return a 404 error if the user does not exist', async () => {
