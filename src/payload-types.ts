@@ -242,6 +242,36 @@ export interface Project {
   attachments?: (string | Media)[] | null;
   deadline?: string | null;
   timestamp: string;
+  formResponse: string | FormResponse;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "formResponse".
+ */
+export interface FormResponse {
+  id: string;
+  name: string;
+  description: string;
+  clients?: (string | User)[] | null;
+  questionResponses?:
+    | {
+        question: string | FormQuestion;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "formQuestion".
+ */
+export interface FormQuestion {
+  id: string;
+  question: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -273,35 +303,6 @@ export interface Semester {
   deadline: string;
   startDate: string;
   endDate: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "formQuestion".
- */
-export interface FormQuestion {
-  id: string;
-  question: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "formResponse".
- */
-export interface FormResponse {
-  id: string;
-  name: string;
-  description: string;
-  clients?: (string | User)[] | null;
-  questionResponses?:
-    | {
-        question: string | FormQuestion;
-        answer: string;
-        id?: string | null;
-      }[]
-    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -483,6 +484,7 @@ export interface ProjectSelect<T extends boolean = true> {
   attachments?: T;
   deadline?: T;
   timestamp?: T;
+  formResponse?: T;
   updatedAt?: T;
   createdAt?: T;
 }
