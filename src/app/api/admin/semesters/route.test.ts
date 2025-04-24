@@ -8,9 +8,9 @@ import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
-describe('tests /api/admin/semesters', async() => {
+describe('tests /api/admin/semesters', async () => {
   const semesterService = new SemesterService()
-  const cookieStore = await cookies();
+  const cookieStore = await cookies()
   describe('POST /api/admin/semesters', () => {
     it('should return a 401 Unauthorized error if not authenticated', async () => {
       const res = await POST(createMockNextPostRequest('', semesterCreateMock))

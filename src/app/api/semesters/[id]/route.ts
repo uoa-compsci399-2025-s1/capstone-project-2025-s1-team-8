@@ -11,7 +11,7 @@ class RouteWrapper {
    * @param param0 The ID of the semester to fetch
    * @returns The semester data
    */
-  @Security("jwt", [])
+  @Security('jwt', [])
   static async GET(
     _req: NextRequest,
     {
@@ -19,7 +19,7 @@ class RouteWrapper {
     }: {
       params: Promise<{ id: string }>
     },
-  ){
+  ) {
     const { id } = await params
     const semesterService = new SemesterService()
     try {

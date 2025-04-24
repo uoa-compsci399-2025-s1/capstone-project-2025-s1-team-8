@@ -9,7 +9,7 @@ import { PATCH, DELETE } from './route'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
-describe('tests /api/admin/semesters/[id]', async() => {
+describe('tests /api/admin/semesters/[id]', async () => {
   const semesterService = new SemesterService()
   const cookieStore = await cookies()
 
@@ -17,19 +17,21 @@ describe('tests /api/admin/semesters/[id]', async() => {
     it('should 401 if no user is authenticated', async () => {
       const res = await PATCH({} as NextRequest, { params: paramsToPromise({ id: 'nonexistent' }) })
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
-      expect((await res.json())).toEqual({ error: 'No token provided' })
+      expect(await res.json()).toEqual({ error: 'No token provided' })
     })
 
     it('should 401 if the user is a student or client', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
       const res = await PATCH({} as NextRequest, { params: paramsToPromise({ id: 'nonexistent' }) })
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
-      expect((await res.json())).toEqual({ error: 'No scope' })
+      expect(await res.json()).toEqual({ error: 'No scope' })
 
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
-      const res2 = await PATCH({} as NextRequest, { params: paramsToPromise({ id: 'nonexistent' }) })
+      const res2 = await PATCH({} as NextRequest, {
+        params: paramsToPromise({ id: 'nonexistent' }),
+      })
       expect(res2.status).toBe(StatusCodes.UNAUTHORIZED)
-      expect((await res2.json())).toEqual({ error: 'No scope' })
+      expect(await res2.json()).toEqual({ error: 'No scope' })
     })
 
     it('should update a semester correctly', async () => {
@@ -74,21 +76,27 @@ describe('tests /api/admin/semesters/[id]', async() => {
 
   describe('DELETE /api/admin/semesters/[id]', () => {
     it('should 401 if no user is authenticated', async () => {
-      const res = await DELETE({} as NextRequest, { params: paramsToPromise({ id: 'nonexistent' }) })
+      const res = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: 'nonexistent' }),
+      })
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
-      expect((await res.json())).toEqual({ error: 'No token provided' })
+      expect(await res.json()).toEqual({ error: 'No token provided' })
     })
 
     it('should 401 if the user is a student or client', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      const res = await DELETE({} as NextRequest, { params: paramsToPromise({ id: 'nonexistent' }) })
+      const res = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: 'nonexistent' }),
+      })
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
-      expect((await res.json())).toEqual({ error: 'No scope' })
+      expect(await res.json()).toEqual({ error: 'No scope' })
 
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
-      const res2 = await DELETE({} as NextRequest, { params: paramsToPromise({ id: 'nonexistent' }) })
+      const res2 = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: 'nonexistent' }),
+      })
       expect(res2.status).toBe(StatusCodes.UNAUTHORIZED)
-      expect((await res2.json())).toEqual({ error: 'No scope' })
+      expect(await res2.json()).toEqual({ error: 'No scope' })
     })
 
     it('should delete a semester', async () => {

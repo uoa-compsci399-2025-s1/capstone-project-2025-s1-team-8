@@ -8,7 +8,7 @@ import { semesterCreateMock, semesterCreateMock2 } from '@/test-config/mocks/Sem
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
-describe('tests /api/semesters', async() => {
+describe('tests /api/semesters', async () => {
   const semesterService = new SemesterService()
   const cookieStore = await cookies()
 

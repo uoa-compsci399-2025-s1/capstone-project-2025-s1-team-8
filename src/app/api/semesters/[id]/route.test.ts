@@ -9,7 +9,7 @@ import { GET } from '@/app/api/semesters/[id]/route'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { clientToken, studentToken } from '@/test-config/routes-setup'
 
-describe('/api/admin/semesters/[id]', async() => {
+describe('/api/admin/semesters/[id]', async () => {
   const semesterService = new SemesterService()
   const cookieStore = await cookies()
 

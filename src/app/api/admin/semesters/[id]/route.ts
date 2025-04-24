@@ -15,7 +15,7 @@ class RouteWrapper {
    * @param param1 The route parameters containing the semester ID
    * @returns The updated semester object
    */
-   @Security("jwt", ['admin'])
+  @Security('jwt', ['admin'])
   static async PATCH(
     req: NextRequest,
     {
@@ -23,7 +23,7 @@ class RouteWrapper {
     }: {
       params: Promise<{ id: string }>
     },
-  ){
+  ) {
     const { id } = await params
     const semesterService = new SemesterService()
     try {
@@ -54,11 +54,8 @@ class RouteWrapper {
    * @param req The request object containing the request body
    * @returns No content status code
    */
-  @Security("jwt", ['admin'])
-  static async DELETE(
-    _req: NextRequest,
-    { params }: { params: Promise<{ id: string }> },
-  ) {
+  @Security('jwt', ['admin'])
+  static async DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
       const { id } = await params
       const semesterService = new SemesterService()
@@ -78,4 +75,5 @@ class RouteWrapper {
   }
 }
 
-export const PATCH = RouteWrapper.PATCH, DELETE = RouteWrapper.DELETE
+export const PATCH = RouteWrapper.PATCH,
+  DELETE = RouteWrapper.DELETE
