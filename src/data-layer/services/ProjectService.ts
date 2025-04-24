@@ -171,31 +171,6 @@ export default class ProjectService {
   }
 
   /**
-   * Retrieves all semesterProjects for a specific semester
-   *
-   * @param semesterId The ID of the semester to retrieve projects for
-   * @returns An array of semesterProjects for the specified semester
-   */
-  public async getSemesterProjectsBySemesterId(
-    semesterId: string,
-    limit: number = 100,
-    page: number = 1,
-  ): Promise<PaginatedDocs<SemesterProject>> {
-    const semesterProjects = await payload.find({
-      collection: 'semesterProject',
-      where: {
-        semester: {
-          equals: semesterId,
-        },
-      },
-      limit,
-      pagination: true,
-      page,
-    })
-    return semesterProjects
-  }
-
-  /**
    * Updates a semesterProject.
    *
    * @param id The semesterProject ID
@@ -224,51 +199,6 @@ export default class ProjectService {
       collection: 'semesterProject',
       id: id,
     })
-  }
-
-  public async getSemesterProjectsByStatus(
-    id: string,
-    status: ProjectStatus,
-    limit: number = 100,
-    page: number = 1,
-  ): Promise<PaginatedDocs<SemesterProject>> {
-    const semesterProjects = await payload.find({
-      collection: 'semesterProject',
-      where: {
-        status: {
-          equals: status,
-        },
-        semester: {
-          equals: id,
-        },
-      },
-      limit,
-      pagination: true,
-      page,
-    })
-    return semesterProjects
-  }
-  public async getSemesterProjectsByPublished(
-    id: string,
-    published: boolean,
-    limit: number = 100,
-    page: number = 1,
-  ): Promise<PaginatedDocs<SemesterProject>> {
-    const semesterProjects = await payload.find({
-      collection: 'semesterProject',
-      where: {
-        published: {
-          equals: published,
-        },
-        semester: {
-          equals: id,
-        },
-      },
-      limit,
-      pagination: true,
-      page,
-    })
-    return semesterProjects
   }
 
   public async getSemesterProjectsByPublishedAndStatus(
