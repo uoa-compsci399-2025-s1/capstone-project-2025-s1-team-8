@@ -6,6 +6,8 @@ import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProj
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { useFilter } from '@/contexts/FilterContext'
 import { UniqueIdentifier } from '@dnd-kit/core'
+import { PlaceholderProjectDetailsType } from '@/types/Project'
+import ProjectModal from '../ProjectModal/ProjectModal'
 
 export interface ProjectContainerType {
   id: UniqueIdentifier
@@ -22,7 +24,7 @@ const ProjectContainer = ({
   onChange,
   containerColor,
 }: ProjectContainerType) => {
-  const { attributes, setNodeRef, listeners, transform, isDragging } = useSortable({
+  const { attributes, setNodeRef, transform, isDragging } = useSortable({
     id: id,
     data: {
       type: 'container',
@@ -33,6 +35,7 @@ const ProjectContainer = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState<number | undefined>()
   const { selectedFilter } = useFilter()
+  const [openProject, setOpenProject] = useState<PlaceholderProjectDetailsType | null>(null)
 
   useEffect(() => {
     onChange?.(selectedFilter)
@@ -97,15 +100,29 @@ const ProjectContainer = ({
         <div className={`w-full h-1 ${dividerColor} rounded-lg`}></div>
       </div>
 
-      <div ref={contentRef} className="flex items-center justify-between mx-5 mb-4" {...listeners}>
+      <div ref={contentRef} className="flex items-center justify-between mx-5 mb-4">
         <SortableContext items={projects.map((i) => i.id)}>
           <div className="flex items-start flex-col gap-y-4 w-full">
             {projects.map((i) => (
-              <DraggableProjectCard key={i.id} id={i.id} projectInfo={i.projectInfo} />
+              <DraggableProjectCard
+                key={i.id}
+                id={i.id}
+                projectInfo={i.projectInfo}
+                onClick={() => setOpenProject(i.projectInfo)}
+              />
             ))}
           </div>
         </SortableContext>
       </div>
+      {openProject && (
+        <ProjectModal
+          open={!!openProject}
+          onClose={() => setOpenProject(null)}
+          projectInfo={openProject}
+        >
+          Open Project
+        </ProjectModal>
+      )}
     </div>
   )
 }
