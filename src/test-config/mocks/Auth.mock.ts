@@ -97,7 +97,7 @@ export const studentMock: User = {
   id: STUDENT_USER_UID,
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
-  role: UserRole.Client,
+  role: UserRole.Student,
   firstName: 'Student',
   lastName: '1',
   email: 'student123@gmail.com',

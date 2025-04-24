@@ -4,14 +4,14 @@ import { StatusCodes } from 'http-status-codes'
 import { UserCombinedInfo } from '@/types/Collections'
 
 type RouteHandlerContext = {
-  params: Promise<Record<string, string>> // Expect params to be a promise of a record with string keys/values
+  params: Promise<Record<string, string>>
 }
 
 export function Security(securityName: string, scopes?: string[]) {
   return function (
     // eslint-disable-next-line
-    target: any,
-    propertyKey: string | symbol,
+    _target: any,
+    _propertyKey: string | symbol,
     descriptor: PropertyDescriptor,
   ) {
     const originalMethod = descriptor.value
@@ -20,7 +20,9 @@ export function Security(securityName: string, scopes?: string[]) {
       try {
         const user = await payloadAuthentication(securityName, scopes)
 
-        const reqWithUser = { ...req, user } as NextRequest & { user: UserCombinedInfo }
+        const reqWithUser = Object.assign(Object.create(Object.getPrototypeOf(req)), req, {
+          user,
+        }) as NextRequest & { user: UserCombinedInfo }
 
         return await originalMethod.call(this, reqWithUser, context)
       } catch (err) {

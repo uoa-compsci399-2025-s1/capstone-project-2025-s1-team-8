@@ -6,14 +6,20 @@ import { ACCESS_TOKEN_MOCK, CLIENT_JWT_MOCK, clientMock } from '@/test-config/mo
 describe('Auth service tests', () => {
   const authService = new AuthService()
 
-  vi.mock('jsonwebtoken', () => ({
-    default: {
-      verify: vi.fn().mockImplementation((token) => {
-        if (token === CLIENT_JWT_MOCK) return { user: clientMock, accessToken: ACCESS_TOKEN_MOCK }
-        return null
-      }),
-    },
-  }))
+  beforeEach(() => {
+    vi.mock('jsonwebtoken', () => ({
+      default: {
+        verify: vi.fn().mockImplementation((token) => {
+          if (token === CLIENT_JWT_MOCK) return { user: clientMock, accessToken: ACCESS_TOKEN_MOCK }
+          return null
+        }),
+      },
+    }))
+  })
+
+  afterEach(() => {
+    vi.clearAllMocks()
+  })
 
   it('should generate a JWT token for the given user and access token', () => {
     const token = authService.generateJWT(clientMock, ACCESS_TOKEN_MOCK)

@@ -15,6 +15,8 @@ let adminToken: string
 let clientToken: string
 let studentToken: string
 
+let cookies: Record<string, string> = {}
+
 beforeEach(async () => {
   // Need to mock the auth service decode for it to decode the correct mocks
   vi.mock('@/business-layer/services/AuthService', () => {
@@ -39,9 +41,15 @@ beforeEach(async () => {
 
   vi.mock('next/headers', () => ({
     cookies: vi.fn(() => ({
-      get: vi.fn(),
-      set: vi.fn(),
-      delete: vi.fn(),
+      set: (key: string, value: string) => {
+        cookies[key] = value
+      },
+      get: (key: string) => {
+        return { value: cookies[key] }
+      },
+      delete: (key: string) => {
+        delete cookies[key]
+      },
     })),
   }))
 
@@ -62,7 +70,7 @@ afterEach(async () => {
   await clearCollection(testPayloadObject, 'project')
   await clearCollection(testPayloadObject, 'formQuestion')
   await clearCollection(testPayloadObject, 'formResponse')
-  vi.clearAllMocks()
+  cookies = {}
 })
 
 export { adminToken, clientToken, studentToken }
