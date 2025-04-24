@@ -6,21 +6,7 @@ import {
   JWT_SECRET_MOCK,
   studentMock,
 } from './mocks/Auth.mock'
-import { User } from '@/payload-types'
 import AuthService from '@/business-layer/services/AuthService'
-
-const usersToCreate: User[] = [adminMock, clientMock, studentMock]
-
-const createUsers = async () => {
-  await Promise.all(
-    usersToCreate.map(async (user) => {
-      testPayloadObject.create({
-        collection: 'user',
-        data: user,
-      })
-    }),
-  )
-}
 
 let adminToken: string
 let clientToken: string
@@ -28,7 +14,6 @@ let studentToken: string
 
 beforeEach(async () => {
   const authService = new AuthService()
-  await createUsers()
   adminToken = authService.generateJWT(adminMock, ACCESS_TOKEN_MOCK)
   clientToken = authService.generateJWT(clientMock, ACCESS_TOKEN_MOCK)
   studentToken = authService.generateJWT(studentMock, ACCESS_TOKEN_MOCK)
