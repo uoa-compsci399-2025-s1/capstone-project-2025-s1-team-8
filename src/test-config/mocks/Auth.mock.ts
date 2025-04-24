@@ -71,7 +71,7 @@ export const adminMock: User = {
   id: ADMIN_USER_UID,
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
-  role: UserRole.Client,
+  role: UserRole.Admin,
   firstName: 'Admin',
   lastName: '1',
   email: 'admin123@gmail.com',

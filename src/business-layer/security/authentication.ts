@@ -1,6 +1,8 @@
 import { cookies } from 'next/headers'
+
 import AuthService from '../services/AuthService'
 import { JWTResponse } from '@/types/Middleware'
+import { AUTH_COOKIE_NAME } from '@/types/Auth'
 
 export class UnauthorizedAuthError extends Error {
   constructor(message: string) {
@@ -13,7 +15,7 @@ export function payloadAuthentication(securityName: string, scopes?: string[]) {
   if (securityName === 'jwt') {
     return new Promise((resolve, reject) => {
       cookies().then((cookies) => {
-        const token = cookies.get('auth_token')?.value
+        const token = cookies.get(AUTH_COOKIE_NAME)?.value
         if (!token) {
           return reject(new UnauthorizedAuthError('No token provided'))
         }
