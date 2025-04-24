@@ -9,24 +9,23 @@ import { clientMock } from '@/test-config/mocks/Auth.mock'
 describe('tests /api/projects/[id]', () => {
   const projectService = new ProjectService()
 
-  beforeEach(()=>{
-    vi.mock('next/headers', () => ({
-      cookies: vi.fn(() => ({
-        get: vi.fn(() => {
-          return { value: mockToken('client') }
-        }),
-        delete: vi.fn(),
-      })),
-    }))
-  })
   afterEach(()=>{
     vi.restoreAllMocks()
     vi.clearAllMocks()
     vi.resetAllMocks()
+    vi.resetModules()
   })
 
   describe('GET /api/projects/[id]', () => {
     it('should get a project correctly', async () => {
+      vi.mock('next/headers', () => ({
+        cookies: vi.fn(() => ({
+          get: vi.fn(() => {
+            return { value: mockToken('client') }
+          }),
+          delete: vi.fn(),
+        })),
+      }))
       const project = await projectService.createProject(projectCreateMock)
       const slug = { id: project.id }
       const res = await GET(createMockNextRequest(""), {
@@ -49,9 +48,8 @@ describe('tests /api/projects/[id]', () => {
   describe('PATCH /api/admin/projects/[id]', () => {
     it('should update a project correctly', async () => {
       const project = await projectService.createProject({...projectCreateMock, clients: [clientMock]})
-      const slug = { id: project.id }
       const res = await PATCH(createMockNextPatchRequest('', { name: 'Updated project' }), {
-        params: paramsToPromise(slug),
+        params: paramsToPromise({ id: project.id }),
       })
       expect(res.status).toBe(StatusCodes.OK)
       const body = await res.json()
@@ -60,7 +58,7 @@ describe('tests /api/projects/[id]', () => {
       const res1 = await PATCH(
         createMockNextPatchRequest('', { name: 'Updated project 1', description: 'Hi hi' }),
         {
-          params: paramsToPromise(slug),
+          params: paramsToPromise({ id: project.id }),
         },
       )
       expect(res1.status).toBe(StatusCodes.OK)
@@ -70,12 +68,20 @@ describe('tests /api/projects/[id]', () => {
     })
 
     it('should return a 404 error if the project does not exist', async () => {
-      const slug = { id: 'nonexistent' }
       const res = await PATCH(createMockNextPatchRequest('', { name: 'Updated project' }), {
-        params: paramsToPromise(slug),
+        params: paramsToPromise({ id: 'nonexistent' }),
       })
       expect(res.status).toBe(StatusCodes.NOT_FOUND)
       expect(await res.json()).toEqual({ error: 'Project not found' })
+    })
+
+    it("should 401 if the project client doesn't match", async () => {
+      const project = await projectService.createProject(projectCreateMock)
+      const res = await PATCH(createMockNextPatchRequest('', { name: 'Updated project' }), {
+        params: paramsToPromise({ id: project.id }),
+      })
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+      expect(await res.json()).toEqual({ error: 'Unauthorized' })
     })
   })
 
