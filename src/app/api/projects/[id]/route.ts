@@ -9,10 +9,7 @@ import { NotFound } from 'payload'
  * @param params - The parameters object containing the project ID.
  */
 
-export const GET = async (
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-): Promise<Response> => {
+export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params
   const projectService = new ProjectService()
 
