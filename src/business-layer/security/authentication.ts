@@ -26,6 +26,9 @@ export async function payloadAuthentication(securityName: string, scopes?: strin
             resolve(user)
           }
         }
+        if (scopes?.length === 0) {
+          return resolve(user)
+        }
         return reject(new UnauthorizedAuthError('No scope'))
       } catch (error) {
         console.error(error)

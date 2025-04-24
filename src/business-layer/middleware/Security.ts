@@ -21,8 +21,8 @@ export function Security(securityName: string, scopes?: string[]) {
         const user = await payloadAuthentication(securityName, scopes)
 
         const reqWithUser = Object.assign(Object.create(Object.getPrototypeOf(req)), req, {
-                user,
-              }) as NextRequest & { user: UserCombinedInfo }
+          user,
+        }) as NextRequest & { user: UserCombinedInfo }
 
         return await originalMethod.call(this, reqWithUser, context)
       } catch (err) {

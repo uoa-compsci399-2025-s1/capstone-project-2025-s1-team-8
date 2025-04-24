@@ -14,8 +14,11 @@ class RouteWrapper {
    * @param req - The request object.
    * @param params - The parameters object containing the project ID.
    */
-  @Security("jwt", ["admin", "client"])
-  static async GET(_req: NextRequest & { user: UserCombinedInfo }, { params }: { params: Promise<{ id: string }> }) {
+  @Security('jwt', ['admin', 'client'])
+  static async GET(
+    _req: NextRequest & { user: UserCombinedInfo },
+    { params }: { params: Promise<{ id: string }> },
+  ) {
     const { id } = await params
     const projectService = new ProjectService()
     try {
@@ -38,8 +41,11 @@ class RouteWrapper {
    * @param req - The request object.
    * @param params - The parameters object containing the project ID.
    */
-  @Security("jwt", ["admin", "client"])
-  static async PATCH(req: NextRequest & { user: UserCombinedInfo }, { params }: { params: Promise<{ id: string }> }) {
+  @Security('jwt', ['admin', 'client'])
+  static async PATCH(
+    req: NextRequest & { user: UserCombinedInfo },
+    { params }: { params: Promise<{ id: string }> },
+  ) {
     const { id } = await params
     const projectService = new ProjectService()
     try {
@@ -73,7 +79,7 @@ class RouteWrapper {
    * @param req - The request object.
    * @param params - The parameters object containing the project ID.
    */
-  @Security("jwt", ["admin", "client"])
+  @Security('jwt', ['admin', 'client'])
   static async DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const projectService = new ProjectService()

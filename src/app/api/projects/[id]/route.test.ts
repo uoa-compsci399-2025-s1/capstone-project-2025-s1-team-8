@@ -1,34 +1,37 @@
 import { StatusCodes } from 'http-status-codes'
-import { createMockNextPatchRequest, createMockNextRequest, mockToken, paramsToPromise } from '@/test-config/utils'
+import { NextRequest } from 'next/server'
+import { cookies } from 'next/headers'
+
+import {
+  createMockNextPatchRequest,
+  createMockNextRequest,
+  paramsToPromise,
+} from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET, PATCH, DELETE } from '@/app/api/projects/[id]/route'
-import { NextRequest } from 'next/server'
-import { clientMock } from '@/test-config/mocks/Auth.mock'
+import { adminMock, clientMock } from '@/test-config/mocks/Auth.mock'
+import { AUTH_COOKIE_NAME } from '@/types/Auth'
+import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
-describe('tests /api/projects/[id]', () => {
+describe('tests /api/projects/[id]', async () => {
   const projectService = new ProjectService()
-
-  afterEach(()=>{
-    vi.restoreAllMocks()
-    vi.clearAllMocks()
-    vi.resetAllMocks()
-    vi.resetModules()
-  })
-
+  const cookieStore = await cookies()
   describe('GET /api/projects/[id]', () => {
+    it('should return a 401 if role is student', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, studentToken)
+      const res = await GET(createMockNextRequest(''), {
+        params: paramsToPromise({ id: 'nonexistent' }),
+      })
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+    })
+
     it('should get a project correctly', async () => {
-      vi.mock('next/headers', () => ({
-        cookies: vi.fn(() => ({
-          get: vi.fn(() => {
-            return { value: mockToken('client') }
-          }),
-          delete: vi.fn(),
-        })),
-      }))
       const project = await projectService.createProject(projectCreateMock)
       const slug = { id: project.id }
-      const res = await GET(createMockNextRequest(""), {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const res = await GET(createMockNextRequest(''), {
         params: paramsToPromise(slug),
       })
       expect(res.status).toBe(StatusCodes.OK)
@@ -37,7 +40,8 @@ describe('tests /api/projects/[id]', () => {
 
     it('should return a 404 error if the project does not exist', async () => {
       const slug = { id: 'nonexistent' }
-      const res = await GET(createMockNextRequest(""), {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const res = await GET(createMockNextRequest(''), {
         params: paramsToPromise(slug),
       })
       expect(res.status).toBe(StatusCodes.NOT_FOUND)
@@ -46,8 +50,20 @@ describe('tests /api/projects/[id]', () => {
   })
 
   describe('PATCH /api/admin/projects/[id]', () => {
+    it('should return a 401 if role is student', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, studentToken)
+      const res = await PATCH(createMockNextPatchRequest('', { name: 'poop' }), {
+        params: paramsToPromise({ id: 'nonexistent' }),
+      })
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+    })
+
     it('should update a project correctly', async () => {
-      const project = await projectService.createProject({...projectCreateMock, clients: [clientMock]})
+      const project = await projectService.createProject({
+        ...projectCreateMock,
+        clients: [clientMock, adminMock],
+      })
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await PATCH(createMockNextPatchRequest('', { name: 'Updated project' }), {
         params: paramsToPromise({ id: project.id }),
       })
@@ -68,6 +84,7 @@ describe('tests /api/projects/[id]', () => {
     })
 
     it('should return a 404 error if the project does not exist', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await PATCH(createMockNextPatchRequest('', { name: 'Updated project' }), {
         params: paramsToPromise({ id: 'nonexistent' }),
       })
@@ -81,13 +98,25 @@ describe('tests /api/projects/[id]', () => {
         params: paramsToPromise({ id: project.id }),
       })
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
-      expect(await res.json()).toEqual({ error: 'Unauthorized' })
+      expect(await res.json()).toEqual({ error: 'No token provided' })
     })
   })
 
   describe('DELETE /api/admin/projects/[id]', () => {
+    it('should return a 401 if role is student', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, studentToken)
+      const res = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: 'hhhhh' }),
+      })
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+    })
+
     it('should delete a project correctly', async () => {
-      const project = await projectService.createProject(projectCreateMock)
+      const project = await projectService.createProject({
+        ...projectCreateMock,
+        clients: [clientMock],
+      })
+      cookieStore.set(AUTH_COOKIE_NAME, clientToken)
       const slug = { id: project.id }
       const res = await DELETE({} as NextRequest, {
         params: paramsToPromise(slug),
@@ -97,6 +126,7 @@ describe('tests /api/projects/[id]', () => {
     })
 
     it('should return a 404 error if the project does not exist', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, clientToken)
       const slug = { id: 'nonexistent' }
       const res = await DELETE({} as NextRequest, {
         params: paramsToPromise(slug),

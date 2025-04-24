@@ -6,7 +6,7 @@ import { ACCESS_TOKEN_MOCK, CLIENT_JWT_MOCK, clientMock } from '@/test-config/mo
 describe('Auth service tests', () => {
   const authService = new AuthService()
 
-  beforeEach(()=>{
+  beforeEach(() => {
     vi.mock('jsonwebtoken', () => ({
       default: {
         verify: vi.fn().mockImplementation((token) => {
@@ -17,7 +17,7 @@ describe('Auth service tests', () => {
     }))
   })
 
-  afterEach(()=>{
+  afterEach(() => {
     vi.clearAllMocks()
   })
 

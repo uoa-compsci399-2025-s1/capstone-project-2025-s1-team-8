@@ -68,7 +68,9 @@ export const paramsToPromise = <T extends Record<string, unknown>>(params: T): P
  * @returns A mock NextRequest object
  */
 export function createMockNextRequest(url: string) {
-  return new NextRequest(new URL(url, 'http://localhost:3000')) as NextRequest & { user: UserCombinedInfo };
+  return new NextRequest(new URL(url, 'http://localhost:3000')) as NextRequest & {
+    user: UserCombinedInfo
+  }
 }
 
 /**
@@ -85,7 +87,7 @@ export function createMockNextPostRequest(url: string, body: Record<string, unkn
     headers: {
       'Content-Type': 'application/json',
     },
-  }) as NextRequest & { user: UserCombinedInfo };
+  }) as NextRequest & { user: UserCombinedInfo }
 }
 /**
  * Create a mock NextRequest object with a body for PATCH requests
@@ -101,5 +103,5 @@ export function createMockNextPatchRequest(url: string, body: Record<string, unk
     headers: {
       'Content-Type': 'application/json',
     },
-  }) as NextRequest & { user: UserCombinedInfo };
+  }) as NextRequest & { user: UserCombinedInfo }
 }
