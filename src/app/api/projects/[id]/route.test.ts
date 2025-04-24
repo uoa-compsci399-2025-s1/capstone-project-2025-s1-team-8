@@ -17,6 +17,7 @@ import { adminToken, clientToken, studentToken } from '@/test-config/routes-setu
 describe('tests /api/projects/[id]', async () => {
   const projectService = new ProjectService()
   const cookieStore = await cookies()
+
   describe('GET /api/projects/[id]', () => {
     it('should return a 401 if role is student', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
