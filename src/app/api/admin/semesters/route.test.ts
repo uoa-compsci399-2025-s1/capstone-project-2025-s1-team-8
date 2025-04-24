@@ -28,7 +28,7 @@ describe('tests /api/admin/semesters', async () => {
 
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
       const res2 = await POST(createMockNextPostRequest('', semesterCreateMock))
-      expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+      expect(res2.status).toBe(StatusCodes.UNAUTHORIZED)
       const json2 = await res2.json()
       expect(json2.error).toEqual('No scope')
     })
