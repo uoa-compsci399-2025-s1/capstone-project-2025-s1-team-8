@@ -26,7 +26,7 @@ export async function payloadAuthentication(securityName: string, scopes?: strin
         }
         for (const scope of scopes || []) {
           if (user.role.includes(scope)) {
-            resolve(user)
+            return resolve(user)
           }
         }
         return reject(new UnauthorizedAuthError('No scope'))
