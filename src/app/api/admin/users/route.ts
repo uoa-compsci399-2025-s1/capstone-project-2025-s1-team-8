@@ -9,7 +9,7 @@ class RouteWrapper {
   /**
    * Method to fetch all users
    *
-   * @param _req The Next Request context
+   * @param req The Next Request context
    * @param param1 The query parameters, including limit and cursor
    * @returns
    */
