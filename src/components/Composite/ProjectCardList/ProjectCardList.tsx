@@ -19,7 +19,7 @@ const ProjectCardList: React.FC<ProjectListProps> = ({
     <div className={`relative w-full ${className}`}>
       <h2 className={`text-dark-blue font-inter ${headingClassName}`}>{heading}</h2>
 
-      <div className="flex flex-col gap-4 overflow-x-visible overflow-y-auto max-h-[490px] p-[1px] pb-3">
+      <div className="flex flex-col gap-4 overflow-x-visible overflow-y-auto max-h-[490px] p-[1px] pt-0.5 pb-3">
         {projects.map((project, index) => (
           <ProjectCard key={index} projectInfo={project} />
         ))}

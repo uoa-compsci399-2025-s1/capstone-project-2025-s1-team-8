@@ -36,15 +36,13 @@ class RouteWrapper {
           { error: 'Invalid request body', details: error.flatten() },
           { status: StatusCodes.BAD_REQUEST },
         )
-      } else if (error instanceof NotFound) {
+      } else if (error instanceof NotFound)
         return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
-      } else {
-        console.error(error)
-        return NextResponse.json(
-          { error: 'Internal server error' },
-          { status: StatusCodes.INTERNAL_SERVER_ERROR },
-        )
-      }
+      console.error(error)
+      return NextResponse.json(
+        { error: 'Internal server error' },
+        { status: StatusCodes.INTERNAL_SERVER_ERROR },
+      )
     }
   }
 
@@ -62,15 +60,13 @@ class RouteWrapper {
       await semesterService.deleteSemester(id)
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
     } catch (error) {
-      if (error instanceof NotFound) {
+      if (error instanceof NotFound)
         return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
-      } else {
-        console.error(error)
-        return NextResponse.json(
-          { error: 'Internal server error' },
-          { status: StatusCodes.INTERNAL_SERVER_ERROR },
-        )
-      }
+      console.error(error)
+      return NextResponse.json(
+        { error: 'Internal server error' },
+        { status: StatusCodes.INTERNAL_SERVER_ERROR },
+      )
     }
   }
 }
