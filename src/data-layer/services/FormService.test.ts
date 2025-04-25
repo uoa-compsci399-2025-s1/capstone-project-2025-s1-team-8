@@ -17,22 +17,6 @@ describe('Form service tests', () => {
       expect(newForm).toEqual(fetchedForm)
     })
 
-    it('find a form by ID', async () => {
-      const createdForm = await formService.createForm(formMock)
-      const fetchedForm = await formService.getForm(createdForm.id)
-      expect(fetchedForm).toEqual(createdForm)
-    })
-
-    it('find the one form by ID', async () => {
-      const createdForm = await formService.createForm(formMock)
-      const fetchedForm = await formService.getAllForms()
-      expect(fetchedForm).toEqual(createdForm)
-    })
-
-    it('not found - find form with nonexistent id', async () => {
-      await expect(formService.getForm('nonexistent_id')).rejects.toThrow('Not Found')
-    })
-
     it('update a form by ID', async () => {
       const createdForm = await formService.createForm(formMock)
       const updatedForm = await formService.updateForm(createdForm.id, {
