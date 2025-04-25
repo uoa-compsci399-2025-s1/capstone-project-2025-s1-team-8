@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { StatusCodes } from 'http-status-codes'
-import { NotFound } from 'payload'
 import SemesterService from '@/data-layer/services/SemesterService'
 import { Security } from '@/business-layer/middleware/Security'
 
@@ -35,14 +34,8 @@ class RouteWrapper {
         )
       }
     } catch (error) {
-      if (error instanceof NotFound) {
-        return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
-      } else {
-        return NextResponse.json(
-          { error: 'Internal server error' },
-          { status: StatusCodes.INTERNAL_SERVER_ERROR },
-        )
-      }
+      console.error(error)
+      return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
     }
   }
 }
