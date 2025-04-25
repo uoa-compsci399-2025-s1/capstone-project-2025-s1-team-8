@@ -21,7 +21,7 @@ export const GET = async (
   const projectService = new ProjectService()
   try {
     const project = await projectService.getSemesterProject(projectId)
-    if (project.semester instanceof String && project.semester !== id) {
+    if (typeof project.semester === "string" && project.semester !== id) {
       return NextResponse.json(
         { error: 'Project not found in this semester' },
         { status: StatusCodes.NOT_FOUND },
