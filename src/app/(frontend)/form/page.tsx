@@ -135,50 +135,54 @@ export default function Form() {
               />
             </li>
             <li>
-              <label className="inline-flex justify-between w-[100%]" htmlFor="OtherClientDetails">
-                Other client&apos;s details 
+              <div className="flex justify-between items-center">
+                <div>
+                  <label className="" htmlFor="OtherClientDetails">
+                    Other client&apos;s details 
+                  </label>              
+                  <p className="form-question-subheading">
+                    If there is anyone else involved in the project, please provide their names and emails.
+                  </p>
+                </div>
                 <Button
                   type="button"
                   variant="muted_blue" 
                   size="md"
-                  className="self-end h-2"
+                  className="self-start"
                   onClick={addPair}
                 >
                   + Add Client
                 </Button>
-              </label>              
-              <p className="form-question-subheading">
-                If there is anyone else involved in the project, please provide their names and emails.
-              </p>
+              </div>
               {pairs.map((pair, idx) => (
-                <div key={idx} className="flex gap-3 justify-end mb-1">
-                  <div>
-                    <label>
+                <div key={idx} className="flex gap-5 justify-end mb-5">
+                  <div className="w-80">
+                    <label className="text-sm">
                       Full Name:
-                      <Input
-                        id={`OtherClientName${idx}`}
-                        type="text"
-                        onChange={e => handleChange(idx, 'fullName', e.target.value)}
-                        placeholder="Other client&apos;s name"
-                      />
                     </label>
+                    <Input
+                      id={`OtherClientName${idx}`}
+                      type="text"
+                      onChange={e => handleChange(idx, 'fullName', e.target.value)}
+                      placeholder="Other client&apos;s name"
+                    />
                   </div>
-                  <div>
-                    <label>
+                  <div className="w-full">
+                    <label className="text-sm">
                       Email:
-                      <Input
-                        id={`OtherClientEmail${idx}`}
-                        type="email"
-                        onChange={e => handleChange(idx, 'email', e.target.value)}
-                        placeholder="Other client&apos;s email"
-                      />
                     </label>
+                    <Input
+                      id={`OtherClientEmail${idx}`}
+                      type="email"
+                      onChange={e => handleChange(idx, 'email', e.target.value)}
+                      placeholder="Other client&apos;s email"
+                    />
                   </div>
                   <Button
                     type="button"
                     variant="dark" 
                     size="md"
-                    className="ml-auto h-2"
+                    className="ml-10 self-end h-10"
                     onClick={() => deletePair(idx)}
                   >
                     Delete
