@@ -17,6 +17,12 @@ describe('Form service tests', () => {
       expect(newForm).toEqual(fetchedForm)
     })
 
+    it('fetches the form', async () => {
+      const createdForm = await formService.createForm(formMock)
+      const fetchedForm = await formService.getForm()
+      expect(fetchedForm).toEqual(createdForm)
+    })
+
     it('update a form by ID', async () => {
       const createdForm = await formService.createForm(formMock)
       const updatedForm = await formService.updateForm(createdForm.id, {

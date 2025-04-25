@@ -51,5 +51,12 @@ describe('tests /api/forms', async () => {
       const res = await GET(createMockNextRequest('http://localhost:3000/api/forms'))
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
     })
+
+    it('return 404 when form not found', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const res = await GET(createMockNextRequest('http://localhost:3000/api/forms'))
+      expect(res.status).toBe(StatusCodes.NOT_FOUND)
+      expect((await res.json()).error).toBe('Form not found')
+    })
   })
 })
