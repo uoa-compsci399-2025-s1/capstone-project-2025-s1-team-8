@@ -3,12 +3,9 @@
 import ClientsPage from '@/components/Pages/ClientsPage/ClientsPage'
 import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import NavBar from '@/components/Generic/NavBar/NavBar'
-import { mockClients } from '@/mocks/Clients.mock'
 import { UniqueIdentifier } from '@dnd-kit/core'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import SemesterCard, { SemesterCardProps } from '@/components/Composite/SemesterCard/SemesterCard'
-import { mockProjects1 } from '@/mocks/Projects.mock'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -42,14 +39,6 @@ const Admin = () => {
       items: [],
     },
   ]
-
-  const mockProps: SemesterCardProps = {
-    semesterName: 'Semester 2 2025',
-    startDate: new Date('2025-07-01'),
-    endDate: new Date('2025-12-15'),
-    submissionDeadline: new Date('2025-01-30'),
-    approvedProjects: mockProjects1,
-  }
 
   return (
     <div className="w-full">
@@ -99,7 +88,7 @@ const Admin = () => {
               aria-hidden={activeNav !== 1}
               tabIndex={activeNav === 1 ? 0 : -1}
             >
-              <ClientsPage clients={mockClients} />
+              <ClientsPage clients={[]} />
             </div>
 
             <div
@@ -107,7 +96,7 @@ const Admin = () => {
               aria-hidden={activeNav !== 2}
               tabIndex={activeNav === 2 ? 0 : -1}
             >
-              <SemesterCard {...mockProps} />
+              <p>Semester page goes here</p>
             </div>
           </motion.div>
         </div>
