@@ -33,5 +33,4 @@ export type PostProjectResponse = z.infer<typeof PostProjectResponseSchema>
 export type PatchProjectResponse = z.infer<typeof PatchProjectResponseSchema>
 export type GetAllProjectsResponse = z.infer<typeof GetAllProjectsResponseSchema>
 export type GetAllSemesterProjectResponse = z.infer<typeof GetAllSemesterProjectResponseSchema>
-
 export type GetSemesterProjectResponse = z.infer<typeof GetSemesterProjectResponseSchema>
