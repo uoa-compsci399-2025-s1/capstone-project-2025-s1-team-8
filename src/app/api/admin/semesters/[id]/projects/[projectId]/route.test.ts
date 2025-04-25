@@ -9,7 +9,7 @@ import { cookies } from 'next/headers'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
-describe('test api/semester/[projectId]/projects[/id]', async () => {
+describe('test api/semester/[id]/projects[/projectId]', async () => {
   const projectService = new ProjectService()
   const cookieStore = await cookies()
 
@@ -79,7 +79,6 @@ describe('test api/semester/[projectId]/projects[/id]', async () => {
         ...semesterProjectMock5,
         semester: createdSemester.id,
       })
-      // create separate semester NOT affiliated with semesterProject
       const wrongSemester = await semesterService.createSemester(semesterMock)
       const id = wrongSemester.id
       const projectId = createdSemesterProject.id
