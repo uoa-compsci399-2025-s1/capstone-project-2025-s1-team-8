@@ -16,13 +16,14 @@ export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ id
   const paramData = await params
   const projectService = new ProjectService()
   try{
-    const data = PatchSemesterProjectRequestBody.parse(req.json())
+    const data = PatchSemesterProjectRequestBody.parse(await req.json())
     const updatedProject = await projectService.updateSemesterProject(paramData.projectId, data)
     return NextResponse.json({ data: updatedProject })
   } catch (error) {
     if (error instanceof NotFound) {
       return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
     } else if (error instanceof ZodError) {
+      console.error('ZodError:', error.errors)
         return NextResponse.json(
             { error: 'Invalid request body' },
             { status: StatusCodes.BAD_REQUEST },
