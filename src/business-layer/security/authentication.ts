@@ -21,13 +21,13 @@ export async function payloadAuthentication(securityName: string, scopes?: strin
         const authService = new AuthService()
         const decodedToken = authService.decodeJWT(token) as JWTResponse
         const { user } = decodedToken
+        if (!scopes?.length) {
+          return resolve(user)
+        }
         for (const scope of scopes || []) {
           if (user.role.includes(scope)) {
-            resolve(user)
+            return resolve(user)
           }
-        }
-        if (scopes?.length === 0) {
-          return resolve(user)
         }
         return reject(new UnauthorizedAuthError('No scope'))
       } catch (error) {
