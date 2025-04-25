@@ -3,12 +3,6 @@ import React, { useState } from 'react'
 import { FiCopy, FiCheck } from 'react-icons/fi'
 import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 
-interface BasicProjectDTOPlaceholder {
-  name: string
-  client: string
-  description: string
-}
-
 export interface ClientDTOPlaceholder {
   name: string
   email: string
@@ -58,7 +52,6 @@ const ClientCard: React.FC<ClientDTOPlaceholder> = (clientInfo) => {
         introduction={clientInfo.introduction}
         projects={clientInfo.projects}
       >
-        hello
       </ClientModal>
     </>
   )
