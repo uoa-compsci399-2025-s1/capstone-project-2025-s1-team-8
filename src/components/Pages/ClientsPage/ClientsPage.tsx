@@ -11,7 +11,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({ clients }) => {
   const [searchValue, setSearchValue] = useState('')
 
   return (
-    <div>
+    <div className='w-full'>
       <div className="relative">
         <span className="absolute left-4 top-1/2 -translate-y-1/2 h-3.5 w-4">
           <MagnifyingGlassIcon className="text-dark-blue w-4 h-4" />

@@ -1,17 +1,26 @@
 'use client'
-import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
+
+import ClientsPage from '@/components/Pages/ClientsPage/ClientsPage'
 import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import { mockClients } from '@/mocks/Clients.mock'
 import { UniqueIdentifier } from '@dnd-kit/core'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import SemesterCard, { SemesterCardProps } from '@/components/Composite/SemesterCard/SemesterCard'
 import { mockProjects1 } from '@/mocks/Projects.mock'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
-  const [activeNav, setActiveNav] = useState(0)
+  const [activeNav, setActiveNav] = useState(() => {
+    const saved = localStorage.getItem('adminNav')
+    return saved !== null ? Number(saved) : 0
+  })
+
+  // Save nav index to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('adminNav', String(activeNav))
+  }, [activeNav])
 
   const containers = [
     {
@@ -46,31 +55,29 @@ const Admin = () => {
     <div className="w-full">
       <NavBar navElements={[{ href: '/admin', text: 'My Dashboard' }]} />
 
-      <div className="fixed top-25 w-full z-50 flex justify-center items-center gap-25 bg-beige pb-7">
+      <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
         {AdminNavElements.map((nav, i) => (
           <button
             key={nav}
-            onClick={() => {
-              setActiveNav(i)
-            }}
+            onClick={() => setActiveNav(i)}
             className="relative group p-2 nav-link-text"
           >
             <p>{nav}</p>
             <span
               className={`
-              nav-link-text-underline
-              scale-x-0 group-hover:scale-x-100
-              ${activeNav === i ? 'scale-x-100' : ''}
-            `}
+                nav-link-text-underline
+                scale-x-0 group-hover:scale-x-100
+                ${activeNav === i ? 'scale-x-100' : ''}
+              `}
             />
           </button>
         ))}
       </div>
 
-      <div className="py-4 mt-40 relative min-h-[300px]">
-        <div className={`flex flex-col overflow-hidden w-full`}>
+      <div className="py-4 relative min-h-[300px]">
+        <div className="flex flex-col overflow-hidden w-full">
           <motion.div
-            className={`flex flex-1 min-h-0 [direction:ltr] [will-change:transform]`}
+            className="flex flex-1 min-h-0 [direction:ltr] [will-change:transform]"
             transition={{
               tension: 190,
               friction: 200,
@@ -81,8 +88,8 @@ const Admin = () => {
           >
             <div
               className="admin-dash-carousel-item"
-              aria-hidden={activeNav !== 1}
-              tabIndex={activeNav === 1 ? 0 : -1}
+              aria-hidden={activeNav !== 0}
+              tabIndex={activeNav === 0 ? 0 : -1}
             >
               <ProjectDnD presetContainers={containers} />
             </div>
@@ -92,7 +99,7 @@ const Admin = () => {
               aria-hidden={activeNav !== 1}
               tabIndex={activeNav === 1 ? 0 : -1}
             >
-              <ClientGroup clients={mockClients} />
+              <ClientsPage clients={mockClients} />
             </div>
 
             <div
