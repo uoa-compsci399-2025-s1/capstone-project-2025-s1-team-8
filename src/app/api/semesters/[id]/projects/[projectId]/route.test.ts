@@ -11,7 +11,7 @@ import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET } from '@/app/api/semesters/[id]/projects/[projectId]/route'
 import { semesterMock } from '@/test-config/mocks/Semester.mock'
 
-describe('test /api/semesters/[id]/projects', () => {
+describe('test /api/semesters/[id]/projects/[projectId]', () => {
   afterEach(async () => {
     await clearCollection(testPayloadObject, 'semesterProject')
     await clearCollection(testPayloadObject, 'semester')
