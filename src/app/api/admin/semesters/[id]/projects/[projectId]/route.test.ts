@@ -13,7 +13,7 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
   const projectService = new ProjectService()
   const cookieStore = await cookies()
 
-  describe('test DELETE /api/semesters/[projectId]/projects', async () => {
+  describe('test DELETE /api/semesters/[id]/projects/[projectId]', async () => {
     it('return 401 with no auth', async () => {
       const res = await DELETE(createMockNextRequest(`api/semesters/123/projects/123`), {
         params: paramsToPromise({ id: '123', projectId: '123' }),
