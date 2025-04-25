@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
-import ClientModal from '@/components/Composite/ClientModal/ClientModal'
 import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/16/solid'
 

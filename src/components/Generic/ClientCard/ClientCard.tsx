@@ -52,6 +52,7 @@ const ClientCard: React.FC<ClientDTOPlaceholder> = (clientInfo) => {
         introduction={clientInfo.introduction}
         projects={clientInfo.projects}
       >
+        <div></div>
       </ClientModal>
     </>
   )
