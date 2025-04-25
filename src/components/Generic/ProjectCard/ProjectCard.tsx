@@ -8,7 +8,7 @@ interface ProjectCardProps {
 const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo }) => {
   //TODO: onclick of card, show expanded project modal
 
-  const truncatedDescription = projectInfo.projectDescription.slice(0, 100) + '...'
+  const truncatedDescription = (projectInfo.projectDescription ?? []).slice(0, 100) + '...'
 
   return (
     <div className="w-full bg-light-beige rounded-2xl ring-1 ring-deeper-blue p-5 pt-6 cursor-pointer">

@@ -1,5 +1,7 @@
+import ClientModal from '@/components/Composite/ClientModal/ClientModal'
 import React, { useState } from 'react'
 import { FiCopy, FiCheck } from 'react-icons/fi'
+import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 
 interface BasicProjectDTOPlaceholder {
   name: string
@@ -12,11 +14,12 @@ export interface ClientDTOPlaceholder {
   email: string
   affiliation?: string
   introduction?: string
-  projects?: BasicProjectDTOPlaceholder[]
+  projects?: ProjectDTOPlaceholder[]
 }
 
 const ClientCard: React.FC<ClientDTOPlaceholder> = (clientInfo) => {
   const [copied, setCopied] = useState(false)
+  const [open, setOpen] = useState(false)
 
   const handleCopy = (email: string) => {
     navigator.clipboard.writeText(email)
@@ -24,20 +27,40 @@ const ClientCard: React.FC<ClientDTOPlaceholder> = (clientInfo) => {
     setTimeout(() => setCopied(false), 1000)
   }
 
+  const handleModal = () => {
+    setOpen(!open)
+  }
+
   return (
-    <div className="bg-gradient-to-r from-denim-blue to-deeper-blue hover:from-[#35474c] hover:to-[#6d939d] w-full flex flex-row justify-between p-6 cursor-pointer">
-      <div className="flex flex-row gap-4">
-        <p className="text-light-beige font-semibold text-xl">{clientInfo.name}</p>
-        <p className="text-light-beige text-base self-end">{clientInfo.email}</p>
+    <>
+      <div
+        className="bg-gradient-to-r from-denim-blue to-deeper-blue hover:from-[#35474c] hover:to-[#6d939d] w-full flex flex-row justify-between p-6 cursor-pointer"
+        onClick={() => handleModal()}
+      >
+        <div className="flex flex-row gap-4">
+          <p className="text-light-beige font-semibold text-xl">{clientInfo.name}</p>
+          <p className="text-light-beige text-base self-end">{clientInfo.email}</p>
+        </div>
+        <button onClick={() => handleCopy(clientInfo.email)}>
+          {copied ? (
+            <FiCheck className="self-center size-5 text-light-beige" />
+          ) : (
+            <FiCopy className="self-center size-5 text-muted-blue hover:text-light-beige cursor-pointer" />
+          )}
+        </button>
       </div>
-      <button onClick={() => handleCopy(clientInfo.email)}>
-        {copied ? (
-          <FiCheck className="self-center size-5 text-light-beige" />
-        ) : (
-          <FiCopy className="self-center size-5 text-muted-blue hover:text-light-beige cursor-pointer" />
-        )}
-      </button>
-    </div>
+      <ClientModal
+        open={open}
+        onClose={() => handleModal()}
+        clientFullName={clientInfo.name}
+        clientEmail={clientInfo.email}
+        affiliation={clientInfo.affiliation}
+        introduction={clientInfo.introduction}
+        projects={clientInfo.projects}
+      >
+        hello
+      </ClientModal>
+    </>
   )
 }
 
