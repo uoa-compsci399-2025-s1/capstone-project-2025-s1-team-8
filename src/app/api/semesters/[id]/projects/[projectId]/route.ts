@@ -9,7 +9,7 @@ import { SemesterSchema } from '@/types/Payload'
  * Gets a semester project by its ID.
  * @param req - The request object.
  * @param params - The parameters object containing the semester ID and project ID.
- * @returns A JSON response containing the list of projects and the next page cursor.
+ * @returns A JSON response containing the project data
  */
 export const GET = async (
   req: NextRequest,
