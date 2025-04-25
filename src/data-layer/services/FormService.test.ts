@@ -53,6 +53,10 @@ describe('Form service tests', () => {
     it('not found - delete a form by nonexisting ID', async () => {
       await expect(formService.deleteForm('non-existing-id')).rejects.toThrow('Not Found')
     })
+
+    it('not found - fetch a form by nonexisting ID', async () => {
+      await expect(formService.getForm()).rejects.toThrow('Not Found')
+    })
   })
 
   describe('Form response service tests', () => {

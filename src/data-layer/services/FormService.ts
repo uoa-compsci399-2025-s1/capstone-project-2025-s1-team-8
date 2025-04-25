@@ -8,6 +8,7 @@ import {
   CreateFormQuestionData,
 } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
+import { NotFound } from 'payload'
 
 export default class FormService {
   /**
@@ -29,13 +30,16 @@ export default class FormService {
    * @param formID The ID of the form to retrieve
    * @returns The retrieved form document
    */
-  // this method might be redundant? there is only one form
   public async getForm(): Promise<Form> {
-    return (
+    const form = (
       await payload.find({
         collection: 'form',
       })
     ).docs[0]
+    if (!form) {
+      throw new NotFound(() => 'Not Found')
+    }
+    return form
   }
 
   /**
