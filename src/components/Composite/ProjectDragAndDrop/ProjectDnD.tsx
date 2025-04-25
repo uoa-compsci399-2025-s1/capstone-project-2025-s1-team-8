@@ -20,6 +20,7 @@ import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProj
 import { FilterProvider } from '@/contexts/FilterContext'
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { PlaceholderProjectDetailsType } from '@/types/Project'
+import { FiSave } from 'react-icons/fi'
 
 type DNDType = {
   id: UniqueIdentifier
@@ -73,6 +74,11 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
     if (newFilter) {
       sortProjects(containerId, newFilter)
     }
+  }
+
+  function handleSaveChanges() {
+    console.log('Saving changes')
+    // send changes to the backend
   }
 
   function sortProjects(containerId: UniqueIdentifier, filter: string): void {
@@ -376,7 +382,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
   }
 
   return (
-    <div className="mx-auto mx-auto w-full">
+    <div className="mx-auto mx-auto w-full relative">
       <div className="flex gap-7 mt-10 flex-wrap md:flex-nowrap">
         <DndContext
           sensors={sensors}
@@ -410,6 +416,12 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
             )}
           </DragOverlay>
         </DndContext>
+        <div
+          className={`flex absolute z-40 right-4 bottom-4 gap-4 p-3 rounded-full shadow-lg cursor-pointer bg-gradient-to-tl from-deeper-blue to-muted-blue`}
+          onClick={() => handleSaveChanges()}
+        >
+          <FiSave className="w-6 h-6"></FiSave>
+        </div>
       </div>
     </div>
   )

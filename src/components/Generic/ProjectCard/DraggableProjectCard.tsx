@@ -31,11 +31,11 @@ const DraggableProjectCard = ({ id, projectInfo, onClick }: ProjectCardType) => 
       ref={setNodeRef}
       {...attributes}
       style={style}
-      className={`relative w-full bg-light-beige rounded-2xl ring-1 ring-deeper-blue p-5 overflow-hidden group cursor-pointer transition-all duration-300 ease-in-out ${
+      className={`relative w-full bg-light-beige rounded-2xl ring-1 ring-deeper-blue p-5 overflow-hidden group transition-all duration-300 ease-in-out ${
         isDragging ? 'opacity-50' : 'hover:shadow-md'
       }`}
     >
-      <button {...listeners} className="text-left cursor-grab">
+      <button {...listeners} className={`text-left cursor-grab`}>
         <div className="absolute inset-0 bg-gradient-to-t from-bright-blue to-light-beige opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out z-0 rounded-2xl" />
         <div className="relative z-10">
           <p className="text-dark-blue text-base font-semibold pb-0.5">
