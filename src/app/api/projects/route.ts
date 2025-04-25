@@ -44,7 +44,6 @@ class RouteWrapper {
       const data = await projectService.createProject(body as CreateProjectData)
       return NextResponse.json({ data }, { status: StatusCodes.CREATED })
     } catch (error) {
-      console.error(error)
       if (error instanceof ZodError) {
         return NextResponse.json(
           { error: 'Invalid request body', details: error.flatten() },

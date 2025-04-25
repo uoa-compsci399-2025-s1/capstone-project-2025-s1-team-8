@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import SemesterService from '@/data-layer/services/SemesterService'
 import { Security } from '@/business-layer/middleware/Security'
+import { NotFound } from 'payload'
 
 class RouteWrapper {
   /**
@@ -11,7 +12,7 @@ class RouteWrapper {
    * @param param0 The ID of the semester to fetch
    * @returns The semester data
    */
-  @Security('jwt', [])
+  @Security('jwt')
   static async GET(
     _req: NextRequest,
     {
@@ -25,8 +26,15 @@ class RouteWrapper {
     try {
       const semester = await semesterService.getSemester(id)
       return NextResponse.json({ data: semester })
-    } catch {
-      return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
+    } catch (error) {
+      if (error instanceof NotFound) {
+        return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
+      }
+      console.error(error)
+      return NextResponse.json(
+        { error: 'Bad request body' },
+        { status: StatusCodes.INTERNAL_SERVER_ERROR },
+      )
     }
   }
 }
