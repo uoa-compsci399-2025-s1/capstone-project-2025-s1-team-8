@@ -11,7 +11,7 @@ class RouteWrapper {
    * @param req The request object
    * @returns All semesters.
    */
-  @Security('jwt', [])
+  @Security('jwt')
   static async GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
     const page = parseInt(searchParams.get('page') || '1')
