@@ -305,7 +305,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
 
   return (
     <div className="mx-auto w-full">
-      <div className="flex gap-7 mt-10 flex-wrap md:flex-nowrap">
+      <div className="flex gap-7 flex-wrap md:flex-nowrap">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCorners}
