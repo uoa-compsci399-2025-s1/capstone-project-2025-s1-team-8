@@ -21,15 +21,16 @@ export const PATCH = async (
   const projectService = new ProjectService()
   try {
     const data = PatchSemesterProjectRequestBody.parse(await req.json())
+    const project = await projectService.getSemesterProject(projectId)
 
-    if (typeof data.semester === 'string' && data.semester !== id) {
+    if (typeof project.semester === 'string' && project.semester !== id) {
       return NextResponse.json(
         { error: 'Project not found in this semester' },
         { status: StatusCodes.NOT_FOUND },
       )
     }
 
-    const semester = SemesterSchema.safeParse(data.semester)
+    const semester = SemesterSchema.safeParse(project.semester)
     if (semester.success) {
       if (semester.data.id !== id) {
         return NextResponse.json(
