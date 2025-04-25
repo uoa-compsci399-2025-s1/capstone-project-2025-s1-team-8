@@ -1,9 +1,39 @@
 "use client"
+import React, { useState } from "react";
+import Button from "@/components/Generic/Button/Button";
 import Input from "@/components/Generic/Input/InputField";
+import Textarea from "@/components/Generic/Textarea/Textarea";
 import Radio from "@/components/Generic/Radio/Radio";
 import Checkbox from "@/components/Generic/Checkbox/Checkbox";
 
+interface Pair {
+  fullName: string;
+  email: string;
+}
+
 export default function Form() {
+  const [pairs, setPairs] = useState<Pair[]>([
+    { fullName: '', email: '' },
+  ]);
+
+  const handleChange = (
+    index: number,
+    field: keyof Pair,
+    value: string
+  ) => {
+    const updated = [...pairs];
+    updated[index][field] = value;
+    setPairs(updated);
+  };
+
+  const addPair = () => {
+    setPairs([...pairs, { fullName: '', email: '' }]);
+  };
+
+  const deletePair = (index: number) => {
+    setPairs(pairs.filter((_, i) => i !== index));
+  };
+
   return <div
     className="h-dvh w-dvw bg-gradient-to-b from-deep-teal to-muted-blue flex flex-col items-center overflow-y-scroll py-[8%] gap-4 p-4"
   >
@@ -77,97 +107,130 @@ export default function Form() {
         <form className="flex flex-col gap-4">
           <ol className="flex flex-col gap-10 list-decimal list-outside text-dark-blue font-inter text-lg whitespace-pre-wrap ml-5" type="1">
             <li>
-              <label htmlFor="name">
+              <label htmlFor="ClientName">
                 Main client&apos;s (applicant&apos;s) name <span className="text-pink-2">*</span>
               </label>              
               <p className="form-question-subheading">
                 Please provide your name. 
               </p>
               <Input
-                id="name"
-                name="name"
+                id="ClientName"
+                name="ClientName"
                 type="text"
                 placeholder="Enter the main client&apos;s name"
-                className="bg-light-beige border border-deep-teal rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-steel-blue"
               />
             </li>
             <li>
-              <label htmlFor="name">
+              <label htmlFor="ClientEmail">
                 Main client&apos;s (applicant&apos;s) email <span className="text-pink-2">*</span>
               </label>              
               <p className="form-question-subheading">
                 Please provide your email. 
               </p>
               <Input
-                id="name"
-                name="name"
+                id="ClientEmail"
+                name="ClientEmail"
                 type="text"
                 placeholder="Enter the main client&apos;s email"
-                className="bg-light-beige border border-deep-teal rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-steel-blue"
               />
             </li>
             <li>
-              <label htmlFor="name">
-                Other client&apos;s details <span className="text-pink-2">*</span>
+              <label className="inline-flex justify-between w-[100%]" htmlFor="OtherClientDetails">
+                Other client&apos;s details 
+                <Button
+                  type="button"
+                  variant="muted_blue" 
+                  size="md"
+                  className="self-end h-2"
+                  onClick={addPair}
+                >
+                  + Add Client
+                </Button>
               </label>              
               <p className="form-question-subheading">
                 If there is anyone else involved in the project, please provide their names and emails.
               </p>
-              <Input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Enter the main client&apos;s email"
-                className="bg-light-beige border border-deep-teal rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-steel-blue"
-              />
+              {pairs.map((pair, idx) => (
+                <div key={idx} className="flex gap-3 justify-end mb-1">
+                  <div>
+                    <label>
+                      Full Name:
+                      <Input
+                        id={`OtherClientName${idx}`}
+                        type="text"
+                        onChange={e => handleChange(idx, 'fullName', e.target.value)}
+                        placeholder="Other client&apos;s name"
+                      />
+                    </label>
+                  </div>
+                  <div>
+                    <label>
+                      Email:
+                      <Input
+                        id={`OtherClientEmail${idx}`}
+                        type="email"
+                        onChange={e => handleChange(idx, 'email', e.target.value)}
+                        placeholder="Other client&apos;s email"
+                      />
+                    </label>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="dark" 
+                    size="md"
+                    className="ml-auto h-2"
+                    onClick={() => deletePair(idx)}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              ))}
+
             </li>
             <li>
-              <label htmlFor="name">
+              <label htmlFor="ProjectTitle">
                 Project title <span className="text-pink-2">*</span>
               </label>              
               <p className="form-question-subheading">
                 Please provide an informative project title.
               </p>
               <Input
-                id="name"
-                name="name"
+                id="ProjectTitle"
+                name="ProjectTitle"
                 type="text"
                 placeholder="Enter the main client&apos;s email"
-                className="bg-light-beige border border-deep-teal rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-steel-blue"
               />
             </li>
             <li>
-              <label htmlFor="name">
+              <label htmlFor="ProjectDescription">
                 Project Description <span className="text-pink-2">*</span>
               </label>              
               <p className="form-question-subheading">
                 Please provide a short description (3-10 sentences) of the project.
               </p>
-              <Input
-                id="name"
-                name="name"
-                type="text"
+              <Textarea
+                id="ProjectDescription"
+                name="ProjectDescription"
                 placeholder="Enter the main client&apos;s email"
-                className="bg-light-beige border border-deep-teal rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-steel-blue"
+                className="h-25"
               />
             </li>
             <li>
-              <label htmlFor="name">
+              <label htmlFor="DesiredOutput">
                 Desired Output <span className="text-pink-2">*</span>
               </label>              
               <p className="form-question-subheading">
                 Please identify the features that will constitute the MVP (minimum viable product).
               </p>
-              <Input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Enter the main client&apos;s email"
-                className="bg-light-beige border border-deep-teal rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-steel-blue"
+              <Textarea
+                id="DesiredOutput"
+                name="DesiredOutput"
+                placeholder="Enter the desired output"
+                className="h-25"
               />
             </li>
             <li>
-              <label htmlFor="name">
+              <label htmlFor="SpecialEquipmentRequirements">
                 Special equipment requirements <span className="text-pink-2">*</span>
               </label>              
               <p className="form-question-subheading">
@@ -179,7 +242,7 @@ export default function Form() {
               />
             </li>
             <li>
-              <label htmlFor="name">
+              <label htmlFor="SpecialEquipmentRequirements">
                 Number of teams <span className="text-pink-2">*</span>
               </label>              
               <p className="form-question-subheading">
@@ -197,26 +260,35 @@ export default function Form() {
               />
             </li>
             <li>
-              <label htmlFor="name">
+              <label htmlFor="DesiredTeamSkills">
                 Desired team skills
               </label>              
               <p className="form-question-subheading">
                 Please specify any skills you would like team members to have. This could include expertise in a specific technology or tool that you want the team to use for implementing the project.
               </p>
+              <Textarea
+                id="DesiredTeamSkills"
+                name="DesiredTeamSkills"
+                placeholder="Enter any desired team skills"
+                className="h-25"
+              />
             </li>
             <li>
-              <label htmlFor="name">
+              <label htmlFor="AvailableResources">
                 Available Resources
               </label>              
               <p className="form-question-subheading">
                 Are there any resources you would like to provide for students to become more familiar with your project?
               </p>
-              <Checkbox
-                values={['Research', 'Software Development', 'Other']}
+              <Textarea
+                id="AvailableResources"
+                name="AvailableResources"
+                placeholder="Enter any available resources"
+                className="h-25"
               />
             </li>
             <li>
-              <label htmlFor="name">
+              <label htmlFor="FutureConsideration">
                 Future consideration<span className="text-pink-2">*</span>
               </label>              
               <p className="form-question-subheading">
@@ -227,7 +299,7 @@ export default function Form() {
               />
             </li>
             <li>
-              <label htmlFor="name">
+              <label htmlFor="FutureSemesters">
                 Future Semesters
               </label>              
               <p className="form-question-subheading">
@@ -238,7 +310,7 @@ export default function Form() {
               />
             </li>
             <li>
-              <label htmlFor="name">
+              <label htmlFor="MeetingAttendance">
                 Meeting attendance <span className="text-pink-2">*</span>
               </label>              
               <p className="form-question-subheading">
@@ -249,7 +321,7 @@ export default function Form() {
               />
             </li>
             <li>
-              <label htmlFor="name">
+              <label htmlFor="FinalPresentationAttendance">
                 Final presentation attendance <span className="text-pink-2">*</span>
               </label>              
               <p className="form-question-subheading">
@@ -260,7 +332,7 @@ export default function Form() {
               />
             </li>
             <li>
-              <label htmlFor="name">
+              <label htmlFor="ProjectSupportAndMaintenance">
                 Project Support and Maintenance <span className="text-pink-2">*</span>
               </label>              
               <p className="form-question-subheading">

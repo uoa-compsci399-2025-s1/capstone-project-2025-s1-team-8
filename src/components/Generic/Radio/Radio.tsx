@@ -2,11 +2,18 @@ import React, { FC, useState } from 'react'
 import Input from '../Input/InputField'
 
 interface RadioProps {
+  id?: string
+  name?: string
   values: string[]
   customInput?: boolean
 }
 
-const Radio: FC<RadioProps> = ({ values, customInput = false }) => {
+const Radio: FC<RadioProps> = ({ 
+  id,
+  name,
+  values, 
+  customInput = false 
+}) => {
   const [customInputValue, setCustomInputValue] = useState('')
 
   return (
@@ -19,14 +26,15 @@ const Radio: FC<RadioProps> = ({ values, customInput = false }) => {
           hover:cursor-pointer"
         >
           <input
+            id={id}
+            name={name}
             type="radio"
-            name="radio"
             value={value}
             style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
             className="opacity-0 peer"
           />
           <span
-            className="w-[16px] h-[16px] inline-flex mr-2 border-2 border-steel-blue rounded-full 
+            className="w-[16px] h-[16px] inline-flex mr-8 border-2 border-steel-blue rounded-full 
                 [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
                 peer-focus:outline-2 peer-focus:outline-offset-1 peer-focus:outline-muted-blue/80"
           >
@@ -46,7 +54,7 @@ const Radio: FC<RadioProps> = ({ values, customInput = false }) => {
             className="opacity-0 peer"
           />
           <span
-            className="w-[16px] h-[16px] inline-flex mr-2 border-2 border-steel-blue rounded-full 
+            className="w-[16px] h-[16px] inline-flex mr-6 border-2 border-steel-blue rounded-full 
                 [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
                 peer-focus:outline-2 peer-focus:outline-offset-1 peer-focus:outline-muted-blue/80"
           >
