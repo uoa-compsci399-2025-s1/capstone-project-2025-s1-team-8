@@ -29,7 +29,7 @@ const ClientCard: React.FC<ClientDTOPlaceholder> = (clientInfo) => {
     <>
       <div className="bg-gradient-to-r from-denim-blue to-deeper-blue hover:from-[#35474c] hover:to-[#6d939d] w-full flex flex-row justify-between p-6">
         <div className="flex flex-row gap-4">
-          <p 
+          <p
             className="text-light-beige font-semibold text-xl cursor-pointer"
             onClick={() => handleModal()}
           >
