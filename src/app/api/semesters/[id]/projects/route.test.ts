@@ -192,7 +192,7 @@ describe('test /api/semesters/[id]/projects', () => {
     const res = await POST(
       createMockNextPostRequest(`api/semesters/${semesterMock.id}/projects`, {
         ...semesterProjectCreateMock2,
-        number: undefined,
+        status: undefined,
       }),
       { params: paramsToPromise({ id: semesterMock.id }) },
     )
