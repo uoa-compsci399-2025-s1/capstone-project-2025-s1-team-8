@@ -16,8 +16,6 @@ const Radio: FC<RadioProps> = ({ values, customInput = false }) => {
           key={index}
           className="
           flex items-center mb-2 
-          text-dark-blue 
-          border-steel-blue hover:border-dark-blue
           hover:cursor-pointer"
         >
           <input
@@ -25,38 +23,39 @@ const Radio: FC<RadioProps> = ({ values, customInput = false }) => {
             name="radio"
             value={value}
             style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
-            className="mr-2 w-[16px] h-[16px] content-[''] flex content-center rounded-full bg-white border-2 border-solid 
-            after:w-[10px] after:h-[10px] after:flex after:m-auto after:relative after:bg-white after:content-[''] after:rounded-full
-            checked:hover:after:bg-dark-blue 
-            checked:after:bg-steel-blue
-            checked:after:transition-colors checked:after:duration-300
-            focus:outline-2 focus:outline-offset-1 focus:outline-muted-blue/80 "
+            className="opacity-0 peer"
           />
-          <p>{value}</p>
+          <span
+            className="w-[16px] h-[16px] inline-flex mr-2 border-2 border-steel-blue rounded-full 
+                [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
+                peer-focus:outline-2 peer-focus:outline-offset-1 peer-focus:outline-muted-blue/80"
+          >
+            <div className="bg-steel-blue w-[8px] h-[8px] rounded-full self-center m-auto transition-opacity duration-300" />
+          </span>
+          <p className="text-sm text-dark-blue">{value}</p>
         </label>
       ))}
       {customInput && (
         <label
-          className="flex items-center mb-2
-          text-dark-blue 
-          border-steel-blue hover:border-dark-blue"
+          className="flex items-center mb-2"
         >
           <input
             type="radio"
             name="radio"
             style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
-            className="mr-2.5 w-[16px] h-[16px] content-[''] flex content-center rounded-full bg-white border-2 border-solid 
-                  after:w-[10px] after:h-[10px] after:flex after:m-auto after:relative after:bg-white after:content-[''] after:rounded-full
-                  checked:hover:after:bg-dark-blue 
-                  checked:after:bg-steel-blue
-                  checked:after:transition-colors checked:after:duration-300
-                  focus:ring-1 focus:ring-muted-blue
-                  "
+            className="opacity-0 peer"
           />
+          <span
+            className="w-[16px] h-[16px] inline-flex mr-2 border-2 border-steel-blue rounded-full 
+                [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
+                peer-focus:outline-2 peer-focus:outline-offset-1 peer-focus:outline-muted-blue/80"
+          >
+            <div className="bg-steel-blue w-[8px] h-[8px] rounded-full self-center m-auto transition-opacity duration-300" />
+          </span>
           <Input
             type="text"
             placeholder={'Other'}
-            className="inline h-8 font-semibold"
+            className="inline h-8"
             defaultValue={customInputValue}
             onChange={(e) => setCustomInputValue(e.target.value)}
             error={false}

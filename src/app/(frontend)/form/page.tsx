@@ -1,3 +1,8 @@
+"use client"
+import Input from "@/components/Generic/Input/InputField";
+import Radio from "@/components/Generic/Radio/Radio";
+import Checkbox from "@/components/Generic/Checkbox/Checkbox";
+
 export default function Form() {
   return <div
     className="h-dvh w-dvw bg-gradient-to-b from-deep-teal to-muted-blue flex flex-col items-center overflow-y-scroll py-[8%] gap-4 p-4"
@@ -19,7 +24,7 @@ export default function Form() {
             Please complete this form if you wish to propose a project for the COMPSCI 399 Capstone Course in <b>S1 2025</b>. The deadline for form submission is <b>July 11, 2025, by 11:59 pm</b>.
             <br />
             <br />
-            <em>Note: We accept applications throughout the year, but if the deadline isn't met, we will consider the project only for the following semester.</em>
+            <em>Note: We accept applications throughout the year, but if the deadline isn&apos;t met, we will consider the project only for the following semester.</em>
           </p>
         </div>
         <div>
@@ -38,7 +43,7 @@ export default function Form() {
             Supervision Requirements
           </h2>
           <p className="text-dark-blue font-inter text-sm">
-            Team(s) will meet with you (or your nominated representative) at least once every fortnight to ensure that the project is going in the right direction. There will be a final project presentation session (probably in the last week of the semester) that we would expect you (or your nominated representative) to attend and provide us with feedback on your team's performance.
+            Team(s) will meet with you (or your nominated representative) at least once every fortnight to ensure that the project is going in the right direction. There will be a final project presentation session (probably in the last week of the semester) that we would expect you (or your nominated representative) to attend and provide us with feedback on your team&apos;s performance.
           </p>
         </div>
         <div>
@@ -66,7 +71,207 @@ export default function Form() {
       <div
         className="relative bg-transparent-blue border-t-deeper-blue border-t max-w-full flex flex-col p-15 rounded-b-2xl gap-5"
       >
-
+        <p className="text-dark-blue font-inter">
+          <span className="text-pink-2">*</span> Required
+        </p>
+        <form className="flex flex-col gap-4">
+          <ol className="flex flex-col gap-10 list-decimal list-outside text-dark-blue font-inter text-lg whitespace-pre-wrap ml-5" type="1">
+            <li>
+              <label htmlFor="name">
+                Main client&apos;s (applicant&apos;s) name <span className="text-pink-2">*</span>
+              </label>              
+              <p className="form-question-subheading">
+                Please provide your name. 
+              </p>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Enter the main client&apos;s name"
+                className="bg-light-beige border border-deep-teal rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-steel-blue"
+              />
+            </li>
+            <li>
+              <label htmlFor="name">
+                Main client&apos;s (applicant&apos;s) email <span className="text-pink-2">*</span>
+              </label>              
+              <p className="form-question-subheading">
+                Please provide your email. 
+              </p>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Enter the main client&apos;s email"
+                className="bg-light-beige border border-deep-teal rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-steel-blue"
+              />
+            </li>
+            <li>
+              <label htmlFor="name">
+                Other client&apos;s details <span className="text-pink-2">*</span>
+              </label>              
+              <p className="form-question-subheading">
+                If there is anyone else involved in the project, please provide their names and emails.
+              </p>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Enter the main client&apos;s email"
+                className="bg-light-beige border border-deep-teal rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-steel-blue"
+              />
+            </li>
+            <li>
+              <label htmlFor="name">
+                Project title <span className="text-pink-2">*</span>
+              </label>              
+              <p className="form-question-subheading">
+                Please provide an informative project title.
+              </p>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Enter the main client&apos;s email"
+                className="bg-light-beige border border-deep-teal rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-steel-blue"
+              />
+            </li>
+            <li>
+              <label htmlFor="name">
+                Project Description <span className="text-pink-2">*</span>
+              </label>              
+              <p className="form-question-subheading">
+                Please provide a short description (3-10 sentences) of the project.
+              </p>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Enter the main client&apos;s email"
+                className="bg-light-beige border border-deep-teal rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-steel-blue"
+              />
+            </li>
+            <li>
+              <label htmlFor="name">
+                Desired Output <span className="text-pink-2">*</span>
+              </label>              
+              <p className="form-question-subheading">
+                Please identify the features that will constitute the MVP (minimum viable product).
+              </p>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Enter the main client&apos;s email"
+                className="bg-light-beige border border-deep-teal rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-steel-blue"
+              />
+            </li>
+            <li>
+              <label htmlFor="name">
+                Special equipment requirements <span className="text-pink-2">*</span>
+              </label>              
+              <p className="form-question-subheading">
+                Will your project require special equipment that you are unable to provide? If yes, please specify the required equipment. Note: We can only accept a limited number of projects with special equipment needs.
+              </p>
+              <Radio
+                values={['Yes']}
+                customInput={true}
+              />
+            </li>
+            <li>
+              <label htmlFor="name">
+                Number of teams <span className="text-pink-2">*</span>
+              </label>              
+              <p className="form-question-subheading">
+                Would you be open to the idea of <b>multiple teams working on your project</b>?  If yes, please specify the maximum number of teams you would be happy to work with. To make it easier for you, all team meetings will be combined into the same time slot, ensuring you won&apos;t need to allocate more meeting time than you would with one team.
+                <br />
+                <br />
+                For your consideration, 1-4 teams would require a 1-hour meeting fortnightly. Additionally, we will invite you to evaluate teams&apos; final presentations, typically taking about 20 minutes per team.Working with multiple teams offers the advantage of bringing diverse perspectives and ideas to the project. 
+                <br />
+                <br />
+                It also increases the likelihood of achieving a final result that aligns with expectations.
+              </p>
+              <Radio
+                values={['No, only 1 team', 'Yes, up to 4 teams']}
+                customInput={true}
+              />
+            </li>
+            <li>
+              <label htmlFor="name">
+                Desired team skills
+              </label>              
+              <p className="form-question-subheading">
+                Please specify any skills you would like team members to have. This could include expertise in a specific technology or tool that you want the team to use for implementing the project.
+              </p>
+            </li>
+            <li>
+              <label htmlFor="name">
+                Available Resources
+              </label>              
+              <p className="form-question-subheading">
+                Are there any resources you would like to provide for students to become more familiar with your project?
+              </p>
+              <Checkbox
+                values={['Research', 'Software Development', 'Other']}
+              />
+            </li>
+            <li>
+              <label htmlFor="name">
+                Future consideration<span className="text-pink-2">*</span>
+              </label>              
+              <p className="form-question-subheading">
+                If your project is not selected by students in the upcoming semester, would you like it to be considered for following semesters?
+              </p>
+              <Radio
+                values={['Yes', 'No']}
+              />
+            </li>
+            <li>
+              <label htmlFor="name">
+                Future Semesters
+              </label>              
+              <p className="form-question-subheading">
+                If you replied yes to the question above, what semesters would you like your project to be considered for? 
+              </p>
+              <Checkbox
+                values={['Research', 'Software Development', 'Other']}
+              />
+            </li>
+            <li>
+              <label htmlFor="name">
+                Meeting attendance <span className="text-pink-2">*</span>
+              </label>              
+              <p className="form-question-subheading">
+                The teaching team will aim to arrange meetings with the students at times that best suit your schedule. You can attend the meetings either in person or via Zoom (or Teams). The details and schedule of the meetings will be arranged at the beginning of the semester and will cover the entire duration of the course.
+              </p>
+              <Checkbox
+                values={['I confirm that I will be able to attend <b>6 meetings</b> with students, scheduled 2-3 weeks apart.']}
+              />
+            </li>
+            <li>
+              <label htmlFor="name">
+                Final presentation attendance <span className="text-pink-2">*</span>
+              </label>              
+              <p className="form-question-subheading">
+                The teaching team will aim to arrange the final presentation at a time that best suits your schedule. The final presentation will be held on the UoA Main Campus and must be attended in person.
+              </p>
+              <Checkbox
+                values={['I confirm that I will be able to attend final presentation in-person.']}
+              />
+            </li>
+            <li>
+              <label htmlFor="name">
+                Project Support and Maintenance <span className="text-pink-2">*</span>
+              </label>              
+              <p className="form-question-subheading">
+                The COMPSCI 399 Capstone Course is provided solely for academic purposes during the semester.
+              </p>
+              <Checkbox
+                values={['I understand that no resources will be available for support or maintenance after the semester ends, and that neither the University nor the participating students assume any liability for the project outcome.']}
+              />
+            </li>
+          </ol>
+        </form>
       </div>
     </div>
   </div>
