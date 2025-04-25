@@ -22,6 +22,7 @@ class RouteWrapper {
       if (error instanceof NotFound) {
         return NextResponse.json({ error: 'Form not found' }, { status: StatusCodes.NOT_FOUND })
       }
+      console.log(error)
       return NextResponse.json(
         { error: 'Internal Server Error' },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
