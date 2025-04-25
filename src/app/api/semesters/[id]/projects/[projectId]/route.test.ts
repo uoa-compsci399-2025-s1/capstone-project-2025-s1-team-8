@@ -11,7 +11,7 @@ import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import { PATCH } from '@/app/api/semesters/[id]/projects/[projectId]/route'
 import { semesterMock } from '@/test-config/mocks/Semester.mock'
 
-describe('test /api/semesters/[id]/projects', () => {
+describe('test /api/semesters/[id]/projects/[projectId]', () => {
   afterEach(async () => {
     await clearCollection(testPayloadObject, 'semesterProject')
     await clearCollection(testPayloadObject, 'semester')
@@ -21,9 +21,12 @@ describe('test /api/semesters/[id]/projects', () => {
   const semesterService = new SemesterService()
 
   it("Should return a 404 error if the project doesn't exist", async () => {
-    const res = await PATCH(createMockNextPatchRequest('api/semesters/123/projects/123', {semesterProjectCreateMock}), {
-      params: paramsToPromise({ id: '123', projectId: '123' }),
-    })
+    const res = await PATCH(
+      createMockNextPatchRequest('api/semesters/123/projects/123', { semesterProjectCreateMock }),
+      {
+        params: paramsToPromise({ id: '123', projectId: '123' }),
+      },
+    )
     expect(res.status).toBe(StatusCodes.NOT_FOUND)
   })
 
@@ -34,7 +37,10 @@ describe('test /api/semesters/[id]/projects', () => {
       semester: semester.id,
     })
     const res = await PATCH(
-      createMockNextPatchRequest(`api/semesters/123/projects/${semesterProject.id}`, {...semesterProjectCreateMock, number: 100}),
+      createMockNextPatchRequest(`api/semesters/123/projects/${semesterProject.id}`, {
+        ...semesterProjectCreateMock,
+        number: 100,
+      }),
       {
         params: paramsToPromise({ id: '123', projectId: semesterProject.id }),
       },
@@ -49,12 +55,17 @@ describe('test /api/semesters/[id]/projects', () => {
       semester: semester.id,
     })
     const res = await PATCH(
-      createMockNextPatchRequest(`api/semesters/${semester.id}/projects/${semesterProject.id}`, {...semesterProjectCreateMock, number: 100}),
+      createMockNextPatchRequest(`api/semesters/${semester.id}/projects/${semesterProject.id}`, {
+        ...semesterProject,
+        number: 100,
+      }),
       {
         params: paramsToPromise({ id: semester.id, projectId: semesterProject.id }),
       },
     )
     expect(res.status).toBe(StatusCodes.OK)
-    expect((await res.json()).data).toEqual(await projectService.getSemesterProject(semesterProject.id))
+    expect((await res.json()).data).toEqual(
+      await projectService.getSemesterProject(semesterProject.id),
+    )
   })
 })

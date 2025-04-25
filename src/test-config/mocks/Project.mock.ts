@@ -3,6 +3,7 @@ import { mockClient1, mockClient2 } from './User.mock'
 import { Project, SemesterProject } from '@/payload-types'
 import { ProjectStatus } from '@/types/Project'
 import { formResponseMock } from './Form.mock'
+import { semesterMock } from './Semester.mock'
 
 /*
  * Project mocks
@@ -64,7 +65,7 @@ export const semesterProjectMock: SemesterProject = {
 export const semesterProjectCreateMock: CreateSemesterProjectData = {
   number: 1,
   project: '67ff38a56a35e1b6cf43a68c',
-  semester: '67ff38a56a35e1b6cf43a68d',
+  semester: semesterMock,
   status: ProjectStatus.Pending,
   published: false,
 }
