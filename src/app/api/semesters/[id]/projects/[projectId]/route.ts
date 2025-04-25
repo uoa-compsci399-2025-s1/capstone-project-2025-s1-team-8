@@ -16,8 +16,6 @@ export const GET = async (
   { params }: { params: Promise<{ id: string; projectId: string }> },
 ) => {
   const { id, projectId } = await params
-  console.log('id', id)
-  console.log('projectId', projectId)
   const projectService = new ProjectService()
   try {
     const project = await projectService.getSemesterProject(projectId)
