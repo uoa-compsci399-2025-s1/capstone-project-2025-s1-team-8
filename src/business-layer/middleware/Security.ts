@@ -26,10 +26,10 @@ export function Security(securityName: string, scopes?: string[]) {
 
         return await originalMethod.call(this, reqWithUser, context)
       } catch (err) {
-        console.error(err)
         if (err instanceof UnauthorizedAuthError) {
           return NextResponse.json({ error: err.message }, { status: StatusCodes.UNAUTHORIZED })
         }
+        console.error(err)
         return NextResponse.json(
           { error: 'Internal Server Error' },
           { status: StatusCodes.INTERNAL_SERVER_ERROR },

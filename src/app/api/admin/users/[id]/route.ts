@@ -50,8 +50,8 @@ class RouteWrapper {
    * Updates a single user by ID if the request is made by an admin
    *
    * @param param0 The ID of the user to update
-   * @returns The updated user
    * @param _req
+   * @returns The updated user
    */
   @Security('jwt', ['admin'])
   static async PATCH(

@@ -3,6 +3,7 @@ import { mockClient1, mockClient2 } from './User.mock'
 import { Project, SemesterProject } from '@/payload-types'
 import { ProjectStatus } from '@/types/Project'
 import { formResponseMock } from './Form.mock'
+import { semesterMock } from '@/test-config/mocks/Semester.mock'
 
 /*
  * Project mocks
@@ -100,9 +101,21 @@ export const semesterProjectMock4: SemesterProject = {
   updatedAt: new Date().toISOString(),
 }
 
+export const semesterProjectMock5: SemesterProject = {
+  id: '67ff38a56a35e1b6cf43a68k',
+  number: 5,
+  project: projectMock,
+  semester: semesterMock,
+  status: ProjectStatus.Pending,
+  published: false,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+}
+
 export const semesterProjectListMock: SemesterProject[] = [
   semesterProjectMock,
   semesterProjectMock2,
   semesterProjectMock3,
   semesterProjectMock4,
+  semesterProjectMock5,
 ]
