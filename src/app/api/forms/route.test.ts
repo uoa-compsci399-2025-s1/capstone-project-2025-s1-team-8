@@ -19,6 +19,14 @@ describe('tests /api/forms', async () => {
       expect(await res.json()).toEqual({ error: 'No token provided' })
     })
 
+    it('return 401 when student sends request', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, studentToken)
+      await formService.createForm(formMock)
+      const res = await GET(createMockNextRequest('http://localhost:3000/api/forms'))
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+      expect((await res.json()).error).toBe('No scope')
+    })
+
     it('return form when client sends request', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
       await formService.createForm(formMock)

@@ -13,7 +13,7 @@ class RouteWrapper {
   @Security('jwt', ['admin', 'client'])
   static async GET(_req: NextRequest) {
     const formService = new FormService()
-    const form = await formService.getAllForms()
+    const form = await formService.getForm()
     return NextResponse.json({ data: form })
   }
 }

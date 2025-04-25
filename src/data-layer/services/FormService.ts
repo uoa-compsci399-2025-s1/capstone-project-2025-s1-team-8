@@ -30,14 +30,7 @@ export default class FormService {
    * @returns The retrieved form document
    */
   // this method might be redundant? there is only one form
-  public async getForm(formID: string): Promise<Form> {
-    return await payload.findByID({
-      collection: 'form',
-      id: formID,
-    })
-  }
-
-  public async getAllForms(): Promise<Form> {
+  public async getForm(): Promise<Form> {
     return (
       await payload.find({
         collection: 'form',
