@@ -456,7 +456,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
           className={`flex absolute z-40 right-4 bottom-4 gap-4 p-3 rounded-full shadow-lg ${hasChanges ? 'bg-gradient-to-tl from-deeper-blue to-muted-blue cursor-pointer' : 'bg-grey-1 cursor-not-allowed'}`}
           onClick={hasChanges ? handleSaveChanges : undefined}
         >
-          <FiSave className="w-6 h-6"></FiSave>
+          <FiSave className="w-6 h-6 text-white"></FiSave>
         </div>
       </div>
     </div>
