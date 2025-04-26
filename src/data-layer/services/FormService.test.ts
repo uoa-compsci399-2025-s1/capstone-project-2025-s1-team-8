@@ -23,17 +23,17 @@ describe('Form service tests', () => {
       expect(fetchedForm).toEqual(createdForm)
     })
 
-    it('update a form by ID', async () => {
-      const createdForm = await formService.createForm(formMock)
-      const updatedForm = await formService.updateForm(createdForm.id, {
+    it('update a form', async () => {
+      await formService.createForm(formMock)
+      const updatedForm = await formService.updateForm({
         name: 'updated form',
       })
       expect(updatedForm.name).toEqual('updated form')
     })
 
-    it('not found - update a form by nonexisting ID', async () => {
+    it('not found - update a non-existingform', async () => {
       await expect(
-        formService.updateForm('non-existing-id', {
+        formService.updateForm({
           name: 'updated form',
         }),
       ).rejects.toThrow('Not Found')
