@@ -72,7 +72,6 @@ export const POST = async (req: NextRequest, { params }: { params: Promise<{ id:
     const data = await projectService.createSemesterProject(body as CreateSemesterProjectData)
     return NextResponse.json({ data }, { status: StatusCodes.CREATED })
   } catch (error) {
-    console.error('Error', error)
     if (error instanceof ZodError) {
       return NextResponse.json(
         { error: 'Invalid request body', details: error.flatten() },
@@ -81,6 +80,7 @@ export const POST = async (req: NextRequest, { params }: { params: Promise<{ id:
     } else if (error instanceof NotFound) {
       return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
     }
+    console.error('Error', error)
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: StatusCodes.INTERNAL_SERVER_ERROR },
