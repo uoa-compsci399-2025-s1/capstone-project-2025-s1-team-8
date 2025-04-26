@@ -25,12 +25,12 @@ describe('Auth service tests', () => {
     it('should generate a hash that matches the expected value', async () => {
       const hash = await authService.hashPassword('password123456677387483874837')
       expect(hash).not.toEqual('password123456677387483874837')
-      expect(authService.verifyPassword('password123456677387483874837', hash)).toBeTruthy()
+      expect(await authService.verifyPassword('password123456677387483874837', hash)).toBeTruthy()
     })
 
     it('should return false when the password does not match', async () => {
       const hash = await authService.hashPassword('password123456677387483874837')
-      expect(authService.verifyPassword('wrongPassword', hash)).toBeFalsy()
+      expect(await authService.verifyPassword('wrongPassword', hash)).toBeFalsy()
     })
   })
 

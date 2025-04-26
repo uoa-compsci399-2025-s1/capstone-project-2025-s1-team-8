@@ -23,8 +23,8 @@ export default class AuthService {
    * @param hash The hashed password to compare against
    * @returns Boolean value indicating whether the password matches the hash
    */
-  public verifyPassword(password: string, hash: string): boolean {
-    return bcrypt.compareSync(password, hash)
+  public async verifyPassword(password: string, hash: string): Promise<boolean> {
+    return await bcrypt.compare(password, hash)
   }
 
   /**
