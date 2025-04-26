@@ -26,7 +26,7 @@ export const GET = async (
   } catch (error) {
     if (error instanceof NotFound) {
       return NextResponse.json(
-        { error: 'Project or semester not found!' },
+        { error: 'Project not found!' },
         { status: StatusCodes.NOT_FOUND },
       )
     }
