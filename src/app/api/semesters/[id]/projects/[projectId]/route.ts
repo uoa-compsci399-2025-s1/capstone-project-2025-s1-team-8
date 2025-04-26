@@ -42,7 +42,7 @@ export const GET = async (
   } catch (error) {
     if (error instanceof NotFound) {
       return NextResponse.json(
-        { error: 'Project or semester not found!' },
+        { error: 'Semester not found!' },
         { status: StatusCodes.NOT_FOUND },
       )
     }
@@ -54,7 +54,7 @@ export const GET = async (
   }
   if (JSON.stringify(project.semester) !== JSON.stringify(fetchedSemester)) {
     return NextResponse.json(
-      { error: 'Project or semester not found!' },
+      { error: 'Project is not associated with semester!' },
       { status: StatusCodes.BAD_REQUEST },
     )
   }
