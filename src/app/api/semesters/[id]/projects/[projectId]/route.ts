@@ -25,10 +25,7 @@ export const GET = async (
     project = await projectService.getSemesterProject(projectId)
   } catch (error) {
     if (error instanceof NotFound) {
-      return NextResponse.json(
-        { error: 'Project not found!' },
-        { status: StatusCodes.NOT_FOUND },
-      )
+      return NextResponse.json({ error: 'Project not found!' }, { status: StatusCodes.NOT_FOUND })
     }
     console.error('Error fetching project:', error)
     return NextResponse.json(
@@ -41,10 +38,7 @@ export const GET = async (
     fetchedSemester = await semesterService.getSemester(id)
   } catch (error) {
     if (error instanceof NotFound) {
-      return NextResponse.json(
-        { error: 'Semester not found!' },
-        { status: StatusCodes.NOT_FOUND },
-      )
+      return NextResponse.json({ error: 'Semester not found!' }, { status: StatusCodes.NOT_FOUND })
     }
     console.error('Error fetching project:', error)
     return NextResponse.json(
