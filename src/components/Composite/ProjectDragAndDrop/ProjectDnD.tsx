@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   DndContext,
   DragEndEvent,
@@ -20,7 +20,7 @@ import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProj
 import { FilterProvider } from '@/contexts/FilterContext'
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { PlaceholderProjectDetailsType } from '@/types/Project'
-import { FiSave } from 'react-icons/fi'
+import { FiAlertCircle, FiSave } from 'react-icons/fi'
 
 type DNDType = {
   id: UniqueIdentifier
@@ -56,6 +56,26 @@ const defaultProjectInfo: PlaceholderProjectDetailsType = {
 const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
   const [containers, setContainers] = useState<DNDType[]>(presetContainers.presetContainers)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
+  const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
+  const [showNotification, setShowNotification] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (hasChanges) {
+      setShowNotification(true)
+    } else {
+      setShowNotification(false)
+    }
+  }, [hasChanges])
+
+  useEffect(() => {
+    if (showNotification) {
+      const timer = setTimeout(() => {
+        setShowNotification(false)
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [showNotification])
 
   //TODO: onlick of save changes button, send all container originalItems (and their order) to the backend.
   //TODO: make wrapper container fetch the current ordering of items from the backend and display as the presetContainers
@@ -78,6 +98,8 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
 
   function handleSaveChanges() {
     console.log('Saving changes')
+    setHasChanges(false)
+    setShowNotification(false)
     // send changes to the backend
   }
 
@@ -277,6 +299,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
 
   // This is the function that handles the sorting of items when the user is done dragging.
   function handleDragEnd(event: DragEndEvent) {
+    setHasChanges(true)
     const { active, over } = event
 
     // Handling item Sorting
@@ -383,6 +406,18 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
 
   return (
     <div className="mx-auto mx-auto w-full relative">
+      {showNotification && (
+        <div className="fixed top-6 right-6 z-50 bg-[#fff0f8] border border-[#ffc7e8] shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col animate-fade-in">
+          <div className="flex items-center gap-2">
+            <FiAlertCircle className="text-[#ff2aca] w-5 h-5 flex-shrink-0" />
+            <p className="text-[#cc2296] font-medium">Unsaved changes</p>
+          </div>
+
+          <p className="text-[#b81c88] text-sm">
+            You've made changes to the project order. Don't forget to save!
+          </p>
+        </div>
+      )}
       <div className="flex gap-7 mt-10 flex-wrap md:flex-nowrap">
         <DndContext
           sensors={sensors}
@@ -417,8 +452,8 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
           </DragOverlay>
         </DndContext>
         <div
-          className={`flex absolute z-40 right-4 bottom-4 gap-4 p-3 rounded-full shadow-lg cursor-pointer bg-gradient-to-tl from-deeper-blue to-muted-blue`}
-          onClick={() => handleSaveChanges()}
+          className={`flex absolute z-40 right-4 bottom-4 gap-4 p-3 rounded-full shadow-lg ${hasChanges ? 'bg-gradient-to-tl from-deeper-blue to-muted-blue cursor-pointer' : 'bg-grey-1 cursor-not-allowed'}`}
+          onClick={hasChanges ? handleSaveChanges : undefined}
         >
           <FiSave className="w-6 h-6"></FiSave>
         </div>
