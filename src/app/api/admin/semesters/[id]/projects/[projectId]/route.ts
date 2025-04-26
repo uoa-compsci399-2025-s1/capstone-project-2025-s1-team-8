@@ -21,10 +21,27 @@ class RouteWrapper {
   ) {
     const { id, projectId } = await params
     const projectService = new ProjectService()
+    let fetchedSemester
     try {
       const semesterService = new SemesterService()
-      const fetchedSemester = await semesterService.getSemester(id)
-      const fetchedProject = await projectService.getSemesterProject(projectId)
+      fetchedSemester = await semesterService.getSemester(id)
+    } catch (error) {
+      if (error instanceof NotFound) {
+        return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
+      }
+    }
+    let fetchedProject
+    try {
+      const projectService = new ProjectService()
+      fetchedProject = await projectService.getSemesterProject(projectId)
+    } catch (error) {
+      if (error instanceof NotFound) {
+        return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
+      }
+    }
+    try {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       if (JSON.stringify(fetchedProject.semester) === JSON.stringify(fetchedSemester)) {
         await projectService.deleteSemesterProject(projectId)
         return NextResponse.json({ status: StatusCodes.OK })
@@ -35,9 +52,6 @@ class RouteWrapper {
         )
       }
     } catch (error) {
-      if (error instanceof NotFound) {
-        return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
-      }
       console.error(error)
       return NextResponse.json(
         { error: 'Internal server error' },
