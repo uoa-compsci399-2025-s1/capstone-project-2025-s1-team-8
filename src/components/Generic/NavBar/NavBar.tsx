@@ -34,23 +34,23 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
                 {navElement.text}
               </Link>
               <span
-                className={`nav-link-text-underline ${pathname === navElement.href ? 'scale-x-100' : ''}`}
+                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === navElement.href ? 'scale-x-100' : ''}`}
               />
             </div>
           ))}
           {/* TODO: add link to About page */}
-          <div className="relative group p-2">
+          {/* <div className="relative group p-2">
             <Link href="/" className="nav-link-text">
               About
             </Link>
-            <span className={`nav-link-text-underline ${pathname === '/' ? 'scale-x-100' : ''}`} />
-          </div>
+            <span className={`nav-link-text-underline  scale-x-0 group-hover:scale-x-100 ${pathname === '/' ? 'scale-x-100' : ''}`} />
+          </div> */}
           <div className="relative group p-2">
             <Link href="/auth/signin" className="nav-link-text font-bold">
               Login
             </Link>
             <span
-              className={`nav-link-text-underline ${pathname === '/auth/signin' ? 'scale-x-100' : ''}`}
+              className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100  ${pathname === '/auth/signin' ? 'scale-x-100' : ''}`}
             />
           </div>
         </div>
