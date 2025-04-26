@@ -9,9 +9,9 @@ import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 interface ClientModalProps extends ModalProps {
   clientFullName: string
   clientEmail: string
-  affiliation: string
-  introduction: string
-  projects: ProjectDTOPlaceholder[]
+  affiliation?: string
+  introduction?: string
+  projects?: ProjectDTOPlaceholder[]
 }
 
 const ClientModal: React.FC<ClientModalProps> = ({
@@ -61,20 +61,28 @@ const ClientModal: React.FC<ClientModalProps> = ({
             )}
           </button>
         </div>
-        <div className="flex flex-row gap-3 items-center mb-6">
-          <Capsule variant="muted_blue" text="Affiliation" />
-          <Capsule variant="beige" text={affiliation} />
-        </div>
+        {affiliation && (
+          <div className="flex flex-row gap-3 items-center mb-6">
+            <Capsule variant="muted_blue" text="Affiliation" />
+            <Capsule variant="beige" text={affiliation} />
+          </div>
+        )}
 
-        <Capsule variant="muted_blue" text="Introduction" />
-        <p className="text-dark-blue font-inter text-sm whitespace-pre-wrap">{introduction}</p>
+        {introduction && (
+          <>
+            <Capsule variant="muted_blue" text="Introduction" />
+            <p className="text-dark-blue font-inter text-sm whitespace-pre-wrap">{introduction}</p>
+          </>
+        )}
       </div>
-      <ProjectCardList
-        className="bg-transparent-blue border-t-deeper-blue border-t max-w-full flex flex-col p-15 rounded-b-2xl gap-5"
-        headingClassName="text-3xl pb-3 tracking-wide"
-        heading="Projects"
-        projects={projects}
-      />
+      {projects && (
+        <ProjectCardList
+          className="bg-transparent-blue border-t-deeper-blue border-t max-w-full flex flex-col p-15 rounded-b-2xl gap-5"
+          headingClassName="text-3xl pb-3 tracking-wide"
+          heading="Projects"
+          projects={projects}
+        />
+      )}
     </Modal>
   )
 }
