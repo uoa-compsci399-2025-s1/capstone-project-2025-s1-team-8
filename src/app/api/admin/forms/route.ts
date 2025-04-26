@@ -19,16 +19,13 @@ class RouteWrapper {
   static async PATCH(_req: NextRequest) {
     const formService = new FormService()
     try {
-      const form = await formService.getForm()
       const body = UpdateFormRequestBody.parse(await _req.json())
-      const updatedFormData: UpdateFormData = { ...body }
-      const updatedForm = await formService.updateForm(form.id, updatedFormData)
+      const updatedForm = await formService.updateForm(body as UpdateFormData)
       return NextResponse.json(updatedForm)
     } catch (error) {
       if (error instanceof NotFound) {
         return NextResponse.json({ error: 'Form not found' }, { status: StatusCodes.NOT_FOUND })
-      }
-      if (error instanceof ZodError) {
+      } else if (error instanceof ZodError) {
         return NextResponse.json(
           { error: 'Invalid request body', details: error.flatten() },
           { status: StatusCodes.BAD_REQUEST },
