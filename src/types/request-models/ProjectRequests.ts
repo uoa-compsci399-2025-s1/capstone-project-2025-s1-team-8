@@ -55,7 +55,6 @@ export const CreateProjectRequestBody = z.object({
 export const CreateSemesterProjectRequestBody = z.object({
   number: z.number().min(1).nullable().optional(),
   project: z.union([z.string(), ProjectSchema]),
-  semester: z.union([z.string(), SemesterSchema]),
   status: z.nativeEnum(ProjectStatus),
   published: z.boolean(),
 })
