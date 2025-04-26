@@ -1,8 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
-import {
-  createMockNextPatchRequest,
-  paramsToPromise,
-} from '@/test-config/utils'
+import { createMockNextPatchRequest, paramsToPromise } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import SemesterService from '@/data-layer/services/SemesterService'
 import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
@@ -10,7 +7,6 @@ import { PATCH } from '@/app/api/semesters/[id]/projects/[projectId]/route'
 import { semesterMock } from '@/test-config/mocks/Semester.mock'
 
 describe('test /api/semesters/[id]/projects/[projectId]', () => {
-
   const projectService = new ProjectService()
   const semesterService = new SemesterService()
 
