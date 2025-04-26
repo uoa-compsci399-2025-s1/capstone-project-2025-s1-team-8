@@ -35,7 +35,9 @@ export const FormResponse: CollectionConfig = {
           },
         })
 
-        const nonClients = users.docs.filter((user) => user.role !== 'client')
+        const nonClients = users.docs.filter(
+          (user) => user.role !== 'client' && user.role !== 'admin',
+        )
 
         if (nonClients.length > 0) {
           const names = nonClients.map((u) => `${u.firstName} ${u.lastName}`).join(', ')
