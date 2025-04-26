@@ -31,6 +31,14 @@ describe('Form service tests', () => {
       expect(updatedForm.name).toEqual('updated form')
     })
 
+    it('not found - update a non-existingform', async () => {
+      await expect(
+        formService.updateForm({
+          name: 'updated form',
+        }),
+      ).rejects.toThrow('Not Found')
+    })
+
     it('delete a form by ID', async () => {
       const createdForm = await formService.createForm(formMock)
       await formService.deleteForm(createdForm.id)

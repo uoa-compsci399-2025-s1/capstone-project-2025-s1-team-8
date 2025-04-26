@@ -12,14 +12,14 @@ class RouteWrapper {
   /**
    * Updates the form if the request is made by an admin
    *
-   * @param _req
+   * @param req
    * @returns The updated form
    */
   @Security('jwt', ['admin'])
-  static async PATCH(_req: NextRequest) {
+  static async PATCH(req: NextRequest) {
     const formService = new FormService()
     try {
-      const body = UpdateFormRequestBody.parse(await _req.json())
+      const body = UpdateFormRequestBody.parse(await req.json())
       const updatedForm = await formService.updateForm(body as UpdateFormData)
       return NextResponse.json(updatedForm)
     } catch (error) {
