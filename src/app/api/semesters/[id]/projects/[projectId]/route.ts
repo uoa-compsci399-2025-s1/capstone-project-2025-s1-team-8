@@ -5,7 +5,7 @@ import ProjectService from '@/data-layer/services/ProjectService'
 import { NotFound } from 'payload'
 import { ZodError } from 'zod'
 import { PatchSemesterProjectRequestBody } from '@/types/request-models/ProjectRequests'
-import { SemesterSchema } from '@/types/Payload'
+import SemesterService from '@/data-layer/services/SemesterService'
 
 /**
  * Updates a semester project by its ID.
@@ -19,25 +19,17 @@ export const PATCH = async (
 ) => {
   const { id, projectId } = await params
   const projectService = new ProjectService()
+  const semesterService = new SemesterService()
   try {
     const data = PatchSemesterProjectRequestBody.parse(await req.json())
     const project = await projectService.getSemesterProject(projectId)
+    const fetchedSemester = await semesterService.getSemester(id)
 
-    if (typeof project.semester === 'string' && project.semester !== id) {
+    if (JSON.stringify(project.semester) !== JSON.stringify(fetchedSemester)){
       return NextResponse.json(
-        { error: 'Project not found in this semester' },
-        { status: StatusCodes.NOT_FOUND },
+        { error: 'Project does not belong to this semester' },
+        { status: StatusCodes.BAD_REQUEST },
       )
-    }
-
-    const semester = SemesterSchema.safeParse(project.semester)
-    if (semester.success) {
-      if (semester.data.id !== id) {
-        return NextResponse.json(
-          { error: 'Project not found in this semester' },
-          { status: StatusCodes.NOT_FOUND },
-        )
-      }
     }
 
     const updatedProject = await projectService.updateSemesterProject(projectId, data)
@@ -46,12 +38,12 @@ export const PATCH = async (
     if (error instanceof NotFound) {
       return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
     } else if (error instanceof ZodError) {
-      console.error('ZodError:', error.errors)
       return NextResponse.json(
         { error: 'Invalid request body' },
         { status: StatusCodes.BAD_REQUEST },
       )
     }
+    console.error('Error updating project:', error)
     return NextResponse.json(
       { error: 'Internal Server Error' },
       { status: StatusCodes.INTERNAL_SERVER_ERROR },
