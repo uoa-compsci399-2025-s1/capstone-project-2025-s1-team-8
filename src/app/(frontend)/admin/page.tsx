@@ -30,19 +30,22 @@ const Admin = () => {
       id: 'container-1' as UniqueIdentifier,
       title: 'Rejected',
       containerColor: 'light' as const,
-      items: [],
+      currentItems: [],
+      originalItems: [],
     },
     {
       id: 'container-2' as UniqueIdentifier,
       title: 'Pending',
       containerColor: 'medium' as const,
-      items: [],
+      currentItems: [],
+      originalItems: [],
     },
     {
       id: 'container-3' as UniqueIdentifier,
       title: 'Accepted',
       containerColor: 'dark' as const,
-      items: [],
+      currentItems: [],
+      originalItems: [],
     },
   ]
 
