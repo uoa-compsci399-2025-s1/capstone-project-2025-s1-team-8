@@ -8,6 +8,7 @@ import {
   CreateFormQuestionData,
 } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
+import { NotFound } from 'payload'
 
 export default class FormService {
   /**
@@ -29,11 +30,16 @@ export default class FormService {
    * @param formID The ID of the form to retrieve
    * @returns The retrieved form document
    */
-  public async getForm(formID: string): Promise<Form> {
-    return await payload.findByID({
-      collection: 'form',
-      id: formID,
-    })
+  public async getForm(): Promise<Form> {
+    const form = (
+      await payload.find({
+        collection: 'form',
+      })
+    ).docs[0]
+    if (!form) {
+      throw new NotFound(() => 'Not Found')
+    }
+    return form
   }
 
   /**
