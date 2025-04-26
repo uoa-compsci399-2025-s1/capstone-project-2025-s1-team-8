@@ -3,7 +3,6 @@ import {
   FormResponseSchema,
   MediaSchema,
   ProjectSchema,
-  SemesterSchema,
   UserSchema,
 } from '../Payload'
 import { ProjectStatus } from '../Project'

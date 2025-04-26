@@ -14,8 +14,10 @@ import { semesterMock } from '@/test-config/mocks/Semester.mock'
 import { ProjectStatus } from '@/types/Project'
 import SemesterService from '@/data-layer/services/SemesterService'
 
+const projectService = new ProjectService()
+const semesterService = new SemesterService()
+
 describe('test /api/semesters/[id]/projects', () => {
-  const projectService = new ProjectService()
 
   it('should get no semesterprojects if none are created', async () => {
     const res = await GET(createMockNextRequest('api/semesters/123/projects'), {
@@ -172,8 +174,6 @@ describe('test /api/semesters/[id]/projects', () => {
 })
 
 describe('POST /api/semesters/[id]/projects', () => {
-  const projectService = new ProjectService()
-  const semesterService = new SemesterService()
   it('should create a new semester project', async () => {
     const semester = await semesterService.createSemester(semesterMock)
     const res = await POST(
