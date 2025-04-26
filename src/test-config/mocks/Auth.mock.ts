@@ -78,7 +78,7 @@ export const adminMock: User = {
   role: UserRole.Admin,
   firstName: 'Admin',
   lastName: '1',
-  email: 'admin123@gmail.com'
+  email: 'admin123@gmail.com',
 }
 
 export const clientMock: User = {
@@ -88,7 +88,7 @@ export const clientMock: User = {
   role: UserRole.Client,
   firstName: 'Client',
   lastName: '1',
-  email: 'client123@gmail.com'
+  email: 'client123@gmail.com',
 }
 
 export const studentMock: User = {
@@ -98,5 +98,5 @@ export const studentMock: User = {
   role: UserRole.Student,
   firstName: 'Student',
   lastName: '1',
-  email: 'student123@gmail.com'
+  email: 'student123@gmail.com',
 }

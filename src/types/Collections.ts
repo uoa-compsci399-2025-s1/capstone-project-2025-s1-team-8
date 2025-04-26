@@ -39,9 +39,7 @@ export type UpdateProjectData = Partial<CreateProjectData>
  */
 export type CreateUserData = Omit<
   User,
-  | 'id'
-  | 'createdAt'
-  | 'updatedAt'
+  'id' | 'createdAt' | 'updatedAt'
   // | 'loginAttempts'
   // | 'lockUntil'
   // | 'salt'

@@ -34,9 +34,7 @@ export const Authentication: CollectionConfig = {
     {
       name: 'provider',
       type: 'select',
-      options: [
-        { label: 'Google', value: 'google' },
-      ],
+      options: [{ label: 'Google', value: 'google' }],
       required: false,
       admin: {
         description: 'The type of authentication',
@@ -63,7 +61,8 @@ export const Authentication: CollectionConfig = {
       type: 'text',
       required: false,
       admin: {
-        description: 'The access token of the user authentication, only applicable for google oauth',
+        description:
+          'The access token of the user authentication, only applicable for google oauth',
       },
     },
     {
