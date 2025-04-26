@@ -96,7 +96,7 @@ export const ProjectSchema = z.object({
   clients: z.array(z.union([z.string(), UserSchema])),
   description: z.string(),
   attachments: z.array(z.union([z.string(), MediaSchema])).optional(),
-  deadline: z.string().nullable(),
+  deadline: z.string().optional(),
   timestamp: z.string(),
   updatedAt: z.string(),
   createdAt: z.string(),

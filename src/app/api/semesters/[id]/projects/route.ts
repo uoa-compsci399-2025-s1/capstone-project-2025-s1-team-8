@@ -2,7 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 
 import ProjectService from '@/data-layer/services/ProjectService'
+import SemesterService from '@/data-layer/services/SemesterService'
 import { ProjectStatus } from '@/types/Project'
+import { ZodError } from 'zod'
+import { CreateSemesterProjectRequestBody } from '@/types/request-models/ProjectRequests'
+import { CreateSemesterProjectData } from '@/types/Collections'
+import { NotFound } from 'payload'
 
 /**
  * Fetches all projects for a semester
@@ -46,4 +51,42 @@ export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: 
     },
   )
   return NextResponse.json({ data: projects, nextPage })
+}
+
+/**
+ * Creates a new project for a semester
+ * @param req - The request object.
+ * @param params - The parameters object containing the semester ID.
+ * @return A JSON response containing the created semester project.
+ */
+
+export const POST = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
+  const projectService = new ProjectService()
+  const semesterService = new SemesterService()
+  const { id } = await params
+
+  try {
+    const semester = await semesterService.getSemester(id)
+    const bodyData = await req.json()
+    const body = CreateSemesterProjectRequestBody.parse(bodyData)
+    const data = await projectService.createSemesterProject({
+      ...body,
+      semester: semester,
+    } as CreateSemesterProjectData)
+    return NextResponse.json({ data }, { status: StatusCodes.CREATED })
+  } catch (error) {
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        { error: 'Invalid request body', details: error.flatten() },
+        { status: StatusCodes.BAD_REQUEST },
+      )
+    } else if (error instanceof NotFound) {
+      return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
+    }
+    console.error('Error', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: StatusCodes.INTERNAL_SERVER_ERROR },
+    )
+  }
 }

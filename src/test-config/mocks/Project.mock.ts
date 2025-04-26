@@ -17,6 +17,7 @@ export const projectMock: Project = {
   description: 'Description 1',
   clients: [mockClient1],
   formResponse: formResponseMock,
+  deadline: new Date().toISOString(),
   timestamp: new Date().toISOString(),
 }
 
@@ -99,6 +100,13 @@ export const semesterProjectMock4: SemesterProject = {
   published: false,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
+}
+export const semesterProjectCreateMock2: CreateSemesterProjectData = {
+  number: 2,
+  project: projectMock,
+  semester: semesterMock,
+  status: ProjectStatus.Accepted,
+  published: false,
 }
 
 export const semesterProjectMock5: SemesterProject = {
