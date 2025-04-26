@@ -18,7 +18,6 @@ const projectService = new ProjectService()
 const semesterService = new SemesterService()
 
 describe('test /api/semesters/[id]/projects', () => {
-
   it('should get no semesterprojects if none are created', async () => {
     const res = await GET(createMockNextRequest('api/semesters/123/projects'), {
       params: paramsToPromise({ id: '123' }),

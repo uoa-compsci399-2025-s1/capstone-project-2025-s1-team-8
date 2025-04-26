@@ -68,8 +68,11 @@ export const POST = async (req: NextRequest, { params }: { params: Promise<{ id:
   try {
     const semester = await semesterService.getSemester(id)
     const bodyData = await req.json()
-    const body = CreateSemesterProjectRequestBody.parse({ ...bodyData, semester: semester })
-    const data = await projectService.createSemesterProject(body as CreateSemesterProjectData)
+    const body = CreateSemesterProjectRequestBody.parse(bodyData)
+    const data = await projectService.createSemesterProject({
+      ...body,
+      semester: semester,
+    } as CreateSemesterProjectData)
     return NextResponse.json({ data }, { status: StatusCodes.CREATED })
   } catch (error) {
     if (error instanceof ZodError) {

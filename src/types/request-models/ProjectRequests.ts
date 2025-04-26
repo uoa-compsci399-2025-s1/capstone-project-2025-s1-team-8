@@ -1,10 +1,5 @@
 import { z } from 'zod'
-import {
-  FormResponseSchema,
-  MediaSchema,
-  ProjectSchema,
-  UserSchema,
-} from '../Payload'
+import { FormResponseSchema, MediaSchema, ProjectSchema, UserSchema } from '../Payload'
 import { ProjectStatus } from '../Project'
 
 export const UpdateProjectRequestBody = z.object({
