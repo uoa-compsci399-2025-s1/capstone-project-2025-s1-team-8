@@ -36,7 +36,7 @@
     font-size: 18px;
     line-height: 32px;
 
-    background: rgb(0, 0, 0);
+    background: #f8f5e9;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -52,7 +52,6 @@
     line-height: 32px;
 
     margin: 0;
-    color: rgb(1000, 1000, 1000);
 
     @media (max-width: 1024px) {
       font-size: 15px;
@@ -193,12 +192,16 @@
     @apply text-dark-blue uppercase hover:cursor-pointer text-sm sm:text-sm;
   }
   .nav-link-text-underline {
-    @apply absolute left-0 bottom-0 w-full h-1 bg-muted-blue scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-lg;
+    @apply absolute left-0 bottom-0 w-full h-1 bg-muted-blue transition-transform duration-300 rounded-lg;
   }
   .small-info-tag {
     @apply text-xs pl-2 pr-2 rounded-b-lg rounded-t-lg;
   }
   .editable-capsule {
     @apply border border-muted-blue h-fit w-fit px-2.5 py-1 rounded-xl text-sm placeholder-muted-blue focus:outline-muted-blue focus:outline-2 shadow bg-light-beige text-dark-blue;
+  }
+
+  .admin-dash-carousel-item {
+    @apply flex px-30 py-2 flex-col w-full self-stretch justify-center items-center flex-shrink-0 h-full overflow-hidden outline-none;
   }
 }
