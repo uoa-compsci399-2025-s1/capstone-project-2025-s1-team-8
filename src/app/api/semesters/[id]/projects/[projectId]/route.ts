@@ -21,13 +21,19 @@ export const GET = async (
   try {
     const project = await projectService.getSemesterProject(projectId)
     const fetchedSemester = await semesterService.getSemester(id)
-    if (JSON.stringify(project.semester) !== JSON.stringify(fetchedSemester)){
-      return NextResponse.json({ error: 'Project or semester not found!' }, { status: StatusCodes.BAD_REQUEST })
+    if (JSON.stringify(project.semester) !== JSON.stringify(fetchedSemester)) {
+      return NextResponse.json(
+        { error: 'Project or semester not found!' },
+        { status: StatusCodes.BAD_REQUEST },
+      )
     }
     return NextResponse.json({ data: project })
   } catch (error) {
     if (error instanceof NotFound) {
-      return NextResponse.json({ error: 'Project or semester not found!' }, { status: StatusCodes.NOT_FOUND })
+      return NextResponse.json(
+        { error: 'Project or semester not found!' },
+        { status: StatusCodes.NOT_FOUND },
+      )
     }
     console.error('Error fetching project:', error)
     return NextResponse.json(
