@@ -415,7 +415,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
         </div>
 
         <p className="text-dark-pink text-sm">
-          You've made changes to the project order. Don't forget to save!
+          You&rsquo;ve made changes to the project order. Don&rsquo;t forget to save!
         </p>
       </div>
 

@@ -39,7 +39,7 @@ const ProjectContainer = ({
 
   useEffect(() => {
     onChange?.(selectedFilter)
-  }, [selectedFilter])
+  }, [selectedFilter, onChange])
 
   useEffect(() => {
     if (containerRef.current) {

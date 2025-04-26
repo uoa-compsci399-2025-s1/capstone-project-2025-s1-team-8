@@ -2,7 +2,6 @@ import React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import ProjectFilter from './ProjectFilter'
 import { FilterProvider } from '@/contexts/FilterContext' // adjust the import if needed
-import { SortableKeys } from '@/components/Generic/Filter/ProjectFilterAssets'
 
 const meta: Meta<typeof ProjectFilter> = {
   title: 'Composite/ProjectFilter',
@@ -12,7 +11,7 @@ const meta: Meta<typeof ProjectFilter> = {
       <FilterProvider
         value={{
           selectedFilter: undefined,
-          setSelectedFilter: function (filter: SortableKeys): void {
+          setSelectedFilter: function (): void {
             throw new Error('Function not implemented.')
           },
         }}

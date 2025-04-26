@@ -16,7 +16,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   onClose,
   className = '',
   projectInfo: {
-    projectId,
     projectTitle,
     projectClientDetails,
     otherClientDetails = [],
