@@ -1,7 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
 import {
-  clearCollection,
-  testPayloadObject,
   createMockNextRequest,
   paramsToPromise,
   createMockNextPostRequest,
