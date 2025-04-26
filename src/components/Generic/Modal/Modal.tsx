@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { XMarkIcon } from '@heroicons/react/16/solid'
 
 export interface ModalProps {
-  children: ReactNode
+  children?: ReactNode
   open: boolean // Whether the modal is open
   onClose: () => void // Function to close the modal
   className?: string // Additional classes for modal container
