@@ -405,7 +405,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
   }
 
   return (
-    <div className="mx-auto mx-auto w-full relative">
+    <div className="mx-auto w-full">
       {showNotification && (
         <div className="fixed top-6 right-6 z-50 bg-[#fff0f8] border border-[#ffc7e8] shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col animate-fade-in">
           <div className="flex items-center gap-2">
@@ -418,7 +418,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
           </p>
         </div>
       )}
-      <div className="flex gap-7 mt-10 flex-wrap md:flex-nowrap">
+      <div className="flex gap-7 flex-wrap md:flex-nowrap">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCorners}

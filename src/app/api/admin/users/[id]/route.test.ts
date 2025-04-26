@@ -1,11 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
+import { NextRequest } from 'next/server'
 
-import {
-  clearCollection,
-  createMockNextPatchRequest,
-  paramsToPromise,
-  testPayloadObject,
-} from '@/test-config/utils'
+import { createMockNextPatchRequest, paramsToPromise } from '@/test-config/utils'
 import UserService from '@/data-layer/services/UserService'
 import {
   adminCreateMock,
@@ -13,17 +9,41 @@ import {
   clientAdditionalInfoCreateMock,
   clientCreateMock,
 } from '@/test-config/mocks/User.mock'
-import { GET, PATCH } from '@/app/api/admin/users/[id]/route'
-import { NextRequest } from 'next/server'
+import { GET, PATCH, DELETE } from '@/app/api/admin/users/[id]/route'
 import { UserCombinedInfo } from '@/types/Collections'
+import { cookies } from 'next/headers'
+import { AUTH_COOKIE_NAME } from '@/types/Auth'
+import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
-describe('test /api/admin/users/[id]', () => {
+describe('test /api/admin/users/[id]', async () => {
   const userService = new UserService()
-  afterEach(async () => {
-    await clearCollection(testPayloadObject, 'user')
-  })
+  const cookieStore = await cookies()
 
   describe('test GET /api/admin/users/[id]', () => {
+    it('should return a 401 if no auth cookie', async () => {
+      const res = await GET({} as NextRequest, {
+        params: paramsToPromise({ id: 'nonexistent' }),
+      })
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+      expect(await res.json()).toEqual({ error: 'No token provided' })
+    })
+
+    it('should return a 401 if the user is a student or client', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, studentToken)
+      const res = await GET({} as NextRequest, {
+        params: paramsToPromise({ id: 'test' }),
+      })
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+      expect(await res.json()).toEqual({ error: 'No scope' })
+
+      cookieStore.set(AUTH_COOKIE_NAME, clientToken)
+      const res2 = await GET({} as NextRequest, {
+        params: paramsToPromise({ id: 'test' }),
+      })
+      expect(res2.status).toBe(StatusCodes.UNAUTHORIZED)
+      expect(await res2.json()).toEqual({ error: 'No scope' })
+    })
+
     it('fetch client by Id', async () => {
       const clientMock = await userService.createUser(clientCreateMock)
       const clientAdditionalInfoMock = await userService.createClientAdditionalInfo({
@@ -35,6 +55,7 @@ describe('test /api/admin/users/[id]', () => {
           ? clientAdditionalInfoMock.client.id
           : clientAdditionalInfoMock.client
 
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await GET({} as NextRequest, {
         params: paramsToPromise({ id }),
       })
@@ -49,17 +70,28 @@ describe('test /api/admin/users/[id]', () => {
     })
 
     it('fetch generic user by Id', async () => {
-      const newAdmin = await userService.createUser(adminCreateMock)
-      const newAdminInfo = await userService.createClientAdditionalInfo({
+      const newClient = await userService.createUser(adminCreateMock)
+      const newClientInfo = await userService.createClientAdditionalInfo({
         ...adminCreateMock,
-        client: newAdmin,
+        client: newClient,
       })
-      expect(newAdminInfo.client).toEqual(newAdmin)
-      expect(newAdminInfo.introduction === undefined).toBe(true)
-      expect(newAdminInfo.affiliation === undefined).toBe(true)
+
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const res = await GET({} as NextRequest, {
+        params: paramsToPromise({ id: newClient.id }),
+      })
+
+      const json = await res.json()
+      expect(res.status).toBe(StatusCodes.OK)
+      expect(json).toEqual({
+        ...newClient,
+        introduction: newClientInfo.introduction,
+        affiliation: newClientInfo.affiliation,
+      })
     })
 
     it('should return a 404 error if the user does not exist', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await GET({} as NextRequest, {
         params: paramsToPromise({ id: 'nonexistent' }),
       })
@@ -69,6 +101,30 @@ describe('test /api/admin/users/[id]', () => {
   })
 
   describe('tests PATCH /api/admin/users/[id]', () => {
+    it('should return a 401 error if the user is not authenticated', async () => {
+      const res = await PATCH({} as NextRequest, {
+        params: paramsToPromise({ id: '1' }),
+      })
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+      expect(await res.json()).toEqual({ error: 'No token provided' })
+    })
+
+    it('should return a 401 if the user is a student or client', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, studentToken)
+      const res = await PATCH({} as NextRequest, {
+        params: paramsToPromise({ id: 'eee' }),
+      })
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+      expect(await res.json()).toEqual({ error: 'No scope' })
+
+      cookieStore.set(AUTH_COOKIE_NAME, clientToken)
+      const res2 = await PATCH({} as NextRequest, {
+        params: paramsToPromise({ id: 'eee' }),
+      })
+      expect(res2.status).toBe(StatusCodes.UNAUTHORIZED)
+      expect(await res2.json()).toEqual({ error: 'No scope' })
+    })
+
     it("update client user's firstName by Id", async () => {
       const clientMock = await userService.createUser(clientCreateMock)
       const clientAdditionalInfoMock = await userService.createClientAdditionalInfo({
@@ -84,6 +140,7 @@ describe('test /api/admin/users/[id]', () => {
         'http://localhost:3000/api/admin/users/' + id,
         payload,
       )
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await PATCH(mockedReq, {
         params: paramsToPromise({ id }),
       })
@@ -118,6 +175,7 @@ describe('test /api/admin/users/[id]', () => {
         'http://localhost:3000/api/admin/users/' + id,
         payload,
       )
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await PATCH(mockedReq, {
         params: paramsToPromise({ id }),
       })
@@ -141,6 +199,7 @@ describe('test /api/admin/users/[id]', () => {
         'http://localhost:3000/api/admin/users/' + id,
         payload,
       )
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await PATCH(mockedReq, {
         params: paramsToPromise({ id }),
       })
@@ -166,6 +225,7 @@ describe('test /api/admin/users/[id]', () => {
         'http://localhost:3000/api/admin/users/' + id,
         payload,
       )
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await PATCH(mockedReq, {
         params: paramsToPromise({ id }),
       })
@@ -190,6 +250,7 @@ describe('test /api/admin/users/[id]', () => {
         'http://localhost:3000/api/admin/users/' + id,
         payload,
       )
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await PATCH(mockedReq, {
         params: paramsToPromise({ id }),
       })
@@ -203,11 +264,54 @@ describe('test /api/admin/users/[id]', () => {
     })
 
     it('should return a 404 error if the user does not exist', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await PATCH({} as NextRequest, {
         params: paramsToPromise({ id: 'nonexistent' }),
       })
       expect(res.status).toBe(StatusCodes.NOT_FOUND)
       expect(await res.json()).toEqual({ error: 'User not found' })
+    })
+  })
+
+  describe('tests DELETE /api/admin/users/[id]', () => {
+    it('should return a 401 if the user is not authenticated', async () => {
+      const res = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: 'nonexistent' }),
+      })
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+      expect(await res.json()).toEqual({ error: 'No token provided' })
+    })
+
+    it('should return a 401 if the user is a client or student', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, studentToken)
+      const res = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: 'nonexistent' }),
+      })
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+      expect(await res.json()).toEqual({ error: 'No scope' })
+
+      cookieStore.set(AUTH_COOKIE_NAME, clientToken)
+      const res2 = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: 'nonexistent' }),
+      })
+      expect(res2.status).toBe(StatusCodes.UNAUTHORIZED)
+      expect(await res2.json()).toEqual({ error: 'No scope' })
+    })
+
+    it('should delete a user', async () => {
+      const newUser = await userService.createUser(clientCreateMock)
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const res = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: newUser.id }),
+      })
+      expect(res.status).toBe(StatusCodes.NO_CONTENT)
+      await expect(userService.getUser(newUser.id)).rejects.toThrow('Not Found')
+    })
+
+    it('should return a 404 error if the user does not exist', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const res = await DELETE({} as NextRequest, { params: paramsToPromise({ id: 'noid' }) })
+      expect(res.status).toBe(StatusCodes.NOT_FOUND)
     })
   })
 })

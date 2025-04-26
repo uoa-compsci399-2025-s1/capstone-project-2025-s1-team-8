@@ -2,6 +2,8 @@ import { CreateProjectData, CreateSemesterProjectData } from '@/types/Collection
 import { mockClient1, mockClient2 } from './User.mock'
 import { Project, SemesterProject } from '@/payload-types'
 import { ProjectStatus } from '@/types/Project'
+import { formResponseMock } from './Form.mock'
+import { semesterMock } from '@/test-config/mocks/Semester.mock'
 
 /*
  * Project mocks
@@ -14,6 +16,7 @@ export const projectMock: Project = {
   name: 'Project 1',
   description: 'Description 1',
   clients: [mockClient1],
+  formResponse: formResponseMock,
   timestamp: new Date().toISOString(),
 }
 
@@ -24,6 +27,7 @@ export const projectMock2: Project = {
   name: 'Project 2',
   description: 'Description 2',
   clients: [mockClient1, mockClient2],
+  formResponse: '67ff38a56a35e1b6cf43a682',
   timestamp: new Date().toISOString(),
 }
 
@@ -31,6 +35,7 @@ export const projectCreateMock: CreateProjectData = {
   name: 'Project 1',
   description: 'Description 1',
   clients: [mockClient1],
+  formResponse: '67ff38a56a35e1b6cf43a682',
   timestamp: new Date().toISOString(),
 }
 
@@ -38,6 +43,7 @@ export const projectCreateMock2: CreateProjectData = {
   name: 'Project 2',
   description: 'Description 2',
   clients: [mockClient1.id, mockClient2.id],
+  formResponse: '67ff38a56a35e1b6cf43a682',
   timestamp: new Date().toISOString(),
 }
 
@@ -95,9 +101,21 @@ export const semesterProjectMock4: SemesterProject = {
   updatedAt: new Date().toISOString(),
 }
 
+export const semesterProjectMock5: SemesterProject = {
+  id: '67ff38a56a35e1b6cf43a68k',
+  number: 5,
+  project: projectMock,
+  semester: semesterMock,
+  status: ProjectStatus.Pending,
+  published: false,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+}
+
 export const semesterProjectListMock: SemesterProject[] = [
   semesterProjectMock,
   semesterProjectMock2,
   semesterProjectMock3,
   semesterProjectMock4,
+  semesterProjectMock5,
 ]

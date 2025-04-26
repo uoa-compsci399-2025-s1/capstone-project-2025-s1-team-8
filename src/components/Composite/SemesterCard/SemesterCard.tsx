@@ -1,8 +1,10 @@
 'use client'
 import React, { useState, useRef, useEffect } from 'react'
+import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import ProjectCard from '@/components/Generic/ProjectCard/ProjectCard'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
+import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import { PlaceholderProjectDetailsType } from '@/types/Project'
 
@@ -138,14 +140,12 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
           </div>
 
           {/* Projects Section */}
-          <h2 className="text-xl sm:text-2xl text-dark-blue font-inter py-4 sm:py-6">
-            Approved projects
-          </h2>
-          <div className="flex flex-col gap-4 overflow-x-visible overflow-y-auto max-h-[490px] p-[1px] pb-3 sm:pb-4">
-            {approvedProjects.map((project, index) => (
-              <ProjectCard key={index} projectInfo={project} />
-            ))}
-          </div>
+          <ProjectCardList
+            className="pb-1"
+            headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
+            heading="Approved projects"
+            projects={approvedProjects}
+          />
         </div>
       </div>
     </div>

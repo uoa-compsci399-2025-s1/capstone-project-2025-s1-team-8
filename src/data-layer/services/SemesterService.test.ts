@@ -1,13 +1,9 @@
-import { clearCollection, testPayloadObject } from '@/test-config/utils'
+import { testPayloadObject } from '@/test-config/utils'
 import SemesterService from './SemesterService'
 import { semesterCreateMock, semesterCreateMock2 } from '@/test-config/mocks/Semester.mock'
 
 describe('Semester service tests', () => {
   const semesterService = new SemesterService()
-
-  afterEach(async () => {
-    await clearCollection(testPayloadObject, 'semester')
-  })
 
   it('should create a semester', async () => {
     const newSemester = await semesterService.createSemester(semesterCreateMock)
