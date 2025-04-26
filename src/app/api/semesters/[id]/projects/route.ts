@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 
 import ProjectService from '@/data-layer/services/ProjectService'
+import SemesterService from '@/data-layer/services/SemesterService'
 import { ProjectStatus } from '@/types/Project'
 import { ZodError } from 'zod'
 import { CreateSemesterProjectRequestBody } from '@/types/request-models/ProjectRequests'
 import { CreateSemesterProjectData } from '@/types/Collections'
+import { NotFound } from 'payload'
 
 /**
  * Fetches all projects for a semester
@@ -60,21 +62,28 @@ export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: 
 
 export const POST = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
   const projectService = new ProjectService()
+  const semesterService = new SemesterService()
   const { id } = await params
 
   try {
-    const body = CreateSemesterProjectRequestBody.parse({ ...(await req.json()), semester: id })
+    const semester = await semesterService.getSemester(id)
+    const bodyData = await req.json()
+    const body = CreateSemesterProjectRequestBody.parse({ ...bodyData, semester: semester })
     const data = await projectService.createSemesterProject(body as CreateSemesterProjectData)
     return NextResponse.json({ data }, { status: StatusCodes.CREATED })
   } catch (error) {
-    console.error(error)
+    console.error("Error", error)
     if (error instanceof ZodError) {
       return NextResponse.json(
         { error: 'Invalid request body', details: error.flatten() },
         { status: StatusCodes.BAD_REQUEST },
       )
+    } else if (error instanceof NotFound){
+      return NextResponse.json(
+        { error: 'Semester not found' },
+        { status: StatusCodes.NOT_FOUND },
+      )
     }
-    console.error(error)
     return NextResponse.json(
       { error: 'Bad request body' },
       { status: StatusCodes.INTERNAL_SERVER_ERROR },
