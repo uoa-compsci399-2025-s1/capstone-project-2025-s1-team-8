@@ -18,16 +18,11 @@ export const GET = async (
   const { id, projectId } = await params
   const projectService = new ProjectService()
   const semesterService = new SemesterService()
+  let project
+  let fetchedSemester
+
   try {
-    const project = await projectService.getSemesterProject(projectId)
-    const fetchedSemester = await semesterService.getSemester(id)
-    if (JSON.stringify(project.semester) !== JSON.stringify(fetchedSemester)) {
-      return NextResponse.json(
-        { error: 'Project or semester not found!' },
-        { status: StatusCodes.BAD_REQUEST },
-      )
-    }
-    return NextResponse.json({ data: project })
+    project = await projectService.getSemesterProject(projectId)
   } catch (error) {
     if (error instanceof NotFound) {
       return NextResponse.json(
@@ -41,4 +36,27 @@ export const GET = async (
       { status: StatusCodes.INTERNAL_SERVER_ERROR },
     )
   }
+
+  try {
+    fetchedSemester = await semesterService.getSemester(id)
+  } catch (error) {
+    if (error instanceof NotFound) {
+      return NextResponse.json(
+        { error: 'Project or semester not found!' },
+        { status: StatusCodes.NOT_FOUND },
+      )
+    }
+    console.error('Error fetching project:', error)
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: StatusCodes.INTERNAL_SERVER_ERROR },
+    )
+  }
+  if (JSON.stringify(project.semester) !== JSON.stringify(fetchedSemester)) {
+    return NextResponse.json(
+      { error: 'Project or semester not found!' },
+      { status: StatusCodes.BAD_REQUEST },
+    )
+  }
+  return NextResponse.json({ data: project })
 }
