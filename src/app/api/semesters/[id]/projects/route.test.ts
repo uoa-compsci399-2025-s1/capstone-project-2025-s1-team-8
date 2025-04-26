@@ -210,5 +210,4 @@ describe('POST /api/semesters/[id]/projects', () => {
     )
     expect(res.status).toBe(StatusCodes.NOT_FOUND)
   })
-
 })
