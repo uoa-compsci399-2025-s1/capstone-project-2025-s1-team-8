@@ -28,10 +28,7 @@ export const PATCH = async (
     project = await projectService.getSemesterProject(projectId)
   } catch (error) {
     if (error instanceof NotFound) {
-      return NextResponse.json(
-        { error: 'Project not found!' },
-        { status: StatusCodes.NOT_FOUND },
-      )
+      return NextResponse.json({ error: 'Project not found!' }, { status: StatusCodes.NOT_FOUND })
     }
     console.error('Error updating project:', error)
     return NextResponse.json(
@@ -44,10 +41,7 @@ export const PATCH = async (
     fetchedSemester = await semesterService.getSemester(id)
   } catch (error) {
     if (error instanceof NotFound) {
-      return NextResponse.json(
-        { error: 'Semester not found!' },
-        { status: StatusCodes.NOT_FOUND },
-      )
+      return NextResponse.json({ error: 'Semester not found!' }, { status: StatusCodes.NOT_FOUND })
     }
     console.error('Error updating project:', error)
     return NextResponse.json(
@@ -68,7 +62,7 @@ export const PATCH = async (
     const updatedProject = await projectService.updateSemesterProject(projectId, data)
     return NextResponse.json({ data: updatedProject })
   } catch (error) {
-     if (error instanceof ZodError) {
+    if (error instanceof ZodError) {
       return NextResponse.json(
         { error: 'Invalid request body' },
         { status: StatusCodes.BAD_REQUEST },
