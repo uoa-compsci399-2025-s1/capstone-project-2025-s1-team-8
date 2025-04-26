@@ -405,19 +405,20 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
   }
 
   return (
-    <div className="mx-auto w-full">
-      {showNotification && (
-        <div className="fixed top-6 right-6 z-50 bg-[#fff0f8] border border-[#ffc7e8] shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col animate-fade-in">
-          <div className="flex items-center gap-2">
-            <FiAlertCircle className="text-[#ff2aca] w-5 h-5 flex-shrink-0" />
-            <p className="text-[#cc2296] font-medium">Unsaved changes</p>
-          </div>
-
-          <p className="text-[#b81c88] text-sm">
-            You've made changes to the project order. Don't forget to save!
-          </p>
+    <div className="mx-auto w-full relative">
+      <div
+        className={` ${showNotification ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 absolute top-6 right-6 z-50 bg-light-pink ring ring-2 ring-pink-1 shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`}
+      >
+        <div className="flex items-center gap-2">
+          <FiAlertCircle className="text-pink-2 w-5 h-5 flex-shrink-0" />
+          <p className="text-dark-pink font-medium">Unsaved changes</p>
         </div>
-      )}
+
+        <p className="text-dark-pink text-sm">
+          You've made changes to the project order. Don't forget to save!
+        </p>
+      </div>
+
       <div className="flex gap-7 flex-wrap md:flex-nowrap">
         <DndContext
           sensors={sensors}

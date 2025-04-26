@@ -75,7 +75,7 @@ const Admin = () => {
       <div className="py-4 relative min-h-[300px]">
         <div className="flex flex-col overflow-hidden w-full">
           <motion.div
-            className="flex flex-1 min-h-0 [direction:ltr] [will-change:transform]"
+            className="flex flex-1 min-h-0 [direction:ltr]"
             transition={{
               tension: 190,
               friction: 200,
