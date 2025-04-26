@@ -17,14 +17,10 @@ describe('Form service tests', () => {
       expect(newForm).toEqual(fetchedForm)
     })
 
-    it('find a form by ID', async () => {
+    it('fetches the form', async () => {
       const createdForm = await formService.createForm(formMock)
-      const fetchedForm = await formService.getForm(createdForm.id)
+      const fetchedForm = await formService.getForm()
       expect(fetchedForm).toEqual(createdForm)
-    })
-
-    it('not found - find form with nonexistent id', async () => {
-      await expect(formService.getForm('nonexistent_id')).rejects.toThrow('Not Found')
     })
 
     it('update a form by ID', async () => {
@@ -56,6 +52,10 @@ describe('Form service tests', () => {
 
     it('not found - delete a form by nonexisting ID', async () => {
       await expect(formService.deleteForm('non-existing-id')).rejects.toThrow('Not Found')
+    })
+
+    it('not found - fetch a form by nonexisting ID', async () => {
+      await expect(formService.getForm()).rejects.toThrow('Not Found')
     })
   })
 

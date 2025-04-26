@@ -12,7 +12,7 @@ interface ClientDashboardProps {
 
 const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects }) => {
   return (
-    <div className="bg-beige p-15">
+    <div>
       <div className="grid grid-cols-2 grid-rows-[auto_1fr] gap-10 pb-12 items-stretch">
         <CreateProjectCard />
         <div className="row-start-2 -ml-5">
