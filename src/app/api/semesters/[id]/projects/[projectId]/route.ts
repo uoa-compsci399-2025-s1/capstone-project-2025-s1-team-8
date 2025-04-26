@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes'
 
 import ProjectService from '@/data-layer/services/ProjectService'
 import { NotFound } from 'payload'
-import { SemesterSchema } from '@/types/Payload'
+import SemesterService from '@/data-layer/services/SemesterService'
 
 /**
  * Gets a semester project by its ID.
@@ -17,28 +17,17 @@ export const GET = async (
 ) => {
   const { id, projectId } = await params
   const projectService = new ProjectService()
+  const semesterService = new SemesterService()
   try {
     const project = await projectService.getSemesterProject(projectId)
-    if (typeof project.semester === 'string' && project.semester !== id) {
-      return NextResponse.json(
-        { error: 'Project not found in this semester' },
-        { status: StatusCodes.NOT_FOUND },
-      )
-    }
-
-    const semester = SemesterSchema.safeParse(project.semester)
-    if (semester.success) {
-      if (semester.data.id !== id) {
-        return NextResponse.json(
-          { error: 'Project not found in this semester' },
-          { status: StatusCodes.NOT_FOUND },
-        )
-      }
+    const fetchedSemester = await semesterService.getSemester(id)
+    if (JSON.stringify(project.semester) !== JSON.stringify(fetchedSemester)){
+      return NextResponse.json({ error: 'Project or semester not found!' }, { status: StatusCodes.BAD_REQUEST })
     }
     return NextResponse.json({ data: project })
   } catch (error) {
     if (error instanceof NotFound) {
-      return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
+      return NextResponse.json({ error: 'Project or semester not found!' }, { status: StatusCodes.NOT_FOUND })
     }
     console.error('Error fetching project:', error)
     return NextResponse.json(
