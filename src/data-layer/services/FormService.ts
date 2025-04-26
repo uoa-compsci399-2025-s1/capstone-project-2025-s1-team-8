@@ -27,7 +27,6 @@ export default class FormService {
   /**
    * Retrieves a form document from the database by its ID.
    *
-   * @param formID The ID of the form to retrieve
    * @returns The retrieved form document
    */
   public async getForm(): Promise<Form> {
@@ -45,17 +44,16 @@ export default class FormService {
   /**
    * Updates a form from the database.
    *
-   * @param formID the ID of the form to update and
    * @param updatedForm the updated form data object
    * @returns An a form document
    */
-  public async updateForm(formID: string, updatedForm: UpdateFormData): Promise<Form> {
-    const result = await payload.update({
+  public async updateForm(updatedForm: UpdateFormData): Promise<Form> {
+    const form = await this.getForm()
+    return await payload.update({
       collection: 'form',
-      id: formID,
+      id: form.id,
       data: updatedForm,
     })
-    return result
   }
 
   /**
@@ -138,11 +136,10 @@ export default class FormService {
    * @returns The created formQuestion
    */
   public async createFormQuestion(newFormQuestion: CreateFormQuestionData): Promise<FormQuestion> {
-    const formQuestion = await payload.create({
+    return await payload.create({
       collection: 'formQuestion',
       data: newFormQuestion,
     })
-    return formQuestion
   }
 
   /**
@@ -152,12 +149,10 @@ export default class FormService {
    * @returns The retrieved formQuestion object
    */
   public async getFormQuestion(id: string): Promise<FormQuestion> {
-    const formQuestion = await payload.findByID({
+    return await payload.findByID({
       collection: 'formQuestion',
       id: id,
     })
-
-    return formQuestion
   }
 
   /**
@@ -183,12 +178,11 @@ export default class FormService {
     id: string,
     formQuestion: UpdateFormQuestionData,
   ): Promise<FormQuestion> {
-    const updatedFormQuestion = await payload.update({
+    return await payload.update({
       collection: 'formQuestion',
       id: id,
       data: formQuestion,
     })
-    return updatedFormQuestion
   }
 
   /**
