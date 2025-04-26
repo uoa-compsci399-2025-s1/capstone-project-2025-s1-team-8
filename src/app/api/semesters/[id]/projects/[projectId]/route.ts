@@ -25,7 +25,7 @@ export const PATCH = async (
     const project = await projectService.getSemesterProject(projectId)
     const fetchedSemester = await semesterService.getSemester(id)
 
-    if (JSON.stringify(project.semester) !== JSON.stringify(fetchedSemester)){
+    if (JSON.stringify(project.semester) !== JSON.stringify(fetchedSemester)) {
       return NextResponse.json(
         { error: 'Project does not belong to this semester' },
         { status: StatusCodes.BAD_REQUEST },

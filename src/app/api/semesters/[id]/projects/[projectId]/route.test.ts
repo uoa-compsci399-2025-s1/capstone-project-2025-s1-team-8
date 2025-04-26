@@ -10,7 +10,6 @@ const projectService = new ProjectService()
 const semesterService = new SemesterService()
 
 describe('test /api/semesters/[id]/projects/[projectId]', () => {
-
   it("Should return a 404 error if the project doesn't exist", async () => {
     const res = await PATCH(
       createMockNextPatchRequest('api/semesters/123/projects/123', { semesterProjectCreateMock }),
