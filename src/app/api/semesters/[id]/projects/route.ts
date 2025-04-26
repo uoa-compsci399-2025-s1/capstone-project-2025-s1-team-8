@@ -82,7 +82,7 @@ export const POST = async (req: NextRequest, { params }: { params: Promise<{ id:
       return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
     }
     return NextResponse.json(
-      { error: 'Bad request body' },
+      { error: 'Internal server error' },
       { status: StatusCodes.INTERNAL_SERVER_ERROR },
     )
   }
