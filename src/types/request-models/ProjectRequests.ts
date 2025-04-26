@@ -59,3 +59,10 @@ export const PatchSemesterProjectRequestBody = z.object({
   status: z.nativeEnum(ProjectStatus).optional(),
   published: z.boolean().optional(),
 })
+
+export const CreateSemesterProjectRequestBody = z.object({
+  number: z.number().min(1).nullable().optional(),
+  project: z.union([z.string(), ProjectSchema]),
+  status: z.nativeEnum(ProjectStatus),
+  published: z.boolean(),
+})
