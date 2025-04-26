@@ -39,15 +39,13 @@ export type UpdateProjectData = Partial<CreateProjectData>
  */
 export type CreateUserData = Omit<
   User,
-  | 'id'
-  | 'createdAt'
-  | 'updatedAt'
-  | 'loginAttempts'
-  | 'lockUntil'
-  | 'salt'
-  | 'hash'
-  | 'resetPasswordToken'
-  | 'resetPasswordExpiration'
+  'id' | 'createdAt' | 'updatedAt'
+  // | 'loginAttempts'
+  // | 'lockUntil'
+  // | 'salt'
+  // | 'hash'
+  // | 'resetPasswordToken'
+  // | 'resetPasswordExpiration'
 >
 export type UpdateUserData = Partial<CreateUserData>
 export type UserCombinedInfo = User & Partial<UpdateClientAdditionalInfoData>

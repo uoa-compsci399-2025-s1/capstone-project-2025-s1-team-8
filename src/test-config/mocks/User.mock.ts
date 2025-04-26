@@ -7,7 +7,6 @@ export const adminCreateMock: CreateUserData = {
   firstName: 'John',
   lastName: 'Doe',
   email: 'johndoeadmin@gmail.com',
-  password: 'abcdefg',
 }
 
 export const clientCreateMock: CreateUserData = {
@@ -15,7 +14,6 @@ export const clientCreateMock: CreateUserData = {
   firstName: 'John',
   lastName: 'Doe',
   email: 'johndoeclient@gmail.com',
-  password: 'abcdefg',
 }
 
 export const mockClient1: User = {
@@ -26,7 +24,6 @@ export const mockClient1: User = {
   firstName: 'Bob',
   lastName: 'Doe',
   email: 'bobdoe@gmail.com',
-  password: 'abcdefg',
 }
 
 export const mockClient2: User = {
@@ -37,7 +34,6 @@ export const mockClient2: User = {
   firstName: 'John',
   lastName: 'Doe',
   email: 'Johndoe@gmail.com',
-  password: 'abcdefg',
 }
 
 export const studentCreateMock: CreateUserData = {
@@ -45,7 +41,6 @@ export const studentCreateMock: CreateUserData = {
   firstName: 'John',
   lastName: 'Doe',
   email: 'johndoestudent@gmail.com',
-  password: 'abcdefg',
 }
 
 export const clientAdditionalInfoCreateMock: CreateClientAdditionalInfoData = {

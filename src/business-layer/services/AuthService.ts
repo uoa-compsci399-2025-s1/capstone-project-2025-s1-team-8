@@ -1,7 +1,32 @@
-import { User } from '@/payload-types'
+import bcrypt from 'bcrypt'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
+import { User } from '@/payload-types'
+import { SALT_ROUNDS } from '@/types/Auth'
+
 export default class AuthService {
+  /**
+   * Hashes a plain text password using bcrypt.
+   *
+   * @param password The plain text password to encrypt
+   * @returns The password hash
+   */
+  public async hashPassword(password: string): Promise<string> {
+    const hash = await bcrypt.hash(password, SALT_ROUNDS)
+    return hash
+  }
+
+  /**
+   * Verifies a plain text password against a hashed password using bcrypt.
+   *
+   * @param password The plain text password to check
+   * @param hash The hashed password to compare against
+   * @returns Boolean value indicating whether the password matches the hash
+   */
+  public async verifyPassword(password: string, hash: string): Promise<boolean> {
+    return await bcrypt.compare(password, hash)
+  }
+
   /**
    * Generates a JWT token for the given user and access token.
    *
@@ -23,6 +48,7 @@ export default class AuthService {
       { expiresIn: '1h' },
     )
   }
+
   /**
    * Decodes a JWT token and returns the payload.
    *
