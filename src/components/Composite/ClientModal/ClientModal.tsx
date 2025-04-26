@@ -9,9 +9,9 @@ import { PlaceholderProjectDetailsType } from '@/types/Project'
 interface ClientModalProps extends ModalProps {
   clientFullName: string
   clientEmail: string
-  affiliation: string
-  introduction: string
-  projects: PlaceholderProjectDetailsType[]
+  affiliation?: string
+  introduction?: string
+  projects?: PlaceholderProjectDetailsType[]
 }
 
 const ClientModal: React.FC<ClientModalProps> = ({

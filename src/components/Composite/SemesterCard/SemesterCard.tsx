@@ -1,7 +1,5 @@
 'use client'
 import React, { useState, useRef, useEffect } from 'react'
-import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/DraggableProjectCard'
-import ProjectCard from '@/components/Generic/ProjectCard/ProjectCard'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'

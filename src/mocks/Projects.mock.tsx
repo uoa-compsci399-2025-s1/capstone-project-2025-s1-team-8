@@ -1,5 +1,3 @@
-// import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/DraggableProjectCard'
-
 import { PlaceholderProjectDetailsType } from '@/types/Project'
 
 export const mockProjects: PlaceholderProjectDetailsType[] = [
