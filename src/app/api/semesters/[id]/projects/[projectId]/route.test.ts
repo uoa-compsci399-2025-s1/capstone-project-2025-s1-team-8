@@ -6,9 +6,10 @@ import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import { PATCH } from '@/app/api/semesters/[id]/projects/[projectId]/route'
 import { semesterMock } from '@/test-config/mocks/Semester.mock'
 
+const projectService = new ProjectService()
+const semesterService = new SemesterService()
+
 describe('test /api/semesters/[id]/projects/[projectId]', () => {
-  const projectService = new ProjectService()
-  const semesterService = new SemesterService()
 
   it("Should return a 404 error if the project doesn't exist", async () => {
     const res = await PATCH(
