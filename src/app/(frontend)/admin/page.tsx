@@ -1,5 +1,4 @@
 'use client'
-
 import ClientsPage from '@/components/Pages/ClientsPage/ClientsPage'
 import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import NavBar from '@/components/Generic/NavBar/NavBar'
@@ -9,15 +8,22 @@ import { motion } from 'framer-motion'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
-  const [activeNav, setActiveNav] = useState(() => {
-    const saved = localStorage.getItem('adminNav')
-    return saved !== null ? Number(saved) : 0
-  })
 
-  // Save nav index to localStorage whenever it changes
+  const [activeNav, setActiveNav] = useState<number | null>(null)
+
   useEffect(() => {
-    localStorage.setItem('adminNav', String(activeNav))
+    const saved = localStorage.getItem('adminNav')
+    setActiveNav(saved !== null ? Number(saved) : 0)
+  }, [])
+
+  useEffect(() => {
+    if (activeNav !== null) {
+      localStorage.setItem('adminNav', String(activeNav))
+    }
   }, [activeNav])
+
+  // Don't render anything until activeNav is ready
+  if (activeNav === null) return null
 
   const containers = [
     {
