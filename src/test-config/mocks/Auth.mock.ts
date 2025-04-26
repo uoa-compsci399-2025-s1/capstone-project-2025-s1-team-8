@@ -1,5 +1,5 @@
 import { Authentication, User } from '@/payload-types'
-import { UserInfoResponse } from '@/types/Auth'
+import { AuthType, UserInfoResponse } from '@/types/Auth'
 import { CreateAuthenticationData } from '@/types/Collections'
 import { UserRole } from '@/types/User'
 
@@ -40,7 +40,7 @@ export const googleUserResponseMock: UserInfoResponse = {
 export const authMock: Authentication = {
   id: '67ff38a56a35e1b6cf43a681',
   email: 'jeffery@gmail.com',
-  type: 'OAuth',
+  type: AuthType.OAUTH,
   provider: 'google',
   providerAccountId: '1234567890',
   refreshToken: 'refreshToken',
@@ -52,7 +52,7 @@ export const authMock: Authentication = {
 
 export const authCreateMock: CreateAuthenticationData = {
   email: 'jeffery@gmail.com',
-  type: 'OAuth',
+  type: AuthType.OAUTH,
   provider: 'google',
   providerAccountId: 'account_id',
   refreshToken: 'refreshToken',
@@ -78,8 +78,7 @@ export const adminMock: User = {
   role: UserRole.Admin,
   firstName: 'Admin',
   lastName: '1',
-  email: 'admin123@gmail.com',
-  password: 'abcdefg',
+  email: 'admin123@gmail.com'
 }
 
 export const clientMock: User = {
@@ -89,8 +88,7 @@ export const clientMock: User = {
   role: UserRole.Client,
   firstName: 'Client',
   lastName: '1',
-  email: 'client123@gmail.com',
-  password: 'abcdefg',
+  email: 'client123@gmail.com'
 }
 
 export const studentMock: User = {
@@ -100,6 +98,5 @@ export const studentMock: User = {
   role: UserRole.Student,
   firstName: 'Student',
   lastName: '1',
-  email: 'student123@gmail.com',
-  password: 'abcdefg',
+  email: 'student123@gmail.com'
 }

@@ -39,12 +39,6 @@ export const UserSchema = z.object({
   updatedAt: z.string(),
   createdAt: z.string(),
   email: z.string().email(),
-  resetPasswordToken: z.string().optional(),
-  resetPasswordExpiration: z.string().optional(),
-  salt: z.string().optional(),
-  hash: z.string().optional(),
-  lockUntil: z.string().optional(),
-  password: z.string().optional(),
 }) satisfies z.ZodType<User>
 
 export const SemesterSchema = z.object({

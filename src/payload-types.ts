@@ -63,10 +63,11 @@ export type SupportedTimezones =
 
 export interface Config {
   auth: {
-    user: UserAuthOperations;
+    admin: AdminAuthOperations;
   };
   blocks: {};
   collections: {
+    admin: Admin;
     authentication: Authentication;
     user: User;
     clientAdditionalInfo: ClientAdditionalInfo;
@@ -83,6 +84,7 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    admin: AdminSelect<false> | AdminSelect<true>;
     authentication: AuthenticationSelect<false> | AuthenticationSelect<true>;
     user: UserSelect<false> | UserSelect<true>;
     clientAdditionalInfo: ClientAdditionalInfoSelect<false> | ClientAdditionalInfoSelect<true>;
@@ -103,15 +105,15 @@ export interface Config {
   globals: {};
   globalsSelect: {};
   locale: null;
-  user: User & {
-    collection: 'user';
+  user: Admin & {
+    collection: 'admin';
   };
   jobs: {
     tasks: unknown;
     workflows: unknown;
   };
 }
-export interface UserAuthOperations {
+export interface AdminAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -131,6 +133,23 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "admin".
+ */
+export interface Admin {
+  id: string;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "authentication".
  */
 export interface Authentication {
@@ -140,13 +159,17 @@ export interface Authentication {
    */
   email: string;
   /**
-   * The type of authentication
+   * The hashed user password
    */
-  type: string;
+  password?: string | null;
   /**
    * The type of authentication
    */
-  provider: 'google';
+  type: 'oauth' | 'password';
+  /**
+   * The type of authentication
+   */
+  provider?: 'google' | null;
   /**
    * The provider account id of the user authentication
    */
@@ -156,13 +179,13 @@ export interface Authentication {
    */
   refreshToken?: string | null;
   /**
-   * The access token of the user authentication
+   * The access token of the user authentication, only applicable for google oauth
    */
-  accessToken: string;
+  accessToken?: string | null;
   /**
    * The expiration time of the access token
    */
-  expiresAt: number;
+  expiresAt?: number | null;
   /**
    * The type of token
    */
@@ -184,20 +207,13 @@ export interface Authentication {
  */
 export interface User {
   id: string;
+  email: string;
   firstName: string;
   lastName: string;
   role: 'admin' | 'client' | 'student';
   image?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -326,6 +342,10 @@ export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
+        relationTo: 'admin';
+        value: string | Admin;
+      } | null)
+    | ({
         relationTo: 'authentication';
         value: string | Authentication;
       } | null)
@@ -367,8 +387,8 @@ export interface PayloadLockedDocument {
       } | null);
   globalSlug?: string | null;
   user: {
-    relationTo: 'user';
-    value: string | User;
+    relationTo: 'admin';
+    value: string | Admin;
   };
   updatedAt: string;
   createdAt: string;
@@ -380,8 +400,8 @@ export interface PayloadLockedDocument {
 export interface PayloadPreference {
   id: string;
   user: {
-    relationTo: 'user';
-    value: string | User;
+    relationTo: 'admin';
+    value: string | Admin;
   };
   key?: string | null;
   value?:
@@ -409,10 +429,26 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "admin_select".
+ */
+export interface AdminSelect<T extends boolean = true> {
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "authentication_select".
  */
 export interface AuthenticationSelect<T extends boolean = true> {
   email?: T;
+  password?: T;
   type?: T;
   provider?: T;
   providerAccountId?: T;
@@ -430,19 +466,13 @@ export interface AuthenticationSelect<T extends boolean = true> {
  * via the `definition` "user_select".
  */
 export interface UserSelect<T extends boolean = true> {
+  email?: T;
   firstName?: T;
   lastName?: T;
   role?: T;
   image?: T;
   updatedAt?: T;
   createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

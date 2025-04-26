@@ -42,12 +42,12 @@ export type CreateUserData = Omit<
   | 'id'
   | 'createdAt'
   | 'updatedAt'
-  | 'loginAttempts'
-  | 'lockUntil'
-  | 'salt'
-  | 'hash'
-  | 'resetPasswordToken'
-  | 'resetPasswordExpiration'
+  // | 'loginAttempts'
+  // | 'lockUntil'
+  // | 'salt'
+  // | 'hash'
+  // | 'resetPasswordToken'
+  // | 'resetPasswordExpiration'
 >
 export type UpdateUserData = Partial<CreateUserData>
 export type UserCombinedInfo = User & Partial<UpdateClientAdditionalInfoData>

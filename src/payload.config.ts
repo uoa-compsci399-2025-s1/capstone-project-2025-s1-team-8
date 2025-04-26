@@ -17,19 +17,21 @@ import { FormResponse } from './data-layer/collections/FormResponse'
 import { Form } from './data-layer/collections/Form'
 import { Authentication } from './data-layer/collections/Authentication'
 import { ClientAdditionalInfo } from './data-layer/collections/ClientAdditionalInfo'
+import { Admin } from './data-layer/collections/Admin'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
-    user: User.slug,
+    user: Admin.slug,
     importMap: {
       baseDir: path.resolve(dirname),
       importMapFile: path.resolve(dirname) + '/app/payload/admin/importMap.js',
     },
   },
   collections: [
+    Admin,
     Authentication,
     User,
     ClientAdditionalInfo,
