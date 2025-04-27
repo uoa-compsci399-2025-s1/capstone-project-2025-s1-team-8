@@ -20,7 +20,7 @@ class RouteWrapper {
     const cursor = parseInt(searchParams.get('cursor') || '0')
     const userRole = searchParams.get('role')
 
-    if (limit > 100 || limit < 0) {
+    if (limit > 100 || limit <= 0) {
       return NextResponse.json(
         { error: 'Invalid fetch limit' },
         { status: StatusCodes.BAD_REQUEST },
