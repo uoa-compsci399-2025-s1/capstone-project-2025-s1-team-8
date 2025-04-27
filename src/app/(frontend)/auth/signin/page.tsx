@@ -3,7 +3,7 @@
 import Button from '@/components/Generic/Button/Button'
 import Input from '@/components/Generic/Input/InputField'
 import { MdOutlineMail, MdLock } from 'react-icons/md'
-import { FcGoogle } from "react-icons/fc";
+import { FcGoogle } from 'react-icons/fc'
 
 export default function SignIn() {
   return (
