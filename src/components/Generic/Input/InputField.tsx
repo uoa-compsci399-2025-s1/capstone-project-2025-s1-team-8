@@ -17,6 +17,7 @@ interface InputProps {
   errorMessage?: string
   startIcon?: ReactNode
   endIcon?: ReactNode
+  required?: boolean
 }
 
 const Input: FC<InputProps> = ({
@@ -34,6 +35,7 @@ const Input: FC<InputProps> = ({
   errorMessage = 'Please fill in this field',
   startIcon,
   endIcon,
+  required = false,
 }) => {
   const [showPassword, setShowPassword] = useState(false)
   const isPasswordType = type === 'password'
@@ -58,6 +60,7 @@ const Input: FC<InputProps> = ({
           max={max}
           step={step}
           className={inputClasses}
+          required={required}
         />
         {isPasswordType ? (
           <button

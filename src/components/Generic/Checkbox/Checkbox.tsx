@@ -13,12 +13,12 @@ const Checkbox: FC<CheckboxProps> = ({
   id,
   name,
   values,
-  required,
+  required = false,
 }) => {
   return (
     <div className={`flex flex-col`}>
       {values.map((value, index) => (
-        <label key={index} className="flex items-center mb-2">
+        <label key={index} className="flex mb-3">
           <input
             id={id}
             name={name}
@@ -29,7 +29,7 @@ const Checkbox: FC<CheckboxProps> = ({
             required={required}
           />
           <span
-            className="w-[16px] h-[16px] inline-flex mr-8 border-2 border-steel-blue rounded-sm 
+            className="w-[16px] h-[16px] inline-flex mt-[3px] mr-8 border-2 border-steel-blue rounded-sm 
                 peer-checked:bg-steel-blue 
                 [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
                 peer-focus:outline-2 peer-focus:outline-offset-1 peer-focus:outline-muted-blue/80
@@ -37,7 +37,7 @@ const Checkbox: FC<CheckboxProps> = ({
           >
             <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
           </span>
-          <span className="text-sm text-dark-blue">{value}</span>
+          <p className="text-sm text-dark-blue">{value}</p>
         </label>
       ))}
     </div>

@@ -6,13 +6,15 @@ interface RadioProps {
   name?: string
   values: string[]
   customInput?: boolean
+  required?: boolean
 }
 
 const Radio: FC<RadioProps> = ({ 
   id,
   name,
   values, 
-  customInput = false 
+  customInput = false,
+  required = false,
 }) => {
   const [customInputValue, setCustomInputValue] = useState('')
 
@@ -21,9 +23,10 @@ const Radio: FC<RadioProps> = ({
       {values.map((value, index) => (
         <label
           key={index}
-          className="
-          flex items-center mb-2 
-          hover:cursor-pointer"
+          className={`
+          flex items-center
+          hover:cursor-pointer
+          ${index != 0 ? 'mt-3' : ''}`}
         >
           <input
             id={id}
@@ -32,6 +35,7 @@ const Radio: FC<RadioProps> = ({
             value={value}
             style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
             className="opacity-0 peer"
+            required={required}
           />
           <span
             className="w-[16px] h-[16px] inline-flex mr-8 border-2 border-steel-blue rounded-full 
@@ -45,11 +49,11 @@ const Radio: FC<RadioProps> = ({
       ))}
       {customInput && (
         <label
-          className="flex items-center mb-2"
+          className="flex items-center mt-2 mb-2"
         >
           <input
             type="radio"
-            name="radio"
+            name={name}
             style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
             className="opacity-0 peer"
           />
@@ -67,6 +71,7 @@ const Radio: FC<RadioProps> = ({
             defaultValue={customInputValue}
             onChange={(e) => setCustomInputValue(e.target.value)}
             error={false}
+            required={required}
           />
         </label>
       )}

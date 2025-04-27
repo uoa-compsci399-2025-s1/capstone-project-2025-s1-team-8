@@ -5,6 +5,7 @@ import Input from "@/components/Generic/Input/InputField";
 import Textarea from "@/components/Generic/Textarea/Textarea";
 import Radio from "@/components/Generic/Radio/Radio";
 import Checkbox from "@/components/Generic/Checkbox/Checkbox";
+import { semesterNames1 } from "@/mocks/Semesters.mock";
 
 interface Pair {
   fullName: string;
@@ -13,7 +14,6 @@ interface Pair {
 
 export default function Form() {
   const [pairs, setPairs] = useState<Pair[]>([
-    { fullName: '', email: '' },
   ]);
 
   const handleChange = (
@@ -118,6 +118,7 @@ export default function Form() {
                 name="ClientName"
                 type="text"
                 placeholder="Enter the main client&apos;s name"
+                required={true}
               />
             </li>
             <li>
@@ -241,6 +242,7 @@ export default function Form() {
                 Will your project require special equipment that you are unable to provide? If yes, please specify the required equipment. Note: We can only accept a limited number of projects with special equipment needs.
               </p>
               <Radio
+                name="SpecialEquipmentRequirements"
                 values={['Yes']}
                 customInput={true}
               />
@@ -259,6 +261,7 @@ export default function Form() {
                 It also increases the likelihood of achieving a final result that aligns with expectations.
               </p>
               <Radio
+                name="NumberOfTeams"
                 values={['No, only 1 team', 'Yes, up to 4 teams']}
                 customInput={true}
               />
@@ -299,7 +302,9 @@ export default function Form() {
                 If your project is not selected by students in the upcoming semester, would you like it to be considered for following semesters?
               </p>
               <Radio
+                name="FutureConsideration"
                 values={['Yes', 'No']}
+                required={true}
               />
             </li>
             <li>
@@ -310,7 +315,8 @@ export default function Form() {
                 If you replied yes to the question above, what semesters would you like your project to be considered for? 
               </p>
               <Checkbox
-                values={['Research', 'Software Development', 'Other']}
+                name="FutureSemesters"
+                values={semesterNames1}
               />
             </li>
             <li>
@@ -321,7 +327,9 @@ export default function Form() {
                 The teaching team will aim to arrange meetings with the students at times that best suit your schedule. You can attend the meetings either in person or via Zoom (or Teams). The details and schedule of the meetings will be arranged at the beginning of the semester and will cover the entire duration of the course.
               </p>
               <Checkbox
+                name = "MeetingAttendance"
                 values={['I confirm that I will be able to attend <b>6 meetings</b> with students, scheduled 2-3 weeks apart.']}
+                required={true}
               />
             </li>
             <li>
@@ -332,7 +340,9 @@ export default function Form() {
                 The teaching team will aim to arrange the final presentation at a time that best suits your schedule. The final presentation will be held on the UoA Main Campus and must be attended in person.
               </p>
               <Checkbox
+                name = "FinalPresentationAttendance"
                 values={['I confirm that I will be able to attend final presentation in-person.']}
+                required={true}
               />
             </li>
             <li>
@@ -343,10 +353,20 @@ export default function Form() {
                 The COMPSCI 399 Capstone Course is provided solely for academic purposes during the semester.
               </p>
               <Checkbox
+                name="ProjectSupportAndMaintenance"
                 values={['I understand that no resources will be available for support or maintenance after the semester ends, and that neither the University nor the participating students assume any liability for the project outcome.']}
+                required={true}
               />
             </li>
           </ol>
+          <Button
+            type="submit"
+            variant="dark"
+            size="md"
+            className="self-start mt-5"
+          >
+            Submit
+          </Button>
         </form>
       </div>
     </div>
