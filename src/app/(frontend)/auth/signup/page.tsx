@@ -4,6 +4,7 @@ import Button from '@/components/Generic/Button/Button'
 import Input from '@/components/Generic/Input/InputField'
 import { MdOutlineMail, MdLock } from 'react-icons/md'
 import { BsFillPersonFill } from 'react-icons/bs'
+import Link from 'next/link'
 
 export default function SignUp() {
   return (
@@ -35,10 +36,10 @@ export default function SignUp() {
             Sign In
           </Button>
           <p className="text-steel-blue">
-            Already have an account? Log in
-            <a href="/auth/signin">
+            {'Already have an account? Log in '}
+            <Link href="/auth/signin">
               <u>here</u>
-            </a>
+            </Link>
           </p>
         </div>
       </form>

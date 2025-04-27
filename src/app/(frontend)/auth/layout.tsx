@@ -1,6 +1,7 @@
 'use client'
 
 import Button from '@/components/Generic/Button/Button'
+import Link from 'next/link'
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,7 +11,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <p className="text-beige text-5xl font-bold font-silkscreen">ENCAPSULATE</p>
         <p className="text-beige text-xl">Submit your project proposal today!</p>
         <Button size="sm" variant="light">
-          Read more
+          <Link href="/">Read more</Link>
         </Button>
       </div>
       {/*Rightside*/}
