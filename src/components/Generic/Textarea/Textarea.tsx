@@ -22,7 +22,7 @@ const Input: FC<InputProps> = ({
   error = false,
   errorMessage = 'Please fill in this text-area',
 }) => {
-  const inputClasses = `${error ? 'ring-pink-2 ring-1 focus:ring-2' : 'ring-muted-blue ring-1 focus:ring-3'} w-full placeholder-muted-blue text-steel-blue focus:outline-hidden rounded-lg px-4 py-2.5 text-sm shadow bg-white resize-none ${className}`
+  const inputClasses = `${error ? 'ring-pink-2 ring-1 focus:ring-2' : 'ring-muted-blue ring-1 focus:ring-3'} w-full placeholder-muted-blue text-steel-blue focus:outline-hidden rounded-lg px-4 py-2.5 text-sm bg-white resize-none ${className}`
 
   return (
     <>

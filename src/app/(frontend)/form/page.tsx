@@ -136,7 +136,7 @@ export default function Form() {
             </p>
           </div>
         </div>
-        <div className="relative bg-[#eef4f1] border-t-deeper-blue border-t max-w-full flex flex-col pt-15 p-18 pr-20 pb-20 rounded-b-2xl gap-5">
+        <div className="relative bg-transparent-blue border-t-deeper-blue border-t max-w-full flex flex-col pt-15 p-18 pr-20 pb-20 rounded-b-2xl gap-5">
           <p className="text-dark-blue font-inter pb-6">
             <span className="text-pink-2">*</span> Required
           </p>
