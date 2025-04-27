@@ -16,7 +16,9 @@ const Homepage: React.FC = () => {
           height={288 * 0.75}
           priority
         />
-        <Button variant="outline" size="sm">Submit your proposal</Button>
+        <Button variant="outline" size="sm">
+          Submit your proposal
+        </Button>
       </div>
     </div>
   )
