@@ -58,7 +58,7 @@ export const GET = async (req: NextRequest) => {
   }: UserInfoResponse = UserInfoResponseSchema.parse(await userInfoResponse.json())
 
   const userService = new UserService()
-  let user : User;
+  let user: User
   try {
     user = await userService.getUserByEmail(email)
   } catch {
