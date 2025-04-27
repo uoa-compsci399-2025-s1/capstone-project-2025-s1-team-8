@@ -32,14 +32,14 @@ export default function Form() {
   }
 
   return (
-    <div className="h-dvh w-dvw bg-gradient-to-b from-deep-teal to-muted-blue flex flex-col items-center overflow-y-scroll py-[8%] gap-4 p-4">
-      <div className="relative bg-light-beige w-[1280px] max-w-full flex flex-col rounded-2xl my-auto">
-        <div className="relative flex flex-col p-15 rounded-t-2xl gap-6">
+    <div className="h-dvh w-dvw bg-gradient-to-b from-[#779ea7] to-[#dae6e2] flex flex-col items-center overflow-y-scroll py-[8%] px-[10%] gap-4 p-4">
+      <div className="relative bg-light-beige max-w-full flex flex-col rounded-2xl my-auto border border-deeper-blue">
+        <div className="relative flex flex-col p-18 pt-20 rounded-t-2xl gap-6">
           <h1 className="text-4xl font-normal m-0 text-dark-blue font-dm-serif-display mb-3">
             Computer Science Capstone: Project Proposal Form
           </h1>
           <div>
-            <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap">
+            <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
               Deadline
             </h2>
             <p className="text-dark-blue font-inter text-sm">
@@ -55,7 +55,7 @@ export default function Form() {
             </p>
           </div>
           <div>
-            <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap">
+            <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
               Project Requirements
             </h2>
             <p className="text-dark-blue font-inter text-sm">
@@ -74,7 +74,7 @@ export default function Form() {
             </p>
           </div>
           <div>
-            <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap">
+            <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
               Supervision Requirements
             </h2>
             <p className="text-dark-blue font-inter text-sm">
@@ -86,7 +86,7 @@ export default function Form() {
             </p>
           </div>
           <div>
-            <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap">
+            <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
               Disclaimer & Limitations
             </h2>
             <p className="text-dark-blue font-inter text-sm">
@@ -100,7 +100,7 @@ export default function Form() {
             </p>
           </div>
           <div>
-            <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap">
+            <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
               Contacts & Information
             </h2>
             <p className="text-dark-blue font-inter text-sm">
@@ -136,8 +136,8 @@ export default function Form() {
             </p>
           </div>
         </div>
-        <div className="relative bg-transparent-blue border-t-deeper-blue border-t max-w-full flex flex-col p-15 rounded-b-2xl gap-5">
-          <p className="text-dark-blue font-inter">
+        <div className="relative bg-[#eef4f1] border-t-deeper-blue border-t max-w-full flex flex-col pt-15 p-18 pr-20 pb-20 rounded-b-2xl gap-5">
+          <p className="text-dark-blue font-inter pb-6">
             <span className="text-pink-2">*</span> Required
           </p>
           <form className="flex flex-col gap-4">
@@ -193,7 +193,7 @@ export default function Form() {
                 </div>
                 {pairs.map((pair, idx) => (
                   <div key={idx} className="flex gap-5 justify-end mb-5">
-                    <div className="w-80">
+                    <div className="w-80 flex flex-col gap-3">
                       <label className="text-sm">Full Name:</label>
                       <Input
                         id={`OtherClientName${idx}`}
@@ -202,7 +202,7 @@ export default function Form() {
                         placeholder="Other client's name"
                       />
                     </div>
-                    <div className="w-full">
+                    <div className="w-full flex flex-col gap-3">
                       <label className="text-sm">Email:</label>
                       <Input
                         id={`OtherClientEmail${idx}`}
@@ -239,7 +239,7 @@ export default function Form() {
               </li>
               <li>
                 <label htmlFor="ProjectDescription">
-                  Project Description <span className="text-pink-2">*</span>
+                  Project description <span className="text-pink-2">*</span>
                 </label>
                 <p className="form-question-subheading">
                   Please provide a short description (3-10 sentences) of the project.
@@ -253,7 +253,7 @@ export default function Form() {
               </li>
               <li>
                 <label htmlFor="DesiredOutput">
-                  Desired Output <span className="text-pink-2">*</span>
+                  Desired output <span className="text-pink-2">*</span>
                 </label>
                 <p className="form-question-subheading">
                   Please identify the features that will constitute the MVP (minimum viable
@@ -275,7 +275,7 @@ export default function Form() {
                   yes, please specify the required equipment. Note: We can only accept a limited
                   number of projects with special equipment needs.
                 </p>
-                <Radio name="SpecialEquipmentRequirements" values={['Yes']} customInput={true} />
+                <Radio name="SpecialEquipmentRequirements" values={['No']} customInput={true} />
               </li>
               <li>
                 <label htmlFor="SpecialEquipmentRequirements">
@@ -319,7 +319,7 @@ export default function Form() {
                 />
               </li>
               <li>
-                <label htmlFor="AvailableResources">Available Resources</label>
+                <label htmlFor="AvailableResources">Available resources</label>
                 <p className="form-question-subheading">
                   Are there any resources you would like to provide for students to become more
                   familiar with your project?
@@ -333,7 +333,7 @@ export default function Form() {
               </li>
               <li>
                 <label htmlFor="FutureConsideration">
-                  Future consideration<span className="text-pink-2">*</span>
+                  Future consideration <span className="text-pink-2">*</span>
                 </label>
                 <p className="form-question-subheading">
                   If your project is not selected by students in the upcoming semester, would you
@@ -368,10 +368,9 @@ export default function Form() {
                     required={true}
                   />
                   <span
-                    className="w-[16px] h-[16px] inline-flex mt-[3px] mr-8 border-2 border-steel-blue rounded-sm 
+                    className="w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] border-steel-blue rounded-sm 
                         peer-checked:bg-steel-blue 
                         [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
-                        peer-focus:outline-2 peer-focus:outline-offset-1 peer-focus:outline-muted-blue/80
                         transition-colors duration-150"
                   >
                     <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
@@ -400,10 +399,9 @@ export default function Form() {
                     required={true}
                   />
                   <span
-                    className="w-[16px] h-[16px] inline-flex mt-[3px] mr-8 border-2 border-steel-blue rounded-sm 
+                    className="w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] border-steel-blue rounded-sm 
                         peer-checked:bg-steel-blue 
                         [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
-                        peer-focus:outline-2 peer-focus:outline-offset-1 peer-focus:outline-muted-blue/80
                         transition-colors duration-150"
                   >
                     <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
@@ -429,20 +427,7 @@ export default function Form() {
                     className="opacity-0 peer"
                     required={true}
                   />
-                  <span
-                    className="w-[16px] h-[16px] inline-flex mt-[3px] mr-8 border-2 border-steel-blue rounded-sm 
-                        peer-checked:bg-steel-blue 
-                        [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
-                        peer-focus:outline-2 peer-focus:outline-offset-1 peer-focus:outline-muted-blue/80
-                        transition-colors duration-150"
-                  >
-                    <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
-                  </span>
-                  <p className="text-sm text-dark-blue">
-                    I understand that no resources will be available for support or maintenance
-                    after the semester ends, and that neither the University nor the participating
-                    students assume any liability for the project outcome.
-                  </p>
+                  <Checkbox name="ProjectSupport" values={['I understand that no resources will be available for support or maintenance after the semester ends, and that neither the University nor the participating students assume any liability for the project outcome.']}/>
                 </label>
               </li>
             </ol>

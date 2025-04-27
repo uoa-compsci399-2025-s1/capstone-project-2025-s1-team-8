@@ -198,7 +198,7 @@
     @apply text-xs pl-2 pr-2 rounded-b-lg rounded-t-lg;
   }
   .form-question-subheading {
-    @apply text-dark-blue font-inter text-sm mb-7;
+    @apply text-dark-blue font-inter text-sm mb-7 pt-1;
   }
   .editable-capsule {
     @apply border border-muted-blue h-fit w-fit px-2.5 py-1 rounded-xl text-sm placeholder-muted-blue focus:outline-muted-blue focus:outline-2 shadow bg-light-beige text-dark-blue;

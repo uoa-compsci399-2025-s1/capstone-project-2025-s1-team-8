@@ -13,7 +13,7 @@ const Radio: FC<RadioProps> = ({ id, name, values, customInput = false, required
   const [customInputValue, setCustomInputValue] = useState('')
 
   return (
-    <div className={`flex flex-col`}>
+    <div className="flex flex-col">
       {values.map((value, index) => (
         <label
           key={index}
@@ -32,9 +32,8 @@ const Radio: FC<RadioProps> = ({ id, name, values, customInput = false, required
             required={required}
           />
           <span
-            className="w-[16px] h-[16px] inline-flex mr-8 border-2 border-steel-blue rounded-full 
-                [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
-                peer-focus:outline-2 peer-focus:outline-offset-1 peer-focus:outline-muted-blue/80"
+            className="w-[16px] h-[16px] inline-flex mr-6 border-[1.5px] border-steel-blue rounded-full 
+                [&>*]:opacity-0 peer-checked:[&>*]:opacity-100"
           >
             <div className="bg-steel-blue w-[8px] h-[8px] rounded-full self-center m-auto transition-opacity duration-300" />
           </span>
@@ -50,9 +49,8 @@ const Radio: FC<RadioProps> = ({ id, name, values, customInput = false, required
             className="opacity-0 peer"
           />
           <span
-            className="w-[16px] h-[16px] inline-flex mr-6 border-2 border-steel-blue rounded-full 
-                [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
-                peer-focus:outline-2 peer-focus:outline-offset-1 peer-focus:outline-muted-blue/80"
+            className="w-[16px] h-[16px] inline-flex mr-5 border-[1.5px] border-steel-blue rounded-full 
+                [&>*]:opacity-0 peer-checked:[&>*]:opacity-100"
           >
             <div className="bg-steel-blue w-[8px] h-[8px] rounded-full self-center m-auto transition-opacity duration-300" />
           </span>

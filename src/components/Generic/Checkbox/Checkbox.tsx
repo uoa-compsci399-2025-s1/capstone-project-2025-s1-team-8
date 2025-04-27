@@ -23,10 +23,9 @@ const Checkbox: FC<CheckboxProps> = ({ id, name, values, required = false }) => 
             required={required}
           />
           <span
-            className="w-[16px] h-[16px] inline-flex mt-[3px] mr-8 border-2 border-steel-blue rounded-sm 
+            className="w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] border-steel-blue rounded-sm 
                 peer-checked:bg-steel-blue 
                 [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
-                peer-focus:outline-2 peer-focus:outline-offset-1 peer-focus:outline-muted-blue/80
                 transition-colors duration-150"
           >
             <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
