@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
 import ProjectModal from './ProjectModal'
 import Button from '@/components/Generic/Button/Button'
-import { mockProjects2 } from '@/mocks/Projects.mock'
+import { mockProjects } from '@/mocks/Projects.mock'
 
 const meta: Meta<typeof ProjectModal> = {
   title: 'Composite/ProjectModal',
@@ -39,6 +39,6 @@ export const Exemplar: Story = {
   args: {
     open: false,
     className: '',
-    ...mockProjects2[0],
+    projectInfo: mockProjects[0],
   },
 }

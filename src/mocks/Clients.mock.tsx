@@ -1,5 +1,5 @@
 import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
-import { mockProjects1 } from './Projects.mock'
+import { mockProjects } from './Projects.mock'
 
 export const mockClients: ClientDTOPlaceholder[] = [
   {
@@ -8,7 +8,7 @@ export const mockClients: ClientDTOPlaceholder[] = [
     affiliation: 'University of Auckland',
     introduction:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    projects: mockProjects1,
+    projects: mockProjects,
   },
   {
     name: 'Dale Paprika',
@@ -16,14 +16,14 @@ export const mockClients: ClientDTOPlaceholder[] = [
     affiliation: 'University of Auckland',
     introduction:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    projects: mockProjects1,
+    projects: mockProjects,
   },
   {
     name: 'Dana Rosemary',
     email: 'danarosemary@gmail.com',
     affiliation: 'University of Auckland',
     introduction: 'Hello nice to meet you! I am Dana.',
-    projects: mockProjects1,
+    projects: mockProjects,
   },
   {
     name: 'Daniel Pepper',
@@ -31,7 +31,7 @@ export const mockClients: ClientDTOPlaceholder[] = [
     affiliation: 'University of Auckland',
     introduction:
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    projects: mockProjects1,
+    projects: mockProjects,
   },
   {
     name: 'Danielle Salt',

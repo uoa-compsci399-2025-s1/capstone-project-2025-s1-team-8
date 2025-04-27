@@ -5,44 +5,30 @@ import { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'
 import Button from '@/components/Generic/Button/Button'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
-
-export interface ClientProps {
-  name: string
-  email: string
-}
+import { BasicClientDetails, PlaceholderProjectDetailsType } from '@/types/Project'
 
 interface ProjectModalProps extends ModalProps {
-  projectTitle: string
-  projectClientDetails: ClientProps
-  otherClientDetails?: Array<ClientProps>
-  projectDescription: string
-  desiredOutput: string
-  desiredTeamSkills: string
-  availableResources: string
-
-  specialRequirements: boolean
-  numberOfTeams: number
-  futureConsideration: boolean
-  Semesters: Array<string>
-  submittedDate: Date
+  projectInfo: PlaceholderProjectDetailsType
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({
   open,
   onClose,
   className = '',
-  projectTitle,
-  projectClientDetails,
-  otherClientDetails = [],
-  projectDescription,
-  desiredOutput,
-  desiredTeamSkills,
-  availableResources,
-  specialRequirements,
-  numberOfTeams,
-  futureConsideration,
-  Semesters: semesters,
-  submittedDate,
+  projectInfo: {
+    projectTitle,
+    projectClientDetails,
+    otherClientDetails = [],
+    projectDescription,
+    desiredOutput,
+    desiredTeamSkills,
+    availableResources,
+    specialRequirements,
+    numberOfTeams,
+    futureConsideration,
+    Semesters: semesters,
+    submittedDate,
+  },
 }) => {
   const [copied, setCopied] = useState(false)
   const [copiedAll, setCopiedAll] = useState(false)
@@ -53,7 +39,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     setTimeout(() => setCopied(false), 1000)
   }
 
-  const handleCopyAll = (projectClientDetails: ClientProps, otherClientDetails: ClientProps[]) => {
+  const handleCopyAll = (
+    projectClientDetails: BasicClientDetails,
+    otherClientDetails: BasicClientDetails[],
+  ) => {
     const allEmails = [
       projectClientDetails.email,
       ...otherClientDetails.map((client) => client.email),
