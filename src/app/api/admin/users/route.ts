@@ -35,7 +35,7 @@ class RouteWrapper {
     const { docs: rawUserData, nextPage } = await userService.getAllUsers(
       limit,
       cursor,
-      userRole as UserRole ?? undefined,
+      (userRole as UserRole) ?? undefined,
     )
 
     const combinedUserData = await Promise.all(

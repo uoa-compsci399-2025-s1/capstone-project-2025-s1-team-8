@@ -86,16 +86,16 @@ describe('tests /api/admin/users', async () => {
       const studentUser = await userService.createUser(studentCreateMock)
       const adminUser = await userService.createUser(adminCreateMock)
 
-      const clientReq = createMockNextRequest("/api/admin/users?role=client")
+      const clientReq = createMockNextRequest('/api/admin/users?role=client')
       const res = await GET(clientReq)
       expect(res.status).toBe(StatusCodes.OK)
       expect((await res.json()).data).toEqual([clientUser])
 
-      const studentReq = createMockNextRequest("/api/admin/users?role=student")
+      const studentReq = createMockNextRequest('/api/admin/users?role=student')
       const res2 = await GET(studentReq)
       expect((await res2.json()).data).toEqual([studentUser])
 
-      const adminReq = createMockNextRequest("/api/admin/users?role=admin")
+      const adminReq = createMockNextRequest('/api/admin/users?role=admin')
       const res3 = await GET(adminReq)
       expect((await res3.json()).data).toEqual([adminUser])
     })
@@ -103,16 +103,18 @@ describe('tests /api/admin/users', async () => {
     it('should still paginate correctly with role param filters', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       await userService.createUser(clientCreateMock)
-      await userService.createUser({...clientCreateMock,email: "pog@gmail.com" })
+      await userService.createUser({ ...clientCreateMock, email: 'pog@gmail.com' })
       await userService.createUser(studentCreateMock)
 
-      const req = createMockNextRequest("/api/admin/users?role=client&limit=1")
+      const req = createMockNextRequest('/api/admin/users?role=client&limit=1')
       const res = await GET(req)
       const json = await res.json()
       expect(json.data.length).toBe(1)
       expect(json.nextPage).toBe(2)
 
-      const req2 = createMockNextRequest(`/api/admin/users?role=client&limit=1&cursor=${json.nextPage}`)
+      const req2 = createMockNextRequest(
+        `/api/admin/users?role=client&limit=1&cursor=${json.nextPage}`,
+      )
       const res2 = await GET(req2)
       const json2 = await res2.json()
       expect(json2.data.length).toBe(1)
