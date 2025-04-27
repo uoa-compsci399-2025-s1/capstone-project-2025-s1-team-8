@@ -47,7 +47,7 @@ export default function SignUp() {
               </Button>
               <p className="text-steel-blue">
                 Already have an account? Log in
-                <a href="/auth/signup">
+                <a href="/auth/signin">
                   <u>here</u>
                 </a>
               </p>
