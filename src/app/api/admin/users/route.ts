@@ -18,15 +18,25 @@ class RouteWrapper {
     const searchParams = req.nextUrl.searchParams
     const limit = parseInt(searchParams.get('limit') || '10') // default value as fallback
     const cursor = parseInt(searchParams.get('cursor') || '0')
+    const userRole = searchParams.get('role')
 
-    if (limit > 100 || limit < 0) {
+    if (limit > 100 || limit <= 0) {
       return NextResponse.json(
         { error: 'Invalid fetch limit' },
         { status: StatusCodes.BAD_REQUEST },
       )
+    } else if (userRole && !Object.values(UserRole).includes(userRole.toLowerCase() as UserRole)) {
+      return NextResponse.json(
+        { error: 'Invalid role filter' },
+        { status: StatusCodes.BAD_REQUEST },
+      )
     }
     const userService = new UserService()
-    const { docs: rawUserData, nextPage } = await userService.getAllUsers(limit, cursor)
+    const { docs: rawUserData, nextPage } = await userService.getAllUsers(
+      limit,
+      cursor,
+      (userRole as UserRole) ?? undefined,
+    )
 
     const combinedUserData = await Promise.all(
       rawUserData.map(async (userInfo) => {
