@@ -9,6 +9,7 @@ import AuthService from '@/data-layer/services/AuthService'
 import BusinessAuthService from '@/business-layer/services/AuthService'
 import { AUTH_COOKIE_NAME, UserInfoResponse, UserInfoResponseSchema } from '@/types/Auth'
 import { CreateUserData } from '@/types/Collections'
+import { User } from '@/payload-types'
 
 export const GET = async (req: NextRequest) => {
   const params = req.nextUrl.searchParams
@@ -57,8 +58,10 @@ export const GET = async (req: NextRequest) => {
   }: UserInfoResponse = UserInfoResponseSchema.parse(await userInfoResponse.json())
 
   const userService = new UserService()
-  let user = await userService.getUserByEmail(email)
-  if (!user) {
+  let user: User
+  try {
+    user = await userService.getUserByEmail(email)
+  } catch {
     const newUserData: CreateUserData = {
       email,
       firstName,
