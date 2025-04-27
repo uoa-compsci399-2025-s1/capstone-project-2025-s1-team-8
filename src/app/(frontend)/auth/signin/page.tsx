@@ -23,13 +23,11 @@ export default function SignIn() {
           <form>
             <div className="flex flex-col gap-4">
               <Input
-                onChange={() => {}}
                 placeholder="Email Address"
                 type="email"
                 startIcon={<MdOutlineMail className="text-muted-blue" />}
               />
               <Input
-                onChange={() => {}}
                 placeholder="Password"
                 type="password"
                 startIcon={<MdLock className="text-muted-blue" />}

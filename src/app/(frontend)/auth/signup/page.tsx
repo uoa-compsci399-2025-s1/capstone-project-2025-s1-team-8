@@ -23,25 +23,21 @@ export default function SignUp() {
           <form>
             <div className="flex flex-col gap-4">
               <Input
-                onChange={() => {}}
                 placeholder="First Name"
                 type="text"
                 startIcon={<BsFillPersonFill className="text-muted-blue" />}
               />
               <Input
-                onChange={() => {}}
                 placeholder="Last Name"
                 type="text"
                 startIcon={<BsFillPersonFill className="text-muted-blue" />}
               />
               <Input
-                onChange={() => {}}
                 placeholder="Email Address"
                 type="email"
                 startIcon={<MdOutlineMail className="text-muted-blue" />}
               />
               <Input
-                onChange={() => {}}
                 placeholder="Password"
                 type="password"
                 startIcon={<MdLock className="text-muted-blue" />}
@@ -50,7 +46,7 @@ export default function SignUp() {
                 Sign In
               </Button>
               <p className="text-steel-blue">
-                Already have an account? Log in{' '}
+                Already have an account? Log in
                 <a href="/auth/signup">
                   <u>here</u>
                 </a>
