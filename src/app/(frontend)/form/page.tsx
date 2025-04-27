@@ -376,7 +376,10 @@ export default function Form() {
                   >
                     <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
                   </span>
-                  <p className="text-sm text-dark-blue">I confirm that I will be able to attend <b>6 meetings</b> with students, scheduled 2-3 weeks apart.</p>
+                  <p className="text-sm text-dark-blue">
+                    I confirm that I will be able to attend <b>6 meetings</b> with students,
+                    scheduled 2-3 weeks apart.
+                  </p>
                 </label>
               </li>
               <li>
@@ -405,7 +408,9 @@ export default function Form() {
                   >
                     <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
                   </span>
-                  <p className="text-sm text-dark-blue">I confirm that I will be able to attend final presentation <b>in-person</b>.</p>
+                  <p className="text-sm text-dark-blue">
+                    I confirm that I will be able to attend final presentation <b>in-person</b>.
+                  </p>
                 </label>
               </li>
               <li>
@@ -433,7 +438,11 @@ export default function Form() {
                   >
                     <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
                   </span>
-                  <p className="text-sm text-dark-blue">I understand that no resources will be available for support or maintenance after the semester ends, and that neither the University nor the participating students assume any liability for the project outcome.</p>
+                  <p className="text-sm text-dark-blue">
+                    I understand that no resources will be available for support or maintenance
+                    after the semester ends, and that neither the University nor the participating
+                    students assume any liability for the project outcome.
+                  </p>
                 </label>
               </li>
             </ol>
