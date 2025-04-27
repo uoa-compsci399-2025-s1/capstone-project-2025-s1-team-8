@@ -19,7 +19,7 @@ const Button: React.FC<ButtonProps> = ({
   className = '',
   startIcon,
   endIcon,
-  type,
+  type = 'button',
 }) => {
   // Responsive Size Classes
   const sizeClasses = {
