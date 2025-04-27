@@ -39,6 +39,11 @@ export default function SignIn() {
             Sign In
           </Button>
           <p className="text-steel-blue">Don't have an account? Sign Up <a href="/auth/signup"><u>here</u></a></p>
+          <div className="flex items-center w-full">
+            <div className="border-t border-steel-blue flex-grow"></div>
+            <span className="mx-4 text-steel-blue">OR</span>
+            <div className="border-t border-steel-blue flex-grow"></div>
+          </div>
           </div>
         </form>
 
