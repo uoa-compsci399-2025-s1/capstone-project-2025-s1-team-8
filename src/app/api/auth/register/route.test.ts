@@ -6,7 +6,7 @@ import { UserRole, UserRoleWithoutAdmin } from '@/types/User'
 import UserService from '@/data-layer/services/UserService'
 import AuthService from '@/data-layer/services/AuthService'
 
-describe('tests /api/register', () => {
+describe('tests /api/auth/register', () => {
   const userService = new UserService()
   const authService = new AuthService()
 
@@ -18,7 +18,7 @@ describe('tests /api/register', () => {
       password: 'password123',
       role: UserRoleWithoutAdmin.Client,
     }
-    const res = await POST(createMockNextPostRequest('/api/register', body))
+    const res = await POST(createMockNextPostRequest('/api/auth/register', body))
     const json = await res.json()
 
     expect(res.status).toBe(StatusCodes.CREATED)
@@ -44,7 +44,7 @@ describe('tests /api/register', () => {
       password: 'password123',
       role: UserRoleWithoutAdmin.Client,
     }
-    await POST(createMockNextPostRequest('/api/register', body))
+    await POST(createMockNextPostRequest('/api/auth/register', body))
 
     const res = await POST(createMockNextPostRequest('/api/register', body))
     const json = await res.json()
@@ -61,9 +61,9 @@ describe('tests /api/register', () => {
       password: 'password123',
       role: UserRole.Admin,
     }
-    await POST(createMockNextPostRequest('/api/register', body))
+    await POST(createMockNextPostRequest('/api/auth/register', body))
 
-    const res = await POST(createMockNextPostRequest('/api/register', body))
+    const res = await POST(createMockNextPostRequest('/api/auth/register', body))
     const json = await res.json()
 
     expect(res.status).toBe(StatusCodes.BAD_REQUEST)

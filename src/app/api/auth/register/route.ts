@@ -20,6 +20,7 @@ export const POST = async (req: NextRequest) => {
   const userService = new UserService()
   const authService = new AuthService()
   const authDataService = new AuthDataService()
+
   try {
     const body = RegisterRequestBodySchema.parse(await req.json())
     const fetchedUser = await userService.getUserByEmail(body.email)
