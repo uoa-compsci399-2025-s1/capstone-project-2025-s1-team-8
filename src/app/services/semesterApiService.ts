@@ -1,13 +1,13 @@
-import { SemesterProjectSelect } from "@/payload-types";
-import { SemesterSelect } from "@/payload-types";
+import { Semester, SemesterProject } from "@/payload-types";
+import { CreateSemesterData, UpdateSemesterData } from '@/types/Collections'
 
 export interface SemestersPaginatedResponse {
-  data: SemesterSelect[];  
+  data: Semester[];  
   nextPage: number | null; 
 }
 
 export interface ProjectsPaginatedResponse {
-  data: SemesterProjectSelect[];  
+  data: SemesterProject[];  
   nextPage: number | null; 
 }
 
@@ -23,7 +23,7 @@ export default class SemesterApiService {
    * @returns A promise resolving to a PaginatedResponse object.
    * @throws An Error if the network response is not OK.
    */
-  public static async getAll(options: FetchOptions = {}): Promise<SemestersPaginatedResponse> {
+  public static async getAllSemesters(options: FetchOptions = {}): Promise<SemestersPaginatedResponse> {
     const { page, limit } = options;
 
     let url = '/api/semesters';
@@ -64,7 +64,7 @@ export default class SemesterApiService {
    * @returns A promise resolving to a PaginatedResponse object.
    * @throws An Error if the network response is not OK.
    */
-  public static async getAllApprovedProjects(semesterId: string): Promise<ProjectsPaginatedResponse> {
+  public static async getAllApprovedProjectsBySemesterId(semesterId: string): Promise<ProjectsPaginatedResponse> {
     const response = await fetch(`/api/semesters/${semesterId}/projects`, {
       method: 'GET',
       credentials: 'include',
@@ -87,25 +87,25 @@ export default class SemesterApiService {
   }
 
   /**
-   * Creates a new semester project.
-   * @param semesterProject The semester project data to create.
-   * @returns A promise resolving to the created semester project.
+   * Creates a new semester.
+   * @param semester The semester object to create.
+   * @returns A promise resolving to the created semester object.
    * @throws An Error if the network response is not OK.
    */
-  public static async createSemesterProject(semesterProject: SemesterProjectSelect): Promise<SemesterProjectSelect> {
-    const response = await fetch('/api/semesters/projects', {
+  public static async createSemester(semester: CreateSemesterData): Promise<Semester> {
+    const response = await fetch('/api/admin/semesters', {
       method: 'POST',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(semesterProject),
+      body: JSON.stringify(semester),
     });
 
-    const payload = (await response.json()) as SemesterProjectSelect & { error?: string }; 
+    const payload = (await response.json()) as Semester & { error?: string }; 
 
     if (!response.ok) {
-      const errorMessage = payload.error ?? 'Failed to create semester project';
+      const errorMessage = payload.error ?? 'Failed to create semester';
       throw new Error(errorMessage);  
     }
 
@@ -113,26 +113,26 @@ export default class SemesterApiService {
   }
 
   /**
-   * Updates an existing semester project.
-   * @param semesterProjectId The ID of the semester project to update.
-   * @param updatedData The updated data for the semester project.
-   * @returns A promise resolving to the updated semester project.
+   * Updates an existing semester.
+   * @param semesterId The ID of the semester to update.
+   * @param semester The updated semester object.
+   * @returns A promise resolving to the updated semester object.
    * @throws An Error if the network response is not OK.
    */
-  public static async updateSemesterProject(semesterProjectId: string, updatedData: Partial<SemesterProjectSelect>): Promise<SemesterProjectSelect> {
-    const response = await fetch(`/api/semesters/projects/${semesterProjectId}`, {
-      method: 'PUT',
+  public static async updateSemester(semesterId: string, semester: UpdateSemesterData): Promise<Semester> {
+    const response = await fetch(`/api/admin/semesters/${semesterId}`, {
+      method: 'PATCH',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(updatedData),
+      body: JSON.stringify(semester),
     });
 
-    const payload = (await response.json()) as SemesterProjectSelect & { error?: string }; 
+    const payload = (await response.json()) as Semester & { error?: string }; 
 
     if (!response.ok) {
-      const errorMessage = payload.error ?? 'Failed to update semester project';
+      const errorMessage = payload.error ?? 'Failed to update semester';
       throw new Error(errorMessage);  
     }
 
