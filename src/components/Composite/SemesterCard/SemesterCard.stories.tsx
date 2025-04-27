@@ -1,14 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react'
-import SemesterCard, { SemesterCardProps } from './SemesterCard'
+import SemesterCard, { SemesterDTOPlaceholder } from './SemesterCard'
 import { mockProjects1 } from '@/mocks/Projects.mock'
+import { mockSemesters } from '@/mocks/Semesters.mock'
 
-const mockProps: SemesterCardProps = {
-  semesterName: 'Semester 2 2025',
-  startDate: new Date('2025-07-01'),
-  endDate: new Date('2025-12-15'),
-  submissionDeadline: new Date('2025-01-30'),
-  approvedProjects: mockProjects1,
-}
+const mockProps: SemesterDTOPlaceholder = mockSemesters[0]
 
 export default {
   title: 'Composite/SemesterCard',
