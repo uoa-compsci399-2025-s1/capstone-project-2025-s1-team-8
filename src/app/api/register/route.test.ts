@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 
 import { POST, RegisterRequestBody } from './route'
 import { createMockNextPostRequest } from '@/test-config/utils'
-import { UserRoleWithoutAdmin } from '@/types/User'
+import { UserRole, UserRoleWithoutAdmin } from '@/types/User'
 import UserService from '@/data-layer/services/UserService'
 import AuthService from '@/data-layer/services/AuthService'
 
@@ -51,5 +51,22 @@ describe('tests /api/register', () => {
 
     expect(res.status).toBe(StatusCodes.CONFLICT)
     expect(json.error).toBe('A user with that email already exists')
+  })
+
+  it('should return a 400 bad request if the payload is invalid', async () => {
+    const body = {
+      firstName: 'jeffery',
+      lastName: 'ji',
+      email: 'test@example.com',
+      password: 'password123',
+      role: UserRole.Admin,
+    }
+    await POST(createMockNextPostRequest('/api/register', body))
+
+    const res = await POST(createMockNextPostRequest('/api/register', body))
+    const json = await res.json()
+
+    expect(res.status).toBe(StatusCodes.BAD_REQUEST)
+    expect(json.error).toBe('Invalid request body')
   })
 })
