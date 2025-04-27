@@ -7,6 +7,7 @@ import {
   UpdateUserData,
 } from '@/types/Collections'
 import { PaginatedDocs } from 'payload'
+import { UserRole } from '@/types/User'
 
 export default class UserService {
   /**
@@ -58,9 +59,17 @@ export default class UserService {
   public async getAllUsers(
     limit: number = 100,
     pagingCounter?: number,
+    roleFilter?: UserRole,
   ): Promise<PaginatedDocs<User>> {
     return await payload.find({
       collection: 'user',
+      where: {
+        role: !!roleFilter
+          ? {
+              equals: roleFilter,
+            }
+          : {},
+      },
       limit,
       pagination: true,
       page: pagingCounter,
