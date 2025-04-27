@@ -25,32 +25,24 @@ export const PATCH = async (
   let fetchedSemester
 
   try {
-    project = await projectService.getSemesterProject(projectId)
-  } catch (error) {
-    if (error instanceof NotFound) {
-      return NextResponse.json({ error: 'Project not found!' }, { status: StatusCodes.NOT_FOUND })
+    try {
+      project = await projectService.getSemesterProject(projectId)
+    } catch (error) {
+      if (error instanceof NotFound) {
+        return NextResponse.json({ error: 'Project not found!' }, { status: StatusCodes.NOT_FOUND })
+      } 
+      throw error;
     }
-    console.error('Error updating project:', error)
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: StatusCodes.INTERNAL_SERVER_ERROR },
-    )
-  }
 
-  try {
-    fetchedSemester = await semesterService.getSemester(id)
-  } catch (error) {
-    if (error instanceof NotFound) {
-      return NextResponse.json({ error: 'Semester not found!' }, { status: StatusCodes.NOT_FOUND })
+    try {
+      fetchedSemester = await semesterService.getSemester(id)
+    } catch (error) {
+      if (error instanceof NotFound) {
+        return NextResponse.json({ error: 'Semester not found!' }, { status: StatusCodes.NOT_FOUND })
+      }
+      throw error;
     }
-    console.error('Error updating project:', error)
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: StatusCodes.INTERNAL_SERVER_ERROR },
-    )
-  }
-
-  try {
+  
     const data = PatchSemesterProjectRequestBody.parse(await req.json())
     if (JSON.stringify(project.semester) !== JSON.stringify(fetchedSemester)) {
       return NextResponse.json(
