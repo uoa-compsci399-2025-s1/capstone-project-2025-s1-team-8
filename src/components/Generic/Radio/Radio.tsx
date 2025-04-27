@@ -9,13 +9,7 @@ interface RadioProps {
   required?: boolean
 }
 
-const Radio: FC<RadioProps> = ({ 
-  id,
-  name,
-  values, 
-  customInput = false,
-  required = false,
-}) => {
+const Radio: FC<RadioProps> = ({ id, name, values, customInput = false, required = false }) => {
   const [customInputValue, setCustomInputValue] = useState('')
 
   return (
@@ -48,9 +42,7 @@ const Radio: FC<RadioProps> = ({
         </label>
       ))}
       {customInput && (
-        <label
-          className="flex items-center mt-2 mb-2"
-        >
+        <label className="flex items-center mt-2 mb-2">
           <input
             type="radio"
             name={name}

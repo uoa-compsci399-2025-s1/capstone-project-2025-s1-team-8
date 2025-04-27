@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import { FiCheck } from 'react-icons/fi'
 
-
 interface CheckboxProps {
   id?: string
   name?: string
@@ -9,12 +8,7 @@ interface CheckboxProps {
   required?: boolean
 }
 
-const Checkbox: FC<CheckboxProps> = ({ 
-  id,
-  name,
-  values,
-  required = false,
-}) => {
+const Checkbox: FC<CheckboxProps> = ({ id, name, values, required = false }) => {
   return (
     <div className={`flex flex-col`}>
       {values.map((value, index) => (

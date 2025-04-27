@@ -1,4 +1,3 @@
-
 export const semesterNames1: Array<string> = [
   'Semester 1 2024',
   'Semester 2 2024',

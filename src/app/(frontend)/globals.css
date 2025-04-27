@@ -199,6 +199,6 @@
     @apply text-xs pl-2 pr-2 rounded-b-lg rounded-t-lg;
   }
   .form-question-subheading {
-    @apply text-dark-blue font-inter text-sm mb-7
+    @apply text-dark-blue font-inter text-sm mb-7;
   }
 }
