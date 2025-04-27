@@ -46,7 +46,7 @@ export default function SignUp() {
                 type="password"
                 startIcon={<MdLock className="text-muted-blue" />}
               />
-              <Button size="sm" variant="dark">
+              <Button size="md" variant="dark">
                 Sign In
               </Button>
               <p className="text-steel-blue">

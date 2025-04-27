@@ -3,6 +3,7 @@
 import Button from '@/components/Generic/Button/Button'
 import Input from '@/components/Generic/Input/InputField'
 import { MdOutlineMail, MdLock } from 'react-icons/md'
+import { FcGoogle } from "react-icons/fc";
 
 export default function SignIn() {
   return (
@@ -33,11 +34,11 @@ export default function SignIn() {
                 type="password"
                 startIcon={<MdLock className="text-muted-blue" />}
               />
-              <Button size="sm" variant="dark">
+              <Button size="md" variant="dark">
                 Sign In
               </Button>
               <p className="text-steel-blue">
-                Don't have an account? Sign Up{' '}
+                {"Don't have an account? Sign Up "}
                 <a href="/auth/signup">
                   <u>here</u>
                 </a>
@@ -47,6 +48,9 @@ export default function SignIn() {
                 <span className="mx-4 text-steel-blue">OR</span>
                 <div className="border-t border-steel-blue flex-grow"></div>
               </div>
+              <Button className="bg-white" size="md" variant="outline" startIcon={<FcGoogle />}>
+                Sign In with Google
+              </Button>
             </div>
           </form>
         </div>
