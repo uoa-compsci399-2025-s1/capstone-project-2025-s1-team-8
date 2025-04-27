@@ -34,7 +34,7 @@ export default class AuthService {
    * @param accessToken The Google OAuth access token to include in the JWT payload
    * @returns The generated JWT token
    */
-  public generateJWT(user: User, accessToken: string): string {
+  public generateJWT(user: User, accessToken?: string): string {
     return jwt.sign(
       {
         user,

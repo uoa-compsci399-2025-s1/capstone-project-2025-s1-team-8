@@ -6,7 +6,7 @@ import {
   UpdateClientAdditionalInfoData,
   UpdateUserData,
 } from '@/types/Collections'
-import { PaginatedDocs } from 'payload'
+import { NotFound, PaginatedDocs } from 'payload'
 import { UserRole } from '@/types/User'
 
 export default class UserService {
@@ -37,16 +37,16 @@ export default class UserService {
   }
 
   public async getUserByEmail(email: string): Promise<User> {
-    return (
-      await payload.find({
-        collection: 'user',
-        where: {
-          email: {
-            equals: email,
-          },
+    const res = await payload.find({
+      collection: 'user',
+      where: {
+        email: {
+          equals: email,
         },
-      })
-    ).docs[0]
+      },
+    })
+    if (!res.docs[0]) throw new NotFound()
+    return res.docs[0]
   }
 
   /**
