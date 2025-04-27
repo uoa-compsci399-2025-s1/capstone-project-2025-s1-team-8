@@ -1,5 +1,11 @@
 import { z } from 'zod'
-import { FormResponseSchema, MediaSchema, ProjectSchema, UserSchema } from '../Payload'
+import {
+  FormResponseSchema,
+  MediaSchema,
+  UserSchema,
+  ProjectSchema,
+  SemesterSchema,
+} from '../Payload'
 import { ProjectStatus } from '../Project'
 
 export const UpdateProjectRequestBody = z.object({
@@ -44,6 +50,14 @@ export const CreateProjectRequestBody = z.object({
   ]),
   attachments: z.array(MediaSchema).max(5).optional(),
   formResponse: z.union([z.string(), FormResponseSchema]),
+})
+
+export const PatchSemesterProjectRequestBody = z.object({
+  number: z.number().min(1).nullable().optional(),
+  project: z.union([z.string(), ProjectSchema]).optional(),
+  semester: z.union([z.string(), SemesterSchema]).optional(),
+  status: z.nativeEnum(ProjectStatus).optional(),
+  published: z.boolean().optional(),
 })
 
 export const CreateSemesterProjectRequestBody = z.object({
