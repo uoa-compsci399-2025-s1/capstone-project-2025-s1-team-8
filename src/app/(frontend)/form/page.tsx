@@ -427,7 +427,12 @@ export default function Form() {
                     className="opacity-0 peer"
                     required={true}
                   />
-                  <Checkbox name="ProjectSupport" values={['I understand that no resources will be available for support or maintenance after the semester ends, and that neither the University nor the participating students assume any liability for the project outcome.']}/>
+                  <Checkbox
+                    name="ProjectSupport"
+                    values={[
+                      'I understand that no resources will be available for support or maintenance after the semester ends, and that neither the University nor the participating students assume any liability for the project outcome.',
+                    ]}
+                  />
                 </label>
               </li>
             </ol>
