@@ -24,7 +24,7 @@ export const POST = async (req: NextRequest) => {
 
   try {
     const body = RegisterRequestBodySchema.parse(await req.json())
-    let user : User
+    let user: User
 
     try {
       user = await userService.getUserByEmail(body.email)
