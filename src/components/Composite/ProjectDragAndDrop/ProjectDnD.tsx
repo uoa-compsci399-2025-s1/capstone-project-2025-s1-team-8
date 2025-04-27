@@ -97,14 +97,12 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
   }
 
   function handleSaveChanges() {
-    console.log('Saving changes')
     setHasChanges(false)
     setShowNotification(false)
     // send changes to the backend
   }
 
   function sortProjects(containerId: UniqueIdentifier, filter: string): void {
-    console.log('sorting')
     setContainers((prevContainers) => {
       return prevContainers.map((container) => {
         if (container.id !== containerId) return container
@@ -115,19 +113,16 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
           case 'submissionDate':
             const sorted = [...container.currentItems]
             if (filter === 'projectName') {
-              console.log('projectName')
               sorted.sort((a, b) =>
                 a.projectInfo.projectTitle.localeCompare(b.projectInfo.projectTitle),
               )
             } else if (filter === 'clientName') {
-              console.log('clientName')
               sorted.sort((a, b) =>
                 a.projectInfo.projectClientDetails.name.localeCompare(
                   b.projectInfo.projectClientDetails.name,
                 ),
               )
             } else if (filter === 'submissionDate') {
-              console.log('submissionDate')
               sorted.sort(
                 (a, b) =>
                   new Date(a.projectInfo.submittedDate).getTime() -
@@ -407,10 +402,10 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
   return (
     <div className="mx-auto w-full relative">
       <div
-        className={` ${showNotification ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 absolute top-6 right-6 z-50 bg-light-pink ring ring-2 ring-pink-1 shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`}
+        className={` ${showNotification ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 fixed top-6 right-6 z-50 bg-light-pink ring ring-2 ring-pink-soft shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`}
       >
         <div className="flex items-center gap-2">
-          <FiAlertCircle className="text-pink-2 w-5 h-5 flex-shrink-0" />
+          <FiAlertCircle className="text-pink-accent w-5 h-5 flex-shrink-0" />
           <p className="text-dark-pink font-medium">Unsaved changes</p>
         </div>
 
@@ -452,12 +447,13 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
             )}
           </DragOverlay>
         </DndContext>
-        <div
+        <button
           className={`flex absolute z-40 right-4 bottom-4 gap-4 p-3 rounded-full shadow-lg ${hasChanges ? 'bg-gradient-to-tl from-deeper-blue to-muted-blue cursor-pointer' : 'bg-grey-1 cursor-not-allowed'}`}
-          onClick={hasChanges ? handleSaveChanges : undefined}
+          onClick={handleSaveChanges}
+          disabled={!hasChanges}
         >
           <FiSave className="w-6 h-6 text-white"></FiSave>
-        </div>
+        </button>
       </div>
     </div>
   )

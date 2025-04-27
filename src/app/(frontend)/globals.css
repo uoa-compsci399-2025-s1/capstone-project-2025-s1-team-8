@@ -19,8 +19,8 @@
   --color-deep-teal: #13536b; /*Often used for radio buttons*/
   --color-denim-blue: #41585e; /*Often used for dark cards*/
   --color-grey-1: #748086; /*Often used for grey text*/
-  --color-pink-1: #ffbbee; /*Used for gradients*/
-  --color-pink-2: #ff2aca; /*Used for errors and required fields*/
+  --color-pink-soft: #ffbbee;
+  --color-pink-accent: #ff2aca; /*Used for errors and required fields*/
   --color-dark-pink: #b81c88;
   --color-light-pink: #fff0f8;
 
