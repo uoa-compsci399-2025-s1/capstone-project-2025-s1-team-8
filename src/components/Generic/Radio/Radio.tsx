@@ -23,7 +23,7 @@ const Radio: FC<RadioProps> = ({ id, name, values, customInput = false, required
           ${index != 0 ? 'mt-3' : ''}`}
         >
           <input
-            id={id}
+            id={id ? `${id}-${index}` : undefined}
             name={name}
             type="radio"
             value={value}
