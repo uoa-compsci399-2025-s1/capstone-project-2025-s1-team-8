@@ -40,8 +40,7 @@ const Input: FC<InputProps> = ({
   const [showPassword, setShowPassword] = useState(false)
   const isPasswordType = type === 'password'
   const actualType = isPasswordType && showPassword ? 'text' : type
-
-  const inputClasses = `${error ? 'ring-pink-2 ring-1 focus:ring-2' : 'ring-muted-blue ring-1 focus:ring-3'} ${startIcon ? 'pl-11' : ''} w-full placeholder-muted-blue text-steel-blue focus:outline-hidden rounded-lg px-4 py-2.5 text-sm bg-white ${className}`
+  const inputClasses = `${error ? 'ring-pink-accent ring-1 focus:ring-2' : 'ring-muted-blue ring-1 focus:ring-3'} ${startIcon ? 'pl-11' : ''} w-full placeholder-muted-blue text-steel-blue focus:outline-hidden rounded-lg px-4 py-2.5 text-sm shadow bg-white ${className}`
 
   return (
     <>
@@ -76,7 +75,7 @@ const Input: FC<InputProps> = ({
         ) : null}
       </div>
       {error && (
-        <div className="flex items-center gap-2 text-xs text-pink-2 min-h-[1.25rem] mt-2">
+        <div className="flex items-center gap-2 text-xs text-pink-accent min-h-[1.25rem] mt-2">
           <ExclamationTriangleIcon className="w-3 h-3" />
           <p>{errorMessage}</p>
         </div>

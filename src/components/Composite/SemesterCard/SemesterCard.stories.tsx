@@ -1,13 +1,13 @@
 import { Meta, StoryObj } from '@storybook/react'
 import SemesterCard, { SemesterCardProps } from './SemesterCard'
-import { mockProjects1 } from '@/mocks/Projects.mock'
+import { mockProjects } from '@/mocks/Projects.mock'
 
 const mockProps: SemesterCardProps = {
   semesterName: 'Semester 2 2025',
   startDate: new Date('2025-07-01'),
   endDate: new Date('2025-12-15'),
   submissionDeadline: new Date('2025-01-30'),
-  approvedProjects: mockProjects1,
+  approvedProjects: mockProjects,
 }
 
 export default {

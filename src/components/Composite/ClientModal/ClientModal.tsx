@@ -2,16 +2,16 @@ import React, { useState } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import Modal, { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'
-import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
+import { PlaceholderProjectDetailsType } from '@/types/Project'
 
 interface ClientModalProps extends ModalProps {
   clientFullName: string
   clientEmail: string
   affiliation?: string
   introduction?: string
-  projects?: ProjectDTOPlaceholder[]
+  projects?: PlaceholderProjectDetailsType[]
 }
 
 const ClientModal: React.FC<ClientModalProps> = ({

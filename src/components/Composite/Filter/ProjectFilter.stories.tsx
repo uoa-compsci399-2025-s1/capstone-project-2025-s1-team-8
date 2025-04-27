@@ -8,7 +8,14 @@ const meta: Meta<typeof ProjectFilter> = {
   component: ProjectFilter,
   decorators: [
     (Story) => (
-      <FilterProvider>
+      <FilterProvider
+        value={{
+          selectedFilter: undefined,
+          setSelectedFilter: function (): void {
+            throw new Error('Function not implemented.')
+          },
+        }}
+      >
         <div className="p-4 bg-beige h-10 w-50 flex items-center justify-end rounded-lg">
           <Story />
         </div>
