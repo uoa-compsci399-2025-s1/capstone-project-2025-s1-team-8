@@ -1,5 +1,6 @@
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import Image from 'next/image'
+import Button from '@/components/Generic/Button/Button'
 import React from 'react'
 
 const Homepage: React.FC = () => {
@@ -13,9 +14,8 @@ const Homepage: React.FC = () => {
       </div>
 
       <div className="flex justify-center items-center">
-        <button type="button" className="hover:cursor-pointer">
-          <Image src="/homepage-button.svg" alt="submit proposal button" width={276} height={64}/>
-        </button>
+        {/* @TODO onClick() */}
+        <Button variant="outline" size="sm">Submit your proposal</Button>
       </div>
     </div>
   )
