@@ -22,35 +22,38 @@ export const GET = async (
   let fetchedSemester
 
   try {
-    project = await projectService.getSemesterProject(projectId)
-  } catch (error) {
-    if (error instanceof NotFound) {
-      return NextResponse.json({ error: 'Project not found!' }, { status: StatusCodes.NOT_FOUND })
+    try {
+      project = await projectService.getSemesterProject(projectId)
+    } catch (error) {
+      if (error instanceof NotFound) {
+        return NextResponse.json({ error: 'Project not found!' }, { status: StatusCodes.NOT_FOUND })
+      }
+      throw error
     }
-    console.error('Error fetching project:', error)
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: StatusCodes.INTERNAL_SERVER_ERROR },
-    )
-  }
 
-  try {
-    fetchedSemester = await semesterService.getSemester(id)
-  } catch (error) {
-    if (error instanceof NotFound) {
-      return NextResponse.json({ error: 'Semester not found!' }, { status: StatusCodes.NOT_FOUND })
+    try {
+      fetchedSemester = await semesterService.getSemester(id)
+    } catch (error) {
+      if (error instanceof NotFound) {
+        return NextResponse.json(
+          { error: 'Semester not found!' },
+          { status: StatusCodes.NOT_FOUND },
+        )
+      }
+      throw error
     }
-    console.error('Error fetching project:', error)
+    if (JSON.stringify(project.semester) !== JSON.stringify(fetchedSemester)) {
+      return NextResponse.json(
+        { error: 'Project is not associated with semester!' },
+        { status: StatusCodes.BAD_REQUEST },
+      )
+    }
+    return NextResponse.json({ data: project })
+  } catch (error) {
+    console.error('Error:', error)
     return NextResponse.json(
       { error: 'Internal Server Error' },
       { status: StatusCodes.INTERNAL_SERVER_ERROR },
     )
   }
-  if (JSON.stringify(project.semester) !== JSON.stringify(fetchedSemester)) {
-    return NextResponse.json(
-      { error: 'Project is not associated with semester!' },
-      { status: StatusCodes.BAD_REQUEST },
-    )
-  }
-  return NextResponse.json({ data: project })
 }
