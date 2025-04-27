@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react'
 import SemesterCard, { SemesterDTOPlaceholder } from './SemesterCard'
-import { mockProjects1 } from '@/mocks/Projects.mock'
 import { mockSemesters } from '@/mocks/Semesters.mock'
 
 const mockProps: SemesterDTOPlaceholder = mockSemesters[0]
