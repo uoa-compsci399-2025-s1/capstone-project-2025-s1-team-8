@@ -6,6 +6,7 @@ import Textarea from '@/components/Generic/Textarea/Textarea'
 import Radio from '@/components/Generic/Radio/Radio'
 import Checkbox from '@/components/Generic/Checkbox/Checkbox'
 import { semesterNames1 } from '@/mocks/Semesters.mock'
+import { FiCheck } from 'react-icons/fi'
 
 interface OtherClientDetails {
   fullName: string
@@ -358,13 +359,25 @@ export default function Form() {
                   (or Teams). The details and schedule of the meetings will be arranged at the
                   beginning of the semester and will cover the entire duration of the course.
                 </p>
-                <Checkbox
-                  name="MeetingAttendance"
-                  values={[
-                    'I confirm that I will be able to attend <b>6 meetings</b> with students, scheduled 2-3 weeks apart.',
-                  ]}
-                  required={true}
-                />
+                <label className="flex mb-3">
+                  <input
+                    name="MeetingAttendance"
+                    type="checkbox"
+                    style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
+                    className="opacity-0 peer"
+                    required={true}
+                  />
+                  <span
+                    className="w-[16px] h-[16px] inline-flex mt-[3px] mr-8 border-2 border-steel-blue rounded-sm 
+                        peer-checked:bg-steel-blue 
+                        [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
+                        peer-focus:outline-2 peer-focus:outline-offset-1 peer-focus:outline-muted-blue/80
+                        transition-colors duration-150"
+                  >
+                    <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
+                  </span>
+                  <p className="text-sm text-dark-blue">I confirm that I will be able to attend <b>6 meetings</b> with students, scheduled 2-3 weeks apart.</p>
+                </label>
               </li>
               <li>
                 <label htmlFor="FinalPresentationAttendance">
@@ -375,11 +388,25 @@ export default function Form() {
                   suits your schedule. The final presentation will be held on the UoA Main Campus
                   and must be attended in person.
                 </p>
-                <Checkbox
-                  name="FinalPresentationAttendance"
-                  values={['I confirm that I will be able to attend final presentation in-person.']}
-                  required={true}
-                />
+                <label className="flex mb-3">
+                  <input
+                    name="FinalPresentationAttendance"
+                    type="checkbox"
+                    style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
+                    className="opacity-0 peer"
+                    required={true}
+                  />
+                  <span
+                    className="w-[16px] h-[16px] inline-flex mt-[3px] mr-8 border-2 border-steel-blue rounded-sm 
+                        peer-checked:bg-steel-blue 
+                        [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
+                        peer-focus:outline-2 peer-focus:outline-offset-1 peer-focus:outline-muted-blue/80
+                        transition-colors duration-150"
+                  >
+                    <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
+                  </span>
+                  <p className="text-sm text-dark-blue">I confirm that I will be able to attend final presentation <b>in-person</b>.</p>
+                </label>
               </li>
               <li>
                 <label htmlFor="ProjectSupportAndMaintenance">
@@ -389,13 +416,25 @@ export default function Form() {
                   The COMPSCI 399 Capstone Course is provided solely for academic purposes during
                   the semester.
                 </p>
-                <Checkbox
-                  name="ProjectSupportAndMaintenance"
-                  values={[
-                    'I understand that no resources will be available for support or maintenance after the semester ends, and that neither the University nor the participating students assume any liability for the project outcome.',
-                  ]}
-                  required={true}
-                />
+                <label className="flex mb-3">
+                  <input
+                    name="ProjectSupportAndMaintenance"
+                    type="checkbox"
+                    style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
+                    className="opacity-0 peer"
+                    required={true}
+                  />
+                  <span
+                    className="w-[16px] h-[16px] inline-flex mt-[3px] mr-8 border-2 border-steel-blue rounded-sm 
+                        peer-checked:bg-steel-blue 
+                        [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
+                        peer-focus:outline-2 peer-focus:outline-offset-1 peer-focus:outline-muted-blue/80
+                        transition-colors duration-150"
+                  >
+                    <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
+                  </span>
+                  <p className="text-sm text-dark-blue">I understand that no resources will be available for support or maintenance after the semester ends, and that neither the University nor the participating students assume any liability for the project outcome.</p>
+                </label>
               </li>
             </ol>
             <Button type="submit" variant="dark" size="md" className="self-start mt-5">
