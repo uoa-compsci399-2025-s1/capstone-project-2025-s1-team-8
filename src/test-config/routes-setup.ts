@@ -30,7 +30,7 @@ beforeEach(async () => {
         })
         generateJWT = vi.fn().mockImplementation((user, _token) => {
           if (user === adminMock) return ADMIN_JWT_MOCK
-          if (user === clientMock) return CLIENT_JWT_MOCK
+          if (user === clientMock || user.email === clientMock.email) return CLIENT_JWT_MOCK
           if (user === studentMock) return STUDENT_JWT_MOCK
           return ''
         })

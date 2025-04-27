@@ -11,6 +11,7 @@ import { adminToken, clientToken, studentToken } from '@/test-config/routes-setu
 
 describe('test api/semester/[id]/projects[/projectId]', async () => {
   const projectService = new ProjectService()
+  const semesterService = new SemesterService()
   const cookieStore = await cookies()
 
   describe('test DELETE /api/semesters/[id]/projects/[projectId]', async () => {
@@ -50,6 +51,27 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
         },
       )
       expect(res.status).toBe(StatusCodes.NOT_FOUND)
+      const jsonResponse = await res.json()
+      expect(jsonResponse.error).toBe('Project not found')
+    })
+
+    it('not found - delete project by non existent semester ID', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const createdSemester = await semesterService.createSemester(semesterMock)
+      const createdSemesterProject = await projectService.createSemesterProject({
+        ...semesterProjectMock5,
+        semester: createdSemester.id,
+      })
+      const projectId = createdSemesterProject.id
+      const res = await DELETE(
+        createMockNextRequest(`api/semesters/'non-existent'/projects/${projectId}`),
+        {
+          params: paramsToPromise({ id: 'non-existent', projectId: projectId }),
+        },
+      )
+      expect(res.status).toBe(StatusCodes.NOT_FOUND)
+      const jsonResponse = await res.json()
+      expect(jsonResponse.error).toBe('Semester not found')
     })
 
     it('delete a semester project with affiliated semester', async () => {
