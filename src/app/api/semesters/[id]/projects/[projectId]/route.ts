@@ -30,19 +30,22 @@ export const PATCH = async (
     } catch (error) {
       if (error instanceof NotFound) {
         return NextResponse.json({ error: 'Project not found!' }, { status: StatusCodes.NOT_FOUND })
-      } 
-      throw error;
+      }
+      throw error
     }
 
     try {
       fetchedSemester = await semesterService.getSemester(id)
     } catch (error) {
       if (error instanceof NotFound) {
-        return NextResponse.json({ error: 'Semester not found!' }, { status: StatusCodes.NOT_FOUND })
+        return NextResponse.json(
+          { error: 'Semester not found!' },
+          { status: StatusCodes.NOT_FOUND },
+        )
       }
-      throw error;
+      throw error
     }
-  
+
     const data = PatchSemesterProjectRequestBody.parse(await req.json())
     if (JSON.stringify(project.semester) !== JSON.stringify(fetchedSemester)) {
       return NextResponse.json(
