@@ -15,6 +15,7 @@ describe('test /api/semesters/[id]/projects/[projectId]', () => {
       params: paramsToPromise({ id: '123', projectId: '123' }),
     })
     expect(res.status).toBe(StatusCodes.NOT_FOUND)
+    expect((await res.json()).error).toBe('Project not found!')
   })
 
   it('Should return a 404 error if the project is not in the semester', async () => {
@@ -30,6 +31,7 @@ describe('test /api/semesters/[id]/projects/[projectId]', () => {
       },
     )
     expect(res.status).toBe(StatusCodes.NOT_FOUND)
+    expect((await res.json()).error).toBe('Semester not found!')
   })
 
   it('Should return a 200 response with the project if it exists in the semester', async () => {
