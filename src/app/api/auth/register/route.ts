@@ -6,6 +6,7 @@ import { UserRoleWithoutAdmin } from '@/types/User'
 import { StatusCodes } from 'http-status-codes'
 import { NextRequest, NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
+import { User } from '@/payload-types'
 
 export const RegisterRequestBodySchema = z.object({
   firstName: z.string(),
@@ -23,13 +24,18 @@ export const POST = async (req: NextRequest) => {
 
   try {
     const body = RegisterRequestBodySchema.parse(await req.json())
-    const fetchedUser = await userService.getUserByEmail(body.email)
-    if (fetchedUser)
-      return NextResponse.json(
-        { error: 'A user with that email already exists' },
-        { status: StatusCodes.CONFLICT },
-      )
-    const user = await userService.createUser(body as CreateUserData)
+    let user : User
+
+    try {
+      user = await userService.getUserByEmail(body.email)
+      if (user)
+        return NextResponse.json(
+          { error: 'A user with that email already exists' },
+          { status: StatusCodes.CONFLICT },
+        )
+    } catch {
+      user = await userService.createUser(body as CreateUserData)
+    }
 
     const hash = await authService.hashPassword(body.password)
     await authDataService.createAuth({
