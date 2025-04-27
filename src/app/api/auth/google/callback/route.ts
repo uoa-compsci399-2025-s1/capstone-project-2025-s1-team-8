@@ -7,7 +7,7 @@ import { UserRole } from '@/types/User'
 import UserService from '@/data-layer/services/UserService'
 import AuthService from '@/data-layer/services/AuthService'
 import BusinessAuthService from '@/business-layer/services/AuthService'
-import { UserInfoResponse, UserInfoResponseSchema } from '@/types/Auth'
+import { AUTH_COOKIE_NAME, UserInfoResponse, UserInfoResponseSchema } from '@/types/Auth'
 import { CreateUserData } from '@/types/Collections'
 
 export const GET = async (req: NextRequest) => {
@@ -94,7 +94,7 @@ export const GET = async (req: NextRequest) => {
   const token = businessAuthService.generateJWT(user, tokens.access_token)
   const response = NextResponse.json({ token })
 
-  cookieStore.set('auth_token', token, {
+  cookieStore.set(AUTH_COOKIE_NAME, token, {
     httpOnly: true,
     // secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',

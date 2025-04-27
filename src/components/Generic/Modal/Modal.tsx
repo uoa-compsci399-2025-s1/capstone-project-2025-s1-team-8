@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { XMarkIcon } from '@heroicons/react/16/solid'
 
 export interface ModalProps {
-  children: ReactNode
+  children?: ReactNode
   open: boolean // Whether the modal is open
   onClose: () => void // Function to close the modal
   className?: string // Additional classes for modal container
@@ -29,7 +29,7 @@ const Modal: React.FC<ModalProps> = ({ children, open, onClose, className = '' }
 
   return ReactDOM.createPortal(
     <div
-      className={`fixed bg-[#1e6179]/59 w-full h-full flex-col items-center overflow-y-scroll left-0 top-0 py-[8%] ${open ? 'flex' : 'hidden'}`}
+      className={`z-100 fixed bg-[#1e6179]/59 w-full h-full flex-col items-center overflow-y-scroll left-0 top-0 py-[8%] ${open ? 'flex' : 'hidden'}`}
       onClick={handleClose}
     >
       <div

@@ -1,5 +1,14 @@
 import z from 'zod'
 
+export enum AuthType {
+  OAUTH = 'oauth',
+  PASSWORD = 'password',
+}
+
+export const AUTH_COOKIE_NAME = 'auth_token'
+
+export const SALT_ROUNDS = 10
+
 export const UserInfoResponseSchema = z.object({
   /**
    * The unique ID of a Google user

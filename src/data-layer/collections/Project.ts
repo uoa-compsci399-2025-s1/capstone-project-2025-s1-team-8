@@ -1,9 +1,7 @@
 import type { CollectionConfig } from 'payload'
-import { adminOnlyAccess } from '@/business-layer/access/access'
 
 export const Project: CollectionConfig = {
   slug: 'project',
-  access: adminOnlyAccess,
   fields: [
     {
       name: 'name',
@@ -31,7 +29,7 @@ export const Project: CollectionConfig = {
           },
         })
 
-        const nonClients = users.docs.filter((user) => user.role !== 'client')
+        const nonClients = users.docs.filter((user) => !['admin', 'client'].includes(user.role))
 
         if (nonClients.length > 0) {
           const names = nonClients.map((u) => `${u.firstName} ${u.lastName}`).join(', ')
@@ -60,6 +58,12 @@ export const Project: CollectionConfig = {
     {
       name: 'timestamp',
       type: 'date',
+      required: true,
+    },
+    {
+      name: 'formResponse',
+      type: 'relationship',
+      relationTo: 'formResponse',
       required: true,
     },
   ],

@@ -3,15 +3,15 @@ import Capsule from '@/components/Generic/Capsule/Capsule'
 import Modal, { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'
 import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/DraggableProjectCard'
-import ProjectCard from '@/components/Generic/ProjectCard/ProjectCard'
+import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 
 interface ClientModalProps extends ModalProps {
   clientFullName: string
   clientEmail: string
-  affiliation: string
-  introduction: string
-  projects: ProjectDTOPlaceholder[]
+  affiliation?: string
+  introduction?: string
+  projects?: ProjectDTOPlaceholder[]
 }
 
 const ClientModal: React.FC<ClientModalProps> = ({
@@ -61,25 +61,28 @@ const ClientModal: React.FC<ClientModalProps> = ({
             )}
           </button>
         </div>
-        <div className="flex flex-row gap-3 items-center mb-6">
-          <Capsule variant="muted_blue" text="Affiliation" />
-          <Capsule variant="beige" text={affiliation} />
-        </div>
+        {affiliation && (
+          <div className="flex flex-row gap-3 items-center mb-6">
+            <Capsule variant="muted_blue" text="Affiliation" />
+            <Capsule variant="beige" text={affiliation} />
+          </div>
+        )}
 
-        <Capsule variant="muted_blue" text="Introduction" />
-        <p className="text-dark-blue font-inter text-sm whitespace-pre-wrap">{introduction}</p>
+        {introduction && (
+          <>
+            <Capsule variant="muted_blue" text="Introduction" />
+            <p className="text-dark-blue font-inter text-sm whitespace-pre-wrap">{introduction}</p>
+          </>
+        )}
       </div>
-      <div className="relative bg-transparent-blue border-t-deeper-blue border-t max-w-full flex flex-col p-15 rounded-b-2xl gap-5">
-        <h2 className="text-3xl text-dark-blue font-inter font-base pb-3 tracking-wide">
-          Projects
-        </h2>
-
-        <div className="flex flex-col gap-4 overflow-x-visible overflow-y-auto max-h-[490px] p-[1px] pb-3">
-          {projects.map((project, index) => (
-            <ProjectCard key={index} projectInfo={project} />
-          ))}
-        </div>
-      </div>
+      {projects && (
+        <ProjectCardList
+          className="bg-transparent-blue border-t-deeper-blue border-t max-w-full flex flex-col p-15 rounded-b-2xl gap-5"
+          headingClassName="text-3xl pb-3 tracking-wide"
+          heading="Projects"
+          projects={projects}
+        />
+      )}
     </Modal>
   )
 }

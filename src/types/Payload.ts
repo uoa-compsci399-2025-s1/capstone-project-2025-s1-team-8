@@ -39,25 +39,7 @@ export const UserSchema = z.object({
   updatedAt: z.string(),
   createdAt: z.string(),
   email: z.string().email(),
-  resetPasswordToken: z.string().optional(),
-  resetPasswordExpiration: z.string().optional(),
-  salt: z.string().optional(),
-  hash: z.string().optional(),
-  lockUntil: z.string().optional(),
-  password: z.string().optional(),
 }) satisfies z.ZodType<User>
-
-export const ProjectSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  clients: z.array(z.union([z.string(), UserSchema])),
-  description: z.string(),
-  attachments: z.array(z.union([z.string(), MediaSchema])).optional(),
-  deadline: z.string().nullable(),
-  timestamp: z.string(),
-  updatedAt: z.string(),
-  createdAt: z.string(),
-}) satisfies z.ZodType<Project>
 
 export const SemesterSchema = z.object({
   id: z.string(),
@@ -69,17 +51,6 @@ export const SemesterSchema = z.object({
   updatedAt: z.string(),
   createdAt: z.string(),
 }) satisfies z.ZodType<Semester>
-
-export const SemesterProjectSchema = z.object({
-  id: z.string(),
-  number: z.number().optional(),
-  semester: z.union([z.string(), SemesterSchema]),
-  project: z.union([z.string(), ProjectSchema]),
-  status: z.nativeEnum(ProjectStatus),
-  published: z.boolean(),
-  updatedAt: z.string(),
-  createdAt: z.string(),
-}) satisfies z.ZodType<SemesterProject>
 
 export const FormQuestionSchema = z.object({
   id: z.string(),
@@ -112,6 +83,30 @@ export const FormResponseSchema = z.object({
   updatedAt: z.string(),
   createdAt: z.string(),
 }) satisfies z.ZodType<FormResponse>
+
+export const ProjectSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  clients: z.array(z.union([z.string(), UserSchema])),
+  description: z.string(),
+  attachments: z.array(z.union([z.string(), MediaSchema])).optional(),
+  deadline: z.string().optional(),
+  timestamp: z.string(),
+  updatedAt: z.string(),
+  createdAt: z.string(),
+  formResponse: z.union([z.string(), FormResponseSchema]),
+}) satisfies z.ZodType<Project>
+
+export const SemesterProjectSchema = z.object({
+  id: z.string(),
+  number: z.number().optional(),
+  semester: z.union([z.string(), SemesterSchema]),
+  project: z.union([z.string(), ProjectSchema]),
+  status: z.nativeEnum(ProjectStatus),
+  published: z.boolean(),
+  updatedAt: z.string(),
+  createdAt: z.string(),
+}) satisfies z.ZodType<SemesterProject>
 
 export const ClientAdditionalInfoSchema = z.object({
   id: z.string(),

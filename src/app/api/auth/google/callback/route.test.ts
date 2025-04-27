@@ -14,6 +14,7 @@ import {
   tokensMock,
 } from '@/test-config/mocks/Auth.mock'
 import { createMockNextRequest } from '@/test-config/utils'
+import { AUTH_COOKIE_NAME } from '@/types/Auth'
 
 vi.mock('@/business-layer/security/google', async () => {
   const actual = await vi.importActual<typeof import('@/business-layer/security/google')>(
@@ -101,7 +102,7 @@ describe('GET /api/auth/google/callback', () => {
 
     await callback(req)
 
-    expect(mockSet).toHaveBeenCalledWith('auth_token', JWT_MOCK, {
+    expect(mockSet).toHaveBeenCalledWith(AUTH_COOKIE_NAME, JWT_MOCK, {
       maxAge: 3600,
       httpOnly: true,
       sameSite: 'strict',

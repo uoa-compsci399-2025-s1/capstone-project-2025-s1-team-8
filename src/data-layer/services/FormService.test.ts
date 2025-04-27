@@ -1,4 +1,4 @@
-import { clearCollection, testPayloadObject } from '@/test-config/utils'
+import { testPayloadObject } from '@/test-config/utils'
 import FormService from './FormService'
 import { formResponseCreateMock } from '@/test-config/mocks/Form.mock'
 import { formMock } from '@/test-config/mocks/Form.mock'
@@ -6,12 +6,6 @@ import { formQuestionCreateMock, formQuestionUpdateMock } from '@/test-config/mo
 
 describe('Form service tests', () => {
   const formService = new FormService()
-
-  afterEach(async () => {
-    await clearCollection(testPayloadObject, 'form')
-    await clearCollection(testPayloadObject, 'formResponse')
-    await clearCollection(testPayloadObject, 'formQuestion')
-  })
 
   describe('Form service test', () => {
     it('create a new form', async () => {
@@ -23,27 +17,23 @@ describe('Form service tests', () => {
       expect(newForm).toEqual(fetchedForm)
     })
 
-    it('find a form by ID', async () => {
+    it('fetches the form', async () => {
       const createdForm = await formService.createForm(formMock)
-      const fetchedForm = await formService.getForm(createdForm.id)
+      const fetchedForm = await formService.getForm()
       expect(fetchedForm).toEqual(createdForm)
     })
 
-    it('not found - find form with nonexistent id', async () => {
-      await expect(formService.getForm('nonexistent_id')).rejects.toThrow('Not Found')
-    })
-
-    it('update a form by ID', async () => {
-      const createdForm = await formService.createForm(formMock)
-      const updatedForm = await formService.updateForm(createdForm.id, {
+    it('update a form', async () => {
+      await formService.createForm(formMock)
+      const updatedForm = await formService.updateForm({
         name: 'updated form',
       })
       expect(updatedForm.name).toEqual('updated form')
     })
 
-    it('not found - update a form by nonexisting ID', async () => {
+    it('not found - update a non-existingform', async () => {
       await expect(
-        formService.updateForm('non-existing-id', {
+        formService.updateForm({
           name: 'updated form',
         }),
       ).rejects.toThrow('Not Found')
@@ -62,6 +52,10 @@ describe('Form service tests', () => {
 
     it('not found - delete a form by nonexisting ID', async () => {
       await expect(formService.deleteForm('non-existing-id')).rejects.toThrow('Not Found')
+    })
+
+    it('not found - fetch a form by nonexisting ID', async () => {
+      await expect(formService.getForm()).rejects.toThrow('Not Found')
     })
   })
 
