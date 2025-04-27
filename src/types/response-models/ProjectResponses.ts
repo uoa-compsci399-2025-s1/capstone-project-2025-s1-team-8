@@ -24,6 +24,10 @@ export const GetAllSemesterProjectResponseSchema = CommonResponse.extend({
   nextPage: z.number().nullable(),
 })
 
+export const PatchSemesterProjectSchema = CommonResponse.extend({
+  data: z.custom<SemesterProject>().optional(),
+})
+
 export const PostSemesterProjectResponseSchema = CommonResponse.extend({
   data: z.custom<SemesterProject>().optional(),
 })
@@ -32,5 +36,6 @@ export type GetProjectResponse = z.infer<typeof GetProjectResponseSchema>
 export type PostProjectResponse = z.infer<typeof PostProjectResponseSchema>
 export type PatchProjectResponse = z.infer<typeof PatchProjectResponseSchema>
 export type GetAllProjectsResponse = z.infer<typeof GetAllProjectsResponseSchema>
+export type PatchSemesterProjectResponse = z.infer<typeof PatchSemesterProjectSchema>
 export type GetAllSemesterProjectResponse = z.infer<typeof GetAllSemesterProjectResponseSchema>
 export type PostSemesterProjectResponse = z.infer<typeof PostSemesterProjectResponseSchema>
