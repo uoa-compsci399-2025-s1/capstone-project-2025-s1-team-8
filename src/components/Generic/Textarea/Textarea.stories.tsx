@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import Input from './Textarea'
+import Textarea from './Textarea'
 
-const meta: Meta<typeof Input> = {
+const meta: Meta<typeof Textarea> = {
   title: 'Generic/Textarea',
-  component: Input,
+  component: Textarea,
   tags: ['autodocs'],
   argTypes: {
     error: { control: 'boolean' },
@@ -11,7 +11,7 @@ const meta: Meta<typeof Input> = {
 }
 
 export default meta
-type Story = StoryObj<typeof Input>
+type Story = StoryObj<typeof Textarea>
 
 export const Default: Story = {
   args: {

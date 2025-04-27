@@ -7,6 +7,7 @@ import Radio from '@/components/Generic/Radio/Radio'
 import Checkbox from '@/components/Generic/Checkbox/Checkbox'
 import { semesterNames1 } from '@/mocks/Semesters.mock'
 import { FiCheck } from 'react-icons/fi'
+import { HiX } from 'react-icons/hi'
 
 interface OtherClientDetails {
   fullName: string
@@ -35,6 +36,12 @@ export default function Form() {
     <div className="h-dvh w-dvw bg-gradient-to-b from-[#779ea7] to-[#dae6e2] flex flex-col items-center overflow-y-scroll py-[8%] px-[10%] gap-4 p-4">
       <div className="relative bg-light-beige max-w-full flex flex-col rounded-2xl my-auto border border-deeper-blue">
         <div className="relative flex flex-col p-18 pt-20 rounded-t-2xl gap-6">
+          <button
+            className="absolute top-10 right-10 rounded-full hover:cursor-pointer"
+            onClick={() => {}}
+          >
+            <HiX className="w-5 h-5 text-dark-blue hover:text-steel-blue" />
+          </button>
           <h1 className="text-4xl font-normal m-0 text-dark-blue font-dm-serif-display mb-3">
             Computer Science Capstone: Project Proposal Form
           </h1>
@@ -184,7 +191,7 @@ export default function Form() {
                   <Button
                     type="button"
                     variant="muted_blue"
-                    size="md"
+                    size="sm"
                     className="self-start"
                     onClick={addPair}
                   >
@@ -436,7 +443,7 @@ export default function Form() {
                 </label>
               </li>
             </ol>
-            <Button type="submit" variant="dark" size="md" className="self-start mt-5">
+            <Button type="submit" variant="dark" size="sm" className="self-start mt-5 ml-4">
               Submit
             </Button>
           </form>

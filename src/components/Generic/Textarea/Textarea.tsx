@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { ExclamationTriangleIcon } from '@heroicons/react/16/solid'
 
-interface InputProps {
+interface TextareaProps {
   id?: string
   name?: string
   placeholder?: string
@@ -12,7 +12,7 @@ interface InputProps {
   errorMessage?: string
 }
 
-const Input: FC<InputProps> = ({
+const Textarea: FC<TextareaProps> = ({
   id,
   name,
   placeholder,
@@ -44,4 +44,4 @@ const Input: FC<InputProps> = ({
   )
 }
 
-export default Input
+export default Textarea
