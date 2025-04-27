@@ -2,7 +2,7 @@
 
 import Button from "@/components/Generic/Button/Button"
 import Input from "@/components/Generic/Input/InputField"
-import { MdEmail, MdLock } from "react-icons/md"
+import { MdOutlineMail, MdLock } from "react-icons/md"
 
 export default function SignIn() {
   return (
@@ -25,15 +25,15 @@ export default function SignIn() {
           <div className="flex flex-col gap-4">
           <Input
           onChange={() => {}}
-          placeholder="Email"
+          placeholder="Email Address"
           type="email"
-          startIcon={<MdEmail className="text-steel-blue"/>}
+          startIcon={<MdOutlineMail className="text-muted-blue"/>}
         />
           <Input
             onChange={() => {}}
-            placeholder="Enter password"
+            placeholder="Password"
             type="password"
-            startIcon={<MdLock className="text-steel-blue"/>}
+            startIcon={<MdLock className="text-muted-blue"/>}
           />
           <Button size="sm" variant="dark">
             Sign In
