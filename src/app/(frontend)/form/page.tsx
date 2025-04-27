@@ -192,7 +192,7 @@ export default function Form() {
                     type="button"
                     variant="muted_blue"
                     size="sm"
-                    className="self-start"
+                    className="self-start h-10"
                     onClick={addPair}
                   >
                     + Add Client
