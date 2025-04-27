@@ -1,19 +1,19 @@
-import { Semester, SemesterProject } from "@/payload-types";
+import { Semester, SemesterProject } from '@/payload-types'
 import { CreateSemesterData, UpdateSemesterData } from '@/types/Collections'
 
 export interface SemestersPaginatedResponse {
-  data: Semester[];  
-  nextPage: number | null; 
+  data: Semester[]
+  nextPage: number | null
 }
 
 export interface ProjectsPaginatedResponse {
-  data: SemesterProject[];  
-  nextPage: number | null; 
+  data: SemesterProject[]
+  nextPage: number | null
 }
 
 export interface FetchOptions {
-  page?: number; 
-  limit?: number;
+  page?: number
+  limit?: number
 }
 
 export default class SemesterApiService {
@@ -23,18 +23,20 @@ export default class SemesterApiService {
    * @returns A promise resolving to a PaginatedResponse object.
    * @throws An Error if the network response is not OK.
    */
-  public static async getAllSemesters(options: FetchOptions = {}): Promise<SemestersPaginatedResponse> {
-    const { page, limit } = options;
+  public static async getAllSemesters(
+    options: FetchOptions = {},
+  ): Promise<SemestersPaginatedResponse> {
+    const { page, limit } = options
 
-    let url = '/api/semesters';
+    let url = '/api/semesters'
 
-    const params = new URLSearchParams();
-    if (page !== undefined) params.append('page', page.toString());
-    if (limit !== undefined) params.append('limit', limit.toString());
+    const params = new URLSearchParams()
+    if (page !== undefined) params.append('page', page.toString())
+    if (limit !== undefined) params.append('limit', limit.toString())
 
-    const queryString = params.toString();
+    const queryString = params.toString()
     if (queryString) {
-      url += `?${queryString}`;
+      url += `?${queryString}`
     }
 
     const response = await fetch(url, {
@@ -43,19 +45,19 @@ export default class SemesterApiService {
       headers: {
         'Content-Type': 'application/json',
       },
-    });
+    })
 
-    const payload = (await response.json()) as SemestersPaginatedResponse & { error?: string }; 
+    const payload = (await response.json()) as SemestersPaginatedResponse & { error?: string }
 
     if (!response.ok) {
-      const errorMessage = payload.error ?? 'Failed to fetch semesters';
-      throw new Error(errorMessage);  
+      const errorMessage = payload.error ?? 'Failed to fetch semesters'
+      throw new Error(errorMessage)
     }
 
     return {
       data: payload.data,
       nextPage: payload.nextPage,
-    };
+    }
   }
 
   /**
@@ -64,26 +66,28 @@ export default class SemesterApiService {
    * @returns A promise resolving to a PaginatedResponse object.
    * @throws An Error if the network response is not OK.
    */
-  public static async getAllApprovedProjectsBySemesterId(semesterId: string): Promise<ProjectsPaginatedResponse> {
+  public static async getAllApprovedProjectsBySemesterId(
+    semesterId: string,
+  ): Promise<ProjectsPaginatedResponse> {
     const response = await fetch(`/api/semesters/${semesterId}/projects`, {
       method: 'GET',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
-    });
+    })
 
-    const payload = (await response.json()) as ProjectsPaginatedResponse & { error?: string }; 
+    const payload = (await response.json()) as ProjectsPaginatedResponse & { error?: string }
 
     if (!response.ok) {
-      const errorMessage = payload.error ?? 'Failed to fetch approved projects';
-      throw new Error(errorMessage);  
+      const errorMessage = payload.error ?? 'Failed to fetch approved projects'
+      throw new Error(errorMessage)
     }
 
     return {
       data: payload.data,
       nextPage: payload.nextPage,
-    };
+    }
   }
 
   /**
@@ -100,16 +104,16 @@ export default class SemesterApiService {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(semester),
-    });
+    })
 
-    const payload = (await response.json()) as Semester & { error?: string }; 
+    const payload = (await response.json()) as Semester & { error?: string }
 
     if (!response.ok) {
-      const errorMessage = payload.error ?? 'Failed to create semester';
-      throw new Error(errorMessage);  
+      const errorMessage = payload.error ?? 'Failed to create semester'
+      throw new Error(errorMessage)
     }
 
-    return payload;
+    return payload
   }
 
   /**
@@ -119,7 +123,10 @@ export default class SemesterApiService {
    * @returns A promise resolving to the updated semester object.
    * @throws An Error if the network response is not OK.
    */
-  public static async updateSemester(semesterId: string, semester: UpdateSemesterData): Promise<Semester> {
+  public static async updateSemester(
+    semesterId: string,
+    semester: UpdateSemesterData,
+  ): Promise<Semester> {
     const response = await fetch(`/api/admin/semesters/${semesterId}`, {
       method: 'PATCH',
       credentials: 'include',
@@ -127,15 +134,15 @@ export default class SemesterApiService {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(semester),
-    });
+    })
 
-    const payload = (await response.json()) as Semester & { error?: string }; 
+    const payload = (await response.json()) as Semester & { error?: string }
 
     if (!response.ok) {
-      const errorMessage = payload.error ?? 'Failed to update semester';
-      throw new Error(errorMessage);  
+      const errorMessage = payload.error ?? 'Failed to update semester'
+      throw new Error(errorMessage)
     }
 
-    return payload;
+    return payload
   }
 }
