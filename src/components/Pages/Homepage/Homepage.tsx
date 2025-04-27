@@ -5,16 +5,17 @@ import React from 'react'
 
 const Homepage: React.FC = () => {
   return (
-    <div className="w-full">
+    <div className="fixed inset-0 flex flex-col">
+      <NavBar />
 
-      <NavBar/>
-
-      <div className="flex justify-center items-center">
-        <Image src="/homepage-text.svg" alt="ENCAPSULATE" width={713} height={288}/>
-      </div>
-
-      <div className="flex justify-center items-center">
-        {/* @TODO onClick() */}
+      <div className="flex flex-1 flex-col justify-center items-center space-y-8">
+        <Image
+          src="/homepage-text.svg"
+          alt="ENCAPSULATE"
+          width={713 * 0.75}
+          height={288 * 0.75}
+          priority
+        />
         <Button variant="outline" size="sm">Submit your proposal</Button>
       </div>
     </div>
