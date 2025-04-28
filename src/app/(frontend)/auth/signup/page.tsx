@@ -15,22 +15,22 @@ export default function SignUp() {
           <Input
             placeholder="First Name"
             type="text"
-            startIcon={<BsFillPersonFill className="text-muted-blue" />}
+            startIcon={<BsFillPersonFill className="text-muted-blue h-full" />}
           />
           <Input
             placeholder="Last Name"
             type="text"
-            startIcon={<BsFillPersonFill className="text-muted-blue" />}
+            startIcon={<BsFillPersonFill className="text-muted-blue h-full" />}
           />
           <Input
             placeholder="Email Address"
             type="email"
-            startIcon={<MdOutlineMail className="text-muted-blue" />}
+            startIcon={<MdOutlineMail className="text-muted-blue h-full" />}
           />
           <Input
             placeholder="Password"
             type="password"
-            startIcon={<MdLock className="text-muted-blue" />}
+            startIcon={<MdLock className="text-muted-blue h-full" />}
           />
           <Button size="md" variant="dark">
             Register
