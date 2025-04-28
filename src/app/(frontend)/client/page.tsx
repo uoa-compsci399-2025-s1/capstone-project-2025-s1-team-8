@@ -4,7 +4,15 @@ import semesterApiService from '@/services/semesterApiService'
 
 export default function Client() {
   useEffect(() => {
-    semesterApiService.getAllSemesters({ page: 1, limit: 10 })
-  }, [])
+    async function fetchSemesters() {
+      try{
+        const data = await semesterApiService.getAllSemesters()
+        console.log(data)
+      } catch (error) {
+        console.error('Error fetching semesters:', error)
+      }
+    }
+    fetchSemesters()
+  }, []);
   return <div>This is the client page</div>
 }

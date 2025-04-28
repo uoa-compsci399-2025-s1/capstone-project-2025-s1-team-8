@@ -19,7 +19,7 @@ export default class semesterApiService {
     }
 
     const request = buildNextRequest(url)
-    const response = await GET(request)
+    const response = await GET(await request)
     return response.json()
   }
 }

@@ -7,6 +7,14 @@ interface BuildRequestOptions {
   headers?: HeadersInit
 }
 
+/**
+ * Builds a NextRequest object with the specified URL, method, body, and headers.
+ * 
+ * @param url The URL for the request.
+ * @param options An object containing optional parameters: method, body, and headers.
+ * @returns A Promise that resolves to a NextRequest object.
+ */
+
 export async function buildNextRequest(
   url: string,
   { method = 'GET', body, headers }: BuildRequestOptions = {}
