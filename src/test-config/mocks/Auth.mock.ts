@@ -71,7 +71,7 @@ export const ADMIN_USER_UID = '000000000000000000000001'
 export const CLIENT_USER_UID = '000000000000000000000002'
 export const STUDENT_USER_UID = '000000000000000000000003'
 
-export const adminMock: User = {
+export const adminMock : User = {
   id: ADMIN_USER_UID,
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
@@ -81,7 +81,7 @@ export const adminMock: User = {
   email: 'admin123@gmail.com',
 }
 
-export const clientMock: User = {
+export const clientMock  : User = {
   id: CLIENT_USER_UID,
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
@@ -91,7 +91,7 @@ export const clientMock: User = {
   email: 'client123@gmail.com',
 }
 
-export const studentMock: User = {
+export const studentMock : User = {
   id: STUDENT_USER_UID,
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
