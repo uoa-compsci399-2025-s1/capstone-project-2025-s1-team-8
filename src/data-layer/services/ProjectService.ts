@@ -85,7 +85,7 @@ export default class ProjectService {
     } catch (error) {
       if (error instanceof NotFound) {
         throw new NotFound(() => {
-          return `User not found`
+          return 'User not found'
         })
       }
       throw error
