@@ -1,12 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 
 import ProjectService from '@/data-layer/services/ProjectService'
 import { NotFound } from 'payload'
-import { ZodError } from 'zod'
-import { PatchSemesterProjectRequestBody } from '@/types/request-models/ProjectRequests'
 import SemesterService from '@/data-layer/services/SemesterService'
 import { SemesterProject } from '@/payload-types'
+import { Security } from '@/business-layer/middleware/Security'
+import { RequestWithUser } from '@/types/Requests'
+import { UserRole } from '@/types/User'
 
 class RouteWrapper {
   /**
@@ -16,8 +17,9 @@ class RouteWrapper {
    * @param params - The parameters object containing the semester ID and project ID.
    * @returns A JSON response containing the project data
    */
+  @Security("jwt", ["student", "admin"])
   static async GET(
-    _req: NextRequest,
+    req: RequestWithUser,
     { params }: { params: Promise<{ id: string; projectId: string }> },
   ) {
     const { id, projectId } = await params
@@ -30,6 +32,11 @@ class RouteWrapper {
 
       try {
         semesterProject = await projectService.getSemesterProject(projectId)
+        if(req.user.role === UserRole.Student){
+          if(!semesterProject.published){
+            return NextResponse.json({ error: 'No scope' }, { status: StatusCodes.UNAUTHORIZED })
+          }
+        }
       } catch (error) {
         if (error instanceof NotFound) {
           return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
@@ -58,64 +65,6 @@ class RouteWrapper {
       )
     }
   }
-
-  /**
-   * Updates a semester project by its ID.
-   *
-   * @param req - The request object.
-   * @param params - The parameters object containing the semester ID.
-   * @returns A JSON response containing the projects.
-   */
-  static async PATCH(
-    req: NextRequest,
-    { params }: { params: Promise<{ id: string; projectId: string }> },
-  ){
-    const { id, projectId } = await params
-    const projectService = new ProjectService()
-    const semesterService = new SemesterService()
-
-    try {
-      let semesterProject : SemesterProject
-      const fetchedSemester = await semesterService.getSemester(id)
-
-      try {
-        semesterProject = await projectService.getSemesterProject(projectId)
-      } catch (error) {
-        if (error instanceof NotFound) {
-          return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
-        }
-        throw error
-      }
-
-      const data = PatchSemesterProjectRequestBody.parse(await req.json())
-      if (JSON.stringify(semesterProject.semester) !== JSON.stringify(fetchedSemester)) {
-        return NextResponse.json(
-          { error: 'Project does not belong to this semester' },
-          { status: StatusCodes.BAD_REQUEST },
-        )
-      }
-
-      const updatedProject = await projectService.updateSemesterProject(projectId, data)
-      return NextResponse.json({ data: updatedProject })
-    } catch (error) {
-      if (error instanceof NotFound) {
-        return NextResponse.json(
-          { error: 'Semester not found' },
-          { status: StatusCodes.NOT_FOUND },
-        )
-      } else if (error instanceof ZodError) {
-        return NextResponse.json(
-          { error: 'Invalid request body' },
-          { status: StatusCodes.BAD_REQUEST },
-        )
-      }
-      console.error('Error updating project:', error)
-      return NextResponse.json(
-        { error: 'Internal server error' },
-        { status: StatusCodes.INTERNAL_SERVER_ERROR },
-      )
-    }
-  }
 }
 
-export const GET = RouteWrapper.GET, PATCH = RouteWrapper.PATCH
+export const GET = RouteWrapper.GET

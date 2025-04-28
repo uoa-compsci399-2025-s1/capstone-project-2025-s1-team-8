@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { StatusCodes } from 'http-status-codes'
 import { Security } from '@/business-layer/middleware/Security'
+import { NotFound } from 'payload'
 
 class RouteWrapper {
   /**
@@ -23,8 +24,22 @@ class RouteWrapper {
         { status: StatusCodes.BAD_REQUEST },
       )
     }
-    const { docs: projects, nextPage } = await projectService.getProjectsByClientId(id, limit, page)
-    return NextResponse.json({ data: projects, nextPage })
+    try {
+      const { docs: projects, nextPage } = await projectService.getProjectsByClientId(id, limit, page)
+      return NextResponse.json({ data: projects, nextPage })
+    } catch(error) {
+      if(error instanceof NotFound && error.message === 'User not found'){
+        return NextResponse.json(
+          { error: 'Client not found' },
+          { status: StatusCodes.NOT_FOUND },
+        )
+      }
+      console.error(error)
+      return NextResponse.json(
+        { error: 'Internal server error' },
+        { status: StatusCodes.INTERNAL_SERVER_ERROR },
+      )
+    }
   }
 }
 
