@@ -8,6 +8,7 @@ import Checkbox from '@/components/Generic/Checkbox/Checkbox'
 import { semesterNames1 } from '@/mocks/Semesters.mock'
 import { FiCheck } from 'react-icons/fi'
 import { HiX } from 'react-icons/hi'
+import { useSearchParams } from 'next/navigation'
 
 interface OtherClientDetails {
   fullName: string
@@ -17,6 +18,8 @@ interface OtherClientDetails {
 export default function Form() {
   // State to manage the pairs of names and emails of additional clients
   const [pairs, setPairs] = useState<OtherClientDetails[]>([])
+  const searchParams = useSearchParams()
+  const projectName = searchParams.get('projectName') || ''
 
   const handleChange = (index: number, field: keyof OtherClientDetails, value: string) => {
     const updated = [...pairs]
@@ -242,6 +245,7 @@ export default function Form() {
                   name="ProjectTitle"
                   type="text"
                   placeholder="Enter the main client's email"
+                  defaultValue={projectName}
                 />
               </li>
               <li>
