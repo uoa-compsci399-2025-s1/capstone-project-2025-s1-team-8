@@ -6,6 +6,7 @@ import { NotFound } from 'payload'
 import { ZodError } from 'zod'
 import { PatchSemesterProjectRequestBody } from '@/types/request-models/ProjectRequests'
 import SemesterService from '@/data-layer/services/SemesterService'
+import { SemesterProject } from '@/payload-types'
 
 class RouteWrapper {
   /**
@@ -22,41 +23,37 @@ class RouteWrapper {
     const { id, projectId } = await params
     const projectService = new ProjectService()
     const semesterService = new SemesterService()
-    let project
-    let fetchedSemester
 
     try {
+      let semesterProject : SemesterProject
+      const fetchedSemester = await semesterService.getSemester(id)
+
       try {
-        project = await projectService.getSemesterProject(projectId)
+        semesterProject = await projectService.getSemesterProject(projectId)
       } catch (error) {
         if (error instanceof NotFound) {
-          return NextResponse.json({ error: 'Project not found!' }, { status: StatusCodes.NOT_FOUND })
+          return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
         }
         throw error
       }
 
-      try {
-        fetchedSemester = await semesterService.getSemester(id)
-      } catch (error) {
-        if (error instanceof NotFound) {
-          return NextResponse.json(
-            { error: 'Semester not found!' },
-            { status: StatusCodes.NOT_FOUND },
-          )
-        }
-        throw error
-      }
-      if (JSON.stringify(project.semester) !== JSON.stringify(fetchedSemester)) {
+      if (JSON.stringify(semesterProject.semester) !== JSON.stringify(fetchedSemester)) {
         return NextResponse.json(
-          { error: 'Project is not associated with semester!' },
+          { error: 'Project is not associated with semester' },
           { status: StatusCodes.BAD_REQUEST },
         )
       }
-      return NextResponse.json({ data: project })
+      return NextResponse.json({ data: semesterProject })
     } catch (error) {
+      if (error instanceof NotFound) {
+        return NextResponse.json(
+          { error: 'Semester not found' },
+          { status: StatusCodes.NOT_FOUND },
+        )
+      }
       console.error('Error:', error)
       return NextResponse.json(
-        { error: 'Internal Server Error' },
+        { error: 'Internal server error' },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
@@ -120,7 +117,7 @@ class RouteWrapper {
       }
       console.error('Error updating project:', error)
       return NextResponse.json(
-        { error: 'Internal Server Error' },
+        { error: 'Internal server error' },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }

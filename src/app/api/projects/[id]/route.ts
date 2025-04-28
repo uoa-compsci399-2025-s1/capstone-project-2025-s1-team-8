@@ -27,7 +27,7 @@ class RouteWrapper {
         return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
       }
       return NextResponse.json(
-        { error: 'Internal Server Error' },
+        { error: 'Internal server error' },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
@@ -62,7 +62,7 @@ class RouteWrapper {
       }
       console.error(error)
       return NextResponse.json(
-        { error: 'Internal Server Error' },
+        { error: 'Internal server error' },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
@@ -88,7 +88,7 @@ class RouteWrapper {
       }
       console.error(error)
       return NextResponse.json(
-        { error: 'Internal Server Error' },
+        { error: 'Internal server error' },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
