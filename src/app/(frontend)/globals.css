@@ -19,8 +19,10 @@
   --color-deep-teal: #13536b; /*Often used for radio buttons*/
   --color-denim-blue: #41585e; /*Often used for dark cards*/
   --color-grey-1: #748086; /*Often used for grey text*/
-  --color-pink-1: #ffbbee; /*Used for gradients*/
-  --color-pink-2: #ff2aca; /*Used for errors and required fields*/
+  --color-pink-soft: #ffbbee;
+  --color-pink-accent: #ff2aca; /*Used for errors and required fields*/
+  --color-dark-pink: #b81c88;
+  --color-light-pink: #fff0f8;
 
   --font-silkscreen: 'Silkscreen', sans-serif;
   --font-inter: 'Inter', sans-serif;
@@ -197,10 +199,12 @@
   .small-info-tag {
     @apply text-xs pl-2 pr-2 rounded-b-lg rounded-t-lg;
   }
+  .form-question-subheading {
+    @apply text-dark-blue font-inter text-sm mb-7 pt-1;
+  }
   .editable-capsule {
     @apply border border-muted-blue h-fit w-fit px-2.5 py-1 rounded-xl text-sm placeholder-muted-blue focus:outline-muted-blue focus:outline-2 shadow bg-light-beige text-dark-blue;
   }
-
   .admin-dash-carousel-item {
     @apply flex px-30 py-2 flex-col w-full self-stretch justify-center items-center flex-shrink-0 h-full overflow-hidden outline-none;
   }

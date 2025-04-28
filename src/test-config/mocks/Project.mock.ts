@@ -66,7 +66,7 @@ export const semesterProjectMock: SemesterProject = {
 export const semesterProjectCreateMock: CreateSemesterProjectData = {
   number: 1,
   project: '67ff38a56a35e1b6cf43a68c',
-  semester: '67ff38a56a35e1b6cf43a68d',
+  semester: semesterMock,
   status: ProjectStatus.Pending,
   published: false,
 }
