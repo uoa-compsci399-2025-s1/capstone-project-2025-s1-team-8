@@ -1,18 +1,11 @@
-'use client'
-import React, { useEffect } from 'react'
-import semesterApiService from '@/services/semesterApiService'
+import React, { Suspense } from 'react'
+import NewComponent from './new-component'
+import Loading from './loading'
 
 export default function Client() {
-  useEffect(() => {
-    async function fetchSemesters() {
-      try{
-        const data = await semesterApiService.getAllSemesters()
-        console.log(data)
-      } catch (error) {
-        console.error('Error fetching semesters:', error)
-      }
-    }
-    fetchSemesters()
-  }, []);
-  return <div>This is the client page</div>
+  return <div>This is the client page
+    <h1 style={{fontSize: "50px"}}>SOME TITLE</h1>
+    <Suspense fallback={<Loading />}>
+      <NewComponent />
+    </Suspense></div>
 }

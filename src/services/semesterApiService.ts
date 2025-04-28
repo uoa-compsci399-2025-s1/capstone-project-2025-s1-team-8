@@ -1,27 +1,29 @@
+"use server"
+
 import { Semester, SemesterProject } from '@/payload-types'
-import { CreateSemesterData, UpdateSemesterData } from '@/types/Collections'
 import { GET } from '@/app/api/semesters/route'
-import { buildNextRequest } from './utils/buildNextRequest'
+// import { buildNextRequest } from './utils/buildNextRequest'
+import { NextRequest } from 'next/server'
+import { StatusCodes } from 'http-status-codes'
 
-export default class semesterApiService {
-  public static async getAllSemesters(options: {page?: number, limit?: number} = {}) {
-    const { page, limit } = options
+export async function getAllSemesters(options: {page?: number, limit?: number} = {}) {
+  const { page, limit } = options
 
-    let url = '/api/semesters'
+  let url = '/api/semesters'
 
-    const params = new URLSearchParams()
-    if (page !== undefined) params.append('page', page.toString())
-    if (limit !== undefined) params.append('limit', limit.toString())
+  const params = new URLSearchParams()
+  if (page !== undefined) params.append('page', page.toString())
+  if (limit !== undefined) params.append('limit', limit.toString())
 
-    const queryString = params.toString()
-    if (queryString) {
-      url += `?${queryString}`
-    }
-
-    const request = buildNextRequest(url)
-    const response = await GET(await request)
-    return response.json()
+  const queryString = params.toString()
+  if (queryString) {
+    url += `?${queryString}`
   }
+
+  const req = new NextRequest(new URL(url, process.env.NEXT_PUBLIC_URL))
+  const response = await GET(req)
+  const data = await response.json()
+    return data
 }
 
 export interface SemestersPaginatedResponse {

@@ -47,6 +47,7 @@ export default async function HomePage() {
           </a>
         </div>
       </div>
+      <a href="/client">Client</a>
       <div className="footer">
         <p>Update this page by editing</p>
         <a className="codeLink" href={fileURL}>
