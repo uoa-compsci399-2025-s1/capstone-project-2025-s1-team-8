@@ -23,9 +23,9 @@ export default function SignIn() {
             startIcon={<MdLock className="text-muted-blue h-full" />}
           />
           <Button size="md" variant="dark">
-            Sign In
+            <p className="text-xs">Login</p>
           </Button>
-          <p className="text-steel-blue">
+          <p className="text-steel-blue text-xs text-center">
             {"Don't have an account? Sign Up "}
             <Link href="/auth/signup">
               <u>here</u>
