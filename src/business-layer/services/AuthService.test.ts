@@ -21,21 +21,36 @@ describe('Auth service tests', () => {
     vi.clearAllMocks()
   })
 
-  it('should generate a JWT token for the given user and access token', () => {
-    const token = authService.generateJWT(clientMock, ACCESS_TOKEN_MOCK)
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!)
-    expect(decoded).toMatchObject({
-      user: clientMock,
-      accessToken: ACCESS_TOKEN_MOCK,
+  describe('standard auth tests', () => {
+    it('should generate a hash that matches the expected value', async () => {
+      const hash = await authService.hashPassword('password123456677387483874837')
+      expect(hash).not.toEqual('password123456677387483874837')
+      expect(await authService.verifyPassword('password123456677387483874837', hash)).toBeTruthy()
+    })
+
+    it('should return false when the password does not match', async () => {
+      const hash = await authService.hashPassword('password123456677387483874837')
+      expect(await authService.verifyPassword('wrongPassword', hash)).toBeFalsy()
     })
   })
 
-  it('should decode a JWT token and return the payload', () => {
-    const token = authService.generateJWT(clientMock, ACCESS_TOKEN_MOCK)
-    const decoded = authService.decodeJWT(token)
-    expect(decoded).toMatchObject({
-      user: clientMock,
-      accessToken: ACCESS_TOKEN_MOCK,
+  describe('JWT service method tests', () => {
+    it('should generate a JWT token for the given user and access token', () => {
+      const token = authService.generateJWT(clientMock, ACCESS_TOKEN_MOCK)
+      const decoded = jwt.verify(token, process.env.JWT_SECRET!)
+      expect(decoded).toMatchObject({
+        user: clientMock,
+        accessToken: ACCESS_TOKEN_MOCK,
+      })
+    })
+
+    it('should decode a JWT token and return the payload', () => {
+      const token = authService.generateJWT(clientMock, ACCESS_TOKEN_MOCK)
+      const decoded = authService.decodeJWT(token)
+      expect(decoded).toMatchObject({
+        user: clientMock,
+        accessToken: ACCESS_TOKEN_MOCK,
+      })
     })
   })
 })

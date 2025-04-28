@@ -1,20 +1,31 @@
 import { CollectionConfig } from 'payload'
 
+import { AuthType } from '@/types/Auth'
+
 export const Authentication: CollectionConfig = {
   slug: 'authentication',
   access: {},
   fields: [
     {
       name: 'email',
-      type: 'text',
+      type: 'email',
       required: true,
       admin: {
         description: 'The email who owns this authentication',
       },
     },
     {
-      name: 'type',
+      name: 'password',
       type: 'text',
+      required: false,
+      admin: {
+        description: 'The hashed user password',
+      },
+    },
+    {
+      name: 'type',
+      type: 'select',
+      options: Object.values(AuthType),
       required: true,
       admin: {
         description: 'The type of authentication',
@@ -24,7 +35,7 @@ export const Authentication: CollectionConfig = {
       name: 'provider',
       type: 'select',
       options: [{ label: 'Google', value: 'google' }],
-      required: true,
+      required: false,
       admin: {
         description: 'The type of authentication',
       },
@@ -48,15 +59,16 @@ export const Authentication: CollectionConfig = {
     {
       name: 'accessToken',
       type: 'text',
-      required: true,
+      required: false,
       admin: {
-        description: 'The access token of the user authentication',
+        description:
+          'The access token of the user authentication, only applicable for google oauth',
       },
     },
     {
       name: 'expiresAt',
       type: 'number',
-      required: true,
+      required: false,
       admin: {
         description: 'The expiration time of the access token',
       },

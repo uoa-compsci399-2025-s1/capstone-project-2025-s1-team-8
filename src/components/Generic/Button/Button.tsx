@@ -8,6 +8,7 @@ interface ButtonProps {
   startIcon?: ReactNode
   endIcon?: ReactNode
   className?: string // Additional classes (for custom width and custom colours)
+  type?: 'button' | 'submit' | 'reset' // Button type for form submission
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -18,6 +19,7 @@ const Button: React.FC<ButtonProps> = ({
   className = '',
   startIcon,
   endIcon,
+  type = 'button',
 }) => {
   // Responsive Size Classes
   const sizeClasses = {
@@ -43,6 +45,7 @@ const Button: React.FC<ButtonProps> = ({
         sizeClasses[size]
       } ${variantClasses[variant]}`}
       onClick={onClick}
+      type={type}
     >
       {startIcon && <span className="flex items-center">{startIcon}</span>}
       {children}

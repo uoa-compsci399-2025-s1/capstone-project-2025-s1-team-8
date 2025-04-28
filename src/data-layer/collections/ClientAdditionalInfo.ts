@@ -1,9 +1,7 @@
 import type { CollectionConfig } from 'payload'
-import { adminOnlyAccess } from '@/business-layer/access/access'
 
 export const ClientAdditionalInfo: CollectionConfig = {
   slug: 'clientAdditionalInfo',
-  access: adminOnlyAccess,
   fields: [
     {
       name: 'client',

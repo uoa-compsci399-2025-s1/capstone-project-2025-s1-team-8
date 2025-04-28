@@ -22,9 +22,15 @@ beforeEach(async () => {
   vi.mock('@/business-layer/services/AuthService', () => {
     return {
       default: class {
+        hashPassword = vi.fn().mockImplementation((password) => {
+          return Buffer.from(password).toString('base64')
+        })
+        verifyPassword = vi.fn().mockImplementation((password, hash) => {
+          return Buffer.from(hash, 'base64').toString() === password
+        })
         generateJWT = vi.fn().mockImplementation((user, _token) => {
           if (user === adminMock) return ADMIN_JWT_MOCK
-          if (user === clientMock) return CLIENT_JWT_MOCK
+          if (user === clientMock || user.email === clientMock.email) return CLIENT_JWT_MOCK
           if (user === studentMock) return STUDENT_JWT_MOCK
           return ''
         })

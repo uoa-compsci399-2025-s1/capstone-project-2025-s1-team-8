@@ -1,5 +1,6 @@
 'use client'
 import ClientsPage from '@/components/Pages/ClientsPage/ClientsPage'
+import SemestersPage from '@/components/Pages/SemestersPage/SemestersPage'
 import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import { UniqueIdentifier } from '@dnd-kit/core'
@@ -30,19 +31,22 @@ const Admin = () => {
       id: 'container-1' as UniqueIdentifier,
       title: 'Rejected',
       containerColor: 'light' as const,
-      items: [],
+      currentItems: [],
+      originalItems: [],
     },
     {
       id: 'container-2' as UniqueIdentifier,
       title: 'Pending',
       containerColor: 'medium' as const,
-      items: [],
+      currentItems: [],
+      originalItems: [],
     },
     {
       id: 'container-3' as UniqueIdentifier,
       title: 'Accepted',
       containerColor: 'dark' as const,
-      items: [],
+      currentItems: [],
+      originalItems: [],
     },
   ]
 
@@ -72,7 +76,7 @@ const Admin = () => {
       <div className="py-4 relative min-h-[300px]">
         <div className="flex flex-col overflow-hidden w-full">
           <motion.div
-            className="flex flex-1 min-h-0 [direction:ltr] [will-change:transform]"
+            className="flex flex-1 min-h-0 [direction:ltr]"
             transition={{
               tension: 190,
               friction: 200,
@@ -102,7 +106,7 @@ const Admin = () => {
               aria-hidden={activeNav !== 2}
               tabIndex={activeNav === 2 ? 0 : -1}
             >
-              <p>Semester page goes here</p>
+              <SemestersPage semesters={[]} />
             </div>
           </motion.div>
         </div>
