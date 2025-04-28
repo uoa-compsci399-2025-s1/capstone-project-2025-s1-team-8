@@ -6,7 +6,7 @@
  * @returns The constructed URL with the query parameters.
  */
 
-export function buildNextResponseURL(
+export function buildNextRequestURL(
   base: string, 
   params: Record<string, string | number | undefined>
 ): string {

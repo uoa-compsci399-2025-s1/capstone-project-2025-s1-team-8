@@ -2,172 +2,34 @@
 
 import { Semester, SemesterProject } from '@/payload-types'
 import { GET } from '@/app/api/semesters/route'
-// import { buildNextRequest } from './utils/buildNextRequest'
-import { NextRequest } from 'next/server'
-import { StatusCodes } from 'http-status-codes'
+import { buildNextRequestURL } from '../utils/buildNextRequestURL'
+import { buildNextRequest } from '../utils/buildNextRequest'
+import { CreateSemesterData } from '@/types/Collections'
 
-export async function getAllSemesters(options: {page?: number, limit?: number} = {}) {
-  const { page, limit } = options
-
-  let url = '/api/semesters'
-
-  const params = new URLSearchParams()
-  if (page !== undefined) params.append('page', page.toString())
-  if (limit !== undefined) params.append('limit', limit.toString())
-
-  const queryString = params.toString()
-  if (queryString) {
-    url += `?${queryString}`
-  }
-
-  const req = new NextRequest(new URL(url, process.env.NEXT_PUBLIC_URL))
-  const response = await GET(req)
+export async function getAllSemesters(options: {page?: number, limit?: number} = {}): Promise<Semester[]> {
+  const url = buildNextRequestURL('/api/semesters', options)
+  const response = await GET(await buildNextRequest(url, { method: 'GET' }))
   const data = await response.json()
-    return data
+  return data
 }
 
-export interface SemestersPaginatedResponse {
-  data: Semester[]
-  nextPage: number | null
+export async function getAllApprovedProjectsBySemesterId(semesterId: string): Promise<SemesterProject[]> {
+  const url = `/api/semesters/${semesterId}/projects`
+  const response = await GET(await buildNextRequest(url, { method: 'GET' }))
+  const data = await response.json()
+  return data
 }
 
-export interface ProjectsPaginatedResponse {
-  data: SemesterProject[]
-  nextPage: number | null
+export async function createSemester(semester: CreateSemesterData): Promise<Semester> { 
+  const url = '/api/admin/semesters'
+  const response = await GET(await buildNextRequest(url, { method: 'POST', body: JSON.stringify(semester) }))
+  const data = await response.json()
+  return data
 }
 
-export interface FetchOptions {
-  page?: number
-  limit?: number
+export async function updateSemester(semesterId: string, semester: CreateSemesterData): Promise<Semester> {
+  const url = `/api/admin/semesters/${semesterId}`
+  const response = await GET(await buildNextRequest(url, { method: 'PATCH', body: JSON.stringify(semester) }))
+  const data = await response.json()
+  return data
 }
-
-// default class SemesterApi {
-//   /**
-//    * Fetches all semesters from the API with optional pagination.
-//    * @param options Optional parameters: page number and limit per page.
-//    * @returns A promise resolving to a PaginatedResponse object.
-//    * @throws An Error if the network response is not OK.
-//    */
-//   public static async getAllSemesters(
-//     options: FetchOptions = {},
-//   ): Promise<SemestersPaginatedResponse> {
-//     const { page, limit } = options
-
-//     let url = '/api/semesters'
-
-//     const params = new URLSearchParams()
-//     if (page !== undefined) params.append('page', page.toString())
-//     if (limit !== undefined) params.append('limit', limit.toString())
-
-//     const queryString = params.toString()
-//     if (queryString) {
-//       url += `?${queryString}`
-//     }
-
-//     const response = await fetch(url, {
-//       method: 'GET',
-//       credentials: 'include',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     })
-
-//     const payload = (await response.json()) as SemestersPaginatedResponse & { error?: string }
-
-//     if (!response.ok) {
-//       const errorMessage = payload.error ?? 'Failed to fetch semesters'
-//       throw new Error(errorMessage)
-//     }
-
-//     return {
-//       data: payload.data,
-//       nextPage: payload.nextPage,
-//     }
-//   }
-
-//   /**
-//    * Fetches all approved projects depending on the semester ID.
-//    * @param semesterId The ID of the semester to fetch projects for.
-//    * @returns A promise resolving to a PaginatedResponse object.
-//    * @throws An Error if the network response is not OK.
-//    */
-//   public static async getAllApprovedProjectsBySemesterId(
-//     semesterId: string,
-//   ): Promise<ProjectsPaginatedResponse> {
-//     const response = await fetch(`/api/semesters/${semesterId}/projects`, {
-//       method: 'GET',
-//       credentials: 'include',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     })
-
-//     const payload = (await response.json()) as ProjectsPaginatedResponse & { error?: string }
-
-//     if (!response.ok) {
-//       const errorMessage = payload.error ?? 'Failed to fetch approved projects'
-//       throw new Error(errorMessage)
-//     }
-
-//     return {
-//       data: payload.data,
-//       nextPage: payload.nextPage,
-//     }
-//   }
-
-//   /**
-//    * Creates a new semester.
-//    * @param semester The semester object to create.
-//    * @returns A promise resolving to the created semester object.
-//    * @throws An Error if the network response is not OK.
-//    */
-//   public static async createSemester(semester: CreateSemesterData): Promise<Semester> {
-//     const response = await fetch('/api/admin/semesters', {
-//       method: 'POST',
-//       credentials: 'include',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(semester),
-//     })
-
-//     const payload = (await response.json()) as Semester & { error?: string }
-
-//     if (!response.ok) {
-//       const errorMessage = payload.error ?? 'Failed to create semester'
-//       throw new Error(errorMessage)
-//     }
-
-//     return payload
-//   }
-
-//   /**
-//    * Updates an existing semester.
-//    * @param semesterId The ID of the semester to update.
-//    * @param semester The updated semester object.
-//    * @returns A promise resolving to the updated semester object.
-//    * @throws An Error if the network response is not OK.
-//    */
-//   public static async updateSemester(
-//     semesterId: string,
-//     semester: UpdateSemesterData,
-//   ): Promise<Semester> {
-//     const response = await fetch(`/api/admin/semesters/${semesterId}`, {
-//       method: 'PATCH',
-//       credentials: 'include',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify(semester),
-//     })
-
-//     const payload = (await response.json()) as Semester & { error?: string }
-
-//     if (!response.ok) {
-//       const errorMessage = payload.error ?? 'Failed to update semester'
-//       throw new Error(errorMessage)
-//     }
-
-//     return payload
-//   }
-// }
