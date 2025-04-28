@@ -7,9 +7,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 
 const CreateProjectCard = () => {
-
   const [projectName, setProjectName] = useState('')
-
 
   return (
     <div className="w-full bg-light-beige rounded-2xl ring-1 ring-deeper-blue p-8 pt-10 pb-14">
