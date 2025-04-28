@@ -9,7 +9,7 @@ import Link from 'next/link'
 export default function SignUp() {
   return (
     <div className="flex flex-col justify-center items-start gap-4">
-      <p className="text-2xl font-bold text-dark-blue">KIA ORA</p>
+      <p className="text-xl font-extrabold text-dark-blue pl-2">KIA ORA</p>
       <form>
         <div className="flex flex-col gap-4">
           <Input
@@ -35,7 +35,7 @@ export default function SignUp() {
           <Button size="md" variant="dark">
             <p className="text-xs">Register</p>
           </Button>
-          <p className="text-steel-blue text-xs text-center">
+          <p className="text-steel-blue text-xs text-center pb-4">
             {'Already have an account? Log in '}
             <Link href="/auth/signin">
               <u>here</u>

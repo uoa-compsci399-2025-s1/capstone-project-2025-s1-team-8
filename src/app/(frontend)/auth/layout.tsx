@@ -16,9 +16,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       </nav>
       {/*Leftside*/}
       <div className="hidden lg:flex flex-col justify-center min-h-screen w-6/10">
-        <div className="flex flex-col justify-center items-start pl-[10vw] gap-8">
+        <div className="flex flex-col justify-center items-start pl-[10vw] gap-6">
           <p className="text-beige text-5xl font-bold font-silkscreen">ENCAPSULATE</p>
-          <p className="text-beige text-xl">Submit your project proposal today!</p>
+          <p className="text-beige text-lg pb-5">Submit your project proposal today!</p>
           <Link href="/">
             <Button size="sm" variant="light">
               Read more

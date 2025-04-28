@@ -9,7 +9,7 @@ import Link from 'next/link'
 export default function SignIn() {
   return (
     <div className="flex flex-col justify-center items-start gap-4">
-      <p className="text-2xl font-bold text-dark-blue">WELCOME BACK</p>
+      <p className="text-xl font-extrabold text-dark-blue pl-2">WELCOME BACK</p>
       <form>
         <div className="flex flex-col gap-4">
           <Input
@@ -31,19 +31,21 @@ export default function SignIn() {
               <u>here</u>
             </Link>
           </p>
-          <div className="flex items-center w-full">
+          <div>
+          <div className="flex items-center w-full pt-2 pb-3">
             <div className="border-t border-steel-blue flex-grow"></div>
-            <span className="mx-4 text-steel-blue">OR</span>
+            <span className="mx-4 text-steel-blue text-xs">OR</span>
             <div className="border-t border-steel-blue flex-grow"></div>
           </div>
           <Button
-            className="bg-white"
+            className="bg-white w-full"
             size="md"
             variant="outline"
             startIcon={<FcGoogle className="h-full" />}
           >
-            <Link href="/">Sign In with Google</Link>
+            <Link href="/" className='text-xs'>Sign In with Google</Link>
           </Button>
+          </div>
         </div>
       </form>
     </div>
