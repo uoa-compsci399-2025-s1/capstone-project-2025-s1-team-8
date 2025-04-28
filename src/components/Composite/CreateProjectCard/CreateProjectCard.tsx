@@ -17,7 +17,7 @@ const CreateProjectCard = () => {
         <div className="flex-grow">
           <Input placeholder="Enter name" onChange={(e) => setProjectName(e.target.value)} />
         </div>
-        <Link href={projectName === "" ? "/form" : `/form?projectName=${projectName}`}>
+        <Link href={projectName === '' ? '/form' : `/form?projectName=${projectName}`}>
           <Button
             variant="custom"
             size="custom"

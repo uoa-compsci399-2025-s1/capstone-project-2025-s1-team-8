@@ -9,7 +9,7 @@ export default function Client() {
   return (
     <div className="flex justify-center items-center">
       <div>
-        <NavBar  navElements={[{ href: '/admin', text: 'My Dashboard' }]} />
+        <NavBar navElements={[{ href: '/admin', text: 'My Dashboard' }]} />
       </div>
       <div className="items-center justify-center w-[90vw] pt-40 pb-30">
         <ClientDashboard client={mockClients[0]} projects={mockProjects} />
