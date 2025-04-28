@@ -11,7 +11,7 @@ export default function Client() {
       <div>
         <NavBar />
       </div>
-      <div className="flex flex-col items-center justify-center gap-12 mx-6 my-6 w-[80vw] pt-24">
+      <div className="items-center justify-center mx-6 w-[90vw] pt-30">
         <ClientDashboard client={mockClient} projects={mockProjects} />
       </div>
     </div>
