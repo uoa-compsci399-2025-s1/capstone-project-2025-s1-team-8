@@ -27,7 +27,7 @@ describe('tests /api/auth/login', async () => {
   })
 
   it('should login a user', async () => {
-    userService.createUser(clientMock)
+    await userService.createUser(clientMock)
     await authDataService.createAuth({
       email: clientMock.email,
       password: await authService.hashPassword('password123'),

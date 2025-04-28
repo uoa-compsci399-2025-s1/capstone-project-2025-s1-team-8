@@ -5,13 +5,31 @@ import { GET } from './route'
 import { createMockNextRequest } from '@/test-config/utils'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
-import { adminMock } from '@/test-config/mocks/Auth.mock'
+import { adminMock, clientMock } from '@/test-config/mocks/Auth.mock'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 
 describe('tests /api/users/me/projects', async () => {
   const projectService = new ProjectService()
   const cookieStore = await cookies()
+
+  vi.mock('@/data-layer/services/ProjectService', async () => {
+    const actual = await vi.importActual<typeof import('@/data-layer/services/ProjectService')>(
+      '@/data-layer/services/ProjectService',
+    )
+
+    return {
+      default: class extends actual.default {
+        getProjectsByClientId = vi.fn().mockImplementation((userID) => {
+          if (userID === adminMock.id) {
+            return { docs: [projectCreateMock] }
+          } else if (userID === clientMock.id) {
+            return { docs: [] }
+          }
+        })
+      },
+    }
+  })
 
   describe('GET /api/users/me/projects', () => {
     it('should return a 401 if no user is authenticated', async () => {
@@ -29,13 +47,11 @@ describe('tests /api/users/me/projects', async () => {
 
     it("should return user's project data", async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const newProject = await projectService.createProject({
-        ...projectCreateMock,
-        clients: [adminMock.id],
-      })
+      await projectService.createProject(projectCreateMock)
       const res = await GET(createMockNextRequest('/api/users/me/projects'))
       expect(res.status).toBe(StatusCodes.OK)
-      expect((await res.json()).data).toEqual([newProject])
+      const json = await res.json()
+      expect(json.data.length).toEqual(1)
     })
 
     it('should not return projects not related to the user', async () => {

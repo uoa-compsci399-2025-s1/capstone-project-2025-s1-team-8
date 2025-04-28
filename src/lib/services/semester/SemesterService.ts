@@ -9,7 +9,10 @@ import { CreateSemesterData } from '@/types/Collections'
 import { UpdateSemesterData } from '@/types/Collections'
 import { ProjectStatus } from '@/types/Project'
 import { typeToFlattenedError } from 'zod'
-import { UpdateSemesterRequestBody, CreateSemesterRequestBody } from '@/types/request-models/SemesterRequests'
+import {
+  UpdateSemesterRequestBody,
+  CreateSemesterRequestBody,
+} from '@/types/request-models/SemesterRequests'
 
 const SemesterService = {
   getAllPaginatedSemesters: async function (
@@ -40,9 +43,11 @@ const SemesterService = {
     return { data, nextPage, error }
   },
 
-  createSemester: async function (
-    semester: CreateSemesterData,
-  ): Promise<{ data: Semester; error?: string;  details?: typeToFlattenedError<typeof CreateSemesterRequestBody> }> {
+  createSemester: async function (semester: CreateSemesterData): Promise<{
+    data: Semester
+    error?: string
+    details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
+  }> {
     'use server'
     const url = '/api/admin/semesters'
     const response = await CreateSemester(
@@ -55,7 +60,11 @@ const SemesterService = {
   updateSemester: async function (
     semesterId: string,
     semester: UpdateSemesterData,
-  ): Promise<{ data: Semester; error?: string, details?: typeToFlattenedError<typeof UpdateSemesterRequestBody> }> {
+  ): Promise<{
+    data: Semester
+    error?: string
+    details?: typeToFlattenedError<typeof UpdateSemesterRequestBody>
+  }> {
     'use server'
     const url = `/api/admin/semesters/${semesterId}`
     const response = await UpdateSemester(
