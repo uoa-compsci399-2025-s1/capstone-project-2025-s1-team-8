@@ -1,3 +1,9 @@
+import NavBar from "@/components/Generic/NavBar/NavBar";
+
 export default function Client() {
-  return <div>This is the client page</div>
+  return (
+    <div>
+      <NavBar/>
+    </div>
+  )
 }
