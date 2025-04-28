@@ -73,33 +73,22 @@ class RouteWrapper {
     const { id, projectId } = await params
     const projectService = new ProjectService()
     const semesterService = new SemesterService()
-    let project
-    let fetchedSemester
 
     try {
-      try {
-        project = await projectService.getSemesterProject(projectId)
-      } catch (error) {
-        if (error instanceof NotFound) {
-          return NextResponse.json({ error: 'Project not found!' }, { status: StatusCodes.NOT_FOUND })
-        }
-        throw error
-      }
+      let semesterProject : SemesterProject
+      const fetchedSemester = await semesterService.getSemester(id)
 
       try {
-        fetchedSemester = await semesterService.getSemester(id)
+        semesterProject = await projectService.getSemesterProject(projectId)
       } catch (error) {
         if (error instanceof NotFound) {
-          return NextResponse.json(
-            { error: 'Semester not found!' },
-            { status: StatusCodes.NOT_FOUND },
-          )
+          return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
         }
         throw error
       }
 
       const data = PatchSemesterProjectRequestBody.parse(await req.json())
-      if (JSON.stringify(project.semester) !== JSON.stringify(fetchedSemester)) {
+      if (JSON.stringify(semesterProject.semester) !== JSON.stringify(fetchedSemester)) {
         return NextResponse.json(
           { error: 'Project does not belong to this semester' },
           { status: StatusCodes.BAD_REQUEST },
@@ -109,7 +98,12 @@ class RouteWrapper {
       const updatedProject = await projectService.updateSemesterProject(projectId, data)
       return NextResponse.json({ data: updatedProject })
     } catch (error) {
-      if (error instanceof ZodError) {
+      if (error instanceof NotFound) {
+        return NextResponse.json(
+          { error: 'Semester not found' },
+          { status: StatusCodes.NOT_FOUND },
+        )
+      } else if (error instanceof ZodError) {
         return NextResponse.json(
           { error: 'Invalid request body' },
           { status: StatusCodes.BAD_REQUEST },
