@@ -1,5 +1,7 @@
 import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
 
+// To be deleted when services are implemented
+
 export const mockClient: ClientDTOPlaceholder = {
   name: 'David Cumin',
   email: 'davidcumin@gmail.com',

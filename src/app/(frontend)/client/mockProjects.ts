@@ -1,5 +1,7 @@
 import { PlaceholderProjectDetailsType } from '@/types/Project'
 
+// To be deleted when services are implemented
+
 export const mockProjects: PlaceholderProjectDetailsType[] = [
   {
     projectId: 'p1',
