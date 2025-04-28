@@ -32,19 +32,21 @@ export default function SignIn() {
             </Link>
           </p>
           <div>
-          <div className="flex items-center w-full pt-2 pb-3">
-            <div className="border-t border-steel-blue flex-grow"></div>
-            <span className="mx-4 text-steel-blue text-xs">OR</span>
-            <div className="border-t border-steel-blue flex-grow"></div>
-          </div>
-          <Button
-            className="bg-white w-full"
-            size="md"
-            variant="outline"
-            startIcon={<FcGoogle className="h-full" />}
-          >
-            <Link href="/" className='text-xs'>Sign In with Google</Link>
-          </Button>
+            <div className="flex items-center w-full pt-2 pb-3">
+              <div className="border-t border-steel-blue flex-grow"></div>
+              <span className="mx-4 text-steel-blue text-xs">OR</span>
+              <div className="border-t border-steel-blue flex-grow"></div>
+            </div>
+            <Button
+              className="bg-white w-full"
+              size="md"
+              variant="outline"
+              startIcon={<FcGoogle className="h-full" />}
+            >
+              <Link href="/" className="text-xs">
+                Sign In with Google
+              </Link>
+            </Button>
           </div>
         </div>
       </form>
