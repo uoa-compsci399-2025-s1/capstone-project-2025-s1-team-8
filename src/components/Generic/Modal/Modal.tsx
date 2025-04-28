@@ -10,6 +10,17 @@ export interface ModalProps {
   // generally needs padding, height and width to be passed
 }
 
+function getHighestZIndex() {
+  const elements = Array.from(document.querySelectorAll('.modal'))
+
+  return elements.reduce((highest, el) => {
+    const z = window.getComputedStyle(el).zIndex
+    const zIndex = Number(z)
+
+    return isNaN(zIndex) ? highest : Math.max(highest, zIndex)
+  }, 0)
+}
+
 const Modal: React.FC<ModalProps> = ({ children, open, onClose, className = '' }) => {
   // modal component closes when clicking outside of the modal
   const handleClose = (e: React.MouseEvent) => {
@@ -18,22 +29,32 @@ const Modal: React.FC<ModalProps> = ({ children, open, onClose, className = '' }
     }
   }
 
+  const [zIndex, setZIndex] = React.useState(100)
+
   useEffect(() => {
-    // lock page scroll
-    document.body.style.overflow = open ? 'hidden' : ''
+    // lock page scroll, set highest z-index each time modal is opened
+    if (open) {
+      const highest = getHighestZIndex()
+      setZIndex(highest + 10)
+      document.body.style.overflow = 'hidden'
+    }
     return () => {
       // cleanup if unmounted
+      setZIndex(100)
       document.body.style.overflow = ''
     }
   }, [open])
 
+  if (!open) return null
+
   return ReactDOM.createPortal(
     <div
-      className={`z-100 fixed bg-[#1e6179]/59 w-full h-full flex-col items-center overflow-y-scroll left-0 top-0 py-[8%] ${open ? 'flex' : 'hidden'}`}
+      style={{ position: 'fixed', inset: 0, zIndex, display: 'flex' }}
+      className={`fixed bg-[#1e6179]/59 w-full h-full flex-col items-center overflow-y-scroll py-[8%] modal`}
       onClick={handleClose}
     >
       <div
-        className={`relative bg-light-beige border-y-[9/10] max-w-full flex flex-col rounded-2xl my-auto ${className}`}
+        className={`relative bg-light-beige max-w-full flex flex-col rounded-2xl my-auto ${className}`}
       >
         <button
           className="absolute top-10 right-10 rounded-full hover:cursor-pointer"

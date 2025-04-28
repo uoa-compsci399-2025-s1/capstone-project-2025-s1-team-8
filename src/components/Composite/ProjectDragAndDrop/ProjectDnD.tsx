@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   DndContext,
   DragEndEvent,
@@ -18,72 +18,131 @@ import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import ProjectContainer from './ProjectContainer'
 import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { FilterProvider } from '@/contexts/FilterContext'
-import {
-  ProjectCardType,
-  ProjectDTOPlaceholder,
-} from '@/components/Generic/ProjectCard/DraggableProjectCard'
+import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
+import { PlaceholderProjectDetailsType } from '@/types/Project'
+import { FiAlertCircle, FiSave } from 'react-icons/fi'
 
 type DNDType = {
   id: UniqueIdentifier
   title: string
   containerColor: 'light' | 'medium' | 'dark'
-  items: ProjectCardType[]
+  currentItems: ProjectCardType[]
+  originalItems: ProjectCardType[]
 }
 
 type DndComponentProps = {
   presetContainers: DNDType[]
 }
 
-const defaultProjectInfo: ProjectDTOPlaceholder = {
+const defaultProjectInfo: PlaceholderProjectDetailsType = {
   projectId: '',
-  projectName: '',
-  projectDescription: '',
-  client: {
+  projectTitle: '',
+  projectClientDetails: {
     name: '',
     email: '',
   },
+  otherClientDetails: [],
+  projectDescription: '',
   desiredOutput: '',
-  teamNumber: 0,
-  semesters: [],
-  submissionDate: new Date(),
+  desiredTeamSkills: '',
+  availableResources: '',
+  specialRequirements: false,
+  numberOfTeams: 0,
+  futureConsideration: false,
+  Semesters: [],
+  submittedDate: new Date(),
 }
 
 const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
   const [containers, setContainers] = useState<DNDType[]>(presetContainers.presetContainers)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
+  const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
+  const [showNotification, setShowNotification] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (hasChanges) {
+      setShowNotification(true)
+    } else {
+      setShowNotification(false)
+    }
+  }, [hasChanges])
+
+  useEffect(() => {
+    if (showNotification) {
+      const timer = setTimeout(() => {
+        setShowNotification(false)
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [showNotification])
+
+  //TODO: onlick of save changes button, send all container originalItems (and their order) to the backend.
+  //TODO: make wrapper container fetch the current ordering of items from the backend and display as the presetContainers
+  //TODO: when items are moved around, remove the active filter styles
+
+  const [containerFilters, setContainerFilters] = useState<Record<string, string | undefined>>(() =>
+    Object.fromEntries(containers.map((c) => [c.id, 'originalOrder'])),
+  )
+
+  const handleFilterChange = (containerId: UniqueIdentifier, newFilter?: string) => {
+    setContainerFilters((prev) => ({
+      ...prev,
+      [containerId]: newFilter, // `undefined` clears it
+    }))
+
+    if (newFilter) {
+      sortProjects(containerId, newFilter)
+    }
+  }
+
+  function handleSaveChanges() {
+    setHasChanges(false)
+    setShowNotification(false)
+    // send changes to the backend
+  }
 
   function sortProjects(containerId: UniqueIdentifier, filter: string): void {
     setContainers((prevContainers) => {
       return prevContainers.map((container) => {
         if (container.id !== containerId) return container
 
-        const sortedItems = [...container.items]
-
         switch (filter) {
           case 'projectName':
-            sortedItems.sort((a, b) =>
-              a.projectInfo.projectName.localeCompare(b.projectInfo.projectName),
-            )
-            break
           case 'clientName':
-            sortedItems.sort((a, b) =>
-              a.projectInfo.client.name.localeCompare(b.projectInfo.client.name),
-            )
-            break
           case 'submissionDate':
-            sortedItems.sort(
-              (a, b) =>
-                new Date(a.projectInfo.submissionDate).getTime() -
-                new Date(b.projectInfo.submissionDate).getTime(),
-            )
-            break
-          default:
-            return container // return unchanged if unknown filter
-        }
+            const sorted = [...container.currentItems]
+            if (filter === 'projectName') {
+              sorted.sort((a, b) =>
+                a.projectInfo.projectTitle.localeCompare(b.projectInfo.projectTitle),
+              )
+            } else if (filter === 'clientName') {
+              sorted.sort((a, b) =>
+                a.projectInfo.projectClientDetails.name.localeCompare(
+                  b.projectInfo.projectClientDetails.name,
+                ),
+              )
+            } else if (filter === 'submissionDate') {
+              sorted.sort(
+                (a, b) =>
+                  new Date(a.projectInfo.submittedDate).getTime() -
+                  new Date(b.projectInfo.submittedDate).getTime(),
+              )
+            }
 
-        return {
-          ...container,
-          items: sortedItems,
+            return {
+              ...container,
+              currentItems: sorted,
+            }
+
+          case 'originalOrder':
+            return {
+              ...container,
+              currentItems: [...container.originalItems],
+            }
+
+          default:
+            return container
         }
       })
     })
@@ -95,17 +154,17 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       return containers.find((item) => item.id === id)
     }
     if (type === 'item') {
-      return containers.find((container) => container.items.find((item) => item.id === id))
+      return containers.find((container) => container.currentItems.find((item) => item.id === id))
     }
   }
 
-  const findItemInfo = (id: UniqueIdentifier | undefined): ProjectDTOPlaceholder => {
+  const findItemInfo = (id: UniqueIdentifier | undefined): PlaceholderProjectDetailsType => {
     if (!id) return defaultProjectInfo
 
     const container = findValueOfItems(id, 'item')
     if (!container) return defaultProjectInfo
 
-    const item = container.items.find((item) => item.id === id)
+    const item = container.currentItems.find((item) => item.id === id)
     if (!item || !item.projectInfo) return defaultProjectInfo
 
     return item.projectInfo
@@ -152,13 +211,15 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       )
 
       // Find the index of the active and over item
-      const activeItemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
-      const overItemIndex = overContainer.items.findIndex((item) => item.id === over.id)
+      const activeItemIndex = activeContainer.currentItems.findIndex(
+        (item) => item.id === active.id,
+      )
+      const overItemIndex = overContainer.currentItems.findIndex((item) => item.id === over.id)
       // In the same container
       if (activeContainerIndex === overContainerIndex) {
         const newItems = [...containers]
-        newItems[activeContainerIndex].items = arrayMove(
-          newItems[activeContainerIndex].items,
+        newItems[activeContainerIndex].currentItems = arrayMove(
+          newItems[activeContainerIndex].currentItems,
           activeItemIndex,
           overItemIndex,
         )
@@ -167,8 +228,20 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       } else {
         // In different containers
         const newItems = [...containers]
-        const [removeditem] = newItems[activeContainerIndex].items.splice(activeItemIndex, 1)
-        newItems[overContainerIndex].items.splice(overItemIndex, 0, removeditem)
+        const [removeditem] = newItems[activeContainerIndex].currentItems.splice(activeItemIndex, 1)
+        newItems[overContainerIndex].currentItems.splice(overItemIndex, 0, removeditem)
+
+        // Handle moving in originalItems array
+        const activeItemIndexOriginal = activeContainer.originalItems.findIndex(
+          (item) => item.id === active.id,
+        )
+        const [removedItemOriginal] = newItems[activeContainerIndex].originalItems.splice(
+          activeItemIndexOriginal,
+          1,
+        )
+        newItems[overContainerIndex].originalItems.unshift(removedItemOriginal)
+
+        // handleFilterChange(activeContainerIndex)
         setContainers(newItems)
       }
     }
@@ -197,37 +270,32 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       )
 
       // Find the index of the active and over item
-      const activeItemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
+      const activeItemIndex = activeContainer.currentItems.findIndex(
+        (item) => item.id === active.id,
+      )
 
       // Remove the active item from the active container and add it to the over container
       const newItems = [...containers]
-      const [removeditem] = newItems[activeContainerIndex].items.splice(activeItemIndex, 1)
-      newItems[overContainerIndex].items.push(removeditem)
+      const [removeditem] = newItems[activeContainerIndex].currentItems.splice(activeItemIndex, 1)
+      newItems[overContainerIndex].currentItems.push(removeditem)
+      if (activeContainer != overContainer) {
+        const activeItemIndexOriginal = activeContainer.originalItems.findIndex(
+          (item) => item.id === active.id,
+        )
+        const [removedItemOriginal] = newItems[activeContainerIndex].originalItems.splice(
+          activeItemIndexOriginal,
+          1,
+        )
+        newItems[overContainerIndex].originalItems.unshift(removedItemOriginal)
+      }
       setContainers(newItems)
     }
   }
 
-  // This is the function that handles the sorting of the containers and items when the user is done dragging.
+  // This is the function that handles the sorting of items when the user is done dragging.
   function handleDragEnd(event: DragEndEvent) {
-    //TODO: pass new status to backend and at same time, update backend with approval list ordering
+    setHasChanges(true)
     const { active, over } = event
-
-    // Handling Container Sorting
-    if (
-      active.id.toString().includes('container') &&
-      over?.id.toString().includes('container') &&
-      active &&
-      over &&
-      active.id !== over.id
-    ) {
-      // Find the index of the active and over container
-      const activeContainerIndex = containers.findIndex((container) => container.id === active.id)
-      const overContainerIndex = containers.findIndex((container) => container.id === over.id)
-      // Swap the active and over container
-      let newItems = [...containers]
-      newItems = arrayMove(newItems, activeContainerIndex, overContainerIndex)
-      setContainers(newItems)
-    }
 
     // Handling item Sorting
     if (
@@ -251,14 +319,16 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
         (container) => container.id === overContainer.id,
       )
       // Find the index of the active and over item
-      const activeItemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
-      const overItemIndex = overContainer.items.findIndex((item) => item.id === over.id)
+      const activeItemIndex = activeContainer.currentItems.findIndex(
+        (item) => item.id === active.id,
+      )
+      const overItemIndex = overContainer.currentItems.findIndex((item) => item.id === over.id)
 
       // In the same container
       if (activeContainerIndex === overContainerIndex) {
         const newItems = [...containers]
-        newItems[activeContainerIndex].items = arrayMove(
-          newItems[activeContainerIndex].items,
+        newItems[activeContainerIndex].currentItems = arrayMove(
+          newItems[activeContainerIndex].currentItems,
           activeItemIndex,
           overItemIndex,
         )
@@ -266,12 +336,24 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       } else {
         // In different containers
         const newItems = [...containers]
-        const [removeditem] = newItems[activeContainerIndex].items.splice(activeItemIndex, 1)
-        newItems[overContainerIndex].items.splice(overItemIndex, 0, removeditem)
+        const [removeditem] = newItems[activeContainerIndex].currentItems.splice(activeItemIndex, 1)
+        newItems[overContainerIndex].currentItems.splice(overItemIndex, 0, removeditem)
+        // Handle the changing of the original containers
+
+        const activeItemIndexOriginal = activeContainer.originalItems.findIndex(
+          (item) => item.id === active.id,
+        )
+        const [removedItemOriginal] = newItems[activeContainerIndex].originalItems.splice(
+          activeItemIndexOriginal,
+          1,
+        )
+        newItems[overContainerIndex].originalItems.unshift(removedItemOriginal)
+
         setContainers(newItems)
       }
     }
     // Handling item dropping into Container
+    // TODO: if item is being moved between containers, then update the original order
     if (
       active.id.toString().includes('item') &&
       over?.id.toString().includes('container') &&
@@ -293,18 +375,45 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
         (container) => container.id === overContainer.id,
       )
       // Find the index of the active and over item
-      const activeItemIndex = activeContainer.items.findIndex((item) => item.id === active.id)
+      const activeItemIndex = activeContainer.currentItems.findIndex(
+        (item) => item.id === active.id,
+      )
 
       const newItems = [...containers]
-      const [removeditem] = newItems[activeContainerIndex].items.splice(activeItemIndex, 1)
-      newItems[overContainerIndex].items.push(removeditem)
+      const [removeditem] = newItems[activeContainerIndex].currentItems.splice(activeItemIndex, 1)
+      newItems[overContainerIndex].currentItems.push(removeditem)
+
+      // Handle the changing of the original containers
+      if (activeContainer != overContainer) {
+        const activeItemIndexOriginal = activeContainer.originalItems.findIndex(
+          (item) => item.id === active.id,
+        )
+        const [removedItemOriginal] = newItems[activeContainerIndex].originalItems.splice(
+          activeItemIndexOriginal,
+          1,
+        )
+        newItems[overContainerIndex].originalItems.unshift(removedItemOriginal)
+      }
       setContainers(newItems)
     }
     setActiveId(null)
   }
 
   return (
-    <div className="mx-auto w-full">
+    <div className="mx-auto w-full relative">
+      <div
+        className={` ${showNotification ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 fixed top-6 right-6 z-50 bg-light-pink ring ring-2 ring-pink-soft shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`}
+      >
+        <div className="flex items-center gap-2">
+          <FiAlertCircle className="text-pink-accent w-5 h-5 flex-shrink-0" />
+          <p className="text-dark-pink font-medium">Unsaved changes</p>
+        </div>
+
+        <p className="text-dark-pink text-sm">
+          You&rsquo;ve made changes to the project order. Don&rsquo;t forget to save!
+        </p>
+      </div>
+
       <div className="flex gap-7 flex-wrap md:flex-nowrap">
         <DndContext
           sensors={sensors}
@@ -314,14 +423,18 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
           onDragEnd={handleDragEnd}
         >
           {containers.map((container) => (
-            <FilterProvider key={container.id}>
+            <FilterProvider
+              key={container.id}
+              value={{
+                selectedFilter: containerFilters[container.id],
+                setSelectedFilter: (newFilter) => handleFilterChange(container.id, newFilter),
+              }}
+            >
               <ProjectContainer
                 id={container.id}
                 containerName={container.title}
-                projects={container.items}
-                onChange={(newFilter) => {
-                  sortProjects(container.id, newFilter)
-                }}
+                projects={container.currentItems}
+                onChange={(newFilter) => handleFilterChange(container.id, newFilter)}
                 containerColor={container.containerColor}
               />
             </FilterProvider>
@@ -334,6 +447,13 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
             )}
           </DragOverlay>
         </DndContext>
+        <button
+          className={`flex absolute z-40 right-4 bottom-4 gap-4 p-3 rounded-full shadow-lg ${hasChanges ? 'bg-gradient-to-tl from-deeper-blue to-muted-blue cursor-pointer' : 'bg-grey-1 cursor-not-allowed'}`}
+          onClick={handleSaveChanges}
+          disabled={!hasChanges}
+        >
+          <FiSave className="w-6 h-6 text-white"></FiSave>
+        </button>
       </div>
     </div>
   )

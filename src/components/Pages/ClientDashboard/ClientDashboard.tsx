@@ -2,12 +2,12 @@ import CreateProjectCard from '@/components/Composite/CreateProjectCard/CreatePr
 import GradientTextArea from '@/components/Generic/GradientTextArea/GradientTextArea'
 import ClientProfile from '@/components/Composite/ClientProfile/ClientProfile'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
-import { ProjectDTOPlaceholder } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
+import { PlaceholderProjectDetailsType } from '@/types/Project'
 
 interface ClientDashboardProps {
   client: ClientDTOPlaceholder
-  projects: ProjectDTOPlaceholder[]
+  projects: PlaceholderProjectDetailsType[]
 }
 
 const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects }) => {
