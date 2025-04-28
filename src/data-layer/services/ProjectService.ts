@@ -1,15 +1,17 @@
+import { NotFound, PaginatedDocs } from 'payload'
+
 import { Project, User } from '@/payload-types'
 import { CreateProjectData, UpdateProjectData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 import { CreateSemesterProjectData, UpdateSemesterProjectData } from '@/types/Collections'
 import { SemesterProject } from '@/payload-types'
-import { NotFound, PaginatedDocs } from 'payload'
 import { ProjectStatus } from '@/types/Project'
 import UserService from './UserService'
 
 export default class ProjectService {
   /**
    * This function returns a paginated doc of all projects
+   *
    * @param limit The number of projects to return
    * @param page The page number to return
    * @returns The list of projects
@@ -82,7 +84,7 @@ export default class ProjectService {
       client = await userService.getUser(clientId)
     } catch(error){
       if (error instanceof NotFound) {
-        throw new NotFound(()=>{return `User not found`})
+        throw new NotFound(()=>{ return `User not found` })
       }
       throw error
     }
@@ -187,6 +189,15 @@ export default class ProjectService {
     return semesterProjects.docs
   }
 
+  /**
+  * Retrieves all projects by semester
+  *
+  * @param id The ID the the semester
+  * @param limit The limit of projects to fetch
+  * @param page The page to query
+  * @param options Additional filtering params such as published or project status
+  * @returns The paginated semester projects
+  */
   public async getAllProjectsBySemester(
     id: string,
     limit: number = 100,

@@ -11,6 +11,7 @@ import { CreateSemesterProjectData } from '@/types/Collections'
 import { Security } from '@/business-layer/middleware/Security'
 import { RequestWithUser } from '@/types/Requests'
 import { UserRole } from '@/types/User'
+import { SemesterProject } from '@/payload-types'
 
 class RouterWrapper {
   /**
@@ -49,12 +50,26 @@ class RouterWrapper {
       )
     }
 
-    const { docs: projects, nextPage } =
-      await projectService.getSemesterProjectsByPublishedAndStatus(id, limit, page, {
-        published: published ? JSON.parse(published) : null,
-        status: status ? (status as ProjectStatus) : null,
+    let docs: SemesterProject[], nextPage: number | null | undefined;
+
+    if(req.user.role === UserRole.Student){
+      const paginatedProjects = await projectService.getAllProjectsBySemester(id, limit, page, {
+        published: true,
+        status: status ? (status as ProjectStatus) : undefined,
       })
-    return NextResponse.json({ data: projects, nextPage })
+      docs = paginatedProjects.docs
+      nextPage = paginatedProjects.nextPage
+    } else  {
+      const paginatedProjects =
+        await projectService.getAllProjectsBySemester(id, limit, page, {
+          published: !!published ? JSON.parse(published) : undefined,
+          status: status ? (status as ProjectStatus) : undefined,
+        })
+      docs = paginatedProjects.docs
+      nextPage = paginatedProjects.nextPage
+    }
+
+    return NextResponse.json({ data: docs, nextPage })
   }
 
   /**

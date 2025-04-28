@@ -17,7 +17,7 @@ import { semesterMock } from '@/test-config/mocks/Semester.mock'
 import { ProjectStatus } from '@/types/Project'
 import SemesterService from '@/data-layer/services/SemesterService'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
-import { adminToken, clientToken } from '@/test-config/routes-setup'
+import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
 describe('tests /api/semesters/[id]/projects', async () => {
   const projectService = new ProjectService()
@@ -26,13 +26,31 @@ describe('tests /api/semesters/[id]/projects', async () => {
   const cookieStore = await cookies()
 
   describe('GET /api/semesters/[id]/projects', () => {
-    it('should get no semesterprojects if none are created', async () => {
-      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const res = await GET(createMockNextRequest('api/semesters/123/projects'), {
-        params: paramsToPromise({ id: '123' }),
+    it('should return a 401 if the user is not authenticated or is a client', async () => {
+      const res = await GET(createMockNextRequest(`api/semesters/${semesterMock.id}/projects`), {
+        params: paramsToPromise({ id: semesterMock.id }),
+      })
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+      expect((await res.json()).error).toEqual("No token provided")
+
+      cookieStore.set(AUTH_COOKIE_NAME, clientToken)
+      const res2 = await GET(createMockNextRequest(`api/semesters/${semesterMock.id}/projects`), {
+        params: paramsToPromise({ id: semesterMock.id }),
+      })
+      expect(res2.status).toBe(StatusCodes.UNAUTHORIZED)
+      expect((await res2.json()).error).toEqual("No scope")
+    })
+
+    it('should return published projects only if the user is a student', async()=>{
+      cookieStore.set(AUTH_COOKIE_NAME, studentToken)
+      await projectService.createSemesterProject(semesterProjectCreateMock)
+      await projectService.createSemesterProject({...semesterProjectCreateMock, published: true})
+      const res = await GET(createMockNextRequest(`api/semesters/${semesterMock.id}/projects`), {
+        params: paramsToPromise({ id: semesterMock.id }),
       })
       expect(res.status).toBe(StatusCodes.OK)
-      expect((await res.json()).data).toEqual([])
+      const data = await res.json()
+      expect(data.data.length).toEqual(1)
     })
 
     it('should return a list of all semesterprojects for a semester', async () => {
@@ -191,6 +209,19 @@ describe('tests /api/semesters/[id]/projects', async () => {
   })
 
   describe('POST /api/semesters/[id]/projects', () => {
+    it('should 401 if the user is a student', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, studentToken)
+      const res = await POST(
+        createMockNextPostRequest(`api/semesters/abc/projects`, {
+          ...semesterProjectCreateMock2,
+          project: "project.id",
+        }),
+        { params: paramsToPromise({ id: "a" }) },
+      )
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+      expect((await res.json()).error).toBe('No scope')
+    })
+
     it('should create a new semester project', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const semester = await semesterService.createSemester(semesterMock)
