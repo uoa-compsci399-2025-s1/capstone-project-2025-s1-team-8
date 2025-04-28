@@ -43,9 +43,7 @@ const SemesterService = {
     return { data, nextPage, error }
   },
 
-  createSemester: async function (
-    semester: CreateSemesterData,
-  ): Promise<{
+  createSemester: async function (semester: CreateSemesterData): Promise<{
     data: Semester
     error?: string
     details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
