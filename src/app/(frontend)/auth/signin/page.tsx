@@ -15,12 +15,12 @@ export default function SignIn() {
           <Input
             placeholder="Email Address"
             type="email"
-            startIcon={<MdOutlineMail className="text-muted-blue" />}
+            startIcon={<MdOutlineMail className="text-muted-blue h-full" />}
           />
           <Input
             placeholder="Password"
             type="password"
-            startIcon={<MdLock className="text-muted-blue" />}
+            startIcon={<MdLock className="text-muted-blue h-full" />}
           />
           <Button size="md" variant="dark">
             Sign In
@@ -36,7 +36,12 @@ export default function SignIn() {
             <span className="mx-4 text-steel-blue">OR</span>
             <div className="border-t border-steel-blue flex-grow"></div>
           </div>
-          <Button className="bg-white" size="md" variant="outline" startIcon={<FcGoogle />}>
+          <Button
+            className="bg-white"
+            size="md"
+            variant="outline"
+            startIcon={<FcGoogle className="h-full" />}
+          >
             <Link href="/">Sign In with Google</Link>
           </Button>
         </div>
