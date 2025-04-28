@@ -33,7 +33,7 @@ export default function SignUp() {
             startIcon={<MdLock className="text-muted-blue" />}
           />
           <Button size="md" variant="dark">
-            Sign Up
+            Register
           </Button>
           <p className="text-steel-blue">
             {'Already have an account? Log in '}
