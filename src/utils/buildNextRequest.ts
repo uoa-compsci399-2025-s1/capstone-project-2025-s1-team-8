@@ -1,5 +1,5 @@
-"use server"
-import { NextRequest } from "next/server"
+'use server'
+import { NextRequest } from 'next/server'
 
 interface BuildRequestOptions {
   method?: 'GET' | 'POST' | 'PATCH' | 'DELETE'
@@ -9,7 +9,7 @@ interface BuildRequestOptions {
 
 /**
  * Builds a NextRequest object with the specified URL, method, body, and headers.
- * 
+ *
  * @param url The URL for the request.
  * @param options An object containing optional parameters: method, body, and headers.
  * @returns A Promise that resolves to a NextRequest object.
@@ -17,7 +17,7 @@ interface BuildRequestOptions {
 
 export async function buildNextRequest(
   url: string,
-  { method = 'GET', body, headers }: BuildRequestOptions = {}
+  { method = 'GET', body, headers }: BuildRequestOptions = {},
 ): Promise<NextRequest> {
   return new NextRequest(new URL(url, process.env.NEXT_PUBLIC_URL), {
     method,
