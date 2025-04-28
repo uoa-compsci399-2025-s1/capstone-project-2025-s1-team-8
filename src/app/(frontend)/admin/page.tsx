@@ -1,5 +1,6 @@
 'use client'
 import ClientsPage from '@/components/Pages/ClientsPage/ClientsPage'
+import SemestersPage from '@/components/Pages/SemestersPage/SemestersPage'
 import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import { UniqueIdentifier } from '@dnd-kit/core'
@@ -105,7 +106,7 @@ const Admin = () => {
               aria-hidden={activeNav !== 2}
               tabIndex={activeNav === 2 ? 0 : -1}
             >
-              <p>Semester page goes here</p>
+              <SemestersPage semesters={[]} />
             </div>
           </motion.div>
         </div>

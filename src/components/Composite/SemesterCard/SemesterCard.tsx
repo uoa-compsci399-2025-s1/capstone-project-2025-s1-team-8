@@ -6,7 +6,7 @@ import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardL
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import { PlaceholderProjectDetailsType } from '@/types/Project'
 
-export interface SemesterCardProps {
+export interface SemesterDTOPlaceholder {
   semesterName: string
   startDate: Date
   endDate: Date
@@ -15,7 +15,7 @@ export interface SemesterCardProps {
   currentOrUpcoming?: 'current' | 'upcoming' | string //Used for styling the current and upcoming semesters. If not current or upcoming semester, leave blank
 }
 
-const SemesterCard: React.FC<SemesterCardProps> = ({
+const SemesterCard: React.FC<SemesterDTOPlaceholder> = ({
   semesterName,
   startDate,
   endDate,
@@ -84,7 +84,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
 
       {/* Expandable Details */}
       <div
-        className={`relative w-full bg-muted-blue-op-45 ring-1 ring-deeper-blue rounded-lg transition-all duration-500 overflow-hidden ${isOpen ? 'opacity-100 mt-8 mb-4' : 'opacity-0'}`}
+        className={`relative w-full bg-muted-blue-op-45 ring-1 ring-deeper-blue rounded-lg transition-all duration-500 overflow-hidden ${isOpen ? 'opacity-100 mt-8 mb-12' : 'opacity-0'}`}
         style={{ maxHeight: height }}
       >
         <div ref={contentRef} className="px-10 py-8 sm:px-14 sm:py-12 overflow-hidden">
