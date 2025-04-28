@@ -7,6 +7,9 @@ import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { CreateSemesterData } from '@/types/Collections'
 import { UpdateSemesterData } from '@/types/Collections'
+import { ProjectStatus } from '@/types/Project'
+import { typeToFlattenedError } from 'zod'
+import { UpdateSemesterRequestBody, CreateSemesterRequestBody } from '@/types/request-models/SemesterRequests'
 
 const SemesterService = {
   getAllPaginatedSemesters: async function (
@@ -21,9 +24,15 @@ const SemesterService = {
 
   getAllPaginatedProjectsBySemesterId: async function (
     semesterId: string,
+    options: {
+      page?: number
+      limit?: number
+      status?: ProjectStatus
+      published?: 'true' | 'false'
+    } = {},
   ): Promise<{ data: SemesterProject[]; nextPage?: string; error?: string }> {
     'use server'
-    const url = `/api/semesters/${semesterId}/projects`
+    const url = buildNextRequestURL(`/api/semesters/${semesterId}/projects`, options)
     const response = await GetProjects(await buildNextRequest(url, { method: 'GET' }), {
       params: Promise.resolve({ id: semesterId }),
     })
@@ -33,20 +42,20 @@ const SemesterService = {
 
   createSemester: async function (
     semester: CreateSemesterData,
-  ): Promise<{ data: Semester; error?: string }> {
+  ): Promise<{ data: Semester; error?: string;  details?: typeToFlattenedError<typeof CreateSemesterRequestBody> }> {
     'use server'
     const url = '/api/admin/semesters'
     const response = await CreateSemester(
       await buildNextRequest(url, { method: 'POST', body: semester }),
     )
-    const { data, error } = await response.json()
-    return { data, error }
+    const { data, error, details } = await response.json()
+    return { data, error, details }
   },
 
   updateSemester: async function (
     semesterId: string,
     semester: UpdateSemesterData,
-  ): Promise<{ data: Semester; error?: string }> {
+  ): Promise<{ data: Semester; error?: string, details?: typeToFlattenedError<typeof UpdateSemesterRequestBody> }> {
     'use server'
     const url = `/api/admin/semesters/${semesterId}`
     const response = await UpdateSemester(
@@ -55,8 +64,8 @@ const SemesterService = {
         params: Promise.resolve({ id: semesterId }),
       },
     )
-    const { data, error } = await response.json()
-    return { data, error }
+    const { data, error, details } = await response.json()
+    return { data, error, details }
   },
 } as const
 export default SemesterService
