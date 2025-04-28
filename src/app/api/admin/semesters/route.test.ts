@@ -38,7 +38,7 @@ describe('tests /api/admin/semesters', async () => {
       const res = await POST(createMockNextPostRequest('', semesterCreateMock))
       expect(res.status).toBe(StatusCodes.CREATED)
 
-      const json = await res.json()
+      const json = (await res.json()).data
       const fetchedSemester = await semesterService.getSemester(json.id)
       expect(json).toEqual(fetchedSemester)
     })
