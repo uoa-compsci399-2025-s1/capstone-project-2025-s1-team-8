@@ -37,9 +37,7 @@ export default function SignIn() {
             <div className="border-t border-steel-blue flex-grow"></div>
           </div>
           <Button className="bg-white" size="md" variant="outline" startIcon={<FcGoogle />}>
-          <Link href="/">
-            Sign In with Google
-          </Link>
+            <Link href="/">Sign In with Google</Link>
           </Button>
         </div>
       </form>
