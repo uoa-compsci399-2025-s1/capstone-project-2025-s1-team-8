@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect } from 'react'
-import semesterApiService from '@/app/services/semesterApiService'
+import semesterApiService from '@/services/semesterApiService'
 
 export default function Client() {
   useEffect(() => {

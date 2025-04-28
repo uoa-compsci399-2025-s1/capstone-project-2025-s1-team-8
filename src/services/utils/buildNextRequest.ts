@@ -1,3 +1,4 @@
+"use server"
 import { NextRequest } from "next/server"
 
 interface BuildRequestOptions {
@@ -6,10 +7,10 @@ interface BuildRequestOptions {
   headers?: HeadersInit
 }
 
-export function buildNextRequest(
+export async function buildNextRequest(
   url: string,
   { method = 'GET', body, headers }: BuildRequestOptions = {}
-): NextRequest {
+): Promise<NextRequest> {
   return new NextRequest(new URL(url, process.env.NEXT_PUBLIC_URL), {
     method,
     headers: {
