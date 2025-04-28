@@ -1,5 +1,9 @@
 import { StatusCodes } from 'http-status-codes'
-import { createMockNextPatchRequest, createMockNextRequest, paramsToPromise } from '@/test-config/utils'
+import {
+  createMockNextPatchRequest,
+  createMockNextRequest,
+  paramsToPromise,
+} from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { semesterProjectCreateMock, semesterProjectMock5 } from '@/test-config/mocks/Project.mock'
 import { PATCH, DELETE } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
@@ -16,34 +20,25 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
 
   describe('test PATCH /api/semesters/[id]/projects/[projectId]', () => {
     it('return 401 with no auth', async () => {
-      const res = await PATCH(
-        createMockNextPatchRequest('', { semesterProjectCreateMock }),
-        {
-          params: paramsToPromise({ id: '123', projectId: '123' }),
-        },
-      )
+      const res = await PATCH(createMockNextPatchRequest('', { semesterProjectCreateMock }), {
+        params: paramsToPromise({ id: '123', projectId: '123' }),
+      })
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
       expect((await res.json()).error).toBe('No token provided')
     })
 
     it('return 401 if not admin', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      const res = await PATCH(
-        createMockNextPatchRequest('', { semesterProjectCreateMock }),
-        {
-          params: paramsToPromise({ id: '123', projectId: '123' }),
-        },
-      )
+      const res = await PATCH(createMockNextPatchRequest('', { semesterProjectCreateMock }), {
+        params: paramsToPromise({ id: '123', projectId: '123' }),
+      })
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
       expect((await res.json()).error).toBe('No scope')
 
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
-      const res2 = await PATCH(
-        createMockNextPatchRequest('', { semesterProjectCreateMock }),
-        {
-          params: paramsToPromise({ id: '123', projectId: '123' }),
-        },
-      )
+      const res2 = await PATCH(createMockNextPatchRequest('', { semesterProjectCreateMock }), {
+        params: paramsToPromise({ id: '123', projectId: '123' }),
+      })
       expect(res2.status).toBe(StatusCodes.UNAUTHORIZED)
       expect((await res2.json()).error).toBe('No scope')
     })
@@ -63,12 +58,9 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
     it("Should return a 404 error if the project doesn't exist", async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const semester = await semesterService.createSemester(semesterMock)
-      const res = await PATCH(
-        createMockNextPatchRequest('', { semesterProjectCreateMock }),
-        {
-          params: paramsToPromise({ id: semester.id, projectId: '123' }),
-        },
-      )
+      const res = await PATCH(createMockNextPatchRequest('', { semesterProjectCreateMock }), {
+        params: paramsToPromise({ id: semester.id, projectId: '123' }),
+      })
       expect(res.status).toBe(StatusCodes.NOT_FOUND)
       expect((await res.json()).error).toBe('Project not found')
     })

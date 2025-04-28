@@ -13,18 +13,18 @@ describe('tests /api/users/me/projects', async () => {
   const projectService = new ProjectService()
   const cookieStore = await cookies()
 
-  vi.mock('@/data-layer/services/ProjectService',async () => {
+  vi.mock('@/data-layer/services/ProjectService', async () => {
     const actual = await vi.importActual<typeof import('@/data-layer/services/ProjectService')>(
-      '@/data-layer/services/ProjectService'
-    );
+      '@/data-layer/services/ProjectService',
+    )
 
     return {
       default: class extends actual.default {
         getProjectsByClientId = vi.fn().mockImplementation((userID) => {
           if (userID === adminMock.id) {
-            return {docs: [projectCreateMock]}
+            return { docs: [projectCreateMock] }
           } else if (userID === clientMock.id) {
-            return {docs: []}
+            return { docs: [] }
           }
         })
       },

@@ -1,10 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 
-import {
-  createMockNextRequest,
-  paramsToPromise,
-} from '@/test-config/utils'
+import { createMockNextRequest, paramsToPromise } from '@/test-config/utils'
 import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET } from '@/app/api/semesters/[id]/projects/[projectId]/route'
 import ProjectService from '@/data-layer/services/ProjectService'
@@ -13,25 +10,31 @@ import { semesterMock } from '@/test-config/mocks/Semester.mock'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
-describe('tests /api/semesters/[id]/projects/[projectId]', async() => {
+describe('tests /api/semesters/[id]/projects/[projectId]', async () => {
   const cookieStore = await cookies()
   const projectService = new ProjectService()
   const semesterService = new SemesterService()
 
-  describe("GET /api/semesters/[id]/projects/[projectId]", ()=>{
+  describe('GET /api/semesters/[id]/projects/[projectId]', () => {
     it('should return a 401 if the user is not authenticated', async () => {
-      const res = await GET(createMockNextRequest(`api/semesters/${semesterMock.id}/projects/123`), {
-        params: paramsToPromise({ id: semesterMock.id, projectId: '123' }),
-      })
+      const res = await GET(
+        createMockNextRequest(`api/semesters/${semesterMock.id}/projects/123`),
+        {
+          params: paramsToPromise({ id: semesterMock.id, projectId: '123' }),
+        },
+      )
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
       expect((await res.json()).error).toBe('No token provided')
     })
 
     it('should return a 401 if the user is a client', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      const res = await GET(createMockNextRequest(`api/semesters/${semesterMock.id}/projects/123`), {
-        params: paramsToPromise({ id: semesterMock.id, projectId: '123' }),
-      })
+      const res = await GET(
+        createMockNextRequest(`api/semesters/${semesterMock.id}/projects/123`),
+        {
+          params: paramsToPromise({ id: semesterMock.id, projectId: '123' }),
+        },
+      )
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
       expect((await res.json()).error).toBe('No scope')
     })

@@ -17,24 +17,27 @@ class RouteWrapper {
    * @param params - The parameters object containing the semester ID.
    * @returns A JSON response containing the projects.
    */
-   @Security("jwt", ["admin"])
+  @Security('jwt', ['admin'])
   static async PATCH(
     req: NextRequest,
     { params }: { params: Promise<{ id: string; projectId: string }> },
-  ){
+  ) {
     const { id, projectId } = await params
     const projectService = new ProjectService()
     const semesterService = new SemesterService()
 
     try {
-      let semesterProject : SemesterProject
+      let semesterProject: SemesterProject
       const fetchedSemester = await semesterService.getSemester(id)
 
       try {
         semesterProject = await projectService.getSemesterProject(projectId)
       } catch (error) {
         if (error instanceof NotFound) {
-          return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
+          return NextResponse.json(
+            { error: 'Project not found' },
+            { status: StatusCodes.NOT_FOUND },
+          )
         }
         throw error
       }
@@ -51,10 +54,7 @@ class RouteWrapper {
       return NextResponse.json({ data: updatedProject })
     } catch (error) {
       if (error instanceof NotFound) {
-        return NextResponse.json(
-          { error: 'Semester not found' },
-          { status: StatusCodes.NOT_FOUND },
-        )
+        return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
       } else if (error instanceof ZodError) {
         return NextResponse.json(
           { error: 'Invalid request body' },
@@ -121,4 +121,5 @@ class RouteWrapper {
   }
 }
 
-export const PATCH = RouteWrapper.PATCH, DELETE = RouteWrapper.DELETE
+export const PATCH = RouteWrapper.PATCH,
+  DELETE = RouteWrapper.DELETE

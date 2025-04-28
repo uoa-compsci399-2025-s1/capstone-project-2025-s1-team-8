@@ -50,21 +50,20 @@ class RouterWrapper {
       )
     }
 
-    let docs: SemesterProject[], nextPage: number | null | undefined;
+    let docs: SemesterProject[], nextPage: number | null | undefined
 
-    if(req.user.role === UserRole.Student){
+    if (req.user.role === UserRole.Student) {
       const paginatedProjects = await projectService.getAllProjectsBySemester(id, limit, page, {
         published: true,
         status: status ? (status as ProjectStatus) : undefined,
       })
       docs = paginatedProjects.docs
       nextPage = paginatedProjects.nextPage
-    } else  {
-      const paginatedProjects =
-        await projectService.getAllProjectsBySemester(id, limit, page, {
-          published: !!published ? JSON.parse(published) : undefined,
-          status: status ? (status as ProjectStatus) : undefined,
-        })
+    } else {
+      const paginatedProjects = await projectService.getAllProjectsBySemester(id, limit, page, {
+        published: !!published ? JSON.parse(published) : undefined,
+        status: status ? (status as ProjectStatus) : undefined,
+      })
       docs = paginatedProjects.docs
       nextPage = paginatedProjects.nextPage
     }

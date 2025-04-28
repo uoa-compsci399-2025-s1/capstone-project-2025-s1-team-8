@@ -31,20 +31,20 @@ describe('tests /api/semesters/[id]/projects', async () => {
         params: paramsToPromise({ id: semesterMock.id }),
       })
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
-      expect((await res.json()).error).toEqual("No token provided")
+      expect((await res.json()).error).toEqual('No token provided')
 
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
       const res2 = await GET(createMockNextRequest(`api/semesters/${semesterMock.id}/projects`), {
         params: paramsToPromise({ id: semesterMock.id }),
       })
       expect(res2.status).toBe(StatusCodes.UNAUTHORIZED)
-      expect((await res2.json()).error).toEqual("No scope")
+      expect((await res2.json()).error).toEqual('No scope')
     })
 
-    it('should return published projects only if the user is a student', async()=>{
+    it('should return published projects only if the user is a student', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
       await projectService.createSemesterProject(semesterProjectCreateMock)
-      await projectService.createSemesterProject({...semesterProjectCreateMock, published: true})
+      await projectService.createSemesterProject({ ...semesterProjectCreateMock, published: true })
       const res = await GET(createMockNextRequest(`api/semesters/${semesterMock.id}/projects`), {
         params: paramsToPromise({ id: semesterMock.id }),
       })
@@ -214,9 +214,9 @@ describe('tests /api/semesters/[id]/projects', async () => {
       const res = await POST(
         createMockNextPostRequest(`api/semesters/abc/projects`, {
           ...semesterProjectCreateMock2,
-          project: "project.id",
+          project: 'project.id',
         }),
-        { params: paramsToPromise({ id: "a" }) },
+        { params: paramsToPromise({ id: 'a' }) },
       )
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
       expect((await res.json()).error).toBe('No scope')

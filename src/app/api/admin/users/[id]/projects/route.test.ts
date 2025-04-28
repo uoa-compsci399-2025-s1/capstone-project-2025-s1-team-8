@@ -12,7 +12,7 @@ import UserService from '@/data-layer/services/UserService'
 
 describe('test /api/admin/users/[id]/projects', async () => {
   const projectService = new ProjectService()
-  const userService = new UserService
+  const userService = new UserService()
   const cookieStore = await cookies()
 
   describe('GET /api/admin/users/[id]/projects', () => {
@@ -52,8 +52,8 @@ describe('test /api/admin/users/[id]/projects', async () => {
     it('should return a list of all projects for a user', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const client = await userService.createUser(mockClient1)
-      await projectService.createProject({...projectCreateMock, clients: [client.id]})
-      await projectService.createProject({...projectCreateMock, clients: [client.id]})
+      await projectService.createProject({ ...projectCreateMock, clients: [client.id] })
+      await projectService.createProject({ ...projectCreateMock, clients: [client.id] })
       const res = await GET(createMockNextRequest(`api/admin/users/${client.id}/projects`), {
         params: paramsToPromise({ id: client.id }),
       })
@@ -89,9 +89,9 @@ describe('test /api/admin/users/[id]/projects', async () => {
     it('should return a list of all projects that a client is involved in with pagination', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const client = await userService.createUser(mockClient1)
-      await projectService.createProject({...projectCreateMock, clients: [client.id]})
-      await projectService.createProject({...projectCreateMock, clients: [client.id]})
-      await projectService.createProject({...projectCreateMock, clients: [client.id]})
+      await projectService.createProject({ ...projectCreateMock, clients: [client.id] })
+      await projectService.createProject({ ...projectCreateMock, clients: [client.id] })
+      await projectService.createProject({ ...projectCreateMock, clients: [client.id] })
       const res1 = await GET(
         createMockNextRequest(`api/admin/users/${client.id}/projects?page=2&limit=2`),
         { params: paramsToPromise({ id: client.id }) },

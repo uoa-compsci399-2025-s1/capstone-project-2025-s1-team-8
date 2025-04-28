@@ -17,7 +17,7 @@ class RouteWrapper {
    * @param params - The parameters object containing the semester ID and project ID.
    * @returns A JSON response containing the project data
    */
-  @Security("jwt", ["student", "admin"])
+  @Security('jwt', ['student', 'admin'])
   static async GET(
     req: RequestWithUser,
     { params }: { params: Promise<{ id: string; projectId: string }> },
@@ -27,19 +27,22 @@ class RouteWrapper {
     const semesterService = new SemesterService()
 
     try {
-      let semesterProject : SemesterProject
+      let semesterProject: SemesterProject
       const fetchedSemester = await semesterService.getSemester(id)
 
       try {
         semesterProject = await projectService.getSemesterProject(projectId)
-        if(req.user.role === UserRole.Student){
-          if(!semesterProject.published){
+        if (req.user.role === UserRole.Student) {
+          if (!semesterProject.published) {
             return NextResponse.json({ error: 'No scope' }, { status: StatusCodes.UNAUTHORIZED })
           }
         }
       } catch (error) {
         if (error instanceof NotFound) {
-          return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
+          return NextResponse.json(
+            { error: 'Project not found' },
+            { status: StatusCodes.NOT_FOUND },
+          )
         }
         throw error
       }
@@ -53,10 +56,7 @@ class RouteWrapper {
       return NextResponse.json({ data: semesterProject })
     } catch (error) {
       if (error instanceof NotFound) {
-        return NextResponse.json(
-          { error: 'Semester not found' },
-          { status: StatusCodes.NOT_FOUND },
-        )
+        return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
       }
       console.error('Error:', error)
       return NextResponse.json(

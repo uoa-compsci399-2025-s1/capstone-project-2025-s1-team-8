@@ -79,12 +79,14 @@ export default class ProjectService {
     },
   ): Promise<PaginatedDocs<Project>> {
     const userService = new UserService()
-    let client : User;
+    let client: User
     try {
       client = await userService.getUser(clientId)
-    } catch(error){
+    } catch (error) {
       if (error instanceof NotFound) {
-        throw new NotFound(()=>{ return `User not found` })
+        throw new NotFound(() => {
+          return `User not found`
+        })
       }
       throw error
     }
@@ -95,7 +97,7 @@ export default class ProjectService {
           contains: client,
         },
         ...(!!options?.published ? { published: { equals: options.published } } : {}),
-        ...(!!options?.status ? { status: { equals: options.status } } : {})
+        ...(!!options?.status ? { status: { equals: options.status } } : {}),
       },
       limit: limit,
       pagination: true,
@@ -190,14 +192,14 @@ export default class ProjectService {
   }
 
   /**
-  * Retrieves all projects by semester
-  *
-  * @param id The ID the the semester
-  * @param limit The limit of projects to fetch
-  * @param page The page to query
-  * @param options Additional filtering params such as published or project status
-  * @returns The paginated semester projects
-  */
+   * Retrieves all projects by semester
+   *
+   * @param id The ID the the semester
+   * @param limit The limit of projects to fetch
+   * @param page The page to query
+   * @param options Additional filtering params such as published or project status
+   * @returns The paginated semester projects
+   */
   public async getAllProjectsBySemester(
     id: string,
     limit: number = 100,
@@ -215,8 +217,8 @@ export default class ProjectService {
       where: {
         semester: { equals: id },
         ...(!!options?.published ? { published: { equals: options.published } } : {}),
-        ...(!!options?.status ? { status: { equals: options.status } } : {})
-      }
+        ...(!!options?.status ? { status: { equals: options.status } } : {}),
+      },
     })
     return semesterProjects
   }

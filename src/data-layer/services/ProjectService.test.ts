@@ -59,12 +59,14 @@ describe('Project service methods test', () => {
 
   it('should get projects by clientID', async () => {
     const newUser = await userService.createUser(mockClient1)
-    const project = await projectService.createProject({...projectMock, clients: [newUser]})
+    const project = await projectService.createProject({ ...projectMock, clients: [newUser] })
     await projectService.createProject(projectMock2)
 
     const client1Projects = await projectService.getProjectsByClientId(newUser.id)
     expect(client1Projects.docs).toStrictEqual([project])
-    await expect(projectService.getProjectsByClientId('1234567890')).rejects.toThrow('User not found')
+    await expect(projectService.getProjectsByClientId('1234567890')).rejects.toThrow(
+      'User not found',
+    )
   })
 
   it('should get all projects by a client with pagination', async () => {

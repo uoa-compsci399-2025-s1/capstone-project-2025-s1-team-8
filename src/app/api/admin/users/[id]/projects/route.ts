@@ -25,14 +25,15 @@ class RouteWrapper {
       )
     }
     try {
-      const { docs: projects, nextPage } = await projectService.getProjectsByClientId(id, limit, page)
+      const { docs: projects, nextPage } = await projectService.getProjectsByClientId(
+        id,
+        limit,
+        page,
+      )
       return NextResponse.json({ data: projects, nextPage })
-    } catch(error) {
-      if(error instanceof NotFound && error.message === 'User not found'){
-        return NextResponse.json(
-          { error: 'Client not found' },
-          { status: StatusCodes.NOT_FOUND },
-        )
+    } catch (error) {
+      if (error instanceof NotFound && error.message === 'User not found') {
+        return NextResponse.json({ error: 'Client not found' }, { status: StatusCodes.NOT_FOUND })
       }
       console.error(error)
       return NextResponse.json(
