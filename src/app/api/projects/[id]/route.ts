@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
-import ProjectService from '@/data-layer/services/ProjectService'
 import { NotFound } from 'payload'
-import { UpdateProjectRequestBody } from '@/types/request-models/ProjectRequests'
 import { ZodError } from 'zod'
+
+import ProjectService from '@/data-layer/services/ProjectService'
+import { UpdateProjectRequestBody } from '@/types/request-models/ProjectRequests'
 import { Security } from '@/business-layer/middleware/Security'
-import { UserCombinedInfo } from '@/types/Collections'
+import { RequestWithUser } from '@/types/Requests'
 
 class RouteWrapper {
   /**
@@ -15,10 +16,7 @@ class RouteWrapper {
    * @param params - The parameters object containing the project ID.
    */
   @Security('jwt', ['admin', 'client'])
-  static async GET(
-    _req: NextRequest & { user: UserCombinedInfo },
-    { params }: { params: Promise<{ id: string }> },
-  ) {
+  static async GET(_req: RequestWithUser, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const projectService = new ProjectService()
     try {
@@ -42,10 +40,7 @@ class RouteWrapper {
    * @param params - The parameters object containing the project ID.
    */
   @Security('jwt', ['admin', 'client'])
-  static async PATCH(
-    req: NextRequest & { user: UserCombinedInfo },
-    { params }: { params: Promise<{ id: string }> },
-  ) {
+  static async PATCH(req: RequestWithUser, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const projectService = new ProjectService()
     try {
