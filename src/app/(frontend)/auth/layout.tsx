@@ -6,7 +6,7 @@ import Image from 'next/image'
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-row justify-center lg:justify-between items-center min-h-screen w-full bg-gradient-to-t from-[#88B8C4] via-[#A7CAD1] to-[#C6DCDE]">
+    <div className="flex flex-row justify-center lg:justify-between items-center min-h-screen w-full bg-gradient-to-t from-deeper-blue via-[#A7CAD1] to-muted-blue-op-45">
       <nav className="py-2 px-[5%] pr-[8%] fixed top-0 left-0 w-full z-50">
         <div className="container mx-auto flex items-center justify-start">
           <Link href="/" className="text-dark-blue">
