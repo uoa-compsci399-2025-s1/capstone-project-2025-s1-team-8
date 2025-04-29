@@ -10,7 +10,7 @@ import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { POST } from './route'
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
 
-describe('tests /api/auth/login', async () => {
+describe('tests /api/auth/userService', async () => {
   const userService = new UserService()
   const authService = new AuthService()
   const authDataService = new AuthDataService()
@@ -26,7 +26,7 @@ describe('tests /api/auth/login', async () => {
     )
   })
 
-  it('should login a user', async () => {
+  it('should userService a user', async () => {
     await userService.createUser(clientMock)
     await authDataService.createAuth({
       email: clientMock.email,
