@@ -18,7 +18,7 @@ const UserService = {
     return { message, status, error, details }
   },
 
-  register: async function(options: { email: string; password: string }): Promise<{
+  register: async function (options: { email: string; password: string }): Promise<{
     message: string
     status: StatusCodes
     error?: string
