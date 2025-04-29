@@ -62,7 +62,7 @@ const Input: FC<InputProps> = ({
           step={step}
           className={inputClasses}
           required={required}
-          value={value ? value : ''}
+          value={value}
         />
         {isPasswordType ? (
           <button
