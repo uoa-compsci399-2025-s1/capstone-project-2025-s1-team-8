@@ -27,7 +27,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         </div>
       </div>
       {/*Rightside*/}
-      <div className="flex flex-col justify-center items-center min-h-screen min-w-1 lg:w-4/10 bg-beige">
+      <div className="flex flex-col justify-center items-center min-h-screen min-w-screen lg:min-w-1 lg:w-4/10 bg-beige">
         {children}
       </div>
     </div>
