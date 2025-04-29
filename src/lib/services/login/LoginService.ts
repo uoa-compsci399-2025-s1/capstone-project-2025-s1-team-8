@@ -8,7 +8,7 @@ const LoginService = {
     email: string
     password: string
   }): Promise<{ message: string; status: StatusCodes; error?: string; details?: string }> {
-    'use server'
+    console.log("LoginService login called")
     const url = buildNextRequestURL('/api/auth/login', options)
     const response = await POST(await buildNextRequest(url, { method: 'POST', body: options }))
     const { message, status, error, details } = await response.json()
