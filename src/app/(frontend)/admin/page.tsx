@@ -34,22 +34,26 @@ const Admin = () => {
       id: 'container-1' as UniqueIdentifier,
       title: 'Rejected',
       containerColor: 'light' as const,
-      currentItems: [{
-        id: `item-1`,
-        projectInfo: mockProjects[0],
-      },
-      {
-        id: `item-2`,
-        projectInfo: mockProjects[1],
-      },],
-      originalItems: [{
-        id: `item-1`,
-        projectInfo: mockProjects[0],
-      },
-      {
-        id: `item-2`,
-        projectInfo: mockProjects[1],
-      },],
+      currentItems: [
+        {
+          id: `item-1`,
+          projectInfo: mockProjects[0],
+        },
+        {
+          id: `item-2`,
+          projectInfo: mockProjects[1],
+        },
+      ],
+      originalItems: [
+        {
+          id: `item-1`,
+          projectInfo: mockProjects[0],
+        },
+        {
+          id: `item-2`,
+          projectInfo: mockProjects[1],
+        },
+      ],
     },
     {
       id: 'container-2' as UniqueIdentifier,
