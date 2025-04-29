@@ -15,7 +15,11 @@ const CreateProjectCard = () => {
       <p className="text-dark-blue font-medium text-sm pb-4">Project Name</p>
       <div className="flex flex-row justify-start gap-3">
         <div className="flex-grow">
-          <Input placeholder="Enter name" onChange={(e) => setProjectName(e.target.value)} />
+          <Input
+            placeholder="Enter name"
+            value={projectName}
+            onChange={(e) => setProjectName(e.target.value)}
+          />
         </div>
         <Link href={projectName === '' ? '/form' : `/form?projectName=${projectName}`}>
           <Button
