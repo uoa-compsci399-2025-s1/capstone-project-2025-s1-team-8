@@ -1,14 +1,17 @@
-import { Project } from '@/payload-types'
+import { NotFound, PaginatedDocs } from 'payload'
+
+import { Project, User } from '@/payload-types'
 import { CreateProjectData, UpdateProjectData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 import { CreateSemesterProjectData, UpdateSemesterProjectData } from '@/types/Collections'
 import { SemesterProject } from '@/payload-types'
-import { PaginatedDocs, Where } from 'payload'
 import { ProjectStatus } from '@/types/Project'
+import UserService from './UserService'
 
 export default class ProjectService {
   /**
    * This function returns a paginated doc of all projects
+   *
    * @param limit The number of projects to return
    * @param page The page number to return
    * @returns The list of projects
@@ -70,13 +73,31 @@ export default class ProjectService {
     clientId: string,
     limit: number = 100,
     page: number = 1,
+    options?: {
+      published?: boolean
+      status?: ProjectStatus
+    },
   ): Promise<PaginatedDocs<Project>> {
+    const userService = new UserService()
+    let client: User
+    try {
+      client = await userService.getUser(clientId)
+    } catch (error) {
+      if (error instanceof NotFound) {
+        throw new NotFound(() => {
+          return 'User not found'
+        })
+      }
+      throw error
+    }
     const data = await payload.find({
       collection: 'project',
       where: {
         clients: {
-          equals: clientId,
+          contains: client,
         },
+        ...(!!options?.published ? { published: { equals: options.published } } : {}),
+        ...(!!options?.status ? { status: { equals: options.status } } : {}),
       },
       limit: limit,
       pagination: true,
@@ -171,6 +192,38 @@ export default class ProjectService {
   }
 
   /**
+   * Retrieves all projects by semester
+   *
+   * @param id The ID the the semester
+   * @param limit The limit of projects to fetch
+   * @param page The page to query
+   * @param options Additional filtering params such as published or project status
+   * @returns The paginated semester projects
+   */
+  public async getAllProjectsBySemester(
+    id: string,
+    limit: number = 100,
+    page: number = 1,
+    options?: {
+      published?: boolean
+      status?: ProjectStatus
+    },
+  ): Promise<PaginatedDocs<SemesterProject>> {
+    const semesterProjects = await payload.find({
+      collection: 'semesterProject',
+      limit,
+      pagination: true,
+      page: page,
+      where: {
+        semester: { equals: id },
+        ...(!!options?.published ? { published: { equals: options.published } } : {}),
+        ...(!!options?.status ? { status: { equals: options.status } } : {}),
+      },
+    })
+    return semesterProjects
+  }
+
+  /**
    * Updates a semesterProject.
    *
    * @param id The semesterProject ID
@@ -199,47 +252,5 @@ export default class ProjectService {
       collection: 'semesterProject',
       id: id,
     })
-  }
-
-  public async getSemesterProjectsByPublishedAndStatus(
-    id: string,
-    limit: number = 100,
-    page: number = 1,
-    options?: {
-      published?: boolean | null
-      status?: ProjectStatus | null
-    },
-  ): Promise<PaginatedDocs<SemesterProject>> {
-    let query: Where = {
-      semester: {
-        equals: id,
-      },
-    }
-
-    if (options)
-      query = {
-        semester: {
-          equals: id,
-        },
-      }
-    if (options?.published != undefined && options.published !== null) {
-      query.published = {
-        equals: options.published,
-      }
-    }
-    if (options?.status != undefined && options.status !== null) {
-      query.status = {
-        equals: options.status,
-      }
-    }
-
-    const semesterProjects = await payload.find({
-      collection: 'semesterProject',
-      where: query,
-      limit,
-      pagination: true,
-      page,
-    })
-    return semesterProjects
   }
 }
