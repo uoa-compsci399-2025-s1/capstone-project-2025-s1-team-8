@@ -246,7 +246,7 @@ export default function Form() {
                   id="ProjectTitle"
                   name="ProjectTitle"
                   type="text"
-                  placeholder="Enter the project name"
+                  placeholder="Enter the project title"
                   defaultValue={projectName}
                 />
               </li>
