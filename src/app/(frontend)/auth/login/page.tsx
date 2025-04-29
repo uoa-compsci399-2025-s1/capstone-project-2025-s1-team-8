@@ -27,7 +27,7 @@ export default function SignIn() {
           </Button>
           <p className="text-steel-blue text-xs text-center">
             {"Don't have an account? Sign up "}
-            <Link href="/auth/signup">
+            <Link href="/auth/register">
               <u>here</u>
             </Link>
           </p>

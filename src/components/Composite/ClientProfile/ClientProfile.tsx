@@ -40,11 +40,7 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo }) => {
         )}
 
         <Capsule text="Email" variant="muted_blue" className="ring-1 ring-muted-blue col-start-1" />
-        {isEditing ? (
-          <input defaultValue={clientInfo.email} className="editable-capsule" />
-        ) : (
-          <Capsule text={clientInfo.email} variant="beige" className="col-start-2" />
-        )}
+        <Capsule text={clientInfo.email} variant="beige" className="col-start-2" />
 
         <Capsule
           text="Affiliation"

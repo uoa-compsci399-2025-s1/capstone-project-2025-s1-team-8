@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -16,11 +16,23 @@ interface NavBarProps {
 const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
+  const [hasShadow, setHasShadow] = useState(false)
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setHasShadow(window.scrollY > 10)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
-    <nav className="py-2 px-[5%] pr-[8%] fixed top-0 left-0 w-full z-50 bg-beige">
+    <nav
+      className={`py-2 px-[5%] pr-[8%] fixed top-0 left-0 w-full z-50 bg-beige/90 transition-shadow duration-300 ${hasShadow ? 'shadow-md shadow-muted-blue' : ''}`}
+    >
       <div className="container mx-auto flex items-center justify-between">
         <Link href="/" className="text-dark-blue">
           <Image src="/dark-logo.png" alt="logo" width={100} height={100} />
@@ -43,10 +55,10 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
             <Link href="/" className="nav-link-text">
               About
             </Link>
-            <span className={`nav-link-text-underline  scale-x-0 group-hover:scale-x-100 ${pathname === '/' ? 'scale-x-100' : ''}`} />
+            <span className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/' ? 'scale-x-100' : ''}`} />
           </div> */}
           <div className="relative group p-2">
-            <Link href="/auth/signin" className="nav-link-text font-bold">
+            <Link href="/auth/login" className="nav-link-text font-bold">
               Login
             </Link>
             <span
