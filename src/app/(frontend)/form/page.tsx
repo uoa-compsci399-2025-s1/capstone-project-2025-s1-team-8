@@ -148,7 +148,7 @@ export default function Form() {
         </div>
         <div className="relative bg-transparent-blue border-t-deeper-blue border-t max-w-full flex flex-col pt-15 p-18 pr-20 pb-20 rounded-b-2xl gap-5">
           <p className="text-dark-blue font-inter pb-6">
-            <span className="text-pink-2">*</span> Required
+            <span className="text-pink-accent">*</span> Required
           </p>
           <form className="flex flex-col gap-4">
             <ol
@@ -157,7 +157,8 @@ export default function Form() {
             >
               <li>
                 <label htmlFor="ClientName">
-                  Main client&apos;s (applicant&apos;s) name <span className="text-pink-2">*</span>
+                  Main client&apos;s (applicant&apos;s) name{' '}
+                  <span className="text-pink-accent">*</span>
                 </label>
                 <p className="form-question-subheading">Please provide your name.</p>
                 <Input
@@ -170,7 +171,8 @@ export default function Form() {
               </li>
               <li>
                 <label htmlFor="ClientEmail">
-                  Main client&apos;s (applicant&apos;s) email <span className="text-pink-2">*</span>
+                  Main client&apos;s (applicant&apos;s) email{' '}
+                  <span className="text-pink-accent">*</span>
                 </label>
                 <p className="form-question-subheading">Please provide your email.</p>
                 <Input
@@ -235,7 +237,7 @@ export default function Form() {
               </li>
               <li>
                 <label htmlFor="ProjectTitle">
-                  Project title <span className="text-pink-2">*</span>
+                  Project title <span className="text-pink-accent">*</span>
                 </label>
                 <p className="form-question-subheading">
                   Please provide an informative project title.
@@ -244,13 +246,13 @@ export default function Form() {
                   id="ProjectTitle"
                   name="ProjectTitle"
                   type="text"
-                  placeholder="Enter the main client's email"
+                  placeholder="Enter the project name"
                   defaultValue={projectName}
                 />
               </li>
               <li>
                 <label htmlFor="ProjectDescription">
-                  Project description <span className="text-pink-2">*</span>
+                  Project description <span className="text-pink-accent">*</span>
                 </label>
                 <p className="form-question-subheading">
                   Please provide a short description (3-10 sentences) of the project.
@@ -258,13 +260,13 @@ export default function Form() {
                 <Textarea
                   id="ProjectDescription"
                   name="ProjectDescription"
-                  placeholder="Enter the main client's email"
+                  placeholder="Enter the project description"
                   className="h-25"
                 />
               </li>
               <li>
                 <label htmlFor="DesiredOutput">
-                  Desired output <span className="text-pink-2">*</span>
+                  Desired output <span className="text-pink-accent">*</span>
                 </label>
                 <p className="form-question-subheading">
                   Please identify the features that will constitute the MVP (minimum viable
@@ -279,7 +281,7 @@ export default function Form() {
               </li>
               <li>
                 <label htmlFor="SpecialEquipmentRequirements">
-                  Special equipment requirements <span className="text-pink-2">*</span>
+                  Special equipment requirements <span className="text-pink-accent">*</span>
                 </label>
                 <p className="form-question-subheading">
                   Will your project require special equipment that you are unable to provide? If
@@ -290,7 +292,7 @@ export default function Form() {
               </li>
               <li>
                 <label htmlFor="SpecialEquipmentRequirements">
-                  Number of teams <span className="text-pink-2">*</span>
+                  Number of teams <span className="text-pink-accent">*</span>
                 </label>
                 <p className="form-question-subheading">
                   Would you be open to the idea of <b>multiple teams working on your project</b>? If
@@ -344,7 +346,7 @@ export default function Form() {
               </li>
               <li>
                 <label htmlFor="FutureConsideration">
-                  Future consideration <span className="text-pink-2">*</span>
+                  Future consideration <span className="text-pink-accent">*</span>
                 </label>
                 <p className="form-question-subheading">
                   If your project is not selected by students in the upcoming semester, would you
@@ -362,7 +364,7 @@ export default function Form() {
               </li>
               <li>
                 <label htmlFor="MeetingAttendance">
-                  Meeting attendance <span className="text-pink-2">*</span>
+                  Meeting attendance <span className="text-pink-accent">*</span>
                 </label>
                 <p className="form-question-subheading">
                   The teaching team will aim to arrange meetings with the students at times that
@@ -382,6 +384,8 @@ export default function Form() {
                     className="w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] border-steel-blue rounded-sm 
                         peer-checked:bg-steel-blue 
                         [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
+                        peer-focus:outline peer-focus:outline-deeper-blue
+                        hover:outline hover:outline-deeper-blue
                         transition-colors duration-150"
                   >
                     <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
@@ -394,7 +398,7 @@ export default function Form() {
               </li>
               <li>
                 <label htmlFor="FinalPresentationAttendance">
-                  Final presentation attendance <span className="text-pink-2">*</span>
+                  Final presentation attendance <span className="text-pink-accent">*</span>
                 </label>
                 <p className="form-question-subheading">
                   The teaching team will aim to arrange the final presentation at a time that best
@@ -413,6 +417,8 @@ export default function Form() {
                     className="w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] border-steel-blue rounded-sm 
                         peer-checked:bg-steel-blue 
                         [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
+                        hover:outline hover:outline-deeper-blue
+                        peer-focus:outline peer-focus:outline-deeper-blue
                         transition-colors duration-150"
                   >
                     <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
@@ -424,7 +430,7 @@ export default function Form() {
               </li>
               <li>
                 <label htmlFor="ProjectSupportAndMaintenance">
-                  Project Support and Maintenance <span className="text-pink-2">*</span>
+                  Project Support and Maintenance <span className="text-pink-accent">*</span>
                 </label>
                 <p className="form-question-subheading">
                   The COMPSCI 399 Capstone Course is provided solely for academic purposes during
