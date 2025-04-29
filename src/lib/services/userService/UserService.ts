@@ -5,10 +5,7 @@ import { StatusCodes } from 'http-status-codes'
 import { typeToFlattenedError } from 'zod'
 
 const UserService = {
-  login: async function (options: {
-    email: string
-    password: string
-  }): Promise<{
+  login: async function (options: { email: string; password: string }): Promise<{
     message: string
     status: StatusCodes
     error?: string
