@@ -24,7 +24,7 @@ class RouteWrapper {
       }
       console.log(error)
       return NextResponse.json(
-        { error: 'Internal Server Error' },
+        { error: 'Internal server error' },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }

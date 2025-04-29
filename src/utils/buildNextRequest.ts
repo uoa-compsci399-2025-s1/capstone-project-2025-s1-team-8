@@ -1,8 +1,10 @@
 'use server'
+import { RequestWithUser } from '@/types/Requests'
 import { NextRequest } from 'next/server'
 
 interface BuildRequestOptions {
   method?: 'GET' | 'POST' | 'PATCH' | 'DELETE'
+  // eslint-disable-next-line
   body?: any
   headers?: HeadersInit
 }
@@ -18,7 +20,7 @@ interface BuildRequestOptions {
 export async function buildNextRequest(
   url: string,
   { method = 'GET', body, headers }: BuildRequestOptions = {},
-): Promise<NextRequest> {
+): Promise<RequestWithUser> {
   return new NextRequest(new URL(url, process.env.NEXT_PUBLIC_URL), {
     method,
     headers: {
@@ -26,5 +28,5 @@ export async function buildNextRequest(
       ...headers,
     },
     body: body ? JSON.stringify(body) : undefined,
-  })
+  }) as RequestWithUser
 }
