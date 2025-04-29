@@ -33,6 +33,8 @@ const Radio: FC<RadioProps> = ({ id, name, values, customInput = false, required
           />
           <span
             className="w-[16px] h-[16px] inline-flex mr-6 border-[1.5px] border-steel-blue rounded-full 
+                peer-focus:outline peer-focus:outline-deeper-blue
+                hover:outline hover:outline-deeper-blue
                 [&>*]:opacity-0 peer-checked:[&>*]:opacity-100"
           >
             <div className="bg-steel-blue w-[8px] h-[8px] rounded-full self-center m-auto transition-opacity duration-300" />
@@ -50,6 +52,8 @@ const Radio: FC<RadioProps> = ({ id, name, values, customInput = false, required
           />
           <span
             className="w-[16px] h-[16px] inline-flex mr-5 border-[1.5px] border-steel-blue rounded-full 
+                peer-focus:outline peer-focus:outline-deeper-blue
+                hover:outline hover:outline-deeper-blue
                 [&>*]:opacity-0 peer-checked:[&>*]:opacity-100"
           >
             <div className="bg-steel-blue w-[8px] h-[8px] rounded-full self-center m-auto transition-opacity duration-300" />
