@@ -8,9 +8,10 @@ const LoginService = {
     email: string
     password: string
   }): Promise<{ message: string; status: StatusCodes; error?: string; details?: string }> {
-    console.log("LoginService login called")
     const url = buildNextRequestURL('/api/auth/login', options)
     const response = await POST(await buildNextRequest(url, { method: 'POST', body: options }))
+    // should i return all message, status, error, details? usually only ONE is returned depending on
+    // if the request is good or not
     const { message, status, error, details } = await response.json()
     return { message, status, error, details }
   },
