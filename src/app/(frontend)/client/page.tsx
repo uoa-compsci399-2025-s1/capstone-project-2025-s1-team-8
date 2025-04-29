@@ -11,7 +11,7 @@ export default function Client() {
       <div>
         <NavBar navElements={[{ href: '/admin', text: 'My Dashboard' }]} />
       </div>
-      <div className="items-center justify-center w-[90vw] pt-40 pb-30">
+      <div className="items-center justify-center w-full px-8 sm:px-15 lg:px-30 pt-40 pb-20">
         <ClientDashboard client={mockClients[0]} projects={mockProjects} />
       </div>
     </div>
