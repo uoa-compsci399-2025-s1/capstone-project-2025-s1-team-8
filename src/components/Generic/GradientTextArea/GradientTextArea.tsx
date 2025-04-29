@@ -16,7 +16,9 @@ const GradientTextArea: React.FC<TextAreaProps> = ({ heading, text }) => {
           <h1 className="text-dark-blue font-dm-serif-display font-normal text-2xl md:text-3xl lg:text-4xl italic mx-auto my-6 max-w-2xl">
             {heading}
           </h1>
-          <p className="text-dark-blue whitespace-pre-line italic text-sm sm:text-base md:text-lg lg:text-xl pt-3 pl-3">{text}</p>
+          <p className="text-dark-blue whitespace-pre-line italic text-sm sm:text-base md:text-lg lg:text-xl pt-3 pl-3">
+            {text}
+          </p>
         </div>
       </div>
     </div>
