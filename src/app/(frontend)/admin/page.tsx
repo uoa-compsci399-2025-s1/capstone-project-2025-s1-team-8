@@ -6,6 +6,9 @@ import NavBar from '@/components/Generic/NavBar/NavBar'
 import { UniqueIdentifier } from '@dnd-kit/core'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { mockProjects } from '@/mocks/Projects.mock'
+import { mockClients } from '@/mocks/Clients.mock'
+import { mockSemesters } from '@/mocks/Semesters.mock'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -31,8 +34,22 @@ const Admin = () => {
       id: 'container-1' as UniqueIdentifier,
       title: 'Rejected',
       containerColor: 'light' as const,
-      currentItems: [],
-      originalItems: [],
+      currentItems: [{
+        id: `item-1`,
+        projectInfo: mockProjects[0],
+      },
+      {
+        id: `item-2`,
+        projectInfo: mockProjects[1],
+      },],
+      originalItems: [{
+        id: `item-1`,
+        projectInfo: mockProjects[0],
+      },
+      {
+        id: `item-2`,
+        projectInfo: mockProjects[1],
+      },],
     },
     {
       id: 'container-2' as UniqueIdentifier,
@@ -98,7 +115,7 @@ const Admin = () => {
               aria-hidden={activeNav !== 1}
               tabIndex={activeNav === 1 ? 0 : -1}
             >
-              <ClientsPage clients={[]} />
+              <ClientsPage clients={mockClients} />
             </div>
 
             <div
@@ -106,7 +123,7 @@ const Admin = () => {
               aria-hidden={activeNav !== 2}
               tabIndex={activeNav === 2 ? 0 : -1}
             >
-              <SemestersPage semesters={[]} />
+              <SemestersPage semesters={mockSemesters} />
             </div>
           </motion.div>
         </div>
