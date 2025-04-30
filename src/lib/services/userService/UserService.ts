@@ -4,7 +4,7 @@ import { buildNextRequest } from '@/utils/buildNextRequest'
 import { StatusCodes } from 'http-status-codes'
 import { typeToFlattenedError } from 'zod'
 import { RegisterRequestBodySchema, POST as RegisterPost } from '@/app/api/auth/register/route'
-import { UserRole } from '@/types/User'
+import { UserRoleWithoutAdmin } from '@/types/User'
 
 const UserService = {
   login: async function (options: { email: string; password: string }): Promise<{
@@ -24,7 +24,7 @@ const UserService = {
     password: string
     firstName: string
     lastName: string
-    Role: UserRole
+    role: UserRoleWithoutAdmin
   }): Promise<{
     message: string
     status: StatusCodes
