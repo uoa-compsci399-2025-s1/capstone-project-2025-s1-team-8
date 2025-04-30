@@ -1,4 +1,3 @@
-'use server'
 import { SemesterProject } from '@/payload-types'
 import { UpdateSemesterProjectData } from '@/types/Collections'
 import { PatchSemesterProjectRequestBody } from '@/types/request-models/ProjectRequests'
@@ -16,6 +15,7 @@ const ProjectService = {
     error?: string
     details?: typeToFlattenedError<typeof PatchSemesterProjectRequestBody>
   }> {
+    'use server'
     const url = `/api/admin/semesters/${semesterId}/projects/${semesterProjectId}`
     const response = await UpdateSemesterProject(
       await buildNextRequest(url, { method: 'PATCH', body: semesterProject }),
