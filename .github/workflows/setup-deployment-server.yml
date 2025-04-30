@@ -20,26 +20,21 @@ jobs:
     environment:
       name: ${{github.event.inputs.environment}}
     steps:
-      - name: Create and setup SSH key
-        run: |
-          mkdir -p ~/.ssh/
-          echo "${{secrets.EC2_SSH_KEY}}" > ../private.key
-          sudo chmod 600 ../private.key
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-        shell: bash
-
       - name: Connect via SSH and enable root access
-        run: |
-          echo "Connecting via SSH..."
-          ssh -i ../private.key ${{ secrets.EC2_DEFAULT_USER }}@${{ secrets.EC2_HOST }} <<'EOT'
-          AUTHORIZED_KEYS="/root/.ssh/authorized_keys"
-          BACKUP="/root/.ssh/authorized_keys.bak"
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_DEFAULT_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            AUTHORIZED_KEYS="/root/.ssh/authorized_keys"
+            BACKUP="/root/.ssh/authorized_keys.bak"
 
-          # Backup original authorized_keys file
-          sudo cp "$AUTHORIZED_KEYS" "$BACKUP"
+            # Backup original authorized_keys file
+            sudo cp "$AUTHORIZED_KEYS" "$BACKUP"
 
-          sudo sed -i 's/^.*command=.*Please login as the user \\"ubuntu\\".*ssh-rsa/ssh-rsa/' "$AUTHORIZED_KEYS"
-          EOT
+            sudo sed -i 's/^.*command=.*Please login as the user \\"ubuntu\\".*ssh-rsa/ssh-rsa/' "$AUTHORIZED_KEYS"
 
       - name: Install required dependencies
         run: |
