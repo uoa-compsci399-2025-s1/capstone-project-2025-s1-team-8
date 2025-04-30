@@ -18,6 +18,7 @@ interface InputProps {
   startIcon?: ReactNode
   endIcon?: ReactNode
   required?: boolean
+  value?: string
 }
 
 const Input: FC<InputProps> = ({
@@ -36,6 +37,7 @@ const Input: FC<InputProps> = ({
   startIcon,
   endIcon,
   required = false,
+  value,
 }) => {
   const [showPassword, setShowPassword] = useState(false)
   const isPasswordType = type === 'password'
@@ -60,6 +62,7 @@ const Input: FC<InputProps> = ({
           step={step}
           className={inputClasses}
           required={required}
+          value={value}
         />
         {isPasswordType ? (
           <button
