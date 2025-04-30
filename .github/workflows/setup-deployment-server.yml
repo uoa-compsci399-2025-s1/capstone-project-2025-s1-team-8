@@ -44,7 +44,7 @@ jobs:
       - name: Install required dependencies
         run: |
           echo "Connecting via SSH..."
-          ssh -i ../private.key ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} <<'EOT'
+          ssh -i ../private.key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} <<'EOT'
 
           echo "Updating package list"
           sudo apt-get update
