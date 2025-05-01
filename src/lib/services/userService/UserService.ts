@@ -13,10 +13,10 @@ const UserService = {
     error?: string
     details?: typeToFlattenedError<typeof LoginRequestBodySchema>
   }> {
-    const url = buildNextRequestURL('/api/auth/login', options)
+    const url = buildNextRequestURL('/api/auth/login', {})
     const response = await LoginPost(await buildNextRequest(url, { method: 'POST', body: options }))
-    const { message, status, error, details } = await response.json()
-    return { message, status, error, details }
+    const { message, error, details } = await response.json()
+    return { message, status: response.status, error, details }
   },
 
   register: async function (options: {
