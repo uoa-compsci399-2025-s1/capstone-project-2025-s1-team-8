@@ -28,6 +28,6 @@ export const semesterCreateMock2: CreateSemesterData = {
   name: 'Semester 3 2025',
   description: 'Description of the semester',
   deadline: new Date().toISOString(),
-  startDate: new Date().toISOString(),
-  endDate: new Date().toISOString(),
+  startDate: new Date('2025-03-01T00:00:00.000Z').toISOString(),
+  endDate: new Date('2025-07-01T00:00:00.000Z').toISOString(),
 }

@@ -76,4 +76,10 @@ describe('Semester service tests', () => {
   it('not found - find user with nonexistent id', async () => {
     await expect(semesterService.getSemester('nonexistent_id')).rejects.toThrow('Not Found')
   })
+
+  it('return current semester', async () => {
+    await semesterService.createSemester(semesterCreateMock2)
+    const semester = await semesterService.getCurrentSemester()
+    expect(semester).toBeDefined()
+  })
 })

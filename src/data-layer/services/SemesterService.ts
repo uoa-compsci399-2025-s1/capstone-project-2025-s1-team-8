@@ -77,4 +77,27 @@ export default class SemesterService {
       id: semesterID,
     })
   }
+
+  public async getCurrentSemester(): Promise<Semester> {
+    const currentDate = new Date().toISOString()
+    return (
+      await payload.find({
+        collection: 'semester',
+        where: {
+          and: [
+            {
+              startDate: {
+                less_than_equal: currentDate,
+              },
+            },
+            {
+              endDate: {
+                greater_than_equal: currentDate,
+              },
+            },
+          ],
+        },
+      })
+    ).docs[0]
+  }
 }
