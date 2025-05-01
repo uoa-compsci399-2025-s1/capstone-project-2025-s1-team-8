@@ -43,6 +43,7 @@ const SignIn = () => {
             errorMessage={errorMessage}
             // value={email}
             // onChange={(e) => setEmail(e.target.value)}
+            required={true}
           />
           <Input
             name="password"
@@ -54,6 +55,7 @@ const SignIn = () => {
             // ref={passwordInputRef}
             error={errorState}
             errorMessage={errorMessage}
+            required={true}
           />
           <Button size="md" variant="dark" type="submit">
             <p className="text-xs">Login</p>
