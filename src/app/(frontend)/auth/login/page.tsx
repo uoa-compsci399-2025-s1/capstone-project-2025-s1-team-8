@@ -23,11 +23,13 @@ export default function SignIn() {
             startIcon={<MdLock className="text-muted-blue h-full" />}
           />
           <Button size="md" variant="dark">
-            <p className="text-xs">Login</p>
+            <Link href="/client">
+              <p className="text-xs">Login</p>
+            </Link>
           </Button>
           <p className="text-steel-blue text-xs text-center">
             {"Don't have an account? Sign up "}
-            <Link href="/auth/signup">
+            <Link href="/auth/register">
               <u>here</u>
             </Link>
           </p>
@@ -43,7 +45,7 @@ export default function SignIn() {
               variant="outline"
               startIcon={<FcGoogle className="h-full" />}
             >
-              <Link href="/" className="text-xs">
+              <Link href="/admin" className="text-xs">
                 Sign In with Google
               </Link>
             </Button>
