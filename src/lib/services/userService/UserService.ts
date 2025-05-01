@@ -13,8 +13,8 @@ const UserService = {
   }> {
     const url = buildNextRequestURL('/api/auth/userService', options)
     const response = await POST(await buildNextRequest(url, { method: 'POST', body: options }))
-    const { message, status, error, details } = await response.json()
-    return { message, status, error, details }
+    const { message, error, details } = await response.json()
+    return { message, status: response.status, error, details }
   },
 }
 

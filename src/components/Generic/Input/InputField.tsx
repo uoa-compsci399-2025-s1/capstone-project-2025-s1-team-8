@@ -1,3 +1,4 @@
+'use client'
 import React, { FC, ReactNode, useState } from 'react'
 import { ExclamationTriangleIcon } from '@heroicons/react/16/solid'
 import { LuEyeOff, LuEye } from 'react-icons/lu'
