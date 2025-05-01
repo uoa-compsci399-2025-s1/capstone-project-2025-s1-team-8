@@ -13,15 +13,11 @@ export const UpdateProjectRequestBody = z.object({
   description: z.string().optional(),
   deadline: z
     .string()
-    .refine((val) => !isNaN(Date.parse(val)), {
-      message: 'Invalid date format, should be in ISO 8601 format',
-    })
+    .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
     .optional(),
   timestamp: z
     .string()
-    .refine((val) => !isNaN(Date.parse(val)), {
-      message: 'Invalid date format, should be in ISO 8601 format',
-    })
+    .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
     .optional(),
   clients: z
     .union([
@@ -37,13 +33,9 @@ export const CreateProjectRequestBody = z.object({
   description: z.string(),
   deadline: z
     .string()
-    .refine((val) => !isNaN(Date.parse(val)), {
-      message: 'Invalid date format, should be in ISO 8601 format',
-    })
+    .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
     .optional(),
-  timestamp: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: 'Invalid date format, should be in ISO 8601 format',
-  }),
+  timestamp: z.string().datetime({ message: 'Invalid date format, should be in ISO 8601 format' }),
   clients: z.union([
     z.array(z.string()).nonempty('At least one client is required'),
     z.array(UserSchema).nonempty('At least one client is required'),
