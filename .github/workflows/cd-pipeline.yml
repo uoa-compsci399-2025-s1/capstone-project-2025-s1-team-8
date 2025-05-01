@@ -35,7 +35,7 @@ jobs:
     environment:
       name: staging
       # Note this url will change whenever our IP gets discarded, need to get our domain first.
-      url: http://ec2-3-26-157-177.ap-southeast-2.compute.amazonaws.com:3000
+      url: http://ec2-54-66-22-19.ap-southeast-2.compute.amazonaws.com:3000
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -69,10 +69,10 @@ jobs:
             echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
 
             echo "Stopping old containers"
-            docker compose down
+            docker-compose down
 
             echo "Rebuilding and starting containers"
-            docker compose up --build -d
+            docker-compose up -d --build
 
   deploy-to-production:
     concurrency:
