@@ -35,16 +35,18 @@ jobs:
 
             sudo sed -i 's/^.*command=.*Please login as the user \\"ubuntu\\".*ssh-rsa/ssh-rsa/' "$AUTHORIZED_KEYS"
 
-      # - name: Install required dependencies
-      #   run: |
-      #     echo "Connecting via SSH..."
-      #     ssh -i ../private.key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} <<'EOT'
+      - name: Install required dependencies
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            echo "Updating package list"
+            sudo apt-get update
 
-      #     echo "Updating package list"
-      #     sudo apt-get update
-
-      #     echo "Install docker and docker-compose"
-      #     sudo apt-get install -y docker.io docker-compose
-      #     sudo usermod -aG docker $USER
-      #     newgrp docker
-      #     EOT
+            echo "Install docker and docker-compose"
+            sudo apt-get install -y docker.io docker-compose
+            sudo usermod -aG docker $USER
+            newgrp docker
