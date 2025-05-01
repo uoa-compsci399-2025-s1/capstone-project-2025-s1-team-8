@@ -72,7 +72,7 @@ jobs:
             docker compose down
 
             echo "Rebuilding and starting containers"
-            docker compose up -d --build --progress=plain
+            docker compose up --build --progress=plain
 
   deploy-to-production:
     concurrency:
