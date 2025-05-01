@@ -16,7 +16,6 @@ jobs:
       EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
       EC2_HOST: ${{ secrets.EC2_HOST }}
       EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
-      EC2_DEFAULT_USER: ubuntu
     environment:
       name: ${{github.event.inputs.environment}}
     steps:
@@ -24,7 +23,7 @@ jobs:
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_DEFAULT_USER }}
+          username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
@@ -36,16 +35,16 @@ jobs:
 
             sudo sed -i 's/^.*command=.*Please login as the user \\"ubuntu\\".*ssh-rsa/ssh-rsa/' "$AUTHORIZED_KEYS"
 
-      - name: Install required dependencies
-        run: |
-          echo "Connecting via SSH..."
-          ssh -i ../private.key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} <<'EOT'
+      # - name: Install required dependencies
+      #   run: |
+      #     echo "Connecting via SSH..."
+      #     ssh -i ../private.key ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} <<'EOT'
 
-          echo "Updating package list"
-          sudo apt-get update
+      #     echo "Updating package list"
+      #     sudo apt-get update
 
-          echo "Install docker and docker-compose"
-          sudo apt-get install -y docker.io docker-compose
-          sudo usermod -aG docker $USER
-          newgrp docker
-          EOT
+      #     echo "Install docker and docker-compose"
+      #     sudo apt-get install -y docker.io docker-compose
+      #     sudo usermod -aG docker $USER
+      #     newgrp docker
+      #     EOT
