@@ -7,7 +7,6 @@ import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
 import handleSubmit from './handleSubmit'
 import { useState } from 'react'
-import { error } from 'console'
 
 const SignIn = () => {
   // const [email, setEmail] = useState<string>('')
