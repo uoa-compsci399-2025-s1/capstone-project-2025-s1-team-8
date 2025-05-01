@@ -43,7 +43,7 @@ jobs:
       - name: Upload repo to EC2
         uses: burnett01/rsync-deployments@7.0.2
         with:
-          switches: -avz --delete --exclude '.git' --exclude 'node_modules' --exclude '.next'
+          switches: -avz --delete --exclude '.git' --exclude 'node_modules' --exclude '.next' --exclude '.pnpm-store'
           path: ./
           remote_path: ~/app
           remote_host: ${{ secrets.EC2_HOST }}
@@ -72,7 +72,7 @@ jobs:
             docker compose down
 
             echo "Rebuilding and starting containers"
-            docker compose up --build --progress=plain
+            docker compose up --build
 
   deploy-to-production:
     concurrency:
