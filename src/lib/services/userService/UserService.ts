@@ -11,7 +11,7 @@ const UserService = {
     error?: string
     details?: typeToFlattenedError<typeof LoginRequestBodySchema>
   }> {
-    const url = buildNextRequestURL('/api/auth/userService', options)
+    const url = buildNextRequestURL('/api/auth/login', {})
     const response = await POST(await buildNextRequest(url, { method: 'POST', body: options }))
     const { message, error, details } = await response.json()
     return { message, status: response.status, error, details }

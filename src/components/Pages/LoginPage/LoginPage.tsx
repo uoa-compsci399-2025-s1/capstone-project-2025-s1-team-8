@@ -1,48 +1,38 @@
+'use client'
+
 import Button from '@/components/Generic/Button/Button'
 import Input from '@/components/Generic/Input/InputField'
 import { MdOutlineMail, MdLock } from 'react-icons/md'
 import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
-import UserService from '@/lib/services/userService/UserService'
-import { redirect } from 'next/navigation'
+import handleSubmit from './handleSubmit'
+import { useState } from 'react'
+import { error } from 'console'
 
 const SignIn = () => {
   // const [email, setEmail] = useState<string>('')
   // const [password, setPassword] = useState<string>('')
   //const emailInputRef = useRef<HTMLInputElement>(null)
   //const passwordInputRef = useRef<HTMLInputElement>(null)
+  const [errorState, setErrorState] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
-  const handleSubmit = async (e: FormData) => {
-    'use server'
-    const email = e.get('email') as string
-    const password = e.get('password') as string
-    console.log(email, password)
-    if (!email || !password) return
-    /*const response = await fetch('http://localhost:3000/api/auth/login', {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-      method: 'POST',
-      mode: 'cors',
-    })*/
-
-    const { message, status, error, details } = await UserService.login({ email, password })
-    console.log(message, status, error, details)
-
-    if (status === 200) {
-      console.log('Login successful')
-      redirect('/')
-    } else {
-      console.log(message, error, details)
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    //alert(formData.toString())
+    const res = await handleSubmit(formData);
+    if (res?.error){
+      //alert(res?.error)
+      setErrorMessage(res.error)
+      setErrorState(true)
     }
   }
 
   return (
     <div className="flex flex-col justify-center items-start gap-4">
       <p className="text-xl font-extrabold text-dark-blue pl-2">WELCOME BACK</p>
-      <form action={handleSubmit}>
+      <form onSubmit={onSubmit}>
         <div className="flex flex-col gap-4">
           <Input
             name="email"
@@ -50,6 +40,8 @@ const SignIn = () => {
             // ref={emailInputRef}
             type="email"
             startIcon={<MdOutlineMail className="text-muted-blue h-full" />}
+            error={errorState}
+            errorMessage={errorMessage}
             // value={email}
             // onChange={(e) => setEmail(e.target.value)}
           />
@@ -61,6 +53,8 @@ const SignIn = () => {
             //value={password}
             //onChange={(e) => setPassword(e.target.value)}
             // ref={passwordInputRef}
+            error={errorState}
+            errorMessage={errorMessage}
           />
           <Button size="md" variant="dark" type="submit">
             <p className="text-xs">Login</p>
