@@ -5,8 +5,8 @@ import Input from '@/components/Generic/Input/InputField'
 import { MdOutlineMail, MdLock } from 'react-icons/md'
 import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
-import handleSubmit from './handleSubmit'
-import { useState } from 'react'
+import { handleSubmit, handlePagePermissions } from './handleSubmit'
+import { useEffect, useState } from 'react'
 
 const SignIn = () => {
   // const [email, setEmail] = useState<string>('')
@@ -17,6 +17,14 @@ const SignIn = () => {
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [emailErrorMessage, setEmailErrorMessage] = useState<string>('')
   const [emailErrorState, setEmailErrorState] = useState<boolean>(false)
+
+  useEffect(() => {
+    handlePagePermissions()
+      .then(() => console.log('success!'))
+      .catch((err) => {
+        console.log(err)
+      })
+  })
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
