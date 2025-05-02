@@ -38,14 +38,14 @@ describe('Semester service tests', () => {
     const today = new Date()
     const semester2 = await semesterService.createSemester({
       ...semesterCreateMock,
-      startDate: new Date(today.getFullYear()+1, today.getMonth(), today.getDay()).toISOString(),
-      endDate: new Date(today.getFullYear()+1, today.getMonth(), today.getDay()).toISOString(),
+      startDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString(),
+      endDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString(),
     })
 
     const semester3 = await semesterService.createSemester({
       ...semesterCreateMock,
-      startDate: new Date(today.getFullYear()-1, today.getMonth(), today.getDay()).toISOString(),
-      endDate: new Date(today.getFullYear()+1, today.getMonth(), today.getDay()).toISOString(),
+      startDate: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()).toISOString(),
+      endDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString(),
     })
 
     const current = await semesterService.getAllSemesters(100, 1, SemesterType.Current)
