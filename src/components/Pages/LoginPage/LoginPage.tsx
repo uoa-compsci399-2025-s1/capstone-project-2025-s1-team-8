@@ -5,8 +5,8 @@ import Input from '@/components/Generic/Input/InputField'
 import { MdOutlineMail, MdLock } from 'react-icons/md'
 import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
-import { handleSubmit, handlePagePermissions } from '../../../lib/util/handleSubmit'
-import { useEffect, useState } from 'react'
+import { handleSubmit } from '../../../lib/util/handleSubmit'
+import { useState } from 'react'
 
 const SignIn = () => {
   // const [email, setEmail] = useState<string>('')
