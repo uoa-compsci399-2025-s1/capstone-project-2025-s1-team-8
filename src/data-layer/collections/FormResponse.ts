@@ -7,14 +7,29 @@ export const FormResponse: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
+      admin: {
+        description: 'The name of the project, e.g. Encapsulate',
+      },
     },
     {
       name: 'description',
       type: 'textarea',
       required: true,
+      admin: {
+        description: 'The description of the project, e.g. Best capstone project!',
+      },
     },
     {
-      name: 'clients',
+      name: 'client',
+      type: 'relationship',
+      required: true,
+      relationTo: 'user',
+      admin: {
+        description: 'The client that submitted the form',
+      },
+    },
+    {
+      name: 'otherClients',
       type: 'relationship',
       relationTo: 'user',
       hasMany: true,
@@ -40,6 +55,9 @@ export const FormResponse: CollectionConfig = {
           return `The following users are not clients: ${names}`
         }
         return true
+      },
+      admin: {
+        description: 'The clients that are related to this project.',
       },
     },
     {

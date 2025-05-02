@@ -73,7 +73,6 @@ export const FormSchema = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string(),
-  questions: z.array(z.union([FormQuestionSchema, z.string()])),
   updatedAt: z.string(),
   createdAt: z.string(),
 }) satisfies z.ZodType<Form>
@@ -82,7 +81,8 @@ export const FormResponseSchema = z.object({
   id: z.string(),
   name: z.string(),
   description: z.string(),
-  clients: z.array(z.union([UserSchema, z.string()])),
+  client: UserSchema,
+  otherClients: z.array(z.union([UserSchema, z.string()])),
   questionResponses: z.array(QuestionResponseSchema),
   updatedAt: z.string(),
   createdAt: z.string(),

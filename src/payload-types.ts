@@ -268,9 +268,22 @@ export interface Project {
  */
 export interface FormResponse {
   id: string;
+  /**
+   * The name of the project, e.g. Encapsulate
+   */
   name: string;
+  /**
+   * The description of the project, e.g. Best capstone project!
+   */
   description: string;
-  clients?: (string | User)[] | null;
+  /**
+   * The client that submitted the form
+   */
+  client: string | User;
+  /**
+   * The clients that are related to this project.
+   */
+  otherClients?: (string | User)[] | null;
   questionResponses?:
     | {
         question: string | FormQuestion;
@@ -347,9 +360,14 @@ export interface Semester {
  */
 export interface Form {
   id: string;
+  /**
+   * The form name
+   */
   name: string;
+  /**
+   * The form description
+   */
   description: string;
-  questions?: (string | FormQuestion)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -583,7 +601,8 @@ export interface FormQuestionSelect<T extends boolean = true> {
 export interface FormResponseSelect<T extends boolean = true> {
   name?: T;
   description?: T;
-  clients?: T;
+  client?: T;
+  otherClients?: T;
   questionResponses?:
     | T
     | {
@@ -601,7 +620,6 @@ export interface FormResponseSelect<T extends boolean = true> {
 export interface FormSelect<T extends boolean = true> {
   name?: T;
   description?: T;
-  questions?: T;
   updatedAt?: T;
   createdAt?: T;
 }

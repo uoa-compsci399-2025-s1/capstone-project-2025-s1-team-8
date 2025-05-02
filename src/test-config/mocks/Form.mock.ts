@@ -50,7 +50,8 @@ export const questionResponseMock: QuestionResponse = {
 export const formResponseCreateMock: CreateFormResponseData = {
   name: 'AI girlfriend finder',
   description: 'AI girlfriend finder is a cool project to find your perfect match!',
-  clients: [mockClient1],
+  client: mockClient1,
+  otherClients: [mockClient1],
   questionResponses: [questionResponseMock],
 }
 
@@ -58,7 +59,8 @@ export const formResponseMock: FormResponse = {
   id: '67ff38a56a35e1b6cf43a681',
   name: 'Form Response Mock',
   description: 'Form Response Description Mock',
-  clients: [mockClient1],
+  client: mockClient1,
+  otherClients: [mockClient1],
   questionResponses: [questionResponseMock],
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
@@ -71,5 +73,4 @@ export const formResponseMock: FormResponse = {
 export const formMock: CreateFormData = {
   name: 'Form Mock',
   description: 'Form Description Mock',
-  questions: [formQuestionMock],
 }
