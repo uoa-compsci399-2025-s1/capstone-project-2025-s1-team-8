@@ -1,13 +1,20 @@
-import { ZodError } from 'zod'
+import { z, ZodError } from 'zod'
 import { NotFound } from 'payload'
 import { StatusCodes } from 'http-status-codes'
 import { NextRequest, NextResponse } from 'next/server'
-
 import UserService from '@/data-layer/services/UserService'
 import { UserRole } from '@/types/User'
-import { UpdateUserRequestBody } from '@/types/request-models/UserRequests'
 import { UserCombinedInfo } from '@/types/Collections'
 import { Security } from '@/business-layer/middleware/Security'
+
+export const UpdateUserRequestBody = z.object({
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  role: z.enum(['admin', 'client', 'student']).optional(),
+  email: z.string().optional(),
+  introduction: z.string().optional(),
+  affiliation: z.string().optional(),
+})
 
 class RouteWrapper {
   /**
