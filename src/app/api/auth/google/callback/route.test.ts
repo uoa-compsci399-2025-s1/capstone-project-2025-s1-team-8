@@ -1,5 +1,6 @@
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
 import * as nextHeaders from 'next/headers'
+import { redirect } from 'next/navigation'
 
 import { mockClient1 } from '@/test-config/mocks/User.mock'
 import {
@@ -55,6 +56,10 @@ vi.mock('@/business-layer/services/AuthService', () => {
     },
   }
 })
+
+vi.mock('next/navigation', () => ({
+  redirect: vi.fn(),
+}))
 
 import { GET as callback } from '@/app/api/auth/google/callback/route'
 
@@ -116,10 +121,9 @@ describe('GET /api/auth/google/callback', () => {
     )
     req.cookies.set('state', STATE_MOCK)
 
-    const response = await callback(req)
-    const json = await response.json()
-
-    expect(json.token).toBe(JWT_MOCK)
+    await callback(req)
+    expect(redirect).toHaveBeenCalled()
+    expect(redirect).toHaveBeenCalledWith("/")
   })
 
   it('returns 400 if state does not match', async () => {
