@@ -62,7 +62,7 @@ describe('test /api/admin/users/[id]', async () => {
 
       const json = await res.json()
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json).toEqual({
+      expect(json.data).toEqual({
         ...clientMock,
         introduction: clientAdditionalInfoMock.introduction,
         affiliation: clientAdditionalInfoMock.affiliation,
@@ -83,7 +83,7 @@ describe('test /api/admin/users/[id]', async () => {
 
       const json = await res.json()
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json).toEqual({
+      expect(json.data).toEqual({
         ...newClient,
         introduction: newClientInfo.introduction,
         affiliation: newClientInfo.affiliation,
@@ -150,10 +150,10 @@ describe('test /api/admin/users/[id]', async () => {
         ...clientMock,
         introduction: clientAdditionalInfoCreateMock.introduction,
         affiliation: clientAdditionalInfoCreateMock.affiliation,
-        updatedAt: json.updatedAt,
+        updatedAt: json.data.updatedAt,
       }
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json).toEqual(combinedClientInfo)
+      expect(json.data).toEqual(combinedClientInfo)
     })
 
     it('update client user by Id with existing introduction and affiliation', async () => {
@@ -185,10 +185,10 @@ describe('test /api/admin/users/[id]', async () => {
         ...clientMock,
         introduction: 'new intro',
         affiliation: 'new affiliation',
-        updatedAt: json.updatedAt,
+        updatedAt: json.data.updatedAt,
       }
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json).toEqual(combinedClientInfo)
+      expect(json.data).toEqual(combinedClientInfo)
     })
 
     it('update client user by Id with no AdditionalClientInfo', async () => {
@@ -207,10 +207,10 @@ describe('test /api/admin/users/[id]', async () => {
       clientMock.firstName = 'Sheenaaaaaa'
       const combinedClientInfo: UserCombinedInfo = {
         ...clientMock,
-        updatedAt: json.updatedAt,
+        updatedAt: json.data.updatedAt,
       }
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json).toEqual(combinedClientInfo)
+      expect(json.data).toEqual(combinedClientInfo)
     })
 
     it('update name, intro, affiliation of client user by Id with no AdditionalClientInfo', async () => {
@@ -235,10 +235,10 @@ describe('test /api/admin/users/[id]', async () => {
         ...clientMock,
         introduction: 'introooo',
         affiliation: 'afil',
-        updatedAt: json.updatedAt,
+        updatedAt: json.data.updatedAt,
       }
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json).toEqual(combinedClientInfo)
+      expect(json.data).toEqual(combinedClientInfo)
     })
 
     it('update student user by Id', async () => {
@@ -256,10 +256,10 @@ describe('test /api/admin/users/[id]', async () => {
       })
       const json = await res.json()
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json).toEqual({
+      expect(json.data).toEqual({
         ...newStudent,
         firstName: 'Sheena',
-        updatedAt: json.updatedAt,
+        updatedAt: json.data.updatedAt,
       })
     })
 
