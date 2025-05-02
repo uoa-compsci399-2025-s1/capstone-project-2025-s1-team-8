@@ -55,6 +55,10 @@ export const SemesterSchema = z.object({
 export const FormQuestionSchema = z.object({
   id: z.string(),
   question: z.string(),
+  description: z.string(),
+  required: z.boolean(),
+  fieldName: z.string(),
+  order: z.number(),
   updatedAt: z.string(),
   createdAt: z.string(),
 }) satisfies z.ZodType<FormQuestion>

@@ -287,7 +287,26 @@ export interface FormResponse {
  */
 export interface FormQuestion {
   id: string;
+  /**
+   * The question title, e.g. Whats your name?
+   */
   question: string;
+  /**
+   * The description of this question provides more information about how the question can be answered! E.g. Enter a number
+   */
+  description: string;
+  /**
+   * An identifiable field name key, e.g. final_presentation_confirm
+   */
+  fieldName: string;
+  /**
+   * The question ordering ascending order, e.g. 0
+   */
+  order: number;
+  /**
+   * If the question is required or not, e.g. true
+   */
+  required: boolean;
   updatedAt: string;
   createdAt: string;
 }
@@ -550,6 +569,10 @@ export interface SemesterSelect<T extends boolean = true> {
  */
 export interface FormQuestionSelect<T extends boolean = true> {
   question?: T;
+  description?: T;
+  fieldName?: T;
+  order?: T;
+  required?: T;
   updatedAt?: T;
   createdAt?: T;
 }
