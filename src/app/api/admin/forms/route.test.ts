@@ -44,8 +44,8 @@ describe('tests /api/admin/forms', async () => {
       )
       const res = await PATCH(mockedReq)
       const json = await res.json()
-      expect(json.name).toEqual('updated name')
-      expect(json.description).toEqual('updated description')
+      expect(json.data.name).toEqual('updated name')
+      expect(json.data.description).toEqual('updated description')
     })
 
     it('return error for invalid body', async () => {
