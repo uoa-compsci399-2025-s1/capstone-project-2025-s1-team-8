@@ -103,5 +103,5 @@ export const GET = async (req: NextRequest) => {
     maxAge: 60 * 60,
   })
 
-  return redirect("/")
+  return redirect('/')
 }

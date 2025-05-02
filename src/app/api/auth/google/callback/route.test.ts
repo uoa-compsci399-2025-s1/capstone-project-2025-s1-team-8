@@ -123,7 +123,7 @@ describe('GET /api/auth/google/callback', () => {
 
     await callback(req)
     expect(redirect).toHaveBeenCalled()
-    expect(redirect).toHaveBeenCalledWith("/")
+    expect(redirect).toHaveBeenCalledWith('/')
   })
 
   it('returns 400 if state does not match', async () => {
