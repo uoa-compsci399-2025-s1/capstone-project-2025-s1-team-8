@@ -7,10 +7,8 @@ import { GET as GetUserProjects } from '@/app/api/admin/users/[id]/projects/rout
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { typeToFlattenedError, z } from 'zod'
-import { UpdateUserRequestBody } from '@/types/request-models/UserRequests'
+import { UpdateUserRequestBody } from '@/app/api/admin/users/[id]/route'
 import { ClientCombinedInfo } from '@/types/Payload'
-
-type UpdateUserRequestBodyType = z.infer<typeof UpdateUserRequestBody>
 
 const ClientService = {
   getAllUsers: async function (): Promise<{ data: typeof ClientCombinedInfo[]; error?: string }> {
@@ -35,11 +33,11 @@ const ClientService = {
 
   updateUser: async function (
     userId: string,
-    user: UpdateUserRequestBodyType,
+    user: UpdateUserRequestBody,
   ): Promise<{
     data: typeof ClientCombinedInfo
     error?: string
-    details?: typeToFlattenedError<typeof UpdateUserRequestBody>
+    details?: typeToFlattenedError<UpdateUserRequestBody>
   }> {
     'use server'
     const url = `/api/admin/users/${userId}`
