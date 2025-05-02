@@ -42,5 +42,5 @@ export const handlePagePermissions = async () => {
       redirect('/client')
     }
   }
-  return { error: 'Unauthorized' }
+  return
 }

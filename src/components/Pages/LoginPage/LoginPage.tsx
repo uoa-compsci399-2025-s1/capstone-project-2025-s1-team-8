@@ -18,13 +18,13 @@ const SignIn = () => {
   const [emailErrorMessage, setEmailErrorMessage] = useState<string>('')
   const [emailErrorState, setEmailErrorState] = useState<boolean>(false)
 
-  useEffect(() => {
+  /*useEffect(() => {
     handlePagePermissions()
       .then(() => console.log('success!'))
       .catch((err) => {
         console.log(err)
       })
-  })
+  })*/
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -92,16 +92,16 @@ const SignIn = () => {
               <span className="mx-4 text-steel-blue text-xs">OR</span>
               <div className="border-t border-steel-blue flex-grow"></div>
             </div>
-            <Button
-              className="bg-white w-full"
-              size="md"
-              variant="outline"
-              startIcon={<FcGoogle className="h-full" />}
-            >
-              <Link href="/" className="text-xs">
-                Sign In with Google
-              </Link>
-            </Button>
+            <Link href="/">
+              <Button
+                className="bg-white w-full"
+                size="md"
+                variant="outline"
+                startIcon={<FcGoogle className="h-full" />}
+              >
+                <p className="text-xs">Sign In with Google</p>
+              </Button>
+            </Link>
           </div>
         </div>
       </form>
