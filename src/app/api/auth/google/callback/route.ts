@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
+import { redirect } from 'next/navigation'
 
 import { googleAuthScopes, oauth2Client } from '@/business-layer/security/google'
-
 import { UserRole } from '@/types/User'
 import UserService from '@/data-layer/services/UserService'
 import AuthService from '@/data-layer/services/AuthService'
@@ -95,7 +95,6 @@ export const GET = async (req: NextRequest) => {
 
   const businessAuthService = new BusinessAuthService()
   const token = businessAuthService.generateJWT(user, tokens.access_token)
-  const response = NextResponse.json({ token })
 
   cookieStore.set(AUTH_COOKIE_NAME, token, {
     httpOnly: true,
@@ -104,5 +103,5 @@ export const GET = async (req: NextRequest) => {
     maxAge: 60 * 60,
   })
 
-  return response
+  return redirect('/')
 }
