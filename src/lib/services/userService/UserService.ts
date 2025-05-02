@@ -21,13 +21,13 @@ const UserService = {
     return { message, status: response.status, error, details }
   },
 
-  getCurrentUserInfo: async function (): Promise<{user: UserCombinedInfo; status: StatusCodes}> {
+  getCurrentUserInfo: async function (): Promise<{ user: UserCombinedInfo; status: StatusCodes }> {
     'use server'
     const url = buildNextRequestURL('/api/users/me', {})
     const response = await GetUserDetails(await buildNextRequest(url, { method: 'GET' }))
     const { data } = await response.json()
-    
-    return {user: data, status: response.status}
+
+    return { user: data, status: response.status }
   },
 
   register: async function (options: {
