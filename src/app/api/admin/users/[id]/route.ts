@@ -39,9 +39,9 @@ class RouteWrapper {
       const user = await userService.getUser(id)
       if (user.role === UserRole.Client) {
         const { introduction, affiliation } = { ...(await userService.getClientAdditionalInfo(id)) }
-        return NextResponse.json({ ...user, introduction, affiliation })
+        return NextResponse.json({ data: { ...user, introduction, affiliation } })
       }
-      return NextResponse.json(user)
+      return NextResponse.json({ data: user })
     } catch (error) {
       if (error instanceof NotFound) {
         return NextResponse.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })
@@ -92,9 +92,11 @@ class RouteWrapper {
           })
         }
         const { introduction, affiliation } = { ...clientInfo }
-        return NextResponse.json({ ...updatedUser, introduction, affiliation } as UserCombinedInfo)
+        return NextResponse.json({
+          data: { ...updatedUser, introduction, affiliation } as UserCombinedInfo,
+        })
       }
-      return NextResponse.json(updatedUser as UserCombinedInfo)
+      return NextResponse.json({ data: updatedUser as UserCombinedInfo })
     } catch (error) {
       if (error instanceof NotFound) {
         return NextResponse.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })
