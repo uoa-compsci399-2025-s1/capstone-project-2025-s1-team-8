@@ -89,7 +89,7 @@ class RouteWrapper {
           data: { ...updatedUser, introduction, affiliation } as UserCombinedInfo,
         })
       }
-      return NextResponse.json(updatedUser as UserCombinedInfo)
+      return NextResponse.json({ data: updatedUser as UserCombinedInfo })
     } catch (error) {
       if (error instanceof NotFound) {
         return NextResponse.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })

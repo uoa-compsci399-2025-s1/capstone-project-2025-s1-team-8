@@ -256,10 +256,10 @@ describe('test /api/admin/users/[id]', async () => {
       })
       const json = await res.json()
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json).toEqual({
+      expect(json.data).toEqual({
         ...newStudent,
         firstName: 'Sheena',
-        updatedAt: json.updatedAt,
+        updatedAt: json.data.updatedAt,
       })
     })
 
