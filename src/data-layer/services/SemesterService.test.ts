@@ -1,6 +1,7 @@
 import { testPayloadObject } from '@/test-config/utils'
 import SemesterService from './SemesterService'
 import { semesterCreateMock, semesterCreateMock2 } from '@/test-config/mocks/Semester.mock'
+import { SemesterType } from '@/types/Semester'
 
 describe('Semester service tests', () => {
   const semesterService = new SemesterService()
@@ -26,6 +27,35 @@ describe('Semester service tests', () => {
     const fetchedSemester = await semesterService.getAllSemesters()
     expect(fetchedSemester.docs.length).toEqual(2)
     expect(fetchedSemester.docs).toEqual(expect.arrayContaining([semester1, semester2]))
+  })
+
+  it('should get all semesters with timeframe filtering', async () => {
+    const semester1 = await semesterService.createSemester({
+      ...semesterCreateMock,
+      startDate: new Date('2023-01-01').toISOString(),
+      endDate: new Date('2023-06-30').toISOString(),
+    })
+    const today = new Date()
+    const semester2 = await semesterService.createSemester({
+      ...semesterCreateMock,
+      startDate: new Date(today.getFullYear()+1, today.getMonth(), today.getDay()).toISOString(),
+      endDate: new Date(today.getFullYear()+1, today.getMonth(), today.getDay()).toISOString(),
+    })
+
+    const semester3 = await semesterService.createSemester({
+      ...semesterCreateMock,
+      startDate: new Date(today.getFullYear()-1, today.getMonth(), today.getDay()).toISOString(),
+      endDate: new Date(today.getFullYear()+1, today.getMonth(), today.getDay()).toISOString(),
+    })
+
+    const current = await semesterService.getAllSemesters(100, 1, SemesterType.Current)
+    expect(current.docs).toStrictEqual([semester3])
+
+    const upcoming = await semesterService.getAllSemesters(100, 1, SemesterType.Upcoming)
+    expect(upcoming.docs).toStrictEqual([semester2])
+
+    const past = await semesterService.getAllSemesters(100, 1, SemesterType.Past)
+    expect(past.docs).toStrictEqual([semester1])
   })
 
   it('should return undefined if semester does not exist', async () => {
