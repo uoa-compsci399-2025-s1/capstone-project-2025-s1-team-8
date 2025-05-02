@@ -1,9 +1,9 @@
-import SignIn from "@/components/Pages/LoginPage/LoginPage"
+import SignIn from '@/components/Pages/LoginPage/LoginPage'
 
 export default function LogIn() {
   return (
     <div>
-      <SignIn/>
+      <SignIn />
     </div>
   )
 }
