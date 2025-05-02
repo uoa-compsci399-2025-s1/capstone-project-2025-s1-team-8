@@ -5,7 +5,7 @@ import Input from '@/components/Generic/Input/InputField'
 import { MdOutlineMail, MdLock } from 'react-icons/md'
 import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
-import { handleSubmit, handlePagePermissions } from './handleSubmit'
+import { handleSubmit, handlePagePermissions } from '../../../lib/util/handleSubmit'
 import { useEffect, useState } from 'react'
 
 const SignIn = () => {
