@@ -21,7 +21,7 @@ class RouteWrapper {
     try {
       const body = UpdateFormRequestBody.parse(await req.json())
       const updatedForm = await formService.updateForm(body as UpdateFormData)
-      return NextResponse.json(updatedForm)
+      return NextResponse.json({ data: updatedForm })
     } catch (error) {
       if (error instanceof NotFound) {
         return NextResponse.json({ error: 'Form not found' }, { status: StatusCodes.NOT_FOUND })
