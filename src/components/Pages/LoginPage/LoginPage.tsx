@@ -15,16 +15,28 @@ const SignIn = () => {
   //const passwordInputRef = useRef<HTMLInputElement>(null)
   const [errorState, setErrorState] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [emailErrorMessage, setEmailErrorMessage] = useState<string>('')
+  const [emailErrorState, setEmailErrorState] = useState<boolean>(false)
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setErrorState(false)
+    setErrorMessage('')
+    setEmailErrorMessage('')
+    setEmailErrorState(false)
+
     const formData = new FormData(e.currentTarget)
     //alert(formData.toString())
-    const res = await handleSubmit(formData);
-    if (res?.error){
+    const res = await handleSubmit(formData)
+    if (res?.error) {
       //alert(res?.error)
-      setErrorMessage(res.error)
-      setErrorState(true)
+      if (res.error === 'Invalid email address') {
+        setEmailErrorMessage(res.error)
+        setEmailErrorState(true)
+      } else {
+        setErrorMessage(res.error)
+        setErrorState(true)
+      }
     }
   }
 
@@ -39,8 +51,8 @@ const SignIn = () => {
             // ref={emailInputRef}
             type="email"
             startIcon={<MdOutlineMail className="text-muted-blue h-full" />}
-            error={errorState}
-            errorMessage={errorMessage}
+            error={errorState || emailErrorState}
+            errorMessage={emailErrorMessage}
             // value={email}
             // onChange={(e) => setEmail(e.target.value)}
             required={true}
