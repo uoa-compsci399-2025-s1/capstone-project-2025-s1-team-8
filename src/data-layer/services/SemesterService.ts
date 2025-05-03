@@ -41,6 +41,8 @@ export default class SemesterService {
     timeframe: SemesterType = SemesterType.Default,
   ): Promise<PaginatedDocs<Semester>> {
     const currentDate = new Date().toISOString()
+    const nextSemester = new Date()
+    nextSemester.setMonth(nextSemester.getMonth() + 6)
     let filter: Where = {}
     switch (timeframe) {
       case SemesterType.Current:
@@ -64,6 +66,14 @@ export default class SemesterService {
           startDate: {
             greater_than: currentDate,
           },
+        }
+        break
+      case SemesterType.NextSemester:
+        filter = {
+          startDate: {
+            greater_than: currentDate,
+            less_than: nextSemester.toISOString()
+          }
         }
         break
       case SemesterType.Past:
