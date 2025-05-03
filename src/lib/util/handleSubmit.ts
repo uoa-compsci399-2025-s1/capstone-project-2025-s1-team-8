@@ -52,12 +52,21 @@ export const handleSubmit = async (
   }
 }
 
+/**
+ * Checks if user is logged in
+ * @returns a boolean indicating whether the user is logged in or not.
+ */
 export const isLoggedIn = async (): Promise<boolean> => {
   const res = await UserService.getCurrentUserInfo()
   return res.status === 200
 }
 
-export const handleClick = async () => {
+/**
+ * Handles the click event for login/logout button
+ * Redirects to the appropriate page based on the login status.
+ * @returns void
+ */
+export const handleClick = async (): Promise<void> => {
   const status = await isLoggedIn()
   if (status) {
     await UserService.logout()
