@@ -54,15 +54,15 @@ export const handleSubmit = async (
 
 export const isLoggedIn = async (): Promise<boolean> => {
   const res = await UserService.getCurrentUserInfo()
-  return res.status === 200;
+  return res.status === 200
 }
 
 export const handleClick = async () => {
-    const status = await isLoggedIn();
-    if (status){
-      await UserService.logout()
-      redirect('/')
-    } else {
-      redirect('/auth/login')
-    }
+  const status = await isLoggedIn()
+  if (status) {
+    await UserService.logout()
+    redirect('/')
+  } else {
+    redirect('/auth/login')
   }
+}

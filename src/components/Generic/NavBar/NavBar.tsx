@@ -24,7 +24,6 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
   const toggleMenu = () => setIsOpen(!isOpen)
 
   useEffect(() => {
-
     isLoggedIn().then((status) => {
       setLoggedIn(status)
     })
@@ -65,7 +64,7 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
             <span className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/' ? 'scale-x-100' : ''}`} />
           </div> */}
           <div className="relative group p-2">
-            <button onClick = {handleClick} className="nav-link-text font-bold">
+            <button onClick={handleClick} className="nav-link-text font-bold">
               {loggedIn ? 'Logout' : 'Login'}
             </button>
             <span
@@ -124,7 +123,7 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
         </div>
         <div className="p-[5%]">
           <button onClick={handleClick} className="nav-link-text font-bold">
-          {loggedIn ? 'Logout' : 'Login'}
+            {loggedIn ? 'Logout' : 'Login'}
           </button>
         </div>
       </div>
