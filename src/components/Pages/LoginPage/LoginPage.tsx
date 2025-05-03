@@ -5,7 +5,7 @@ import Input from '@/components/Generic/Input/InputField'
 import { MdOutlineMail, MdLock } from 'react-icons/md'
 import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
-import { handleSubmit } from '@/lib/util/handleSubmit'
+import { handleLogin } from '@/lib/util/util'
 import { useState } from 'react'
 
 const SignIn = () => {
@@ -22,7 +22,7 @@ const SignIn = () => {
     setEmailErrorState(false)
 
     const formData = new FormData(e.currentTarget)
-    const res = await handleSubmit(formData)
+    const res = await handleLogin(formData)
 
     if (res?.error) {
       if (res.error === 'Invalid email address') {

@@ -20,7 +20,7 @@ function isValidEmail(email: string): boolean {
  * @param formData - The form data containing email and password.
  * @returns an object containing error messages or redirects to the appropriate page.
  */
-export const handleSubmit = async (
+export const handleLogin = async (
   formData: FormData,
 ): Promise<void | {
   error?: string
