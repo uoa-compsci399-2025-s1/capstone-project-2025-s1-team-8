@@ -69,7 +69,7 @@ export default class SemesterService {
           },
         }
         break
-      case SemesterType.NextSemester:
+      case SemesterType.Next:
         filter = {
           startDate: {
             greater_than: currentDate,

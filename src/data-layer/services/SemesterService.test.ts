@@ -86,7 +86,7 @@ describe('Semester service tests', () => {
       endDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString(),
     })
 
-    const nextSem = await semesterService.getAllSemesters(100, 1, SemesterType.NextSemester)
+    const nextSem = await semesterService.getAllSemesters(100, 1, SemesterType.Next)
     expect(nextSem.docs).toStrictEqual([nextSemester])
   })
 
