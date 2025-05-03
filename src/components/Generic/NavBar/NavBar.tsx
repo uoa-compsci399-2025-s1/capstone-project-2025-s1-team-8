@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { isLoggedIn } from '@/lib/util/handleSubmit'
-import { handleClick } from '@/lib/util/handleSubmit'
+import { isLoggedIn } from '@/lib/util/util'
+import { handleLoginButtonClick } from '@/lib/util/util'
 
 interface NavLink {
   href: string
@@ -64,7 +64,7 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
             <span className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/' ? 'scale-x-100' : ''}`} />
           </div> */}
           <div className="relative group p-2">
-            <button onClick={handleClick} className="nav-link-text font-bold">
+            <button onClick={handleLoginButtonClick} className="nav-link-text font-bold">
               {loggedIn ? 'Logout' : 'Login'}
             </button>
             <span
@@ -122,7 +122,7 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
           </Link>
         </div>
         <div className="p-[5%]">
-          <button onClick={handleClick} className="nav-link-text font-bold">
+          <button onClick={handleLoginButtonClick} className="nav-link-text font-bold">
             {loggedIn ? 'Logout' : 'Login'}
           </button>
         </div>

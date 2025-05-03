@@ -20,7 +20,7 @@ function isValidEmail(email: string): boolean {
  * @param formData - The form data containing email and password.
  * @returns an object containing error messages or redirects to the appropriate page.
  */
-export const handleSubmit = async (
+export const handleLogin = async (
   formData: FormData,
 ): Promise<void | {
   error?: string
@@ -66,7 +66,7 @@ export const isLoggedIn = async (): Promise<boolean> => {
  * Redirects to the appropriate page based on the login status.
  * @returns void
  */
-export const handleClick = async (): Promise<void> => {
+export const handleLoginButtonClick = async (): Promise<void> => {
   const status = await isLoggedIn()
   if (status) {
     await UserService.logout()
