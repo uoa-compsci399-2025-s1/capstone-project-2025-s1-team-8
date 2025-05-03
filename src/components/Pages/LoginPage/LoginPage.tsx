@@ -80,7 +80,7 @@ const SignIn = () => {
               <span className="mx-4 text-steel-blue text-xs">OR</span>
               <div className="border-t border-steel-blue flex-grow"></div>
             </div>
-            <Link href="/">
+            <Link href="/api/auth/google">
               <Button
                 className="bg-white w-full"
                 size="md"
