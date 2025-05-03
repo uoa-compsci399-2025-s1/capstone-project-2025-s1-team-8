@@ -64,11 +64,10 @@ const ClientService = {
   },
 
   getProjectsByUserId: async function (
-    userId: string,
-    options: {},
+    userId: string
   ): Promise<{ data: Project[]; error?: string }> {
     'use server'
-    const url = buildNextRequestURL(`/api/admin/users/${userId}/projects`, options)
+    const url = buildNextRequestURL(`/api/admin/users/${userId}/projects`, {})
     const response = await GetUserProjects(await buildNextRequest(url, { method: 'GET' }), {
       params: Promise.resolve({ id: userId }),
     })
