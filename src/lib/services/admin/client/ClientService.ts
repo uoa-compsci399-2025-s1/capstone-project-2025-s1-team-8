@@ -1,4 +1,4 @@
-import { ClientAdditionalInfo, Project } from '@/payload-types'
+import { Project } from '@/payload-types'
 import { GET as GetUsers } from '@/app/api/admin/users/route'
 import { GET as GetUserById } from '@/app/api/admin/users/[id]/route'
 import { PATCH as UpdateUser } from '@/app/api/admin/users/[id]/route'
@@ -6,12 +6,12 @@ import { DELETE as DeleteUser } from '@/app/api/admin/users/[id]/route'
 import { GET as GetUserProjects } from '@/app/api/admin/users/[id]/projects/route'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
 import { buildNextRequest } from '@/utils/buildNextRequest'
-import { typeToFlattenedError, z } from 'zod'
+import { typeToFlattenedError } from 'zod'
 import { UpdateUserRequestBody } from '@/app/api/admin/users/[id]/route'
 import { ClientCombinedInfo } from '@/types/Payload'
 
 const ClientService = {
-  getAllUsers: async function (): Promise<{ data: typeof ClientCombinedInfo[]; error?: string }> {
+  getAllUsers: async function (): Promise<{ data: (typeof ClientCombinedInfo)[]; error?: string }> {
     'use server'
     const url = buildNextRequestURL('/api/admin/users', {})
     const response = await GetUsers(await buildNextRequest(url, { method: 'GET' }))
@@ -20,7 +20,7 @@ const ClientService = {
   },
 
   getUserById: async function (
-    userId: string
+    userId: string,
   ): Promise<{ data: typeof ClientCombinedInfo; error?: string }> {
     'use server'
     const url = buildNextRequestURL(`/api/admin/users/${userId}`, {})
@@ -64,7 +64,7 @@ const ClientService = {
   },
 
   getProjectsByUserId: async function (
-    userId: string
+    userId: string,
   ): Promise<{ data: Project[]; error?: string }> {
     'use server'
     const url = buildNextRequestURL(`/api/admin/users/${userId}/projects`, {})
