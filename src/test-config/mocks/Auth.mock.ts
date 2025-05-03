@@ -68,7 +68,7 @@ export const CLIENT_JWT_MOCK = 'client_JWT_token'
 export const STUDENT_JWT_MOCK = 'student_JWT_token'
 
 export const ADMIN_USER_UID = '000000000000000000000001'
-export const CLIENT_USER_UID = '68146660c6755a5f7a8d2abb'
+export const CLIENT_USER_UID = '000000000000000000000002'
 export const STUDENT_USER_UID = '000000000000000000000003'
 
 export const adminMock: User = {

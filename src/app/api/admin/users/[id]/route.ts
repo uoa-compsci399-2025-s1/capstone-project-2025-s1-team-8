@@ -57,7 +57,7 @@ class RouteWrapper {
    * Updates a single user by ID if the request is made by an admin
    *
    * @param param0 The ID of the user to update
-   * @param req
+   * @param req The next request containing the updated user information
    * @returns The updated user
    */
   @Security('jwt', ['admin'])

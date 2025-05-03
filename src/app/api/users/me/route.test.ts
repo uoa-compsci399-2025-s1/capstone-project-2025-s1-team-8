@@ -59,7 +59,6 @@ describe('tests /api/users/me', async () => {
     it("update client user's firstName", async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
       const createdClientMock = await userService.createUser(clientMock)
-      const id = createdClientMock.id
       await userService.createClientAdditionalInfo({
         ...clientAdditionalInfoCreateMock,
         client: createdClientMock,
@@ -69,7 +68,7 @@ describe('tests /api/users/me', async () => {
         firstName: changedName,
       })
       const res = await PATCH(mockedReq, {
-        params: paramsToPromise({ id }),
+        params: paramsToPromise({ id: createdClientMock.id }),
       })
       const json = await res.json()
       clientMock.firstName = changedName
@@ -77,17 +76,16 @@ describe('tests /api/users/me', async () => {
         ...clientMock,
         introduction: clientAdditionalInfoCreateMock.introduction,
         affiliation: clientAdditionalInfoCreateMock.affiliation,
-        updatedAt: json.updatedAt,
+        updatedAt: json.data.updatedAt,
         id: createdClientMock.id,
       }
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json).toEqual(combinedClientInfo)
+      expect(json.data).toEqual(combinedClientInfo)
     })
 
     it('update name, intro, affiliation of client user with no AdditionalClientInfo', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
       const createdClientMock = await userService.createUser(clientMock)
-      const id = createdClientMock.id
       await userService.createClientAdditionalInfo({
         ...clientAdditionalInfoCreateMock,
         client: createdClientMock,
@@ -99,41 +97,40 @@ describe('tests /api/users/me', async () => {
         affiliation: 'afil',
       })
       const res = await PATCH(mockedReq, {
-        params: paramsToPromise({ id }),
+        params: paramsToPromise({ id: createdClientMock.id }),
       })
       const json = await res.json()
-      clientMock.firstName = changedName
       const combinedClientInfo: UserCombinedInfo = {
         ...clientMock,
+        firstName: changedName,
         introduction: 'introooo',
         affiliation: 'afil',
-        updatedAt: json.updatedAt,
+        updatedAt: json.data.updatedAt,
         id: createdClientMock.id,
       }
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json).toEqual(combinedClientInfo)
+      expect(json.data).toEqual(combinedClientInfo)
     })
 
     it('update student user', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
       const createdStudentMock = await userService.createUser(studentMock)
-      const id = createdStudentMock.id
       const changedName = 'CHANGED Sheena Lin'
       const mockedReq = createMockNextPatchRequest('http://localhost:3000/api/users/me/', {
         firstName: changedName,
       })
       const res = await PATCH(mockedReq, {
-        params: paramsToPromise({ id }),
+        params: paramsToPromise({ id: createdStudentMock.id }),
       })
       const json = await res.json()
-      studentMock.firstName = changedName
       const combinedUserInfo: UserCombinedInfo = {
         ...studentMock,
-        updatedAt: json.updatedAt,
+        firstName: changedName,
+        updatedAt: json.data.updatedAt,
         id: createdStudentMock.id,
       }
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json).toEqual(combinedUserInfo)
+      expect(json.data).toEqual(combinedUserInfo)
     })
 
     it('update admin user', async () => {
@@ -148,14 +145,14 @@ describe('tests /api/users/me', async () => {
         params: paramsToPromise({ id }),
       })
       const json = await res.json()
-      adminMock.firstName = changedName
       const combinedUserInfo: UserCombinedInfo = {
         ...adminMock,
-        updatedAt: json.updatedAt,
+        firstName: changedName,
+        updatedAt: json.data.updatedAt,
         id: createdAdminMock.id,
       }
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json).toEqual(combinedUserInfo)
+      expect(json.data).toEqual(combinedUserInfo)
     })
 
     it('Bad request when changing email', async () => {

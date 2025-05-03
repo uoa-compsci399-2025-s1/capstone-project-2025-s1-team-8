@@ -37,7 +37,7 @@ class RouteWrapper {
   /**
    * PATCH request to get a user's own information
    *
-   * @param req The next request containing the user information
+   * @param req The next request containing the updated user information
    * @param params the user's ID
    * @returns The user's new information
    */
@@ -73,9 +73,11 @@ class RouteWrapper {
           })
         }
         const { introduction, affiliation } = { ...clientInfo }
-        return NextResponse.json({ ...updatedUser, introduction, affiliation } as UserCombinedInfo)
+        return NextResponse.json({
+          data: { ...updatedUser, introduction, affiliation } as UserCombinedInfo,
+        })
       }
-      return NextResponse.json(updatedUser as UserCombinedInfo)
+      return NextResponse.json({ data: updatedUser as UserCombinedInfo })
     } catch (error) {
       if (error instanceof NotFound) {
         return NextResponse.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })
