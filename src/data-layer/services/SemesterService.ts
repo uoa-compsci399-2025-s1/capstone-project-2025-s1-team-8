@@ -76,7 +76,7 @@ export default class SemesterService {
           },
         }
         limit = 1
-        sort = ['-startDate']
+        sort = ['startDate', 'endDate']
         break
       case SemesterType.Past:
         filter = {

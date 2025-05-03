@@ -65,25 +65,27 @@ describe('Semester service tests', () => {
 
     await semesterService.createSemester({
       ...semesterCreateMock,
-      startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString(),
-      endDate: new Date(
-        today.getFullYear() + 1,
-        today.getMonth(),
-        today.getDate() + 1,
-      ).toISOString(),
-    })
-
-    // Supposedly this semester is fetched as it is a 1 day difference
-    const nextSemester = await semesterService.createSemester({
-      ...semesterCreateMock,
-      startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString(),
-      endDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString(),
+      startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2).toISOString(),
+      endDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3).toISOString(),
     })
 
     await semesterService.createSemester({
       ...semesterCreateMock,
-      startDate: new Date(today.getFullYear(), today.getMonth() + 7, today.getDate()).toISOString(),
-      endDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString(),
+      startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3).toISOString(),
+      endDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 4).toISOString(),
+    })
+
+    // Supposedly this semester is fetched as it is the closest in start date and end date
+    const nextSemester = await semesterService.createSemester({
+      ...semesterCreateMock,
+      startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString(),
+      endDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2).toISOString(),
+    })
+
+    await semesterService.createSemester({
+      ...semesterCreateMock,
+      startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString(),
+      endDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3).toISOString(),
     })
 
     const nextSem = await semesterService.getAllSemesters(100, 1, SemesterType.Next)
