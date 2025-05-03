@@ -5,14 +5,10 @@ import Input from '@/components/Generic/Input/InputField'
 import { MdOutlineMail, MdLock } from 'react-icons/md'
 import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
-import { handleSubmit } from '../../../lib/util/handleSubmit'
+import { handleSubmit } from '@/lib/util/handleSubmit'
 import { useState } from 'react'
 
 const SignIn = () => {
-  // const [email, setEmail] = useState<string>('')
-  // const [password, setPassword] = useState<string>('')
-  //const emailInputRef = useRef<HTMLInputElement>(null)
-  //const passwordInputRef = useRef<HTMLInputElement>(null)
   const [errorState, setErrorState] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [emailErrorMessage, setEmailErrorMessage] = useState<string>('')
@@ -58,9 +54,6 @@ const SignIn = () => {
             placeholder="Password"
             type="password"
             startIcon={<MdLock className="text-muted-blue h-full" />}
-            //value={password}
-            //onChange={(e) => setPassword(e.target.value)}
-            // ref={passwordInputRef}
             error={errorState}
             errorMessage={errorMessage}
             required={true}
