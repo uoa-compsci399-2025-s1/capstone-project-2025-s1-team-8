@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
-
 import SemesterService from '@/data-layer/services/SemesterService'
 import { CreateSemesterData } from '@/types/Collections'
-import { CreateSemesterRequestBody } from '@/types/request-models/SemesterRequests'
-import { ZodError } from 'zod'
+import { z, ZodError } from 'zod'
 import { Security } from '@/business-layer/middleware/Security'
+
+export const CreateSemesterRequestBody = z.object({
+  name: z.string(),
+  description: z.string().optional(),
+  deadline: z.string().datetime({ message: 'Invalid date format, should be in ISO 8601 format' }),
+  startDate: z.string().datetime({ message: 'Invalid date format, should be in ISO 8601 format' }),
+  endDate: z.string().datetime({ message: 'Invalid date format, should be in ISO 8601 format' }),
+})
 
 class RouteWrapper {
   /**

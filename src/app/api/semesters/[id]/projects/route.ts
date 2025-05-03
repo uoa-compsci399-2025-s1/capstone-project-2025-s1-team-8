@@ -1,17 +1,23 @@
 import { NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
-import { ZodError } from 'zod'
+import { z, ZodError } from 'zod'
 import { NotFound } from 'payload'
-
 import ProjectService from '@/data-layer/services/ProjectService'
 import SemesterService from '@/data-layer/services/SemesterService'
 import { ProjectStatus } from '@/types/Project'
-import { CreateSemesterProjectRequestBody } from '@/types/request-models/ProjectRequests'
 import { CreateSemesterProjectData } from '@/types/Collections'
 import { Security } from '@/business-layer/middleware/Security'
 import { RequestWithUser } from '@/types/Requests'
 import { UserRole } from '@/types/User'
 import { SemesterProject } from '@/payload-types'
+import { ProjectSchema } from '@/types/Payload'
+
+export const CreateSemesterProjectRequestBody = z.object({
+  number: z.number().min(1).nullable().optional(),
+  project: z.union([z.string(), ProjectSchema]),
+  status: z.nativeEnum(ProjectStatus),
+  published: z.boolean(),
+})
 
 class RouterWrapper {
   /**
