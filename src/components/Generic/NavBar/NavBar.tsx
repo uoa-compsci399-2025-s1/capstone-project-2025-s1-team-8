@@ -2,7 +2,9 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { redirect, usePathname } from 'next/navigation'
+import { isLoggedIn } from '@/lib/util/handleSubmit'
+import { handleClick } from '@/lib/util/handleSubmit'
 
 interface NavLink {
   href: string
@@ -17,10 +19,18 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
   const [hasShadow, setHasShadow] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false)
 
   const toggleMenu = () => setIsOpen(!isOpen)
+  const onClickHandler = async () => {
+    await handleClick();
+  }
 
   useEffect(() => {
+
+    isLoggedIn().then((status) => {
+      setLoggedIn(status)
+    })
     const handleScroll = () => {
       setHasShadow(window.scrollY > 10)
     }
@@ -58,8 +68,8 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
             <span className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/' ? 'scale-x-100' : ''}`} />
           </div> */}
           <div className="relative group p-2">
-            <Link href="/auth/login" className="nav-link-text font-bold">
-              Login
+            <Link href="" onClick = {onClickHandler} className="nav-link-text font-bold">
+              {loggedIn ? 'Logout' : 'Login'}
             </Link>
             <span
               className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100  ${pathname === '/auth/signin' ? 'scale-x-100' : ''}`}

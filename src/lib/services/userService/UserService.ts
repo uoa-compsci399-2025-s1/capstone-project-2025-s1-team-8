@@ -7,6 +7,7 @@ import { RegisterRequestBodySchema, POST as RegisterPost } from '@/app/api/auth/
 import { UserRoleWithoutAdmin } from '@/types/User'
 import { GET as GetUserDetails } from '@/app/api/users/me/route'
 import { UserCombinedInfo } from '@/types/Collections'
+import { GET as LogoutPost} from '@/app/api/auth/logout/route'
 
 const UserService = {
   login: async function (options: { email: string; password: string }): Promise<{
@@ -49,6 +50,11 @@ const UserService = {
     const { message, error, details } = await response.json()
     return { message, status: response.status, error, details }
   },
+
+  logout: async function(): Promise<void> {
+    const url = buildNextRequestURL('/api/auth/logout', {})
+    await LogoutPost(await buildNextRequest(url, { method: 'GET' }))
+  }
 }
 
 export default UserService
