@@ -63,9 +63,9 @@ describe('Semester service tests', () => {
   it('should get the next upcoming semester', async () => {
     const today = new Date()
 
-    const upcomingSemester = await semesterService.createSemester({
+    const nextSemester = await semesterService.createSemester({
       ...semesterCreateMock,
-      startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate()+1).toISOString(),
+      startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString(),
       endDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString(),
     })
 
@@ -75,8 +75,8 @@ describe('Semester service tests', () => {
       endDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString(),
     })
 
-    const past = await semesterService.getAllSemesters(100, 1, SemesterType.NextSemester)
-    expect(past.docs).toStrictEqual([upcomingSemester])
+    const nextSem = await semesterService.getAllSemesters(100, 1, SemesterType.NextSemester)
+    expect(nextSem.docs).toStrictEqual([nextSemester])
   })
 
   it('should return undefined if semester does not exist', async () => {

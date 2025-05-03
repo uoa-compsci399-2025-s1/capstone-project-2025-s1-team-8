@@ -72,8 +72,8 @@ export default class SemesterService {
         filter = {
           startDate: {
             greater_than: currentDate,
-            less_than: nextSemester.toISOString()
-          }
+            less_than: nextSemester.toISOString(),
+          },
         }
         limit = 1
         break
