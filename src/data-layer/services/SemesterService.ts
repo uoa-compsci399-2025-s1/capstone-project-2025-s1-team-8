@@ -1,7 +1,7 @@
 import { CreateSemesterData, UpdateSemesterData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 import { Semester } from '@/payload-types'
-import { PaginatedDocs, Where } from 'payload'
+import { PaginatedDocs, Sort, Where } from 'payload'
 import { SemesterType } from '@/types/Semester'
 
 export default class SemesterService {
@@ -44,6 +44,7 @@ export default class SemesterService {
     const nextSemester = new Date()
     nextSemester.setMonth(nextSemester.getMonth() + 6)
     let filter: Where = {}
+    let sort: Sort = []
     switch (timeframe) {
       case SemesterType.Current:
         filter = {
@@ -72,10 +73,10 @@ export default class SemesterService {
         filter = {
           startDate: {
             greater_than: currentDate,
-            less_than: nextSemester.toISOString(),
           },
         }
         limit = 1
+        sort = ['-startDate']
         break
       case SemesterType.Past:
         filter = {
@@ -93,6 +94,7 @@ export default class SemesterService {
       pagination: true,
       page: page,
       where: filter,
+      sort,
     })
     return data
   }

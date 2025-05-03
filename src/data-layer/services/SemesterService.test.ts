@@ -63,6 +63,17 @@ describe('Semester service tests', () => {
   it('should get the next upcoming semester', async () => {
     const today = new Date()
 
+    await semesterService.createSemester({
+      ...semesterCreateMock,
+      startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString(),
+      endDate: new Date(
+        today.getFullYear() + 1,
+        today.getMonth(),
+        today.getDate() + 1,
+      ).toISOString(),
+    })
+
+    // Supposedly this semester is fetched as it is a 1 day difference
     const nextSemester = await semesterService.createSemester({
       ...semesterCreateMock,
       startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString(),
