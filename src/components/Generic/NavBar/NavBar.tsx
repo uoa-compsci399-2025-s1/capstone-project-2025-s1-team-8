@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { redirect, usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { isLoggedIn } from '@/lib/util/handleSubmit'
 import { handleClick } from '@/lib/util/handleSubmit'
 
