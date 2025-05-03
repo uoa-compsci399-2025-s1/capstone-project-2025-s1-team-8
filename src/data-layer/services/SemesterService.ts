@@ -75,6 +75,7 @@ export default class SemesterService {
             less_than: nextSemester.toISOString()
           }
         }
+        limit = 1
         break
       case SemesterType.Past:
         filter = {
