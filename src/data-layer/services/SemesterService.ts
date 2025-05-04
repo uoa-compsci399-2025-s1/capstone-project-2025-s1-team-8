@@ -1,7 +1,8 @@
 import { CreateSemesterData, UpdateSemesterData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 import { Semester } from '@/payload-types'
-import { PaginatedDocs } from 'payload'
+import { PaginatedDocs, Sort, Where } from 'payload'
+import { SemesterType } from '@/types/Semester'
 
 export default class SemesterService {
   /**
@@ -37,12 +38,63 @@ export default class SemesterService {
   public async getAllSemesters(
     limit: number = 100,
     page: number = 1,
+    timeframe: SemesterType = SemesterType.Default,
   ): Promise<PaginatedDocs<Semester>> {
+    const currentDate = new Date().toISOString()
+
+    let filter: Where = {}
+    let sort: Sort = []
+
+    switch (timeframe) {
+      case SemesterType.Current:
+        filter = {
+          and: [
+            {
+              startDate: {
+                less_than_equal: currentDate,
+              },
+            },
+            {
+              endDate: {
+                greater_than_equal: currentDate,
+              },
+            },
+          ],
+        }
+        break
+      case SemesterType.Upcoming:
+        filter = {
+          startDate: {
+            greater_than: currentDate,
+          },
+        }
+        break
+      case SemesterType.Next:
+        filter = {
+          startDate: {
+            greater_than: currentDate,
+          },
+        }
+        limit = 1
+        sort = ['startDate', 'endDate']
+        break
+      case SemesterType.Past:
+        filter = {
+          endDate: {
+            less_than: currentDate,
+          },
+        }
+        break
+      default:
+    }
+
     const data = await payload.find({
       collection: 'semester',
       limit,
       pagination: true,
       page: page,
+      where: filter,
+      sort,
     })
     return data
   }
