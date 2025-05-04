@@ -87,7 +87,7 @@ export default class FormService {
   }
 
   /**
-   * Retrieves a form response document from the database by its ID.
+   * Retrieves a {@link FormResponse} response document from the database by its ID.
    *
    * @param formResponseID the ID of the form response document to retrieve
    * @returns

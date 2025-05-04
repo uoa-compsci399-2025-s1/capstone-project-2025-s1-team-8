@@ -14,16 +14,26 @@ class RouteWrapper {
     const formService = new FormService()
     try {
       const fetchedForm = await formService.getFormResponse(id)
-
+      console.log(fetchedForm.client !== req.user.id)
       if (
         req.user.role !== UserRole.Admin &&
-        fetchedForm.client !== req.user &&
+        fetchedForm.client !== req.user.id &&
         !fetchedForm.otherClients?.includes(req.user.id)
       )
         return NextResponse.json({ error: 'Unauthorized' }, { status: StatusCodes.UNAUTHORIZED })
-      // Need to unpack the fetched form so that the form questions are unpacked
       return NextResponse.json({
-        data: fetchedForm,
+        data: {
+          ...fetchedForm,
+          ...fetchedForm.questionResponses?.reduce(
+            (acc, curr) => {
+              if (curr.question instanceof Object) {
+                acc[curr.question?.fieldName] = curr
+              }
+              return acc
+            },
+            {} as Record<string, unknown>,
+          ),
+        },
       })
     } catch (error) {
       if (error instanceof NotFound)
@@ -31,6 +41,7 @@ class RouteWrapper {
           { error: 'Form response not found' },
           { status: StatusCodes.NOT_FOUND },
         )
+      console.error(error)
       return NextResponse.json(
         { error: 'Internal server error' },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
