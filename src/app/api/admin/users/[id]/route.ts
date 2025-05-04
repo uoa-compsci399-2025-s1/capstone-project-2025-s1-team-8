@@ -57,12 +57,12 @@ class RouteWrapper {
    * Updates a single user by ID if the request is made by an admin
    *
    * @param param0 The ID of the user to update
-   * @param _req
+   * @param req The next request containing the updated user information
    * @returns The updated user
    */
   @Security('jwt', ['admin'])
   static async PATCH(
-    _req: NextRequest,
+    req: NextRequest,
     {
       params,
     }: {
@@ -73,7 +73,7 @@ class RouteWrapper {
     const userService = new UserService()
     try {
       const user = await userService.getUser(id)
-      const body = UpdateUserRequestBody.parse(await _req.json())
+      const body = UpdateUserRequestBody.parse(await req.json())
       const updatedUser = await userService.updateUser(id, body)
       const { introduction: bodyIntroduction, affiliation: bodyAffiliation } = body
       if (user.role === UserRole.Client || user.role === UserRole.Admin) {
