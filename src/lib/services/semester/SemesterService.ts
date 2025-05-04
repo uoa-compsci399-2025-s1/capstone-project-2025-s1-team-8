@@ -8,11 +8,32 @@ import { buildNextRequest } from '@/utils/buildNextRequest'
 import { CreateSemesterData } from '@/types/Collections'
 import { UpdateSemesterData } from '@/types/Collections'
 import { ProjectStatus } from '@/types/Project'
-import { typeToFlattenedError } from 'zod'
-import {
-  UpdateSemesterRequestBody,
-  CreateSemesterRequestBody,
-} from '@/types/request-models/SemesterRequests'
+import { typeToFlattenedError, z } from 'zod'
+
+export const CreateSemesterRequestBody = z.object({
+  name: z.string(),
+  description: z.string().optional(),
+  deadline: z.string().datetime({ message: 'Invalid date format, should be in ISO 8601 format' }),
+  startDate: z.string().datetime({ message: 'Invalid date format, should be in ISO 8601 format' }),
+  endDate: z.string().datetime({ message: 'Invalid date format, should be in ISO 8601 format' }),
+})
+
+export const UpdateSemesterRequestBody = z.object({
+  name: z.string().optional(),
+  description: z.string().optional(),
+  deadline: z
+    .string()
+    .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
+    .optional(),
+  startDate: z
+    .string()
+    .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
+    .optional(),
+  endDate: z
+    .string()
+    .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
+    .optional(),
+})
 
 const SemesterService = {
   getAllPaginatedSemesters: async function (
