@@ -41,10 +41,10 @@ export default class SemesterService {
     timeframe: SemesterType = SemesterType.Default,
   ): Promise<PaginatedDocs<Semester>> {
     const currentDate = new Date().toISOString()
-    const nextSemester = new Date()
-    nextSemester.setMonth(nextSemester.getMonth() + 6)
+
     let filter: Where = {}
     let sort: Sort = []
+
     switch (timeframe) {
       case SemesterType.Current:
         filter = {
