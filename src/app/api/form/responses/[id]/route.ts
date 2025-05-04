@@ -14,7 +14,6 @@ class RouteWrapper {
     const formService = new FormService()
     try {
       const fetchedForm = await formService.getFormResponse(id)
-      console.log(fetchedForm.client !== req.user.id)
       if (
         req.user.role !== UserRole.Admin &&
         fetchedForm.client !== req.user.id &&
