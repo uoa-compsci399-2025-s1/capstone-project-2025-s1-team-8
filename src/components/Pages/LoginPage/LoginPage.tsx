@@ -59,7 +59,7 @@ const SignIn = () => {
             required={true}
           />
           <Button size="md" variant="dark" type="submit">
-            <p className="text-xs">Log in</p>
+            <p className="text-xs">Log In</p>
           </Button>
           <p className="text-steel-blue text-xs text-center">
             {"Don't have an account? Sign up "}
