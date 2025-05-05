@@ -1,9 +1,11 @@
 import { GET as GetClientInfo } from '@/app/api/users/me/route'
 import { GET as GetClientProjects } from '@/app/api/users/me/projects/route'
-import { UserCombinedInfo } from '@/types/Collections'
+import {PATCH as UpdateClientDetails} from '@/app/api/users/me/route'
+import { UpdateUserData, UserCombinedInfo } from '@/types/Collections'
 import { Project } from '@/payload-types'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
+import { StatusCodes } from 'http-status-codes'
 
 const ClientService = {
   /**
@@ -30,7 +32,14 @@ const ClientService = {
     return projects
   },
 
-  async updateClientDetails() {},
+  async updateClientDetails(updatedClient: UpdateUserData): Promise<StatusCodes> {
+    'use server'
+    const currentUser = await this.getClientInfo()
+    const url = await buildNextRequestURL('/api/users/me', {})
+    const response = await UpdateClientDetails(
+      await buildNextRequest(url, { method: 'PATCH', body: updatedClient }), {params: Promise.resolve({ id: currentUser.id })})
+    return response.status
+  },
 } as const
 
 export default ClientService
