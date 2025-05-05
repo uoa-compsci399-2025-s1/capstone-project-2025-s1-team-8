@@ -41,7 +41,6 @@ export const POST = async (req: NextRequest) => {
     await authDataService.createAuth({
       email: body.email,
       password: hash,
-      type: 'password',
     })
 
     return NextResponse.json(

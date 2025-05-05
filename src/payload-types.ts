@@ -165,10 +165,6 @@ export interface Authentication {
   /**
    * The type of authentication
    */
-  type: 'oauth' | 'password';
-  /**
-   * The type of authentication
-   */
   provider?: 'google' | null;
   /**
    * The provider account id of the user authentication
@@ -449,7 +445,6 @@ export interface AdminSelect<T extends boolean = true> {
 export interface AuthenticationSelect<T extends boolean = true> {
   email?: T;
   password?: T;
-  type?: T;
   provider?: T;
   providerAccountId?: T;
   refreshToken?: T;
