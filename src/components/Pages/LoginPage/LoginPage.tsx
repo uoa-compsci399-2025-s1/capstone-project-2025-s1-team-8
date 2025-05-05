@@ -41,26 +41,26 @@ const SignIn = () => {
       <form onSubmit={onSubmit}>
         <div className="flex flex-col gap-4">
           <div>
-          <Input
-            name="email"
-            placeholder="Email Address"
-            type="email"
-            startIcon={<MdOutlineMail className="text-muted-blue h-full" />}
-            error={errorState || emailErrorState}
-            errorMessage={emailErrorMessage}
-            required={true}
-          />
+            <Input
+              name="email"
+              placeholder="Email Address"
+              type="email"
+              startIcon={<MdOutlineMail className="text-muted-blue h-full" />}
+              error={errorState || emailErrorState}
+              errorMessage={emailErrorMessage}
+              required={true}
+            />
           </div>
           <div>
-          <Input
-            name="password"
-            placeholder="Password"
-            type="password"
-            startIcon={<MdLock className="text-muted-blue h-full" />}
-            error={errorState}
-            errorMessage={errorMessage}
-            required={true}
-          />
+            <Input
+              name="password"
+              placeholder="Password"
+              type="password"
+              startIcon={<MdLock className="text-muted-blue h-full" />}
+              error={errorState}
+              errorMessage={errorMessage}
+              required={true}
+            />
           </div>
           <Button size="md" variant="dark" type="submit">
             <p className="text-xs">Log In</p>
