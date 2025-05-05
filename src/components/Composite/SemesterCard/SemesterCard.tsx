@@ -4,14 +4,14 @@ import Capsule from '@/components/Generic/Capsule/Capsule'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import { XMarkIcon } from '@heroicons/react/24/solid'
-import { PlaceholderProjectDetailsType } from '@/types/Project'
+import { ProjectDetailsType } from '@/types/Project'
 
 export interface SemesterDTOPlaceholder {
   semesterName: string
   startDate: Date
   endDate: Date
   submissionDeadline: Date
-  approvedProjects: PlaceholderProjectDetailsType[]
+  approvedProjects: ProjectDetailsType[]
   currentOrUpcoming?: 'current' | 'upcoming' | string //Used for styling the current and upcoming semesters. If not current or upcoming semester, leave blank
 }
 

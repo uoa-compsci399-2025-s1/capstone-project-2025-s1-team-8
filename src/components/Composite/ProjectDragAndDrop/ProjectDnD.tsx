@@ -19,8 +19,9 @@ import ProjectContainer from './ProjectContainer'
 import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { FilterProvider } from '@/contexts/FilterContext'
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
-import { PlaceholderProjectDetailsType } from '@/types/Project'
+import { ProjectDetailsType } from '@/types/Project'
 import { FiAlertCircle, FiSave } from 'react-icons/fi'
+import { UserRole } from '@/types/User'
 
 type DNDType = {
   id: UniqueIdentifier
@@ -34,22 +35,28 @@ type DndComponentProps = {
   presetContainers: DNDType[]
 }
 
-const defaultProjectInfo: PlaceholderProjectDetailsType = {
+const defaultProjectInfo: ProjectDetailsType = {
+  semesterProjectId: '',
   projectId: '',
   projectTitle: '',
   projectClientDetails: {
-    name: '',
-    email: '',
+    id: '',
+    firstName: '', 
+    lastName: '', 
+    role: UserRole.Client,
+    updatedAt: '',
+    createdAt: '',
+    email: ''
   },
   otherClientDetails: [],
   projectDescription: '',
   desiredOutput: '',
   desiredTeamSkills: '',
   availableResources: '',
-  specialRequirements: false,
-  numberOfTeams: 0,
+  specialRequirements: '',
+  numberOfTeams: '',
   futureConsideration: false,
-  Semesters: [],
+  semesters: [],
   submittedDate: new Date(),
 }
 
@@ -158,7 +165,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
     }
   }
 
-  const findItemInfo = (id: UniqueIdentifier | undefined): PlaceholderProjectDetailsType => {
+  const findItemInfo = (id: UniqueIdentifier | undefined): ProjectDetailsType => {
     if (!id) return defaultProjectInfo
 
     const container = findValueOfItems(id, 'item')

@@ -1,14 +1,14 @@
 import ClientModal from '@/components/Composite/ClientModal/ClientModal'
 import React, { useState } from 'react'
 import { FiCopy, FiCheck } from 'react-icons/fi'
-import { PlaceholderProjectDetailsType } from '@/types/Project'
+import { ProjectDetailsType } from '@/types/Project'
 
 export interface ClientDTOPlaceholder {
   name: string
   email: string
   affiliation?: string
   introduction?: string
-  projects?: PlaceholderProjectDetailsType[]
+  projects?: ProjectDetailsType[]
 }
 
 const ClientCard: React.FC<ClientDTOPlaceholder> = (clientInfo) => {

@@ -5,10 +5,11 @@ import { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'
 import Button from '@/components/Generic/Button/Button'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
-import { BasicClientDetails, PlaceholderProjectDetailsType } from '@/types/Project'
+import { ProjectDetailsType } from '@/types/Project'
+import { Semester, User } from '@/payload-types'
 
 interface ProjectModalProps extends ModalProps {
-  projectInfo: PlaceholderProjectDetailsType
+  projectInfo: ProjectDetailsType
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({
@@ -18,7 +19,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   projectInfo: {
     projectTitle,
     projectClientDetails,
-    otherClientDetails = [],
+    otherClientDetails,
     projectDescription,
     desiredOutput,
     desiredTeamSkills,
@@ -40,8 +41,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   }
 
   const handleCopyAll = (
-    projectClientDetails: BasicClientDetails,
-    otherClientDetails: BasicClientDetails[],
+    projectClientDetails: User,
+    otherClientDetails: User[],
   ) => {
     const allEmails = [
       projectClientDetails.email,
@@ -87,7 +88,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         {/* client details */}
         <div className="flex flex-row gap-3">
           <h2 className="flex text-lg font-normal text-steel-blue font-inter">
-            {projectClientDetails.name}
+            {projectClientDetails.firstName} {projectClientDetails.lastName}
           </h2>
           <h2 className="flex text-lg font-normal text-deeper-blue font-inter">|</h2>
           <h2 className="flex text-lg font-normal text-deeper-blue font-inter">
@@ -119,7 +120,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           <Capsule
             className="col-start-2"
             variant="beige"
-            text={specialRequirements ? 'Yes' : 'No'}
+            text={specialRequirements}
           />
 
           <Capsule className="col-start-3 mr-2" variant="muted_blue" text="Submitted" />
@@ -145,8 +146,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
           <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />
           <div className="col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
-            {semesters.map((semester) => (
-              <Capsule variant="beige" text={semester} key={semester} />
+            {semesters.map((semester : Semester) => (
+              <Capsule variant="beige" text={semester.name} key={semester.id} />
             ))}
           </div>
         </div>
@@ -160,7 +161,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             {otherClientDetails.map((clientDetails) => (
               <>
                 <h2 className="col-start-1 text-lg font-normal text-dark-blue font-inter alternate">
-                  {clientDetails.name}
+                  {clientDetails.firstName} {clientDetails.lastName}
                 </h2>
                 <h2 className="col-start-2 text-lg font-normal text-deeper-blue font-inter email">
                   |

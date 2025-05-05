@@ -6,7 +6,7 @@ import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProj
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { useFilter } from '@/contexts/FilterContext'
 import { UniqueIdentifier } from '@dnd-kit/core'
-import { PlaceholderProjectDetailsType } from '@/types/Project'
+import { ProjectDetailsType } from '@/types/Project'
 import ProjectModal from '../ProjectModal/ProjectModal'
 
 export interface ProjectContainerType {
@@ -35,7 +35,7 @@ const ProjectContainer = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState<number | undefined>()
   const { selectedFilter } = useFilter()
-  const [openProject, setOpenProject] = useState<PlaceholderProjectDetailsType | null>(null)
+  const [openProject, setOpenProject] = useState<ProjectDetailsType | null>(null)
 
   useEffect(() => {
     onChange?.(selectedFilter)

@@ -1,27 +1,25 @@
+import { Semester, User } from "@/payload-types"
+
 export enum ProjectStatus {
   Pending = 'pending',
   Approved = 'approved',
   Rejected = 'rejected',
 }
 
-export interface BasicClientDetails {
-  name: string
-  email: string
-}
-
-export interface PlaceholderProjectDetailsType {
+export interface ProjectDetailsType {
+  semesterProjectId: string
   projectId: string
   projectTitle: string
-  projectClientDetails: BasicClientDetails
-  otherClientDetails?: BasicClientDetails[]
+  projectClientDetails: User
+  otherClientDetails?: User[]
   projectDescription: string
   desiredOutput: string
-  desiredTeamSkills: string
-  availableResources: string
+  desiredTeamSkills?: string
+  availableResources?: string
 
-  specialRequirements: boolean
-  numberOfTeams: number
+  specialRequirements: string
+  numberOfTeams: string
   futureConsideration: boolean
-  Semesters: Array<string>
+  semesters?: Semester[]
   submittedDate: Date
 }

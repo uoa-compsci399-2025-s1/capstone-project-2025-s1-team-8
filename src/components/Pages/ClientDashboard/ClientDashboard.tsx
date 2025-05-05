@@ -3,11 +3,11 @@ import GradientTextArea from '@/components/Generic/GradientTextArea/GradientText
 import ClientProfile from '@/components/Composite/ClientProfile/ClientProfile'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
-import { PlaceholderProjectDetailsType } from '@/types/Project'
+import { ProjectDetailsType } from '@/types/Project'
 
 interface ClientDashboardProps {
   client: ClientDTOPlaceholder
-  projects: PlaceholderProjectDetailsType[]
+  projects: ProjectDetailsType[]
 }
 
 const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects }) => {
