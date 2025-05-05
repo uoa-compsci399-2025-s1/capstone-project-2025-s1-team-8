@@ -21,9 +21,10 @@ function isValidEmail(email: string): boolean {
  */
 export const handleLogin = async (
   formData: FormData,
-): Promise<void | {
+): Promise<{
   error?: string
   message?: string
+  redirect?: string
   details?: typeToFlattenedError<typeof LoginRequestBodySchema>
 }> => {
   const email = formData.get('email') as string
@@ -34,6 +35,10 @@ export const handleLogin = async (
   if (!password) return { error: 'Password is required' }
   if (!isValidEmail(email)) return { error: 'Invalid email address format' }
 
-  const { message, status, error, details } = await UserService.login({ email, password })
-  if (status && status !== 200) return { error, message, details }
-}
+  const { message, redirect, status, error, details } = await UserService.login({ email, password })
+  if (status === 200) {
+    return { message, redirect}
+  } else {
+    return {error, message, details}
+  }
+  }

@@ -7,6 +7,7 @@ import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
 import { handleLogin } from '@/lib/util/util'
 import { useState } from 'react'
+import { redirect } from 'next/navigation'
 
 const LoginPage = () => {
   const [errorState, setErrorState] = useState<boolean>(false)
@@ -23,6 +24,8 @@ const LoginPage = () => {
 
     const formData = new FormData(e.currentTarget)
     const res = await handleLogin(formData)
+
+    if (res.redirect) redirect(res.redirect)
 
     if (res?.error) {
       if (res.error === 'Invalid email address format') {
