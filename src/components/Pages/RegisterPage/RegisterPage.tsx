@@ -21,7 +21,6 @@ const Register = () => {
     const res = await handleRegister(formData)
 
     if (res?.error) {
-      console.log(res.error)
       setErrorMessage(res.error)
       setErrorState(true)
     }
