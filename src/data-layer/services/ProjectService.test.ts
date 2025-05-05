@@ -279,7 +279,7 @@ describe('Project service methods test', () => {
     await projectService.createSemesterProject({
       ...semesterProjectCreateMock,
       semester: semester1.id,
-      status: ProjectStatus.Accepted,
+      status: ProjectStatus.Approved,
     })
     await projectService.createSemesterProject({
       ...semesterProjectCreateMock,
@@ -289,16 +289,16 @@ describe('Project service methods test', () => {
     await projectService.createSemesterProject({
       ...semesterProjectCreateMock,
       semester: semester2.id,
-      status: ProjectStatus.Accepted,
+      status: ProjectStatus.Approved,
     })
 
     const res = await projectService.getAllProjectsBySemester(semester1.id, 100, 1, {
-      status: ProjectStatus.Accepted,
+      status: ProjectStatus.Approved,
     })
     expect(res.docs.length).toEqual(1)
     expect(res.nextPage).toBeNull()
     const res2 = await projectService.getAllProjectsBySemester(semester1.id, 2, 1, {
-      status: ProjectStatus.Accepted,
+      status: ProjectStatus.Approved,
     })
     expect(res2.docs.length).toEqual(1)
     expect(res2.nextPage).toBeNull()
@@ -318,7 +318,7 @@ describe('Project service methods test', () => {
     await projectService.createSemesterProject({
       ...semesterProjectCreateMock,
       semester: semester1.id,
-      status: ProjectStatus.Accepted,
+      status: ProjectStatus.Approved,
       published: true,
     })
     await projectService.createSemesterProject({
@@ -330,13 +330,13 @@ describe('Project service methods test', () => {
     await projectService.createSemesterProject({
       ...semesterProjectCreateMock,
       semester: semester2.id,
-      status: ProjectStatus.Accepted,
+      status: ProjectStatus.Approved,
       published: true,
     })
 
     const res = await projectService.getAllProjectsBySemester(semester1.id, 100, 1, {
       published: true,
-      status: ProjectStatus.Accepted,
+      status: ProjectStatus.Approved,
     })
     expect(res.docs.length).toEqual(1)
     expect(res.nextPage).toBeNull()

@@ -76,7 +76,7 @@ export const semesterProjectMock2: SemesterProject = {
   number: 2,
   project: '67ff38a56a35e1b6cf43a68f',
   semester: '67ff38a56a35e1b6cf43a68g',
-  status: ProjectStatus.Accepted,
+  status: ProjectStatus.Approved,
   published: false,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
@@ -105,7 +105,7 @@ export const semesterProjectCreateMock2: CreateSemesterProjectData = {
   number: 2,
   project: projectMock,
   semester: semesterMock,
-  status: ProjectStatus.Accepted,
+  status: ProjectStatus.Approved,
   published: false,
 }
 

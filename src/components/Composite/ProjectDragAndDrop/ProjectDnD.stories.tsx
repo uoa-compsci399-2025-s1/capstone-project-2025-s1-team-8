@@ -38,7 +38,7 @@ const containers = [
   },
   {
     id: 'container-3' as UniqueIdentifier,
-    title: 'Accepted',
+    title: 'Approved',
     containerColor: 'dark' as const,
     currentItems: [],
     originalItems: [],

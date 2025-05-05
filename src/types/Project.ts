@@ -1,6 +1,6 @@
 export enum ProjectStatus {
   Pending = 'pending',
-  Accepted = 'accepted',
+  Approved = 'approved',
   Rejected = 'rejected',
 }
 
