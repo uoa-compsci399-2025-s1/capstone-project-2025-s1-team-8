@@ -21,9 +21,6 @@ export const handleRegister = async (
   const lastName = formData.get('lastName') as string
   const email = formData.get('email') as string
   const password = formData.get('password') as string
-  // set default role as client?
-  // how do we handle the admin sign up?
-  // or student sign up?
   const role = UserRoleWithoutAdmin.Client
 
   if (!email) return { error: 'Email is required' }
@@ -39,8 +36,6 @@ export const handleRegister = async (
     lastName,
     role,
   })
-
-  console.log(message, status)
 
   if (status === 201) {
     redirect('/client')
