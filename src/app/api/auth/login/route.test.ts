@@ -2,7 +2,12 @@ import { StatusCodes } from 'http-status-codes'
 import * as nextHeaders from 'next/headers'
 
 import UserService from '@/data-layer/services/UserService'
-import { adminMock, CLIENT_JWT_MOCK, clientMock } from '@/test-config/mocks/Auth.mock'
+import {
+  ADMIN_JWT_MOCK,
+  adminMock,
+  CLIENT_JWT_MOCK,
+  clientMock,
+} from '@/test-config/mocks/Auth.mock'
 import AuthDataService from '@/data-layer/services/AuthService'
 import AuthService from '@/business-layer/services/AuthService'
 import { createMockNextPostRequest } from '@/test-config/utils'
@@ -64,7 +69,7 @@ describe('tests /api/auth/login', async () => {
       }),
     )
 
-    expect(mockSet).toHaveBeenCalledWith(AUTH_COOKIE_NAME, CLIENT_JWT_MOCK, {
+    expect(mockSet).toHaveBeenCalledWith(AUTH_COOKIE_NAME, ADMIN_JWT_MOCK, {
       maxAge: 60 * 60,
       httpOnly: true,
       sameSite: 'strict',

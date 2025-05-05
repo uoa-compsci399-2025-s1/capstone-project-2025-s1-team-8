@@ -31,9 +31,9 @@ beforeEach(async () => {
           return Buffer.from(hash, 'base64').toString() === password
         })
         generateJWT = vi.fn().mockImplementation((user, _token) => {
-          if (user === adminMock) return ADMIN_JWT_MOCK
+          if (user === adminMock || user.email === adminMock.email) return ADMIN_JWT_MOCK
           if (user === clientMock || user.email === clientMock.email) return CLIENT_JWT_MOCK
-          if (user === studentMock) return STUDENT_JWT_MOCK
+          if (user === studentMock || user.email === studentMock.email) return STUDENT_JWT_MOCK
           return ''
         })
         decodeJWT = vi.fn().mockImplementation((token) => {
