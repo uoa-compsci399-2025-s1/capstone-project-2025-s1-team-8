@@ -10,7 +10,7 @@ import { typeToFlattenedError } from 'zod'
 import { UpdateUserRequestBody } from '@/app/api/admin/users/[id]/route'
 import { ClientCombinedInfo } from '@/types/Payload'
 
-const ClientService = {
+const AdminClientService = {
   getAllUsers: async function (): Promise<{ data: (typeof ClientCombinedInfo)[]; error?: string }> {
     'use server'
     const url = buildNextRequestURL('/api/admin/users', {})
@@ -75,4 +75,4 @@ const ClientService = {
     return { data, error }
   },
 } as const
-export default ClientService
+export default AdminClientService

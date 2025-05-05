@@ -35,7 +35,7 @@ export const UpdateSemesterRequestBody = z.object({
     .optional(),
 })
 
-const SemesterService = {
+const AdminSemesterService = {
   getAllPaginatedSemesters: async function (
     options: { page?: number; limit?: number } = {},
   ): Promise<{ data: Semester[]; nextPage?: string; error?: string }> {
@@ -98,4 +98,4 @@ const SemesterService = {
     return { data, error, details }
   },
 } as const
-export default SemesterService
+export default AdminSemesterService
