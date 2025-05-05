@@ -9,14 +9,16 @@ import { UserRoleWithoutAdmin } from '@/types/User'
 const UserService = {
   login: async function (options: { email: string; password: string }): Promise<{
     message: string
+    redirect: string
     status: StatusCodes
     error?: string
     details?: typeToFlattenedError<typeof LoginRequestBodySchema>
   }> {
     const url = buildNextRequestURL('/api/auth/login', options)
     const response = await LoginPost(await buildNextRequest(url, { method: 'POST', body: options }))
-    const { message, status, error, details } = await response.json()
-    return { message, status, error, details }
+    const { message, redirect, error, details } = await response.json()
+
+    return { message, redirect, status: response.status, error, details }
   },
 
   register: async function (options: {
@@ -36,6 +38,7 @@ const UserService = {
       await buildNextRequest(url, { method: 'POST', body: options }),
     )
     const { message, error, details } = await response.json()
+
     return { message, status: response.status, error, details }
   },
 }
