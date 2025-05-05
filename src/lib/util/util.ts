@@ -2,7 +2,6 @@
 
 import { LoginRequestBodySchema } from '@/app/api/auth/login/route'
 import UserService from '@/lib/services/userService/UserService'
-import { redirect } from 'next/navigation'
 import { typeToFlattenedError } from 'zod'
 
 /**
