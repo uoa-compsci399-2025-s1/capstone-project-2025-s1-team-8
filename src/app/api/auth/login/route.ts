@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes'
 import { NextRequest, NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
+import { NotFound } from 'payload'
 
 import AuthDataService from '@/data-layer/services/AuthService'
 import AuthService from '@/business-layer/services/AuthService'
-import { NotFound } from 'payload'
 import UserService from '@/data-layer/services/UserService'
 import { cookies } from 'next/headers'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
@@ -42,7 +42,7 @@ export const POST = async (req: NextRequest) => {
       maxAge: 60 * 60,
     })
 
-    return NextResponse.json({ message: 'Login successful' }, { status: StatusCodes.OK })
+    return NextResponse.json({ message: 'Login successful', redirect: `/${user.role}` })
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json(
