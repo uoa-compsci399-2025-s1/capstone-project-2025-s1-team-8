@@ -37,8 +37,8 @@ export const handleLogin = async (
 
   const { message, redirect, status, error, details } = await UserService.login({ email, password })
   if (status === 200) {
-    return { message, redirect}
+    return { message, redirect }
   } else {
-    return {error, message, details}
+    return { error, message, details }
   }
-  }
+}
