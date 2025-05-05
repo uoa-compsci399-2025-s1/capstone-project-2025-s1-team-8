@@ -32,7 +32,13 @@ export const handleRegister = async (
   if (!lastName) return { error: 'Last name is required' }
   if (!isValidEmail(email)) return { error: 'Invalid email address' }
 
-  const { message, status, error, details } = await UserService.register({ email, password, firstName, lastName, role })
+  const { message, status, error, details } = await UserService.register({
+    email,
+    password,
+    firstName,
+    lastName,
+    role,
+  })
 
   console.log(message, status)
 
