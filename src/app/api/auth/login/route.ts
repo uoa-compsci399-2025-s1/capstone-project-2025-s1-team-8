@@ -1,6 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
 import { NextRequest, NextResponse } from 'next/server'
-import { redirect } from 'next/navigation'
 import { z, ZodError } from 'zod'
 import { NotFound } from 'payload'
 
@@ -9,7 +8,6 @@ import AuthService from '@/business-layer/services/AuthService'
 import UserService from '@/data-layer/services/UserService'
 import { cookies } from 'next/headers'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
-import { UserRole } from '@/types/User'
 
 export const LoginRequestBodySchema = z.object({
   email: z.string().email(),
@@ -44,16 +42,7 @@ export const POST = async (req: NextRequest) => {
       maxAge: 60 * 60,
     })
 
-    switch (user.role) {
-      case UserRole.Admin:
-        return redirect('/admin')
-      case UserRole.Client:
-        return redirect('/client')
-      case UserRole.Student:
-        return redirect('/student')
-      default:
-        return redirect('/')
-    }
+    return NextResponse.json({ message: 'Login successful', redirect: '/' + user.role })
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json(
