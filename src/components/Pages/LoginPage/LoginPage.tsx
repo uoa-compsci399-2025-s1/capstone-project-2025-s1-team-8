@@ -25,7 +25,7 @@ const SignIn = () => {
     const res = await handleLogin(formData)
 
     if (res?.error) {
-      if (res.error === 'Invalid email address') {
+      if (res.error === 'Invalid email address format') {
         setEmailErrorMessage(res.error)
         setEmailErrorState(true)
       } else {
@@ -84,7 +84,7 @@ const SignIn = () => {
                 variant="outline"
                 startIcon={<FcGoogle className="h-full" />}
               >
-                <p className="text-xs">Sign In with Google</p>
+                <p className="text-xs text-center pt-0.5">Sign In with Google</p>
               </Button>
             </Link>
           </div>

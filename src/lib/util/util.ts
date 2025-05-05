@@ -33,7 +33,7 @@ export const handleLogin = async (
   if (!email && !password) return { error: 'Email and password are required' }
   if (!email) return { error: 'Email is required' }
   if (!password) return { error: 'Password is required' }
-  if (!isValidEmail(email)) return { error: 'Invalid email address' }
+  if (!isValidEmail(email)) return { error: 'Invalid email address format' }
 
   const { message, status, error, details } = await UserService.login({ email, password })
 
