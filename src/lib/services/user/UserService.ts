@@ -16,7 +16,7 @@ const UserService = {
    *   - `redirect` string: A URL to redirect the user after a successful login.
    *   - `status` {@link StatusCodes}: The HTTP status code of the response.
    *   - `error` string: An error message if the login attempt failed.
-   *   - `details` {@link typeToFlattenedError): Validation error details, if any.
+   *   - `details` {@link typeToFlattenedError}: Validation error details, if any.
    */
   login: async function (options: { email: string; password: string }): Promise<{
     status: StatusCodes
