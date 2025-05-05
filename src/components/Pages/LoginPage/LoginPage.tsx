@@ -40,6 +40,7 @@ const SignIn = () => {
       <p className="text-xl font-extrabold text-dark-blue pl-2">WELCOME BACK</p>
       <form onSubmit={onSubmit}>
         <div className="flex flex-col gap-4">
+          <div>
           <Input
             name="email"
             placeholder="Email Address"
@@ -49,6 +50,8 @@ const SignIn = () => {
             errorMessage={emailErrorMessage}
             required={true}
           />
+          </div>
+          <div>
           <Input
             name="password"
             placeholder="Password"
@@ -58,6 +61,7 @@ const SignIn = () => {
             errorMessage={errorMessage}
             required={true}
           />
+          </div>
           <Button size="md" variant="dark" type="submit">
             <p className="text-xs">Log In</p>
           </Button>
