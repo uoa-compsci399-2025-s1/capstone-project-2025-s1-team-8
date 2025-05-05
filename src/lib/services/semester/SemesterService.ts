@@ -17,7 +17,12 @@ import { StatusCodes } from 'http-status-codes'
 const SemesterService = {
   getAllPaginatedSemesters: async function (
     options: { page?: number; limit?: number } = {},
-  ): Promise<{ status: StatusCodes; data: Semester[]; nextPage?: string; error?: string }> {
+  ): Promise<{
+    status: StatusCodes
+    data?: Semester[]
+    nextPage?: string
+    error?: string
+  }> {
     'use server'
     const url = buildNextRequestURL('/api/semesters', options)
     const response = await GetSemesters(await buildNextRequest(url, { method: 'GET' }))
@@ -34,7 +39,12 @@ const SemesterService = {
       status?: ProjectStatus
       published?: 'true' | 'false'
     } = {},
-  ): Promise<{ status: StatusCodes; data: SemesterProject[]; nextPage?: string; error?: string }> {
+  ): Promise<{
+    status: StatusCodes
+    data?: SemesterProject[]
+    nextPage?: string
+    error?: string
+  }> {
     'use server'
     const url = buildNextRequestURL(`/api/semesters/${semesterId}/projects`, options)
     const response = await GetProjects(await buildNextRequest(url, { method: 'GET' }), {
@@ -47,7 +57,7 @@ const SemesterService = {
 
   createSemester: async function (semester: CreateSemesterData): Promise<{
     status: StatusCodes
-    data: Semester
+    data?: Semester
     error?: string
     details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
   }> {
@@ -66,7 +76,7 @@ const SemesterService = {
     semester: UpdateSemesterData,
   ): Promise<{
     status: StatusCodes
-    data: Semester
+    data?: Semester
     error?: string
     details?: typeToFlattenedError<typeof UpdateSemesterRequestBody>
   }> {
@@ -83,4 +93,5 @@ const SemesterService = {
     return { status: response.status, data, error, details }
   },
 } as const
+
 export default SemesterService

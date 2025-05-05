@@ -8,9 +8,9 @@ import { UserRoleWithoutAdmin } from '@/types/User'
 
 const UserService = {
   login: async function (options: { email: string; password: string }): Promise<{
-    message: string
-    redirect: string
     status: StatusCodes
+    message?: string
+    redirect?: string
     error?: string
     details?: typeToFlattenedError<typeof LoginRequestBodySchema>
   }> {
@@ -28,8 +28,8 @@ const UserService = {
     lastName: string
     role: UserRoleWithoutAdmin
   }): Promise<{
-    message: string
     status: StatusCodes
+    message?: string
     error?: string
     details?: typeToFlattenedError<typeof RegisterRequestBodySchema>
   }> {
@@ -41,6 +41,6 @@ const UserService = {
 
     return { message, status: response.status, error, details }
   },
-}
+} as const
 
 export default UserService
