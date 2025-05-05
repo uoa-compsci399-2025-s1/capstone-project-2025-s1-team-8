@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { handleLogin } from '@/lib/util/util'
 import { useState } from 'react'
 
-const SignIn = () => {
+const LoginPage = () => {
   const [errorState, setErrorState] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [emailErrorMessage, setEmailErrorMessage] = useState<string>('')
@@ -94,4 +94,4 @@ const SignIn = () => {
   )
 }
 
-export default SignIn
+export default LoginPage
