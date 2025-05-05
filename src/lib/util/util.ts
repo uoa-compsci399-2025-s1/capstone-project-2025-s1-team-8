@@ -36,18 +36,5 @@ export const handleLogin = async (
   if (!isValidEmail(email)) return { error: 'Invalid email address format' }
 
   const { message, status, error, details } = await UserService.login({ email, password })
-
-  if (status === 200) {
-    const { user, status } = await UserService.getCurrentUserInfo()
-    if (status === 200) {
-      if (user.role === 'admin') {
-        redirect('/admin')
-      } else if (user.role === 'client') {
-        redirect('/client')
-      }
-    }
-    redirect('/login')
-  } else {
-    return { error, message, details }
-  }
+  if (status !== 200) return { error, message, details }
 }
