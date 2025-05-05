@@ -1,7 +1,5 @@
 import { CollectionConfig } from 'payload'
 
-import { AuthType } from '@/types/Auth'
-
 export const Authentication: CollectionConfig = {
   slug: 'authentication',
   access: {},
@@ -20,15 +18,6 @@ export const Authentication: CollectionConfig = {
       required: false,
       admin: {
         description: 'The hashed user password',
-      },
-    },
-    {
-      name: 'type',
-      type: 'select',
-      options: Object.values(AuthType),
-      required: true,
-      admin: {
-        description: 'The type of authentication',
       },
     },
     {
