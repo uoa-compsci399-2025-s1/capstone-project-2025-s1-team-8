@@ -1,4 +1,4 @@
-import { clearCollection, testPayloadObject } from './utils'
+import { clearCollection } from './utils'
 import {
   ACCESS_TOKEN_MOCK,
   ADMIN_JWT_MOCK,
@@ -10,6 +10,8 @@ import {
   studentMock,
 } from './mocks/Auth.mock'
 import AuthService from '@/business-layer/services/AuthService'
+import { payload } from '@/data-layer/adapters/Payload'
+import { CollectionSlug } from 'payload'
 
 let adminToken: string
 let clientToken: string
@@ -67,15 +69,9 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  await clearCollection(testPayloadObject, 'user')
-  await clearCollection(testPayloadObject, 'authentication')
-  await clearCollection(testPayloadObject, 'clientAdditionalInfo')
-  await clearCollection(testPayloadObject, 'semester')
-  await clearCollection(testPayloadObject, 'semesterProject')
-  await clearCollection(testPayloadObject, 'form')
-  await clearCollection(testPayloadObject, 'project')
-  await clearCollection(testPayloadObject, 'formQuestion')
-  await clearCollection(testPayloadObject, 'formResponse')
+  for (const slug of Object.keys(payload.collections)) {
+    await clearCollection(payload, slug as CollectionSlug)
+  }
   cookies = {}
 })
 
