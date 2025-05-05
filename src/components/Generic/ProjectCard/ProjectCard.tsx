@@ -1,9 +1,9 @@
-import { PlaceholderProjectDetailsType } from '@/types/Project'
+import { ProjectDetailsType } from '@/types/Project'
 import React, { useState } from 'react'
 import ProjectModal from '@/components/Composite/ProjectModal/ProjectModal'
 
 interface ProjectCardProps {
-  projectInfo: PlaceholderProjectDetailsType
+  projectInfo: ProjectDetailsType
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo }) => {

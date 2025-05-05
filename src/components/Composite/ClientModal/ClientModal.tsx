@@ -4,14 +4,14 @@ import Modal, { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
-import { PlaceholderProjectDetailsType } from '@/types/Project'
+import { ProjectDetailsType } from '@/types/Project'
 
 interface ClientModalProps extends ModalProps {
   clientFullName: string
   clientEmail: string
   affiliation?: string
   introduction?: string
-  projects?: PlaceholderProjectDetailsType[]
+  projects?: ProjectDetailsType[]
 }
 
 const ClientModal: React.FC<ClientModalProps> = ({
