@@ -75,6 +75,8 @@ export const GET = async (req: NextRequest) => {
   const fetchedAuth = await authService.getAuthByEmail(email)
   if (fetchedAuth) {
     await authService.updateAuth(fetchedAuth.id, {
+      provider: 'google',
+      providerAccountId: sub,
       accessToken: tokens.access_token,
       expiresAt: tokens.expiry_date,
       scope: scopes.join(' '),
@@ -83,7 +85,6 @@ export const GET = async (req: NextRequest) => {
   } else {
     await authService.createAuth({
       email,
-      type: 'oauth',
       provider: 'google',
       providerAccountId: sub,
       accessToken: tokens.access_token,
@@ -103,5 +104,14 @@ export const GET = async (req: NextRequest) => {
     maxAge: 60 * 60,
   })
 
-  return redirect('/')
+  switch (user.role) {
+    case UserRole.Admin:
+      return redirect('/admin')
+    case UserRole.Client:
+      return redirect('/client')
+    case UserRole.Student:
+      return redirect('/student')
+    default:
+      return redirect('/')
+  }
 }
