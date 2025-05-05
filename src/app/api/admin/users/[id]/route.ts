@@ -1,13 +1,20 @@
-import { ZodError } from 'zod'
+import { z, ZodError } from 'zod'
 import { NotFound } from 'payload'
 import { StatusCodes } from 'http-status-codes'
 import { NextRequest, NextResponse } from 'next/server'
-
 import UserService from '@/data-layer/services/UserService'
 import { UserRole } from '@/types/User'
-import { UpdateUserRequestBody } from '@/types/request-models/UserRequests'
 import { UserCombinedInfo } from '@/types/Collections'
 import { Security } from '@/business-layer/middleware/Security'
+
+export const UpdateUserRequestBody = z.object({
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  role: z.enum(['admin', 'client', 'student']).optional(),
+  email: z.string().optional(),
+  introduction: z.string().optional(),
+  affiliation: z.string().optional(),
+})
 
 class RouteWrapper {
   /**
@@ -32,9 +39,9 @@ class RouteWrapper {
       const user = await userService.getUser(id)
       if (user.role === UserRole.Client) {
         const { introduction, affiliation } = { ...(await userService.getClientAdditionalInfo(id)) }
-        return NextResponse.json({ ...user, introduction, affiliation })
+        return NextResponse.json({ data: { ...user, introduction, affiliation } })
       }
-      return NextResponse.json(user)
+      return NextResponse.json({ data: user })
     } catch (error) {
       if (error instanceof NotFound) {
         return NextResponse.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })
@@ -50,12 +57,12 @@ class RouteWrapper {
    * Updates a single user by ID if the request is made by an admin
    *
    * @param param0 The ID of the user to update
-   * @param _req
+   * @param req The next request containing the updated user information
    * @returns The updated user
    */
   @Security('jwt', ['admin'])
   static async PATCH(
-    _req: NextRequest,
+    req: NextRequest,
     {
       params,
     }: {
@@ -66,7 +73,7 @@ class RouteWrapper {
     const userService = new UserService()
     try {
       const user = await userService.getUser(id)
-      const body = UpdateUserRequestBody.parse(await _req.json())
+      const body = UpdateUserRequestBody.parse(await req.json())
       const updatedUser = await userService.updateUser(id, body)
       const { introduction: bodyIntroduction, affiliation: bodyAffiliation } = body
       if (user.role === UserRole.Client || user.role === UserRole.Admin) {
@@ -85,9 +92,11 @@ class RouteWrapper {
           })
         }
         const { introduction, affiliation } = { ...clientInfo }
-        return NextResponse.json({ ...updatedUser, introduction, affiliation } as UserCombinedInfo)
+        return NextResponse.json({
+          data: { ...updatedUser, introduction, affiliation } as UserCombinedInfo,
+        })
       }
-      return NextResponse.json(updatedUser as UserCombinedInfo)
+      return NextResponse.json({ data: updatedUser as UserCombinedInfo })
     } catch (error) {
       if (error instanceof NotFound) {
         return NextResponse.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })

@@ -1,12 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 import { NotFound } from 'payload'
-import { ZodError } from 'zod'
-
+import { z, ZodError } from 'zod'
 import ProjectService from '@/data-layer/services/ProjectService'
-import { UpdateProjectRequestBody } from '@/types/request-models/ProjectRequests'
 import { Security } from '@/business-layer/middleware/Security'
 import { RequestWithUser } from '@/types/Requests'
+import { MediaSchema, UserSchema } from '@/types/Payload'
+
+export const UpdateProjectRequestBody = z.object({
+  name: z.string().optional(),
+  description: z.string().optional(),
+  deadline: z
+    .string()
+    .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
+    .optional(),
+  timestamp: z
+    .string()
+    .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
+    .optional(),
+  clients: z
+    .union([
+      z.array(z.string()).nonempty('At least one client is required'),
+      z.array(UserSchema).nonempty('At least one client is required'),
+    ])
+    .optional(),
+  attachments: z.array(MediaSchema).max(5).optional(),
+})
 
 class RouteWrapper {
   /**

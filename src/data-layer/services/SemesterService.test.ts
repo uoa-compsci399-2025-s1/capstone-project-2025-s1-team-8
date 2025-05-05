@@ -1,6 +1,7 @@
 import { testPayloadObject } from '@/test-config/utils'
 import SemesterService from './SemesterService'
 import { semesterCreateMock, semesterCreateMock2 } from '@/test-config/mocks/Semester.mock'
+import { SemesterType } from '@/types/Semester'
 
 describe('Semester service tests', () => {
   const semesterService = new SemesterService()
@@ -26,6 +27,69 @@ describe('Semester service tests', () => {
     const fetchedSemester = await semesterService.getAllSemesters()
     expect(fetchedSemester.docs.length).toEqual(2)
     expect(fetchedSemester.docs).toEqual(expect.arrayContaining([semester1, semester2]))
+  })
+
+  it('should get all semesters with timeframe filtering', async () => {
+    const pastSemester = await semesterService.createSemester({
+      ...semesterCreateMock,
+      startDate: new Date('2023-01-01').toISOString(),
+      endDate: new Date('2023-06-30').toISOString(),
+    })
+
+    const today = new Date()
+
+    const upcomingSemester = await semesterService.createSemester({
+      ...semesterCreateMock,
+      startDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString(),
+      endDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString(),
+    })
+
+    const currentSemester = await semesterService.createSemester({
+      ...semesterCreateMock,
+      startDate: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()).toISOString(),
+      endDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString(),
+    })
+
+    const past = await semesterService.getAllSemesters(100, 1, SemesterType.Past)
+    expect(past.docs).toStrictEqual([pastSemester])
+
+    const current = await semesterService.getAllSemesters(100, 1, SemesterType.Current)
+    expect(current.docs).toStrictEqual([currentSemester])
+
+    const upcoming = await semesterService.getAllSemesters(100, 1, SemesterType.Upcoming)
+    expect(upcoming.docs).toStrictEqual([upcomingSemester])
+  })
+
+  it('should get the next upcoming semester', async () => {
+    const today = new Date()
+
+    await semesterService.createSemester({
+      ...semesterCreateMock,
+      startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2).toISOString(),
+      endDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3).toISOString(),
+    })
+
+    await semesterService.createSemester({
+      ...semesterCreateMock,
+      startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3).toISOString(),
+      endDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 4).toISOString(),
+    })
+
+    // Supposedly this semester is fetched as it is the closest in start date and end date
+    const nextSemester = await semesterService.createSemester({
+      ...semesterCreateMock,
+      startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString(),
+      endDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2).toISOString(),
+    })
+
+    await semesterService.createSemester({
+      ...semesterCreateMock,
+      startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString(),
+      endDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3).toISOString(),
+    })
+
+    const nextSem = await semesterService.getAllSemesters(100, 1, SemesterType.Next)
+    expect(nextSem.docs).toStrictEqual([nextSemester])
   })
 
   it('should return undefined if semester does not exist', async () => {
