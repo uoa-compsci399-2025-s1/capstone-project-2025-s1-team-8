@@ -23,6 +23,7 @@
   --color-pink-accent: #ff2aca; /*Used for errors and required fields*/
   --color-dark-pink: #b81c88;
   --color-light-pink: #fff0f8;
+  --color-error-color: #88b8c4;
 
   --font-silkscreen: 'Silkscreen', sans-serif;
   --font-inter: 'Inter', sans-serif;
