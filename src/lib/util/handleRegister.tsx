@@ -38,7 +38,7 @@ export const handleRegister = async (
   })
 
   if (status === 201) {
-    redirect('/client')
+    redirect('/login')
   } else {
     return { error, message, details }
   }
