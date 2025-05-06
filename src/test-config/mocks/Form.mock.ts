@@ -12,6 +12,7 @@ export const formQuestionMock: FormQuestion = {
   id: '67ff38a56a35e1b6cf43a681',
   question: 'What do you want out of this project?',
   description: 'E.g. Hello',
+  type: '',
   order: 0,
   required: true,
   fieldName: 'project_needs',
@@ -22,6 +23,7 @@ export const formQuestionMock: FormQuestion = {
 export const formQuestionCreateMock: CreateFormQuestionData = {
   question: 'What is your name?',
   description: 'E.g. Jeffery',
+  type: '',
   order: 1,
   required: true,
   fieldName: 'name',
@@ -29,6 +31,7 @@ export const formQuestionCreateMock: CreateFormQuestionData = {
 export const formQuestionUpdateMock: UpdateFormQuestionData = {
   question: 'What is your age?',
   description: 'E.g. 12',
+  type: '',
   order: 2,
   required: true,
   fieldName: 'age',

@@ -29,6 +29,12 @@ export const FormQuestion: CollectionConfig = {
       },
     },
     {
+      name: 'type',
+      type: 'select',
+      required: true,
+      options: [],
+    },
+    {
       name: 'order',
       type: 'number',
       required: true,
