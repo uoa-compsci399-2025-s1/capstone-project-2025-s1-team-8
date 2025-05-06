@@ -13,7 +13,7 @@ export default function NotFound() {
           <Image src="/error.svg" alt="error" width={192} height={192} priority />
           <p className="text-deeper-blue text-[5.25rem] font-silkscreen pb-15 pl-5">ERROR</p>
         </div>
-        <Link href="/public">
+        <Link href="/">
           <Button variant="outline" size="md">
             Return to home
           </Button>
