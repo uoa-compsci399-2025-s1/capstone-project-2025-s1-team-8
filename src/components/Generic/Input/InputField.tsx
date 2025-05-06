@@ -78,7 +78,7 @@ const Input: FC<InputProps> = ({
         ) : null}
       </div>
       {error && (
-        <div className="flex items-center gap-2 text-xs text-pink-accent min-h-[1.25rem]">
+        <div className="flex items-center gap-2 text-xs text-pink-accent min-h-[1.25rem] mt-2">
           <ExclamationTriangleIcon className="w-3 h-3" />
           <p>{errorMessage}</p>
         </div>
