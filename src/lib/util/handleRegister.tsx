@@ -1,6 +1,6 @@
 'use server'
 
-import UserService from '@/lib/services/userService/UserService'
+import UserService from '@/lib/services/user/UserService'
 import { redirect } from 'next/navigation'
 import { typeToFlattenedError } from 'zod'
 import { UserRoleWithoutAdmin } from '@/types/User'
