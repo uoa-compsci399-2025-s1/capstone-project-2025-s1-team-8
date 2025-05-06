@@ -13,29 +13,25 @@ import { StatusCodes } from 'http-status-codes'
 import { UserRole } from '@/types/User'
 
 const AdminClientService = {
-  getAllUsers: async function (
-    options: { limit?: number; cursor?: number } = {},
-  ): Promise<{ 
+  getAllUsers: async function (options: { limit?: number; cursor?: number } = {}): Promise<{
     status: StatusCodes
     data?: (typeof ClientCombinedInfo)[]
     nextPage?: string
-    error?: string 
+    error?: string
     userRole?: UserRole
   }> {
     'use server'
     const url = buildNextRequestURL('/api/admin/users', options)
     const response = await GetUsers(await buildNextRequest(url, { method: 'GET' }))
     const { data, nextPage, error } = { ...(await response.json()) }
-    
+
     return { status: response.status, data, nextPage, error }
   },
 
-  getUserById: async function (
-    userId: string,
-  ): Promise<{ 
+  getUserById: async function (userId: string): Promise<{
     status: StatusCodes
     data: typeof ClientCombinedInfo
-    error?: string 
+    error?: string
   }> {
     'use server'
     const url = buildNextRequestURL(`/api/admin/users/${userId}`, {})
@@ -65,7 +61,7 @@ const AdminClientService = {
       },
     )
     const { data, error, details } = await response.json()
-    
+
     return { status: response.status, data, error, details }
   },
 
@@ -79,18 +75,18 @@ const AdminClientService = {
       params: Promise.resolve({ id: userId }),
     })
     const { error } = await response.json()
-    
+
     return { status: response.status, error }
   },
 
   getProjectsByUserId: async function (
     userId: string,
     options: { page?: number; limit?: number } = {},
-  ): Promise<{ 
+  ): Promise<{
     status: StatusCodes
     data: Project[]
     nextPage?: string
-    error?: string 
+    error?: string
   }> {
     'use server'
     const url = buildNextRequestURL(`/api/admin/users/${userId}/projects`, options)
@@ -98,7 +94,7 @@ const AdminClientService = {
       params: Promise.resolve({ id: userId }),
     })
     const { data, nextPage, error } = { ...(await response.json()) }
-    
+
     return { status: response.status, data, nextPage, error }
   },
 } as const
