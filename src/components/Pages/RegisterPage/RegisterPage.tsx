@@ -77,18 +77,18 @@ const Register = () => {
             <span className="mx-4 text-steel-blue text-xs">OR</span>
             <div className="border-t border-steel-blue flex-grow"></div>
           </div>
-          <div className="w-full">
-            <Link href="/api/auth/google">
-              <Button
-                className="bg-white w-full"
-                size="md"
-                variant="outline"
-                startIcon={<FcGoogle className="h-full" />}
-              >
-                <p className="text-xs text-center pt-0.5">Sign Up with Google</p>
-              </Button>
-            </Link>
-          </div>
+        </div>
+        <div className="w-full">
+          <Link href="/api/auth/google">
+            <Button
+              className="bg-white w-full"
+              size="md"
+              variant="outline"
+              startIcon={<FcGoogle className="h-full" />}
+            >
+              <p className="text-xs text-center pt-0.5">Sign Up with Google</p>
+            </Button>
+          </Link>
         </div>
       </form>
     </div>
