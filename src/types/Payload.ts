@@ -56,7 +56,6 @@ export const FormQuestionSchema = z.object({
   id: z.string(),
   question: z.string(),
   description: z.string(),
-  type: z.string(),
   required: z.boolean(),
   fieldName: z.string(),
   order: z.number(),

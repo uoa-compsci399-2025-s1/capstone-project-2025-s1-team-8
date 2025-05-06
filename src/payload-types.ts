@@ -308,7 +308,6 @@ export interface FormQuestion {
    * An identifiable field name key, e.g. final_presentation_confirm
    */
   fieldName: string;
-  type: string;
   /**
    * The question ordering ascending order, e.g. 0
    */
@@ -585,7 +584,6 @@ export interface FormQuestionSelect<T extends boolean = true> {
   question?: T;
   description?: T;
   fieldName?: T;
-  type?: T;
   order?: T;
   required?: T;
   updatedAt?: T;
