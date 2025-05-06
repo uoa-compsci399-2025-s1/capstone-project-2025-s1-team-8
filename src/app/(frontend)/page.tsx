@@ -2,7 +2,7 @@ import NavBar from '@/components/Generic/NavBar/NavBar'
 import Button from '@/components/Generic/Button/Button'
 import React from 'react'
 import Link from 'next/link'
-import EncapsulateText from "src/assets/encapsulate-text.svg"
+import EncapsulateText from 'src/assets/encapsulate-text.svg'
 
 const Homepage: React.FC = () => {
   return (
