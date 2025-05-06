@@ -4,11 +4,11 @@ export const FormResponse: CollectionConfig = {
   slug: 'formResponse',
   fields: [
     {
-      name: 'name',
+      name: 'title',
       type: 'text',
       required: true,
       admin: {
-        description: 'The name of the project, e.g. Encapsulate',
+        description: 'The title of the project, e.g. Encapsulate',
       },
     },
     {
@@ -61,8 +61,39 @@ export const FormResponse: CollectionConfig = {
       },
     },
     {
+      name: 'desiredOutput',
+      type: 'textarea',
+      required: true,
+    },
+    {
+      name: 'specialEquipmentRequirements',
+      type: 'textarea',
+      required: true,
+    },
+    {
+      name: 'numberOfTeams',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'desiredTeamSkills',
+      type: 'textarea',
+      required: true,
+    },
+    {
+      name: 'availableResources',
+      type: 'textarea',
+      required: true,
+    },
+    {
+      name: 'futureConsideration',
+      type: 'checkbox',
+      required: true,
+    },
+    {
       name: 'questionResponses',
       type: 'array',
+      required: false,
       fields: [
         {
           name: 'question',

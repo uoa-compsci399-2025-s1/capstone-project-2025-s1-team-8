@@ -80,13 +80,19 @@ export const FormSchema = z.object({
 
 export const FormResponseSchema = z.object({
   id: z.string(),
-  name: z.string(),
+  title: z.string(),
   description: z.string(),
   client: UserSchema,
   otherClients: z.array(z.union([UserSchema, z.string()])),
-  questionResponses: z.array(QuestionResponseSchema),
+  questionResponses: z.array(QuestionResponseSchema).optional(),
   updatedAt: z.string(),
   createdAt: z.string(),
+  desiredOutput: z.string(),
+  specialEquipmentRequirements: z.string(),
+  numberOfTeams: z.string(),
+  desiredTeamSkills: z.string(),
+  availableResources: z.string(),
+  futureConsideration: z.boolean(),
 }) satisfies z.ZodType<FormResponse>
 
 export const ProjectSchema = z.object({

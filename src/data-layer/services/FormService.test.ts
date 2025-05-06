@@ -82,9 +82,9 @@ describe('Form service tests', () => {
     it('should update a form response', async () => {
       const newFormResponse = await formService.createFormResponse(formResponseCreateMock)
       const updatedFormResponse = await formService.updateFormResponse(newFormResponse.id, {
-        name: 'AI boyfriend finder',
+        title: 'AI boyfriend finder',
       })
-      expect(updatedFormResponse.name).toEqual('AI boyfriend finder')
+      expect(updatedFormResponse.title).toEqual('AI boyfriend finder')
     })
 
     it('should delete a form response', async () => {

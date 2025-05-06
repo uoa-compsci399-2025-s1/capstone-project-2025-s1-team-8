@@ -48,20 +48,34 @@ export const questionResponseMock: QuestionResponse = {
  */
 
 export const formResponseCreateMock: CreateFormResponseData = {
-  name: 'AI girlfriend finder',
+  title: 'AI girlfriend finder',
   description: 'AI girlfriend finder is a cool project to find your perfect match!',
   client: mockClient1,
   otherClients: [mockClient1],
-  questionResponses: [questionResponseMock],
+  desiredOutput: 'desired output',
+  specialEquipmentRequirements: 'special equipment requirements',
+  numberOfTeams: 'number of teams',
+  desiredTeamSkills: 'desired team skills',
+  availableResources: 'available resources',
+  futureConsideration: true,
+  questionResponses: [],
+  // questionResponses: [questionResponseMock],
 }
 
 export const formResponseMock: FormResponse = {
   id: '67ff38a56a35e1b6cf43a681',
-  name: 'Form Response Mock',
+  title: 'Form Response Mock',
   description: 'Form Response Description Mock',
   client: mockClient1,
   otherClients: [mockClient1],
-  questionResponses: [questionResponseMock],
+  desiredOutput: 'desired output',
+  specialEquipmentRequirements: 'special equipment requirements',
+  numberOfTeams: 'number of teams',
+  desiredTeamSkills: 'desired team skills',
+  availableResources: 'available resources',
+  futureConsideration: true,
+  questionResponses: [],
+  // questionResponses: [questionResponseMock],
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
 }

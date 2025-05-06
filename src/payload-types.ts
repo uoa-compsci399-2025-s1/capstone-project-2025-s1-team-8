@@ -265,9 +265,9 @@ export interface Project {
 export interface FormResponse {
   id: string;
   /**
-   * The name of the project, e.g. Encapsulate
+   * The title of the project, e.g. Encapsulate
    */
-  name: string;
+  title: string;
   /**
    * The description of the project, e.g. Best capstone project!
    */
@@ -280,6 +280,12 @@ export interface FormResponse {
    * The clients that are related to this project.
    */
   otherClients?: (string | User)[] | null;
+  desiredOutput: string;
+  specialEquipmentRequirements: string;
+  numberOfTeams: string;
+  desiredTeamSkills: string;
+  availableResources: string;
+  futureConsideration: boolean;
   questionResponses?:
     | {
         question: string | FormQuestion;
@@ -594,10 +600,16 @@ export interface FormQuestionSelect<T extends boolean = true> {
  * via the `definition` "formResponse_select".
  */
 export interface FormResponseSelect<T extends boolean = true> {
-  name?: T;
+  title?: T;
   description?: T;
   client?: T;
   otherClients?: T;
+  desiredOutput?: T;
+  specialEquipmentRequirements?: T;
+  numberOfTeams?: T;
+  desiredTeamSkills?: T;
+  availableResources?: T;
+  futureConsideration?: T;
   questionResponses?:
     | T
     | {
