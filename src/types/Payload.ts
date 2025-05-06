@@ -117,4 +117,6 @@ export const ClientAdditionalInfoSchema = z.object({
   createdAt: z.string(),
 }) satisfies z.ZodType<ClientAdditionalInfo>
 
-export const ClientCombinedInfo = UserSchema.merge(ClientAdditionalInfoSchema)
+export const ClientCombinedInfoSchema = UserSchema.merge(ClientAdditionalInfoSchema)
+
+export type ClientCombinedInfo = z.infer<typeof ClientCombinedInfoSchema>

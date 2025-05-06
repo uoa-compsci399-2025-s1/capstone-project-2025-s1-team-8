@@ -14,10 +14,10 @@ import { UserRole } from '@/types/User'
 
 const AdminClientService = {
   getAllUsers: async function (
-    options: { limit?: number; cursor?: number; userRole?: UserRole } = {},
+    options: { limit?: number; cursor?: number; role?: UserRole } = {},
   ): Promise<{
     status: StatusCodes
-    data?: (typeof ClientCombinedInfo)[]
+    data?: ClientCombinedInfo[]
     nextPage?: string
     error?: string
   }> {
@@ -31,7 +31,7 @@ const AdminClientService = {
 
   getUserById: async function (userId: string): Promise<{
     status: StatusCodes
-    data: typeof ClientCombinedInfo
+    data: ClientCombinedInfo
     error?: string
   }> {
     'use server'
@@ -49,7 +49,7 @@ const AdminClientService = {
     user: UpdateUserRequestBody,
   ): Promise<{
     status: StatusCodes
-    data: typeof ClientCombinedInfo
+    data: ClientCombinedInfo
     error?: string
     details?: typeToFlattenedError<UpdateUserRequestBody>
   }> {
