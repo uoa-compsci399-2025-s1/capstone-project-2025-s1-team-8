@@ -14,7 +14,7 @@ import { ProjectStatus } from '@/types/Project'
 import { typeToFlattenedError } from 'zod'
 import { StatusCodes } from 'http-status-codes'
 
-const SemesterService = {
+const AdminSemesterService = {
   getAllPaginatedSemesters: async function (
     options: { page?: number; limit?: number } = {},
   ): Promise<{
@@ -94,4 +94,4 @@ const SemesterService = {
   },
 } as const
 
-export default SemesterService
+export default AdminSemesterService
