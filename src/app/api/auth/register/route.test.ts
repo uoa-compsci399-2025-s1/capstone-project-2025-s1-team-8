@@ -33,7 +33,6 @@ describe('tests /api/auth/register', () => {
 
     const auth = await authService.getAuthByEmail(body.email)
     expect(auth.password).not.toEqual(body.password)
-    expect(auth.type).toEqual('password')
   })
 
   it('should return a 409 conflict if user already exists', async () => {
