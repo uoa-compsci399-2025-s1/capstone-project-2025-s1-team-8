@@ -49,9 +49,7 @@ describe('tests /api/users/me', async () => {
 
   describe('tests PATCH /api/users/me', () => {
     it('401 error if the user is not authenticated', async () => {
-      const res = await PATCH(createMockNextRequest('/api/users/me'), {
-        params: paramsToPromise({ id: '123' }),
-      })
+      const res = await PATCH(createMockNextRequest('/api/users/me'))
 
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
       expect((await res.json()).error).toBe('No token provided')
@@ -70,9 +68,7 @@ describe('tests /api/users/me', async () => {
       const mockedReq = createMockNextPatchRequest('http://localhost:3000/api/users/me/', {
         firstName: changedName,
       })
-      const res = await PATCH(mockedReq, {
-        params: paramsToPromise({ id: createdClientMock.id }),
-      })
+      const res = await PATCH(mockedReq)
       const json = await res.json()
       const combinedClientInfo: UserCombinedInfo = {
         ...clientMock,

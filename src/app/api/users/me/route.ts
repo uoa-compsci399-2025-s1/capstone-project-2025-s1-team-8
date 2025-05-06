@@ -42,16 +42,9 @@ class RouteWrapper {
    * @returns The user's new information
    */
   @Security('jwt')
-  static async PATCH(
-    req: RequestWithUser,
-    {
-      params,
-    }: {
-      params: Promise<{ id: string }>
-    },
-  ) {
+  static async PATCH(req: RequestWithUser) {
     const { user } = req
-    const { id } = await params
+    const id = user.id
     try {
       const body = UpdateUserRequestBody.parse(await req.json())
       const { introduction: bodyIntroduction, affiliation: bodyAffiliation } = body
