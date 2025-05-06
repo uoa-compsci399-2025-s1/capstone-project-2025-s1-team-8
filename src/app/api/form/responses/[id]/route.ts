@@ -6,7 +6,7 @@ import { Security } from '@/business-layer/middleware/Security'
 import FormService from '@/data-layer/services/FormService'
 import { RequestWithUser } from '@/types/Requests'
 import { UserRole } from '@/types/User'
-import { QuestionResponse } from '@/types/Form'
+// import { QuestionResponse } from '@/types/Form'
 
 class RouteWrapper {
   @Security('jwt', ['client', 'admin'])
@@ -22,18 +22,19 @@ class RouteWrapper {
       )
         return NextResponse.json({ error: 'Unauthorized' }, { status: StatusCodes.UNAUTHORIZED })
       return NextResponse.json({
-        data: {
-          ...fetchedForm,
-          ...fetchedForm.questionResponses?.reduce(
-            (acc, curr) => {
-              if (curr.question instanceof Object) {
-                acc[curr.question.fieldName] = curr
-              }
-              return acc
-            },
-            {} as Record<string, QuestionResponse>,
-          ),
-        },
+        data: fetchedForm,
+        // data: {
+        //   ...fetchedForm,
+        //   ...fetchedForm.questionResponses?.reduce(
+        //     (acc, curr) => {
+        //       if (curr.question instanceof Object) {
+        //         acc[curr.question.fieldName] = curr
+        //       }
+        //       return acc
+        //     },
+        //     {} as Record<string, QuestionResponse>,
+        //   ),
+        // },
       })
     } catch (error) {
       if (error instanceof NotFound)

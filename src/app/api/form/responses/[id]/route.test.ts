@@ -51,15 +51,15 @@ describe('tests /api/form/responses/[id]', async () => {
       const json = await res.json()
       expect(json.data).toEqual({
         ...formResponse,
-        ...formResponse.questionResponses?.reduce(
-          (acc, curr) => {
-            if (curr.question instanceof Object) {
-              acc[curr.question?.fieldName] = curr
-            }
-            return acc
-          },
-          {} as Record<string, unknown>,
-        ),
+        // ...formResponse.questionResponses?.reduce(
+        //   (acc, curr) => {
+        //     if (curr.question instanceof Object) {
+        //       acc[curr.question?.fieldName] = curr
+        //     }
+        //     return acc
+        //   },
+        //   {} as Record<string, unknown>,
+        // ),
       })
     })
 
@@ -75,15 +75,15 @@ describe('tests /api/form/responses/[id]', async () => {
       })
       expect((await res.json()).data).toEqual({
         ...formResponse,
-        ...formResponse.questionResponses?.reduce(
-          (acc, curr) => {
-            if (curr.question instanceof Object) {
-              acc[curr.question?.fieldName] = curr
-            }
-            return acc
-          },
-          {} as Record<string, unknown>,
-        ),
+        // ...formResponse.questionResponses?.reduce(
+        //   (acc, curr) => {
+        //     if (curr.question instanceof Object) {
+        //       acc[curr.question?.fieldName] = curr
+        //     }
+        //     return acc
+        //   },
+        //   {} as Record<string, unknown>,
+        // ),
       })
     })
   })
