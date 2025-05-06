@@ -13,7 +13,9 @@ import { StatusCodes } from 'http-status-codes'
 import { UserRole } from '@/types/User'
 
 const AdminClientService = {
-  getAllUsers: async function (options: { limit?: number; cursor?: number; userRole?: UserRole } = {}): Promise<{
+  getAllUsers: async function (
+    options: { limit?: number; cursor?: number; userRole?: UserRole } = {},
+  ): Promise<{
     status: StatusCodes
     data?: (typeof ClientCombinedInfo)[]
     nextPage?: string
