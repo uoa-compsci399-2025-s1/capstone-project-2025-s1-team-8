@@ -1,5 +1,5 @@
 import { Authentication, User } from '@/payload-types'
-import { AuthType, UserInfoResponse } from '@/types/Auth'
+import { UserInfoResponse } from '@/types/Auth'
 import { CreateAuthenticationData } from '@/types/Collections'
 import { UserRole } from '@/types/User'
 
@@ -40,7 +40,6 @@ export const googleUserResponseMock: UserInfoResponse = {
 export const authMock: Authentication = {
   id: '67ff38a56a35e1b6cf43a681',
   email: 'jeffery@gmail.com',
-  type: AuthType.OAUTH,
   provider: 'google',
   providerAccountId: '1234567890',
   refreshToken: 'refreshToken',
@@ -52,7 +51,6 @@ export const authMock: Authentication = {
 
 export const authCreateMock: CreateAuthenticationData = {
   email: 'jeffery@gmail.com',
-  type: AuthType.OAUTH,
   provider: 'google',
   providerAccountId: 'account_id',
   refreshToken: 'refreshToken',
