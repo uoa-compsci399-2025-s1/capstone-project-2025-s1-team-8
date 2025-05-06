@@ -7,14 +7,16 @@ import { UserRole } from '@/types/User'
 import { UserCombinedInfo } from '@/types/Collections'
 import { Security } from '@/business-layer/middleware/Security'
 
-export const UpdateUserRequestBody = z.object({
+export const UpdateUserRequestBodySchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
-  role: z.enum(['admin', 'client', 'student']).optional(),
+  role: z.nativeEnum(UserRole).optional(),
   email: z.string().optional(),
   introduction: z.string().optional(),
   affiliation: z.string().optional(),
 })
+
+export type UpdateUserRequestBody = z.infer<typeof UpdateUserRequestBodySchema>
 
 class RouteWrapper {
   /**
@@ -73,7 +75,7 @@ class RouteWrapper {
     const userService = new UserService()
     try {
       const user = await userService.getUser(id)
-      const body = UpdateUserRequestBody.parse(await req.json())
+      const body = UpdateUserRequestBodySchema.parse(await req.json())
       const updatedUser = await userService.updateUser(id, body)
       const { introduction: bodyIntroduction, affiliation: bodyAffiliation } = body
       if (user.role === UserRole.Client || user.role === UserRole.Admin) {
