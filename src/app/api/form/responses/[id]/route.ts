@@ -6,6 +6,7 @@ import { Security } from '@/business-layer/middleware/Security'
 import FormService from '@/data-layer/services/FormService'
 import { RequestWithUser } from '@/types/Requests'
 import { UserRole } from '@/types/User'
+import { QuestionResponse } from '@/types/Form'
 
 class RouteWrapper {
   @Security('jwt', ['client', 'admin'])
@@ -26,11 +27,11 @@ class RouteWrapper {
           ...fetchedForm.questionResponses?.reduce(
             (acc, curr) => {
               if (curr.question instanceof Object) {
-                acc[curr.question?.fieldName] = curr
+                acc[curr.question.fieldName] = curr
               }
               return acc
             },
-            {} as Record<string, unknown>,
+            {} as Record<string, QuestionResponse>,
           ),
         },
       })

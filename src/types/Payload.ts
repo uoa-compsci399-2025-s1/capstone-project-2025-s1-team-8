@@ -68,6 +68,7 @@ export const FormQuestionSchema = z.object({
 export const QuestionResponseSchema = z.object({
   question: z.union([z.string(), FormQuestionSchema]),
   answer: z.string(),
+  id: z.string().nullable().optional(),
 })
 
 export const FormSchema = z.object({
