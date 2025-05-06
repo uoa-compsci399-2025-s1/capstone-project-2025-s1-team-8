@@ -1,9 +1,9 @@
 import AdminClientService from './AdminClientService'
-import OtherClientService from './AdminSemesterService'
+import AdminSemesterService from './AdminSemesterService'
 
 const AdminService = {
   ...AdminClientService,
-  ...OtherClientService,
+  ...AdminSemesterService,
 }
 
 export default AdminService
