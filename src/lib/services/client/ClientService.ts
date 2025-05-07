@@ -5,7 +5,6 @@ import { UpdateUserData, UserCombinedInfo } from '@/types/Collections'
 import { Project } from '@/payload-types'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
-import { StatusCodes } from 'http-status-codes'
 
 const ClientService = {
   /**
