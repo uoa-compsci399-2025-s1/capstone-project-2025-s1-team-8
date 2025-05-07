@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 
-import { GET/*,PATCH*/ } from './route'
+import { GET /*,PATCH*/ } from './route'
 import {
   //createMockNextPatchRequest,
   createMockNextRequest,
