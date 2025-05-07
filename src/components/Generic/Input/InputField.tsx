@@ -1,3 +1,4 @@
+'use client'
 import React, { FC, ReactNode, useState } from 'react'
 import { ExclamationTriangleIcon } from '@heroicons/react/16/solid'
 import { LuEyeOff, LuEye } from 'react-icons/lu'
@@ -33,7 +34,7 @@ const Input: FC<InputProps> = ({
   max,
   step,
   error = false,
-  errorMessage = 'Please fill in this field',
+  errorMessage = '',
   startIcon,
   endIcon,
   required = false,
@@ -77,7 +78,7 @@ const Input: FC<InputProps> = ({
           <span className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5">{endIcon}</span>
         ) : null}
       </div>
-      {error && (
+      {error && errorMessage != '' && (
         <div className="flex items-center gap-2 text-xs text-pink-accent min-h-[1.25rem] mt-2">
           <ExclamationTriangleIcon className="w-3 h-3" />
           <p>{errorMessage}</p>
