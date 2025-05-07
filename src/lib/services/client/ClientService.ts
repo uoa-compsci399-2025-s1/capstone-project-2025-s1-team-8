@@ -32,15 +32,13 @@ const ClientService = {
     return projects
   },
 
-  async updateClientDetails(updatedClient: UpdateUserData): Promise<StatusCodes> {
+  async updateClientDetails(updatedClient: UpdateUserData): Promise<UserCombinedInfo> {
     'use server'
-    const currentUser = await this.getClientInfo()
     const url = await buildNextRequestURL('/api/users/me', {})
     const response = await UpdateClientDetails(
-      await buildNextRequest(url, { method: 'PATCH', body: updatedClient }),
-      { params: Promise.resolve({ id: currentUser.id }) },
-    )
-    return response.status
+      await buildNextRequest(url, { method: 'PATCH', body: updatedClient }))
+      const updatedUser = await response.json()
+      return updatedUser
   },
 } as const
 
