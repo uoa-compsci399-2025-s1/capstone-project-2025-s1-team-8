@@ -12,7 +12,7 @@ import { adminToken, clientToken, studentToken } from '@/test-config/routes-setu
 import { adminMock, clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 //import { clientAdditionalInfoCreateMock } from '@/test-config/mocks/User.mock'
 //import { UserCombinedInfo } from '@/types/Collections'
-import UserService from '@/data-layer/services/UserService'
+//import UserService from '@/data-layer/services/UserService'
 
 describe('tests /api/users/me', async () => {
   const cookieStore = await cookies()
