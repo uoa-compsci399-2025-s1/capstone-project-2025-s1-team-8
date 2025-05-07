@@ -43,16 +43,96 @@ const Admin = () => {
           id: `item-2`,
           projectInfo: mockProjects[1],
         },
-      ],
-      originalItems: [
         {
-          id: `item-1`,
+          id: `item-3`,
+          projectInfo: mockProjects[2],
+        },
+        {
+          id: `item-4`,
+          projectInfo: mockProjects[3],
+        },
+        {
+          id: `item-5`,
+          projectInfo: mockProjects[4],
+        },
+        {
+          id: `item-6`,
+          projectInfo: mockProjects[5],
+        },
+        {
+          id: `item-7`,
           projectInfo: mockProjects[0],
         },
         {
-          id: `item-2`,
+          id: `item-8`,
           projectInfo: mockProjects[1],
         },
+        {
+          id: `item-9`,
+          projectInfo: mockProjects[2],
+        },
+        {
+          id: `item-10`,
+          projectInfo: mockProjects[3],
+        },
+        {
+          id: `item-11`,
+          projectInfo: mockProjects[4],
+        },
+        {
+          id: `item-12`,
+          projectInfo: mockProjects[5],
+        },
+      ],
+      originalItems: [
+        {
+        id: `item-1`,
+        projectInfo: mockProjects[0],
+      },
+      {
+        id: `item-2`,
+        projectInfo: mockProjects[1],
+      },
+      {
+        id: `item-3`,
+        projectInfo: mockProjects[2],
+      },
+      {
+        id: `item-4`,
+        projectInfo: mockProjects[3],
+      },
+      {
+        id: `item-5`,
+        projectInfo: mockProjects[4],
+      },
+      {
+        id: `item-6`,
+        projectInfo: mockProjects[5],
+      },
+      {
+        id: `item-7`,
+        projectInfo: mockProjects[0],
+      },
+      {
+        id: `item-8`,
+        projectInfo: mockProjects[1],
+      },
+      {
+        id: `item-9`,
+        projectInfo: mockProjects[2],
+      },
+      {
+        id: `item-10`,
+        projectInfo: mockProjects[3],
+      },
+      {
+        id: `item-11`,
+        projectInfo: mockProjects[4],
+      },
+      {
+        id: `item-12`,
+        projectInfo: mockProjects[5],
+      },
       ],
     },
     {

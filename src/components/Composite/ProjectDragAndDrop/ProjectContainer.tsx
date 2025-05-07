@@ -99,8 +99,8 @@ const ProjectContainer = ({
         </div>
         <div className={`w-full h-1 ${dividerColor} rounded-lg`}></div>
       </div>
-
       <div ref={contentRef} className="flex items-center justify-between mx-5 mb-4">
+      <div className="absolute bottom-0 left-0 w-full h-6 z-10 bg-gradient-to-t from-muted-blue-op-45 to-transparent" />
         <SortableContext items={projects.map((i) => i.id)}>
           <div className="flex items-start flex-col gap-y-4 w-full">
             {projects.map((i) => (
