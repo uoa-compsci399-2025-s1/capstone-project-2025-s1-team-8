@@ -11,9 +11,10 @@ interface NavLink {
 
 interface NavBarProps {
   navElements?: NavLink[]
+  hasBg?: boolean
 }
 
-const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
+const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true }) => {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
   const [hasShadow, setHasShadow] = useState(false)
@@ -31,7 +32,9 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
 
   return (
     <nav
-      className={`py-2 px-[5%] pr-[8%] fixed top-0 left-0 w-full z-50 bg-beige/90 transition-shadow duration-300 ${hasShadow ? 'shadow-md shadow-muted-blue' : ''}`}
+      className={`py-2 px-[5%] pr-[8%] fixed top-0 left-0 w-full z-50 transition-shadow duration-300 ${
+        hasBg ? 'bg-beige/90' : ''
+      } ${hasShadow ? 'shadow-md shadow-muted-blue' : ''}`}
     >
       <div className="container mx-auto flex items-center justify-between">
         <Link href="/" className="text-dark-blue">
