@@ -18,6 +18,7 @@ export const formQuestionMock: FormQuestion = {
 export const formQuestionCreateMock: CreateFormQuestionData = {
   question: 'What is your name?',
 }
+
 export const formQuestionUpdateMock: UpdateFormQuestionData = {
   question: 'What is your age?',
 }
