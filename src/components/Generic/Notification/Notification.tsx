@@ -14,21 +14,34 @@ const Notification: FC<NotificationProps> = ({
   message,
   type = 'success',
 }) => {
-  const styles = {
-    success: { bg: 'light-green', text: 'dark-green', ring: 'green', alert: 'dark-green' },
-    warning: { bg: 'light-pink', text: 'dark-pink', ring: 'pink-soft', alert: 'pink-accent' },
+  const bgRoot = {
+    success: `${isVisible ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 bg-light-green ring-2 ring-green shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`,
+    warning: `${isVisible ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 bg-light-pink ring-2 ring-pink-soft shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`,
+  }
+
+  const alertRoot = {
+    success: 'text-dark-green w-5 h-5 flex-shrink-0',
+    warning: 'text-pink-accent w-5 h-5 flex-shrink-0',
+  }
+
+  const alertTitle = {
+    success: 'text-dark-green font-medium',
+    warning: 'text-dark-pink font-medium',
+  }
+
+  const alertMessage = {
+    success: 'text-dark-green text-sm',
+    warning: 'text-dark-pink text-sm',
   }
 
   return (
-    <div
-      className={` ${isVisible ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 bg-${styles[type]['bg']} ring-2 ring-${styles[type]['ring']} shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`}
-    >
+    <div className={bgRoot[type]}>
       <div className="flex items-center gap-2">
-        <FiAlertCircle className={`text-${styles[type]['alert']} w-5 h-5 flex-shrink-0`} />
-        <p className={`text-${styles[type]['text']} font-medium`}>{title}</p>
+        <FiAlertCircle className={alertRoot[type]} />
+        <p className={alertTitle[type]}>{title}</p>
       </div>
 
-      <p className={`text-${styles[type]['text']} text-sm`}>{message}</p>
+      <p className={alertMessage[type]}>{message}</p>
     </div>
   )
 }
