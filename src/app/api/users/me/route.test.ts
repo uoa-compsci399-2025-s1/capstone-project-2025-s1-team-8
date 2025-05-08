@@ -1,22 +1,20 @@
 import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 
-import { GET, PATCH } from './route'
+import { GET } from './route'
 import {
-  createMockNextPatchRequest,
+  // createMockNextPatchRequest,
   createMockNextRequest,
-  paramsToPromise,
+  // paramsToPromise,
 } from '@/test-config/utils'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import { adminMock, clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
-import { clientAdditionalInfoCreateMock } from '@/test-config/mocks/User.mock'
-import { UserCombinedInfo } from '@/types/Collections'
-import UserService from '@/data-layer/services/UserService'
+// import UserService from '@/data-layer/services/UserService'
 
 describe('tests /api/users/me', async () => {
   const cookieStore = await cookies()
-  const userService = new UserService()
+  // const userService = new UserService()
 
   describe('GET /api/users/me', () => {
     it('should return a 401 if no user is authenticated', async () => {
