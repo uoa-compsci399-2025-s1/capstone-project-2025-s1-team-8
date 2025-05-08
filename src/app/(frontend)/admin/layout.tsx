@@ -12,10 +12,12 @@ export default async function AdminLayout(props: { children: React.ReactNode }) 
 
   return (
     <html lang="en">
-    <body>
-    {/*<main>{children}</main>*/}
-    <AdminMobileView/>
-    </body>
+      <body>
+        <main>
+          {children}
+          <AdminMobileView />
+        </main>
+      </body>
     </html>
   )
 }

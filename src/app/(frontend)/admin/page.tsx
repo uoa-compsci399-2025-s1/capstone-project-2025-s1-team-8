@@ -72,7 +72,7 @@ const Admin = () => {
   ]
 
   return (
-    <div className="w-full">
+    <div className="hidden md:block w-full">
       <NavBar navElements={[{ href: '/admin', text: 'My Dashboard' }]} />
 
       <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
