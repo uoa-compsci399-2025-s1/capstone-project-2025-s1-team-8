@@ -5,6 +5,7 @@ import { StatusCodes } from 'http-status-codes'
 // import { SemesterProject } from '@/payload-types'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { Project, Semester, SemesterProject as SemesterProjectType } from '@/payload-types'
+import { Security } from '@/business-layer/middleware/Security'
 
 class RouteWrapper {
   /**
@@ -13,6 +14,7 @@ class RouteWrapper {
    * @param req The request object
    * @returns All semesters.
    */
+  @Security('jwt', ['admin'])
   static async GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const projectService = new ProjectService()
@@ -74,6 +76,10 @@ class RouteWrapper {
       if (error instanceof NotFound)
         return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
       console.log(error)
+      return NextResponse.json(
+        { error: 'Internal server error' },
+        { status: StatusCodes.INTERNAL_SERVER_ERROR },
+      )
     }
   }
 }
