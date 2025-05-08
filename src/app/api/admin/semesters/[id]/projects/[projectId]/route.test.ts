@@ -5,7 +5,7 @@ import {
   paramsToPromise,
 } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
-import { semesterProjectCreateMock, semesterProjectMock5 } from '@/test-config/mocks/Project.mock'
+import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import { PATCH, DELETE } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
 import SemesterService from '@/data-layer/services/SemesterService'
 import { semesterCreateMock, semesterMock } from '@/test-config/mocks/Semester.mock'
@@ -153,7 +153,7 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const createdSemester = await semesterService.createSemester(semesterMock)
       const createdSemesterProject = await projectService.createSemesterProject({
-        ...semesterProjectMock5,
+        ...semesterProjectCreateMock,
         semester: createdSemester.id,
       })
       const projectId = createdSemesterProject.id
@@ -173,7 +173,7 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
       const semesterService = new SemesterService()
       const createdSemester = await semesterService.createSemester(semesterMock)
       const createdSemesterProject = await projectService.createSemesterProject({
-        ...semesterProjectMock5,
+        ...semesterProjectCreateMock,
         semester: createdSemester.id,
       })
       const id = createdSemester.id
@@ -192,7 +192,7 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
       const semesterService = new SemesterService()
       const createdSemester = await semesterService.createSemester(semesterCreateMock)
       const createdSemesterProject = await projectService.createSemesterProject({
-        ...semesterProjectMock5,
+        ...semesterProjectCreateMock,
         semester: createdSemester.id,
       })
       const wrongSemester = await semesterService.createSemester(semesterMock)
