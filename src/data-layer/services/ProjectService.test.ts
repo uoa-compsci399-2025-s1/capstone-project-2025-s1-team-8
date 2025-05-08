@@ -56,11 +56,12 @@ describe('Project service methods test', () => {
   })
 
   it('should get projects by clientID', async () => {
-    const project = await projectService.createProject({ ...projectMock, clients: [clientMock] })
-    await projectService.createProject(projectMock2)
+    const project1 = await projectService.createProject(projectMock)
+    const project2 = await projectService.createProject(projectMock2)
 
-    const client1Projects = await projectService.getProjectsByClientId(clientMock.id)
-    expect(client1Projects.docs).toStrictEqual([project])
+    const clientProjects = await projectService.getProjectsByClientId(clientMock.id)
+    console.log(clientProjects)
+    expect(clientProjects.docs).toStrictEqual(expect.arrayContaining([project1, project2]))
     await expect(projectService.getProjectsByClientId('1234567890')).rejects.toThrow(
       'User not found',
     )

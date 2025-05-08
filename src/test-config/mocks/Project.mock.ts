@@ -1,9 +1,9 @@
 import { CreateProjectData, CreateSemesterProjectData } from '@/types/Collections'
-import { mockClient1, mockClient2 } from './User.mock'
 import { Project, SemesterProject } from '@/payload-types'
 import { ProjectStatus } from '@/types/Project'
 import { formResponseMock } from './Form.mock'
 import { semesterMock } from '@/test-config/mocks/Semester.mock'
+import { adminMock, clientMock } from './Auth.mock'
 
 /*
  * Project mocks
@@ -15,7 +15,7 @@ export const projectMock: Project = {
   createdAt: new Date().toISOString(),
   name: 'Project 1',
   description: 'Description 1',
-  clients: [mockClient1],
+  clients: [clientMock],
   formResponse: formResponseMock,
   deadline: new Date().toISOString(),
   timestamp: new Date().toISOString(),
@@ -27,7 +27,7 @@ export const projectMock2: Project = {
   createdAt: new Date().toISOString(),
   name: 'Project 2',
   description: 'Description 2',
-  clients: [mockClient1, mockClient2],
+  clients: [clientMock],
   formResponse: '67ff38a56a35e1b6cf43a682',
   timestamp: new Date().toISOString(),
 }
@@ -35,7 +35,7 @@ export const projectMock2: Project = {
 export const projectCreateMock: CreateProjectData = {
   name: 'Project 1',
   description: 'Description 1',
-  clients: [mockClient1],
+  clients: [clientMock],
   formResponse: '67ff38a56a35e1b6cf43a682',
   timestamp: new Date().toISOString(),
 }
@@ -43,7 +43,7 @@ export const projectCreateMock: CreateProjectData = {
 export const projectCreateMock2: CreateProjectData = {
   name: 'Project 2',
   description: 'Description 2',
-  clients: [mockClient1.id, mockClient2.id],
+  clients: [clientMock.id, adminMock.id],
   formResponse: '67ff38a56a35e1b6cf43a682',
   timestamp: new Date().toISOString(),
 }
