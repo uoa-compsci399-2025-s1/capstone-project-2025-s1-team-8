@@ -1,3 +1,7 @@
+export function validateEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && !email.includes('/')
+}
+
 /**
  * Checks if a password meets security requirements.
  *

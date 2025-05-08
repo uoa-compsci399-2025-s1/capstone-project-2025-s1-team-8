@@ -5,8 +5,7 @@ import { redirect } from 'next/navigation'
 import { typeToFlattenedError } from 'zod'
 import { UserRoleWithoutAdmin } from '@/types/User'
 import { RegisterRequestBodySchema } from '@/app/api/auth/register/route'
-import { validateEmail } from '@/utils/validateEmail'
-import { validatePassword } from '@/utils/validatePassword'
+import { validateEmail, validatePassword } from '@/utils/authUtils'
 
 export const handleRegister = async (
   formData: FormData,
