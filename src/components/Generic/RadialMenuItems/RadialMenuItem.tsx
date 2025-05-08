@@ -47,7 +47,12 @@ const RadialMenuItem: React.FC<RadialMenuItemProps> = ({
         animate={{ x: 1, opacity: 1 }}
         exit={{ x: 0, opacity: 0 }}
         transformTemplate={({ x }) => {
-          const val = parseFloat(x.replace('px', ''))
+          let val = 0
+          if (typeof x === 'string') {
+            val = parseFloat(x.replace('px', ''))
+          } else if (typeof x === 'number') {
+            val = x
+          }
           return getTransform(val, 60, index, totalItems)
         }}
         transition={{

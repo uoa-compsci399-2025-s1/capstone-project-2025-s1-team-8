@@ -1,7 +1,6 @@
 import React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import RadialMenuItem from './RadialMenuItem'
-import { FaStar } from 'react-icons/fa'
 import { FiPrinter, FiSave } from 'react-icons/fi'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
 
@@ -31,12 +30,7 @@ export const SingleItem: Story = {
       />
     </div>
   ),
-  args: {
-    Icon: FaStar,
-    label: 'Star',
-    index: 0,
-    totalItems: 3,
-  },
+  args: {},
 }
 
 export const ThreeItems: Story = {
@@ -68,7 +62,5 @@ export const ThreeItems: Story = {
       />
     </div>
   ),
-  args: {
-    progress: 1,
-  },
+  args: {},
 }
