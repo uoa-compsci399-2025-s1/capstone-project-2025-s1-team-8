@@ -6,6 +6,7 @@ import ProjectService from '@/data-layer/services/ProjectService'
 import { Security } from '@/business-layer/middleware/Security'
 import { RequestWithUser } from '@/types/Requests'
 import { MediaSchema, UserSchema } from '@/types/Payload'
+import { UserRole } from '@/types/User'
 
 export const UpdateProjectRequestBody = z.object({
   name: z.string().optional(),
@@ -64,7 +65,7 @@ class RouteWrapper {
     const projectService = new ProjectService()
     try {
       const fetchedProject = await projectService.getProjectById(id)
-      if (!fetchedProject.clients.includes(req.user.id)) {
+      if (req.user.role !== UserRole.Admin && !fetchedProject.clients.includes(req.user.id)) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: StatusCodes.UNAUTHORIZED })
       }
       const body = UpdateProjectRequestBody.parse(await req.json())
