@@ -20,7 +20,7 @@ import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProj
 import { FilterProvider } from '@/contexts/FilterContext'
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { PlaceholderProjectDetailsType } from '@/types/Project'
-import { FiAlertCircle, FiSave } from 'react-icons/fi'
+import { FiSave } from 'react-icons/fi'
 import Notification from '@/components/Generic/Notification/Notification'
 
 type DNDType = {
