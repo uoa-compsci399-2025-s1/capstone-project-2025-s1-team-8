@@ -5,40 +5,57 @@ import { UpdateUserData, UserCombinedInfo } from '@/types/Collections'
 import { Project } from '@/payload-types'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
+import { StatusCodes } from 'http-status-codes'
 
 const ClientService = {
   /**
    * Fetches the client information of the currently logged-in user.
    * @returns The client information of the user.
    * */
-  async getClientInfo(): Promise<UserCombinedInfo> {
+  async getClientInfo(): Promise<{
+    userInfo: UserCombinedInfo
+    status: StatusCodes
+  }> {
     'use server'
     const url = await buildNextRequestURL('/api/users/me', {})
     const response = await GetClientInfo(await buildNextRequest(url, { method: 'GET' }))
     const userInfo = await response.json()
-    return userInfo
+    return { userInfo, status: response.status }
   },
 
   /**
    * Fetches projects for a client.
    * @returns The projects of the currently logged-in user.
    */
-  async getClientProjects(): Promise<Project[]> {
+  async getClientProjects(): Promise<{
+    projects: Project[]
+    status: StatusCodes
+  }> {
     'use server'
     const url = await buildNextRequestURL('api/users/me/projects', {})
     const response = await GetClientProjects(await buildNextRequest(url, { method: 'GET' }))
     const projects = await response.json()
-    return projects
+    return { projects, status: response.status }
   },
 
-  async updateClientDetails(updatedClient: UpdateUserData): Promise<UserCombinedInfo> {
+  async updateClientDetails(updatedClient: UpdateUserData): Promise<{
+    updatedUser: UserCombinedInfo
+    status: StatusCodes
+    error?: string
+    details?: string
+  }> {
     'use server'
     const url = await buildNextRequestURL('/api/users/me', {})
     const response = await UpdateClientDetails(
       await buildNextRequest(url, { method: 'PATCH', body: updatedClient }),
     )
-    const updatedUser = await response.json()
-    return updatedUser
+    const { data, error } = await response.json()
+    return {
+      updatedUser: data,
+      status: response.status,
+      error: error?.message,
+      details: error?.details,
+    }
   },
 } as const
 
