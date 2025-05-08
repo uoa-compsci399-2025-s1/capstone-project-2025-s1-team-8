@@ -10,7 +10,8 @@ import { StatusCodes } from 'http-status-codes'
 const ClientService = {
   /**
    * Fetches the client information of the currently logged-in user.
-   * @returns The client information of the user.
+   * @returns {userInfo: UserCombinedInfo, status: StatusCodes}
+   * The user information and the status code of the request.
    * */
   async getClientInfo(): Promise<{
     userInfo: UserCombinedInfo
@@ -25,7 +26,8 @@ const ClientService = {
 
   /**
    * Fetches projects for a client.
-   * @returns The projects of the currently logged-in user.
+   * @returns {projects: Project[], status: StatusCodes}
+   * The projects and the status code of the request.
    */
   async getClientProjects(): Promise<{
     projects: Project[]
@@ -38,6 +40,11 @@ const ClientService = {
     return { projects, status: response.status }
   },
 
+  /**
+   * Updates the client information of the currently logged-in user.
+   * @param updatedClient The updated client information.
+   * @returns {updatedUser: UserCombinedInfo, status: StatusCodes, error?: string, details?: string}
+   */
   async updateClientDetails(updatedClient: UpdateUserData): Promise<{
     updatedUser: UserCombinedInfo
     status: StatusCodes
