@@ -32,7 +32,6 @@ describe('tests /api/auth/login', async () => {
   })
 
   it('should login a client to the client page', async () => {
-    await userService.createUser(clientMock)
     await authDataService.createAuth({
       email: clientMock.email,
       password: await authService.hashPassword('password123'),
@@ -56,7 +55,6 @@ describe('tests /api/auth/login', async () => {
   })
 
   it('should login an admin to the admin page', async () => {
-    await userService.createUser(adminMock)
     await authDataService.createAuth({
       email: adminMock.email,
       password: await authService.hashPassword('password123'),
@@ -91,7 +89,6 @@ describe('tests /api/auth/login', async () => {
   })
 
   it('should return a 401 if the email or password is incorrect', async () => {
-    userService.createUser(clientMock)
     await authDataService.createAuth({
       email: clientMock.email,
       password: await authService.hashPassword('password123'),

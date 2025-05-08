@@ -42,23 +42,15 @@ class RouteWrapper {
    * @returns The user's new information
    */
   @Security('jwt')
-  static async PATCH(
-    req: RequestWithUser,
-    {
-      params,
-    }: {
-      params: Promise<{ id: string }>
-    },
-  ) {
+  static async PATCH(req: RequestWithUser) {
     const { user } = req
-    const { id } = await params
     try {
       const body = UpdateUserRequestBody.parse(await req.json())
       const { introduction: bodyIntroduction, affiliation: bodyAffiliation } = body
       const userService = new UserService()
-      const updatedUser = await userService.updateUser(id, body)
+      const updatedUser = await userService.updateUser(user.id, body)
       if (user.role === UserRole.Client || user.role === UserRole.Admin) {
-        let clientInfo = await userService.getClientAdditionalInfo(id)
+        let clientInfo = await userService.getClientAdditionalInfo(user.id)
         if (!clientInfo) {
           clientInfo = await userService.createClientAdditionalInfo({
             client: updatedUser,

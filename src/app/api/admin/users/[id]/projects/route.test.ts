@@ -5,7 +5,7 @@ import { createMockNextRequest, paramsToPromise } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET } from './route'
-import { mockClient1 } from '@/test-config/mocks/User.mock'
+import { clientCreateMock, mockClient1 } from '@/test-config/mocks/User.mock'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import UserService from '@/data-layer/services/UserService'
@@ -62,11 +62,9 @@ describe('test /api/admin/users/[id]/projects', async () => {
       expect(data.data.length).toEqual(2)
     })
 
-    it('Should return a list of no projects for a user who has no projects', async () => {
+    it('should return a list of no projects for a user who has no projects', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const client = await userService.createUser(mockClient1)
-      await projectService.createProject(projectCreateMock)
-      await projectService.createProject(projectCreateMock)
+      const client = await userService.createUser(clientCreateMock)
       const res = await GET(createMockNextRequest(`api/admin/users/${client.id}/projects`), {
         params: paramsToPromise({ id: client.id }),
       })
@@ -74,7 +72,7 @@ describe('test /api/admin/users/[id]/projects', async () => {
       expect((await res.json()).data).toEqual([])
     })
 
-    it('should return bad Request if limit is more than 100 or less than 1', async () => {
+    it('should return bad request if limit is more than 100 or less than 1', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await GET(createMockNextRequest('api/admin/users/123/projects?limit=101'), {
         params: paramsToPromise({ id: '123' }),
