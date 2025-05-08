@@ -2,7 +2,6 @@ import { projectMock, projectMock2, projectCreateMock } from '@/test-config/mock
 import { testPayloadObject } from '@/test-config/utils'
 import ProjectService from './ProjectService'
 import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
-import UserService from './UserService'
 import SemesterService from './SemesterService'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 import { ProjectStatus } from '@/types/Project'
@@ -11,7 +10,6 @@ import { clientMock } from '@/test-config/mocks/Auth.mock'
 describe('Project service methods test', () => {
   const projectService = new ProjectService()
   const semesterService = new SemesterService()
-  const userService = new UserService()
 
   it('should get all projects', async () => {
     const project1 = await projectService.createProject(projectMock)
