@@ -2,9 +2,9 @@ import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adap
 import * as nextHeaders from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { mockClient1 } from '@/test-config/mocks/User.mock'
 import {
   authMock,
+  clientMock,
   CODE_MOCK,
   googleUserResponseMock,
   JWT_MOCK,
@@ -33,8 +33,8 @@ vi.mock('@/business-layer/security/google', async () => {
 vi.mock('@/data-layer/services/UserService', () => {
   return {
     default: class {
-      getUserByEmail = vi.fn().mockResolvedValue(mockClient1)
-      createUser = vi.fn().mockResolvedValue(mockClient1)
+      getUserByEmail = vi.fn().mockResolvedValue(clientMock)
+      createUser = vi.fn().mockResolvedValue(clientMock)
     },
   }
 })
