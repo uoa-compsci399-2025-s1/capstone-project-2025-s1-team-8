@@ -49,12 +49,12 @@ const ClientService = {
     const response = await UpdateClientDetails(
       await buildNextRequest(url, { method: 'PATCH', body: updatedClient }),
     )
-    const { data, error } = await response.json()
+    const { data, error, details } = await response.json()
     return {
       updatedUser: data,
       status: response.status,
-      error: error?.message,
-      details: error?.details,
+      error,
+      details,
     }
   },
 } as const
