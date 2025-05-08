@@ -21,12 +21,14 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true }) => {
   const pathname = usePathname()
   const [hasShadow, setHasShadow] = useState(false)
   const [loggedIn, setLoggedIn] = useState(false)
+  const [loaded, setLoaded] = useState(false)
 
   const toggleMenu = () => setIsOpen(!isOpen)
 
   useEffect(() => {
     isLoggedIn().then((status) => {
       setLoggedIn(status)
+      setLoaded(true)
     })
     const handleScroll = () => {
       setHasShadow(window.scrollY > 10)
@@ -35,6 +37,10 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true }) => {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  if (!loaded) {
+    return null
+  }
 
   return (
     <nav
