@@ -1,5 +1,5 @@
 import React from 'react'
-import '../globals.css'
+import '@/app/globals.css'
 import AdminMobileView from './adminMobileView'
 
 export const metadata = {
