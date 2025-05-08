@@ -1,13 +1,18 @@
-import { clientToken, studentToken } from '@/test-config/routes-setup'
-import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { cookies } from 'next/headers'
-import { GET } from './route'
 import { NextRequest } from 'next/server'
-import { paramsToPromise } from '@/test-config/utils'
 import { StatusCodes } from 'http-status-codes'
+
+import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
+import { AUTH_COOKIE_NAME } from '@/types/Auth'
+import { GET } from './route'
+import { paramsToPromise } from '@/test-config/utils'
+import SemesterService from '@/data-layer/services/SemesterService'
+import { semesterMock } from '@/test-config/mocks/Semester.mock'
 
 describe('tests /api/admin/export/semesters/[id]', async () => {
   const cookieStore = await cookies()
+  const semesterService = new SemesterService()
+
   describe('GET', () => {
     it('should return a 401 if the user is not authenticated', async () => {
       const res = await GET({} as NextRequest, { params: paramsToPromise({ id: 'a' }) })
@@ -25,6 +30,14 @@ describe('tests /api/admin/export/semesters/[id]', async () => {
       const res2 = await GET({} as NextRequest, { params: paramsToPromise({ id: 'a' }) })
       expect(res2.status).toBe(StatusCodes.UNAUTHORIZED)
       expect(await res2.json()).toEqual({ error: 'No scope' })
+    })
+
+    it('should return 200 OK', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const semester = await semesterService.createSemester(semesterMock)
+      const res = await GET({} as NextRequest, { params: paramsToPromise({ id: semester.id }) })
+
+      expect(res.status).toBe(StatusCodes.OK)
     })
   })
 })

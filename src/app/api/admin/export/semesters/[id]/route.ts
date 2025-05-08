@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { NotFound } from 'payload'
 import { StatusCodes } from 'http-status-codes'
 
-// import { SemesterProject } from '@/payload-types'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { Project, Semester, SemesterProject as SemesterProjectType } from '@/payload-types'
 import { Security } from '@/business-layer/middleware/Security'
@@ -66,7 +65,7 @@ class RouteWrapper {
 
       const csvData = csvRows.map((row) => row.join(',')).join('\n')
       return new NextResponse(csvData, {
-        status: 200,
+        status: StatusCodes.OK,
         headers: {
           'Content-Type': 'text/csv',
           'Content-Disposition': 'attachment; filename="data.csv"',
