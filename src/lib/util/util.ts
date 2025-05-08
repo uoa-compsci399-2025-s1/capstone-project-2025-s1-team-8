@@ -2,6 +2,7 @@
 
 import { LoginRequestBodySchema } from '@/app/api/auth/login/route'
 import UserService from '@/lib/services/userService/UserService'
+import { redirect } from 'next/navigation'
 import { typeToFlattenedError } from 'zod'
 
 /**
@@ -40,5 +41,29 @@ export const handleLogin = async (
     return { message, redirect }
   } else {
     return { error, message, details }
+  }
+}
+
+/**
+ * Checks if user is logged in
+ * @returns a boolean indicating whether the user is logged in or not.
+ */
+export const isLoggedIn = async (): Promise<boolean> => {
+  const res = await UserService.getCurrentUserInfo()
+  return res.status === 200
+}
+
+/**
+ * Handles the click event for login/logout button
+ * Redirects to the appropriate page based on the login status.
+ * @returns void
+ */
+export const handleLoginButtonClick = async (): Promise<void> => {
+  const status = await isLoggedIn()
+  if (status) {
+    await UserService.logout()
+    redirect('/')
+  } else {
+    redirect('/auth/login')
   }
 }
