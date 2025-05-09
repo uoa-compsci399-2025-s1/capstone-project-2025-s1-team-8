@@ -26,10 +26,10 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true }) => {
   const toggleMenu = () => setIsOpen(!isOpen)
 
   useEffect(() => {
-  //   isLoggedIn().then((status) => {
-  //     setLoggedIn(status)
-  //     setLoaded(true)
-  //   })
+    //   isLoggedIn().then((status) => {
+    //     setLoggedIn(status)
+    //     setLoaded(true)
+    //   })
     const handleScroll = () => {
       setHasShadow(window.scrollY > 10)
     }
