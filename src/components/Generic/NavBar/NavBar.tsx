@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-// import { isLoggedIn } from '@/lib/util/util'
-// import { handleLoginButtonClick } from '@/lib/util/util'
+// import { isLoggedIn } from '@/lib/services/user/Handlers'
+// import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 
 interface NavLink {
   href: string
@@ -24,7 +24,6 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true }) => {
   // const [loaded, setLoaded] = useState(false)
 
   const toggleMenu = () => setIsOpen(!isOpen)
-
   useEffect(() => {
     //   isLoggedIn().then((status) => {
     //     setLoggedIn(status)

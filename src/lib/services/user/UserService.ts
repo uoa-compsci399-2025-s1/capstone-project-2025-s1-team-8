@@ -8,6 +8,7 @@ import { GET as Logout } from '@/app/api/auth/logout/route'
 import { UserRoleWithoutAdmin } from '@/types/User'
 import { UserCombinedInfo } from '@/types/Collections'
 import { GET as GetUserSelfData } from '@/app/api/users/me/route'
+
 const UserService = {
   /**
    * Logs in a user with the provided email and password.
