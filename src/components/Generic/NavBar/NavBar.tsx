@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { isLoggedIn } from '@/lib/util/util'
-import { handleLoginButtonClick } from '@/lib/util/util'
+// import { isLoggedIn } from '@/lib/services/user/Handlers'
+// import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 
 interface NavLink {
   href: string
@@ -20,16 +20,15 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true }) => {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
   const [hasShadow, setHasShadow] = useState(false)
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [loaded, setLoaded] = useState(false)
+  // const [loggedIn, setLoggedIn] = useState(false)
+  // const [loaded, setLoaded] = useState(false)
 
   const toggleMenu = () => setIsOpen(!isOpen)
-
   useEffect(() => {
-    isLoggedIn().then((status) => {
-      setLoggedIn(status)
-      setLoaded(true)
-    })
+    //   isLoggedIn().then((status) => {
+    //     setLoggedIn(status)
+    //     setLoaded(true)
+    //   })
     const handleScroll = () => {
       setHasShadow(window.scrollY > 10)
     }
@@ -38,9 +37,9 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true }) => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  if (!loaded) {
-    return null
-  }
+  // if (!loaded) {
+  //   return null
+  // }
 
   return (
     <nav
@@ -73,9 +72,12 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true }) => {
             <span className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/' ? 'scale-x-100' : ''}`} />
           </div> */}
           <div className="relative group p-2">
-            <button onClick={handleLoginButtonClick} className="nav-link-text font-bold">
+            <Link href="/auth/login" className="nav-link-text font-bold">
+              Login
+            </Link>
+            {/* <button onClick={handleLoginButtonClick} className="nav-link-text font-bold">
               {loggedIn ? 'Logout' : 'Login'}
-            </button>
+            </button> */}
             <span
               className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100  ${pathname === '/auth/signin' ? 'scale-x-100' : ''}`}
             />
@@ -132,9 +134,12 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true }) => {
           </Link>
         </div>
         <div className="p-[5%]">
-          <button onClick={handleLoginButtonClick} className="nav-link-text font-bold">
+          <Link href="/auth/login" className="nav-link-text font-bold">
+            Login
+          </Link>
+          {/* <button onClick={handleLoginButtonClick} className="nav-link-text font-bold">
             {loggedIn ? 'Logout' : 'Login'}
-          </button>
+          </button> */}
         </div>
       </div>
     </nav>
