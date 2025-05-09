@@ -19,6 +19,8 @@ describe('lib/utils', () => {
       expect(isValidEmail('@x')).toBeFalsy()
       expect(isValidEmail('@')).toBeFalsy()
       expect(isValidEmail('obviouslyfakeemail')).toBeFalsy()
+      expect(isValidEmail('a@hash#.com')).toBeFalsy()
+      expect(isValidEmail('a@a*search.com')).toBeFalsy()
     })
   })
 })
