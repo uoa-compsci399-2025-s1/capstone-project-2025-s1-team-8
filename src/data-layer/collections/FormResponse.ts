@@ -78,12 +78,12 @@ export const FormResponse: CollectionConfig = {
     {
       name: 'desiredTeamSkills',
       type: 'textarea',
-      required: true,
+      required: false,
     },
     {
       name: 'availableResources',
       type: 'textarea',
-      required: true,
+      required: false,
     },
     {
       name: 'futureConsideration',

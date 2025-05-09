@@ -90,8 +90,8 @@ export const FormResponseSchema = z.object({
   desiredOutput: z.string(),
   specialEquipmentRequirements: z.string(),
   numberOfTeams: z.string(),
-  desiredTeamSkills: z.string(),
-  availableResources: z.string(),
+  desiredTeamSkills: z.string().optional(),
+  availableResources: z.string().optional(),
   futureConsideration: z.boolean(),
 }) satisfies z.ZodType<FormResponse>
 

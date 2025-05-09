@@ -283,8 +283,8 @@ export interface FormResponse {
   desiredOutput: string;
   specialEquipmentRequirements: string;
   numberOfTeams: string;
-  desiredTeamSkills: string;
-  availableResources: string;
+  desiredTeamSkills?: string | null;
+  availableResources?: string | null;
   futureConsideration: boolean;
   questionResponses?:
     | {
