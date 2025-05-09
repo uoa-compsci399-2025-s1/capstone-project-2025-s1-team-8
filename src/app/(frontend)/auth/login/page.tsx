@@ -5,7 +5,7 @@ import Input from '@/components/Generic/Input/InputField'
 import { MdOutlineMail, MdLock } from 'react-icons/md'
 import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
-import { handleLogin } from '@/lib/util/util'
+import { handleLogin } from '@/lib/services/user/Handlers'
 import { useState } from 'react'
 import { redirect } from 'next/navigation'
 
