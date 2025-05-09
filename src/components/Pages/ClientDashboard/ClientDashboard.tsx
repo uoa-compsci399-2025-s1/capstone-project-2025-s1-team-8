@@ -2,12 +2,12 @@ import CreateProjectCard from '@/components/Composite/CreateProjectCard/CreatePr
 import GradientTextArea from '@/components/Generic/GradientTextArea/GradientTextArea'
 import ClientProfile from '@/components/Composite/ClientProfile/ClientProfile'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
-import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
-import { PlaceholderProjectDetailsType } from '@/types/Project'
+import { Project } from '@/payload-types'
+import { UserCombinedInfo } from '@/types/Collections'
 
 interface ClientDashboardProps {
-  client: ClientDTOPlaceholder
-  projects: PlaceholderProjectDetailsType[]
+  client: UserCombinedInfo
+  projects: Project[]
 }
 
 const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects }) => {
@@ -30,6 +30,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects }) =
         className="bg-muted-blue-op-45 px-7 md:px-15 pt-8 pb-12 rounded-2xl border-deeper-blue border"
         headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
         heading="My projects"
+        client={client}
         projects={projects}
       />
     </div>

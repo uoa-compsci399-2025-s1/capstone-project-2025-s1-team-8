@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
-import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
 import { FiEdit, FiSave } from 'react-icons/fi'
+import { UserCombinedInfo } from '@/types/Collections'
 
 interface ClientProfileProps {
-  clientInfo: ClientDTOPlaceholder
+  clientInfo: UserCombinedInfo
 }
 
 const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo }) => {
@@ -34,9 +34,16 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo }) => {
       <div className="grid grid-cols-[max-content_auto] gap-3 pb-8">
         <Capsule text="Name" variant="muted_blue" className="ring-1 ring-muted-blue col-start-1" />
         {isEditing ? (
-          <input defaultValue={clientInfo.name} className="editable-capsule" />
+          <input
+            defaultValue={`${clientInfo.firstName} ${clientInfo.lastName}`}
+            className="editable-capsule"
+          />
         ) : (
-          <Capsule text={clientInfo.name} variant="beige" className="col-start-2" />
+          <Capsule
+            text={`${clientInfo.firstName} ${clientInfo.lastName}`}
+            variant="beige"
+            className="col-start-2"
+          />
         )}
 
         <Capsule text="Email" variant="muted_blue" className="ring-1 ring-muted-blue col-start-1" />
@@ -50,14 +57,14 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo }) => {
         {clientInfo.affiliation && !isEditing ? (
           <Capsule text={clientInfo.affiliation} variant="beige" className="col-start-2" />
         ) : (
-          <input defaultValue={clientInfo.affiliation} className="editable-capsule" />
+          <input defaultValue={clientInfo.affiliation as string} className="editable-capsule" />
         )}
       </div>
       <div>
         <Capsule text="Introduction" variant="muted_blue" className="mb-5" />
         {isEditing ? (
           <textarea
-            defaultValue={clientInfo.introduction}
+            defaultValue={clientInfo.introduction as string}
             className="resize-none min-h-[270px] w-full 
             text-dark-blue whitespace-pre-line text-sm border border-deeper-blue rounded-xl bg-light-beige p-3 focus:outline-deeper-blue"
           />

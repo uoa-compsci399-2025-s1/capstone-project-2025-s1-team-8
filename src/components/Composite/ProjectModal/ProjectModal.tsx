@@ -5,30 +5,21 @@ import { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'
 import Button from '@/components/Generic/Button/Button'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
-import { BasicClientDetails, PlaceholderProjectDetailsType } from '@/types/Project'
+import { BasicClientDetails } from '@/types/Project'
+import { Project, Semester } from '@/payload-types'
+import { UserCombinedInfo } from '@/types/Collections'
 
 interface ProjectModalProps extends ModalProps {
-  projectInfo: PlaceholderProjectDetailsType
+  projectInfo: Project
+  projectClient: UserCombinedInfo
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({
   open,
   onClose,
   className = '',
-  projectInfo: {
-    projectTitle,
-    projectClientDetails,
-    otherClientDetails = [],
-    projectDescription,
-    desiredOutput,
-    desiredTeamSkills,
-    availableResources,
-    specialRequirements,
-    numberOfTeams,
-    futureConsideration,
-    Semesters: semesters,
-    submittedDate,
-  },
+  projectInfo,
+  projectClient,
 }) => {
   const [copied, setCopied] = useState(false)
   const [copiedAll, setCopiedAll] = useState(false)
@@ -40,8 +31,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   }
 
   const handleCopyAll = (
-    projectClientDetails: BasicClientDetails,
-    otherClientDetails: BasicClientDetails[],
+    projectClientDetails: UserCombinedInfo,
+    otherClientDetails: UserCombinedInfo[],
   ) => {
     const allEmails = [
       projectClientDetails.email,
@@ -66,6 +57,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
       return `Up to ${numberOfTeams} teams`
     }
   }
+  const otherClientDetails = (projectInfo.clients as UserCombinedInfo[]).filter(
+    (client) => client.id !== projectClient.id,
+  )
 
   return (
     <Modal open={open} onClose={onClose} className={className + ' min-h-fit w-[75%] top-5'}>
@@ -81,22 +75,22 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
         {/* title */}
         <h1 className="text-4xl font-normal m-0 text-dark-blue font-dm-serif-display">
-          {projectTitle}
+          {projectInfo.name}
         </h1>
 
         {/* client details */}
         <div className="flex flex-row gap-3">
           <h2 className="flex text-lg font-normal text-steel-blue font-inter">
-            {projectClientDetails.name}
+            {projectClient.firstName + ' ' + projectClient.lastName}
           </h2>
           <h2 className="flex text-lg font-normal text-deeper-blue font-inter">|</h2>
           <h2 className="flex text-lg font-normal text-deeper-blue font-inter">
-            {projectClientDetails.email}
+            {projectClient.email}
           </h2>
           <button
             className="flex"
             style={{ pointerEvents: 'initial' }}
-            onClick={() => handleCopy(projectClientDetails.email)}
+            onClick={() => handleCopy(projectClient.email)}
           >
             {copied ? (
               <FiCheck className="self-center size-5.5 text-dark-blue" />
@@ -107,11 +101,15 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         </div>
 
         {/* project description*/}
-        <p className="text-sm text-dark-blue font-inter text-left pb-3">{projectDescription}</p>
+        <p className="text-sm text-dark-blue font-inter text-left pb-3">
+          {projectInfo.description}
+        </p>
 
         {/* desired output */}
         <Capsule variant="muted_blue" text="Desired output" />
-        <p className="text-sm text-dark-blue font-inter text-left mb-7">{desiredOutput}</p>
+        <p className="text-sm text-dark-blue font-inter text-left mb-7">
+          Placeholder for desired output for project
+        </p>
 
         {/* capsules for information */}
         <div className="grid grid-cols-[max-content_auto_max-content_max-content] grid-flow-row gap-2.5">
@@ -119,21 +117,23 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           <Capsule
             className="col-start-2"
             variant="beige"
-            text={specialRequirements ? 'Yes' : 'No'}
+            text={
+              /*specialRequirements ? 'Yes' : 'No'*/ 'Placeholder for special requirements. Should be Yes or No'
+            }
           />
 
           <Capsule className="col-start-3 mr-2" variant="muted_blue" text="Submitted" />
           <Capsule
             className="col-start-4 mr-2"
             variant="gradient"
-            text={convertDatetoddmmYYYY(submittedDate)}
+            text={convertDatetoddmmYYYY(new Date(projectInfo.createdAt))}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Number of teams" />
           <Capsule
             className="col-start-2"
             variant="beige"
-            text={convertNumberOfTeamstoString(numberOfTeams)}
+            text={/*convertNumberOfTeamstoString(numberOfTeams)*/ 'Placeholder for number of teams'}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Future consideration" />
@@ -160,7 +160,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             {otherClientDetails.map((clientDetails) => (
               <>
                 <h2 className="col-start-1 text-lg font-normal text-dark-blue font-inter alternate">
-                  {clientDetails.name}
+                  {clientDetails.firstName + ' ' + clientDetails.lastName}
                 </h2>
                 <h2 className="col-start-2 text-lg font-normal text-deeper-blue font-inter email">
                   |
@@ -172,7 +172,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             ))}
 
             <Button
-              onClick={() => handleCopyAll(projectClientDetails, otherClientDetails)}
+              onClick={() => handleCopyAll(projectClient, otherClientDetails)}
               className="col-start-5 row-start-1"
               variant="muted_blue"
               size="sm"

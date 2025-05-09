@@ -4,6 +4,10 @@ import { LoginRequestBodySchema } from '@/app/api/auth/login/route'
 import UserService from '@/lib/services/userService/UserService'
 import { redirect } from 'next/navigation'
 import { typeToFlattenedError } from 'zod'
+import ClientService from '../services/client/ClientService'
+import { StatusCodes } from 'http-status-codes'
+import { UserCombinedInfo } from '@/types/Collections'
+import { Project } from '@/payload-types'
 
 /**
  * This function validates the email address format
@@ -66,4 +70,20 @@ export const handleLoginButtonClick = async (): Promise<void> => {
   } else {
     redirect('/auth/login')
   }
+}
+
+export const handleClientPageLoad = async (): Promise<{
+  userInfo: UserCombinedInfo,
+  projects: Project []
+}> => {
+  const {userInfo, status} = await ClientService.getClientInfo()
+  const clientProjectsRes = await ClientService.getClientProjects()
+
+  if (status !== StatusCodes.OK){
+    redirect('/auth/login')
+  }
+  if (clientProjectsRes.status !== StatusCodes.OK) {
+    redirect('/auth/login')
+  }
+  return {userInfo, projects: clientProjectsRes.projects}
 }
