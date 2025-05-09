@@ -1,8 +1,8 @@
 import { CreateFormResponseData, CreateFormData } from '@/types/Collections'
 import { QuestionResponse } from '@/types/Form'
 import { FormQuestion, FormResponse } from '@/payload-types'
-import { mockClient1 } from './User.mock'
 import { CreateFormQuestionData, UpdateFormQuestionData } from '@/types/Collections'
+import { clientMock } from './Auth.mock'
 
 /*
  * The FormQuestion mocks
@@ -26,6 +26,7 @@ export const formQuestionCreateMock: CreateFormQuestionData = {
   required: true,
   fieldName: 'name',
 }
+
 export const formQuestionUpdateMock: UpdateFormQuestionData = {
   question: 'What is your age?',
   description: 'E.g. 12',
@@ -50,8 +51,8 @@ export const questionResponseMock: QuestionResponse = {
 export const formResponseCreateMock: CreateFormResponseData = {
   title: 'AI girlfriend finder',
   description: 'AI girlfriend finder is a cool project to find your perfect match!',
-  client: mockClient1,
-  otherClients: [mockClient1],
+  client: clientMock,
+  otherClients: [],
   desiredOutput: 'desired output',
   specialEquipmentRequirements: 'special equipment requirements',
   numberOfTeams: 'number of teams',
@@ -66,8 +67,8 @@ export const formResponseMock: FormResponse = {
   id: '67ff38a56a35e1b6cf43a681',
   title: 'Form Response Mock',
   description: 'Form Response Description Mock',
-  client: mockClient1,
-  otherClients: [mockClient1],
+  client: clientMock,
+  otherClients: [],
   desiredOutput: 'desired output',
   specialEquipmentRequirements: 'special equipment requirements',
   numberOfTeams: 'number of teams',
