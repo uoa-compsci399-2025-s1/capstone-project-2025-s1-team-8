@@ -73,17 +73,17 @@ export const handleLoginButtonClick = async (): Promise<void> => {
 }
 
 export const handleClientPageLoad = async (): Promise<{
-  userInfo: UserCombinedInfo,
-  projects: Project []
+  userInfo: UserCombinedInfo
+  projects: Project[]
 }> => {
-  const {userInfo, status} = await ClientService.getClientInfo()
+  const { userInfo, status } = await ClientService.getClientInfo()
   const clientProjectsRes = await ClientService.getClientProjects()
 
-  if (status !== StatusCodes.OK){
+  if (status !== StatusCodes.OK) {
     redirect('/auth/login')
   }
   if (clientProjectsRes.status !== StatusCodes.OK) {
     redirect('/auth/login')
   }
-  return {userInfo, projects: clientProjectsRes.projects}
+  return { userInfo, projects: clientProjectsRes.projects }
 }
