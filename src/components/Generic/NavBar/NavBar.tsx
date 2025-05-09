@@ -73,9 +73,12 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true }) => {
             <span className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/' ? 'scale-x-100' : ''}`} />
           </div> */}
           <div className="relative group p-2">
-            <button onClick={() => {}} className="nav-link-text font-bold">
+            <Link href="/auth/login" className="nav-link-text font-bold">
               Login
-            </button>
+            </Link>
+            {/* <button onClick={handleLoginButtonClick} className="nav-link-text font-bold">
+              {loggedIn ? 'Logout' : 'Login'}
+            </button> */}
             <span
               className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100  ${pathname === '/auth/signin' ? 'scale-x-100' : ''}`}
             />
