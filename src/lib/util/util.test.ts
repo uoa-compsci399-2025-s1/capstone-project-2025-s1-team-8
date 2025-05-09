@@ -7,6 +7,7 @@ describe('lib/utils', () => {
       expect(isValidEmail('je.ffery@x.com')).toBeTruthy()
       expect(isValidEmail('jeffe.ry@gmail.submail.com')).toBeTruthy()
       expect(isValidEmail('j@m.com')).toBeTruthy()
+      expect(isValidEmail('jefFerY@gmail.com')).toBeTruthy()
     })
 
     it('should catch incorrect emails', () => {
