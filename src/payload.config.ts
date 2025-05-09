@@ -13,7 +13,6 @@ import { Project } from './data-layer/collections/Project'
 import { SemesterProject } from './data-layer/collections/SemesterProject'
 import { Semester } from './data-layer/collections/Semester'
 import { FormQuestion } from './data-layer/collections/FormQuestion'
-import { FormResponse } from './data-layer/collections/FormResponse'
 import { Form } from './data-layer/collections/Form'
 import { Authentication } from './data-layer/collections/Authentication'
 import { ClientAdditionalInfo } from './data-layer/collections/ClientAdditionalInfo'
@@ -40,7 +39,6 @@ export default buildConfig({
     SemesterProject,
     Semester,
     FormQuestion,
-    FormResponse,
     Form,
   ],
   editor: lexicalEditor(),
