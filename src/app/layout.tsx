@@ -1,5 +1,5 @@
 import React from 'react'
-import './globals.css'
+import './(frontend)/globals.css'
 
 export const metadata = {
   description: 'Connecting Computer Science Students with Innovative Projects',
@@ -9,5 +9,9 @@ export const metadata = {
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
 
-  return <div>{children}</div>
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  )
 }

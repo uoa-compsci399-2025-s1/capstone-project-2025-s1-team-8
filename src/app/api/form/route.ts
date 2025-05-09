@@ -17,7 +17,8 @@ class RouteWrapper {
     const formService = new FormService()
     try {
       const form = await formService.getForm()
-      return NextResponse.json({ data: form })
+      const questions = await formService.getAllFormQuestions()
+      return NextResponse.json({ data: { form, questions } })
     } catch (error) {
       if (error instanceof NotFound) {
         return NextResponse.json({ error: 'Form not found' }, { status: StatusCodes.NOT_FOUND })

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+// import { isLoggedIn } from '@/lib/services/user/Handlers'
+// import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 
 interface NavLink {
   href: string
@@ -11,16 +13,22 @@ interface NavLink {
 
 interface NavBarProps {
   navElements?: NavLink[]
+  hasBg?: boolean
 }
 
-const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
+const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true }) => {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
   const [hasShadow, setHasShadow] = useState(false)
+  // const [loggedIn, setLoggedIn] = useState(false)
+  // const [loaded, setLoaded] = useState(false)
 
   const toggleMenu = () => setIsOpen(!isOpen)
-
   useEffect(() => {
+    //   isLoggedIn().then((status) => {
+    //     setLoggedIn(status)
+    //     setLoaded(true)
+    //   })
     const handleScroll = () => {
       setHasShadow(window.scrollY > 10)
     }
@@ -29,9 +37,15 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // if (!loaded) {
+  //   return null
+  // }
+
   return (
     <nav
-      className={`py-2 px-[5%] pr-[8%] fixed top-0 left-0 w-full z-50 bg-beige/90 transition-shadow duration-300 ${hasShadow ? 'shadow-md shadow-muted-blue' : ''}`}
+      className={`py-2 px-[5%] pr-[8%] fixed top-0 left-0 w-full z-50 transition-shadow duration-300 ${
+        hasBg ? 'bg-beige/90' : ''
+      } ${hasShadow ? 'shadow-md shadow-muted-blue' : ''}`}
     >
       <div className="container mx-auto flex items-center justify-between">
         <Link href="/" className="text-dark-blue">
@@ -61,6 +75,9 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
             <Link href="/auth/login" className="nav-link-text font-bold">
               Login
             </Link>
+            {/* <button onClick={handleLoginButtonClick} className="nav-link-text font-bold">
+              {loggedIn ? 'Logout' : 'Login'}
+            </button> */}
             <span
               className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100  ${pathname === '/auth/signin' ? 'scale-x-100' : ''}`}
             />
@@ -96,11 +113,12 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden overflow-hidden fixed mt-[100px] px-5 top-0 left-0 w-screen transition-all duration-300 ease-in-out bg-beige z-50 ${
+        className={`md:hidden overflow-hidden fixed mt-[100px] px-5 top-0 left-0 w-screen transition-all duration-300 ease-in-out z-50 ${
           isOpen
             ? 'max-h-96 opacity-100 py-4 mt-4 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.1)]'
             : 'max-h-0 opacity-0 py-0'
-        }`}
+        }
+        ${hasBg ? 'bg-beige/90' : ''}`}
       >
         {navElements?.map((navElement, index) => (
           <div key={index} className="p-[5%]">
@@ -116,9 +134,12 @@ const NavBar: React.FC<NavBarProps> = ({ navElements }) => {
           </Link>
         </div>
         <div className="p-[5%]">
-          <Link href="/auth/signin" className="nav-link-text font-bold">
+          <Link href="/auth/login" className="nav-link-text font-bold">
             Login
           </Link>
+          {/* <button onClick={handleLoginButtonClick} className="nav-link-text font-bold">
+            {loggedIn ? 'Logout' : 'Login'}
+          </button> */}
         </div>
       </div>
     </nav>

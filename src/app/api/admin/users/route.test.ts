@@ -12,6 +12,7 @@ import {
 } from '@/test-config/mocks/User.mock'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
+import { adminMock, clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 
 describe('tests /api/admin/users', async () => {
   const userService = new UserService()
@@ -70,34 +71,28 @@ describe('tests /api/admin/users', async () => {
 
     it('should get all users correctly with limits and cursor', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      await userService.createUser(clientCreateMock)
-      await userService.createUser(adminCreateMock)
-      const req = createMockNextRequest(`/api/admin/users?limit=1&cursor=2`)
+      const req = createMockNextRequest(`/api/admin/users?limit=3&cursor=1`)
       const res = await GET(req)
       const json = await res.json()
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json.data.length).toEqual(1)
+      expect(json.data.length).toEqual(3)
       expect(json.nextPage).toBeNull()
     })
 
     it('should filter users based on role params', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const clientUser = await userService.createUser(clientCreateMock)
-      const studentUser = await userService.createUser(studentCreateMock)
-      const adminUser = await userService.createUser(adminCreateMock)
-
       const clientReq = createMockNextRequest('/api/admin/users?role=client')
       const res = await GET(clientReq)
       expect(res.status).toBe(StatusCodes.OK)
-      expect((await res.json()).data).toEqual([clientUser])
+      expect((await res.json()).data).toEqual([clientMock])
 
       const studentReq = createMockNextRequest('/api/admin/users?role=student')
       const res2 = await GET(studentReq)
-      expect((await res2.json()).data).toEqual([studentUser])
+      expect((await res2.json()).data).toEqual([studentMock])
 
       const adminReq = createMockNextRequest('/api/admin/users?role=admin')
       const res3 = await GET(adminReq)
-      expect((await res3.json()).data).toEqual([adminUser])
+      expect((await res3.json()).data).toEqual([adminMock])
     })
 
     it('should still paginate correctly with role param filters', async () => {
@@ -118,7 +113,7 @@ describe('tests /api/admin/users', async () => {
       const res2 = await GET(req2)
       const json2 = await res2.json()
       expect(json2.data.length).toBe(1)
-      expect(json2.nextPage).toBeNull()
+      expect(json2.nextPage).toBe(3)
     })
 
     it('should return client additional info as well', async () => {
@@ -132,7 +127,7 @@ describe('tests /api/admin/users', async () => {
       const res = await GET(req)
       const json = await res.json()
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json.data.length).toEqual(1)
+      expect(json.data.length).toEqual(4) // includes the 3 mocked users in the database
       expect(json.data[0]).toStrictEqual({
         ...newClient,
         introduction: newClientInfo.introduction,
@@ -146,7 +141,7 @@ describe('tests /api/admin/users', async () => {
       const res = await GET(invalidCursorReq)
       const json = await res.json()
       expect(res.status).toBe(StatusCodes.OK)
-      expect(json.data).toEqual([])
+      expect(json.data.length).toBe(3)
       expect(json.nextPage).toBeNull()
 
       const outOfRangeReq = createMockNextRequest(`/api/admin/users?cursor=100`)

@@ -1,17 +1,15 @@
-import { clientCreateMock, mockClient1 } from '@/test-config/mocks/User.mock'
 import { projectMock, projectMock2, projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { testPayloadObject } from '@/test-config/utils'
 import ProjectService from './ProjectService'
 import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
-import UserService from './UserService'
 import SemesterService from './SemesterService'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 import { ProjectStatus } from '@/types/Project'
+import { adminMock, clientMock } from '@/test-config/mocks/Auth.mock'
 
 describe('Project service methods test', () => {
   const projectService = new ProjectService()
   const semesterService = new SemesterService()
-  const userService = new UserService()
 
   it('should get all projects', async () => {
     const project1 = await projectService.createProject(projectMock)
@@ -58,47 +56,41 @@ describe('Project service methods test', () => {
   })
 
   it('should get projects by clientID', async () => {
-    const newUser = await userService.createUser(mockClient1)
-    const project = await projectService.createProject({ ...projectMock, clients: [newUser] })
-    await projectService.createProject(projectMock2)
+    const project1 = await projectService.createProject(projectMock)
+    const project2 = await projectService.createProject(projectMock2)
 
-    const client1Projects = await projectService.getProjectsByClientId(newUser.id)
-    expect(client1Projects.docs).toStrictEqual([project])
+    const clientProjects = await projectService.getProjectsByClientId(clientMock.id)
+    expect(clientProjects.docs).toStrictEqual(expect.arrayContaining([project1, project2]))
+    await expect(projectService.getProjectsByClientId('1234567890')).rejects.toThrow(
+      'User not found',
+    )
+  })
+
+  it('should get projects by additional clients', async () => {
+    await projectService.createProject(projectMock)
+    const project2 = await projectService.createProject({
+      ...projectCreateMock,
+      additionalClients: [adminMock],
+    })
+
+    const clientProjects = await projectService.getProjectsByClientId(adminMock.id)
+    expect(clientProjects.docs).toStrictEqual([project2])
     await expect(projectService.getProjectsByClientId('1234567890')).rejects.toThrow(
       'User not found',
     )
   })
 
   it('should get all projects by a client with pagination', async () => {
-    const userService = new UserService()
-    const client1 = await userService.createUser(clientCreateMock)
-    const client2 = await userService.createUser({
-      ...clientCreateMock,
-      email: 'john@gmail.com',
-    })
-    await projectService.createProject({
-      ...projectMock,
-      clients: [client1, client2],
-      name: 'Project 1',
-    })
-    await projectService.createProject({
-      ...projectMock2,
-      clients: [client1, client2],
-      name: 'Project 2',
-    })
-    await projectService.createProject({
-      ...projectMock,
-      clients: [client1],
-      name: 'Project 3',
-    })
+    await projectService.createProject(projectCreateMock)
+    await projectService.createProject(projectCreateMock)
 
-    const page1 = await projectService.getProjectsByClientId(client2.id, 2, 1)
-    const page2 = await projectService.getProjectsByClientId(client1.id, 2, 2)
+    const page = await projectService.getProjectsByClientId(clientMock.id, 1, 1)
+    const page2 = await projectService.getProjectsByClientId(clientMock.id, 1, 2)
 
-    expect(page1.docs.length).toEqual(2)
-    expect(page1.hasNextPage).toBe(false)
+    expect(page.docs.length).toEqual(1)
+    expect(page.hasNextPage).toBeTruthy()
     expect(page2.docs.length).toEqual(1)
-    expect(page2.hasNextPage).toBe(false)
+    expect(page2.hasNextPage).toBeFalsy()
   })
 
   it('should create a project', async () => {

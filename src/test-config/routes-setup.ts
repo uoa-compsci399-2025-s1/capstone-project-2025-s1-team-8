@@ -66,6 +66,18 @@ beforeEach(async () => {
   adminToken = authService.generateJWT(adminMock, ACCESS_TOKEN_MOCK)
   clientToken = authService.generateJWT(clientMock, ACCESS_TOKEN_MOCK)
   studentToken = authService.generateJWT(studentMock, ACCESS_TOKEN_MOCK)
+  await payload.create({
+    collection: 'user',
+    data: adminMock,
+  })
+  await payload.create({
+    collection: 'user',
+    data: clientMock,
+  })
+  await payload.create({
+    collection: 'user',
+    data: studentMock,
+  })
 })
 
 afterEach(async () => {

@@ -6,6 +6,7 @@ import ProjectService from '@/data-layer/services/ProjectService'
 import { Security } from '@/business-layer/middleware/Security'
 import { RequestWithUser } from '@/types/Requests'
 import { MediaSchema, UserSchema } from '@/types/Payload'
+import { UserRole } from '@/types/User'
 
 export const UpdateProjectRequestBody = z.object({
   name: z.string().optional(),
@@ -40,7 +41,21 @@ class RouteWrapper {
     const projectService = new ProjectService()
     try {
       const data = await projectService.getProjectById(id)
-      return NextResponse.json({ data })
+      return NextResponse.json({
+        data,
+        // data: {
+        //   ...fetchedForm,
+        //   ...fetchedForm.questionResponses?.reduce(
+        //     (acc, curr) => {
+        //       if (curr.question instanceof Object) {
+        //         acc[curr.question.fieldName] = curr
+        //       }
+        //       return acc
+        //     },
+        //     {} as Record<string, QuestionResponse>,
+        //   ),
+        // },
+      })
     } catch (error) {
       if (error instanceof NotFound) {
         return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
@@ -64,7 +79,11 @@ class RouteWrapper {
     const projectService = new ProjectService()
     try {
       const fetchedProject = await projectService.getProjectById(id)
-      if (!fetchedProject.clients.includes(req.user.id)) {
+      if (
+        req.user.role !== UserRole.Admin &&
+        fetchedProject.client !== req.user.id &&
+        !fetchedProject.additionalClients?.includes(req.user.id)
+      ) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: StatusCodes.UNAUTHORIZED })
       }
       const body = UpdateProjectRequestBody.parse(await req.json())
