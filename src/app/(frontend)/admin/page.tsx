@@ -75,7 +75,7 @@ const Admin = () => {
   return (
     <div>
       <NavBar navElements={[{ href: '/admin', text: 'My Dashboard' }]} />
-      <div className="hidden xl:block w-full">
+      <div className="hidden lg:block w-full">
         <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
           {AdminNavElements.map((nav, i) => (
             <button
@@ -136,7 +136,7 @@ const Admin = () => {
       </div>
 
       {/* mobile view */}
-      <div className="xl:hidden pt-30">
+      <div className="lg:hidden pt-30">
         <div
           className="mx-[10%] p-5 sm:p-6 rounded-2xl w-4/5 h-[calc(100vh-180px)] sm:h-[calc(100vh-200px)] min-w-3xs overflow-y-hidden
         flex-1 flex-col flex items-center justify-center
