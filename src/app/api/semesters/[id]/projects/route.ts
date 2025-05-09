@@ -100,7 +100,7 @@ class RouterWrapper {
         if (
           req.user.role !== UserRole.Admin &&
           project.client !== req.user.id &&
-          !project.addtionalClients?.includes(req.user.id)
+          !project.additionalClients?.includes(req.user.id)
         ) {
           return NextResponse.json(
             { error: 'The project is not associated with the user' },

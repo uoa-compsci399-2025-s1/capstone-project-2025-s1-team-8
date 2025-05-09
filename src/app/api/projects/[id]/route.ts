@@ -82,7 +82,7 @@ class RouteWrapper {
       if (
         req.user.role !== UserRole.Admin &&
         fetchedProject.client !== req.user.id &&
-        !fetchedProject.addtionalClients?.includes(req.user.id)
+        !fetchedProject.additionalClients?.includes(req.user.id)
       ) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: StatusCodes.UNAUTHORIZED })
       }
