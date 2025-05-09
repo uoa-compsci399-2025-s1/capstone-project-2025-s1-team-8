@@ -92,6 +92,23 @@ const AdminSemesterService = {
 
     return { status: response.status, data, error, details }
   },
+
+  isCurrentOrUpcoming: async function (semesterId: string) {
+    'use server'
+    const url = buildNextRequestURL('/api/semesters', { timeframe: 'current' })
+    const response = await GetSemesters(await buildNextRequest(url, { method: 'GET' }))
+    const { data } = { ...(await response.json()) }
+
+    if (data[0].id === semesterId) {
+      return 'current'
+    } else if (data[0]) {
+      const currentDate = new Date()
+      if (data[0].startDate > currentDate) {
+        return 'upcoming'
+      }
+    }
+    return ''
+  },
 } as const
 
 export default AdminSemesterService
