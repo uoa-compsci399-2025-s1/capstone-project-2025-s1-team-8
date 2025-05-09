@@ -7,14 +7,37 @@ export const Project: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
+      admin: {
+        description: 'The name of the project, e.g. Encapsulate',
+      },
     },
     {
-      name: 'clients',
+      name: 'description',
+      type: 'textarea',
+      required: true,
+      admin: {
+        description: 'The description of the project, e.g. Best capstone project!',
+      },
+    },
+    {
+      name: 'client',
+      type: 'relationship',
+      required: true,
+      relationTo: 'user',
+      admin: {
+        description: 'The client that submitted the form',
+      },
+    },
+    {
+      name: 'additionalClients',
       relationTo: 'user',
       type: 'relationship',
       hasMany: true,
-      required: true,
+      required: false,
       minRows: 1,
+      admin: {
+        description: 'The clients that are related to this project.',
+      },
       validate: async (val, args) => {
         if (!val || val.length === 0) return true
 
@@ -39,11 +62,6 @@ export const Project: CollectionConfig = {
       },
     },
     {
-      name: 'description',
-      type: 'textarea',
-      required: true,
-    },
-    {
       name: 'attachments',
       type: 'upload',
       relationTo: 'media', // placeholder for attachments
@@ -61,10 +79,52 @@ export const Project: CollectionConfig = {
       required: true,
     },
     {
-      name: 'formResponse',
-      type: 'relationship',
-      relationTo: 'formResponse',
+      name: 'desiredOutput',
+      type: 'textarea',
       required: true,
+    },
+    {
+      name: 'specialEquipmentRequirements',
+      type: 'textarea',
+      required: true,
+    },
+    {
+      name: 'numberOfTeams',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'desiredTeamSkills',
+      type: 'textarea',
+      required: false,
+    },
+    {
+      name: 'availableResources',
+      type: 'textarea',
+      required: false,
+    },
+    {
+      name: 'futureConsideration',
+      type: 'checkbox',
+      required: true,
+    },
+    {
+      name: 'questionResponses',
+      type: 'array',
+      required: false,
+      fields: [
+        {
+          name: 'question',
+          type: 'relationship',
+          relationTo: 'formQuestion',
+          required: true,
+        },
+        {
+          name: 'answer',
+          type: 'textarea',
+          required: true,
+        },
+      ],
     },
   ],
 }

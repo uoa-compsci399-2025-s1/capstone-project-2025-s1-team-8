@@ -76,7 +76,6 @@ export interface Config {
     semesterProject: SemesterProject;
     semester: Semester;
     formQuestion: FormQuestion;
-    formResponse: FormResponse;
     form: Form;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -93,7 +92,6 @@ export interface Config {
     semesterProject: SemesterProjectSelect<false> | SemesterProjectSelect<true>;
     semester: SemesterSelect<false> | SemesterSelect<true>;
     formQuestion: FormQuestionSelect<false> | FormQuestionSelect<true>;
-    formResponse: FormResponseSelect<false> | FormResponseSelect<true>;
     form: FormSelect<false> | FormSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -248,26 +246,10 @@ export interface ClientAdditionalInfo {
  */
 export interface Project {
   id: string;
-  name: string;
-  clients: (string | User)[];
-  description: string;
-  attachments?: (string | Media)[] | null;
-  deadline?: string | null;
-  timestamp: string;
-  formResponse: string | FormResponse;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "formResponse".
- */
-export interface FormResponse {
-  id: string;
   /**
-   * The title of the project, e.g. Encapsulate
+   * The name of the project, e.g. Encapsulate
    */
-  title: string;
+  name: string;
   /**
    * The description of the project, e.g. Best capstone project!
    */
@@ -279,7 +261,10 @@ export interface FormResponse {
   /**
    * The clients that are related to this project.
    */
-  otherClients?: (string | User)[] | null;
+  additionalClients?: (string | User)[] | null;
+  attachments?: (string | Media)[] | null;
+  deadline?: string | null;
+  timestamp: string;
   desiredOutput: string;
   specialEquipmentRequirements: string;
   numberOfTeams: string;
@@ -417,10 +402,6 @@ export interface PayloadLockedDocument {
         value: string | FormQuestion;
       } | null)
     | ({
-        relationTo: 'formResponse';
-        value: string | FormResponse;
-      } | null)
-    | ({
         relationTo: 'form';
         value: string | Form;
       } | null);
@@ -547,12 +528,25 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface ProjectSelect<T extends boolean = true> {
   name?: T;
-  clients?: T;
   description?: T;
+  client?: T;
+  additionalClients?: T;
   attachments?: T;
   deadline?: T;
   timestamp?: T;
-  formResponse?: T;
+  desiredOutput?: T;
+  specialEquipmentRequirements?: T;
+  numberOfTeams?: T;
+  desiredTeamSkills?: T;
+  availableResources?: T;
+  futureConsideration?: T;
+  questionResponses?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -592,31 +586,6 @@ export interface FormQuestionSelect<T extends boolean = true> {
   fieldName?: T;
   order?: T;
   required?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "formResponse_select".
- */
-export interface FormResponseSelect<T extends boolean = true> {
-  title?: T;
-  description?: T;
-  client?: T;
-  otherClients?: T;
-  desiredOutput?: T;
-  specialEquipmentRequirements?: T;
-  numberOfTeams?: T;
-  desiredTeamSkills?: T;
-  availableResources?: T;
-  futureConsideration?: T;
-  questionResponses?:
-    | T
-    | {
-        question?: T;
-        answer?: T;
-        id?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
 }

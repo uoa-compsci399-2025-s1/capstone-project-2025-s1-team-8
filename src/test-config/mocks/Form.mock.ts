@@ -1,8 +1,7 @@
-import { CreateFormResponseData, CreateFormData } from '@/types/Collections'
+import { CreateFormData } from '@/types/Collections'
 import { QuestionResponse } from '@/types/Form'
-import { FormQuestion, FormResponse } from '@/payload-types'
+import { FormQuestion } from '@/payload-types'
 import { CreateFormQuestionData, UpdateFormQuestionData } from '@/types/Collections'
-import { clientMock } from './Auth.mock'
 
 /*
  * The FormQuestion mocks
@@ -42,43 +41,6 @@ export const formQuestionUpdateMock: UpdateFormQuestionData = {
 export const questionResponseMock: QuestionResponse = {
   question: formQuestionMock,
   answer: 'Would be good to have a MVP done by blah blah...',
-}
-
-/*
- * FormResponse mocks
- */
-
-export const formResponseCreateMock: CreateFormResponseData = {
-  title: 'AI girlfriend finder',
-  description: 'AI girlfriend finder is a cool project to find your perfect match!',
-  client: clientMock,
-  otherClients: [],
-  desiredOutput: 'desired output',
-  specialEquipmentRequirements: 'special equipment requirements',
-  numberOfTeams: 'number of teams',
-  desiredTeamSkills: 'desired team skills',
-  availableResources: 'available resources',
-  futureConsideration: true,
-  questionResponses: [],
-  // questionResponses: [questionResponseMock],
-}
-
-export const formResponseMock: FormResponse = {
-  id: '67ff38a56a35e1b6cf43a681',
-  title: 'Form Response Mock',
-  description: 'Form Response Description Mock',
-  client: clientMock,
-  otherClients: [],
-  desiredOutput: 'desired output',
-  specialEquipmentRequirements: 'special equipment requirements',
-  numberOfTeams: 'number of teams',
-  desiredTeamSkills: 'desired team skills',
-  availableResources: 'available resources',
-  futureConsideration: true,
-  questionResponses: [],
-  // questionResponses: [questionResponseMock],
-  updatedAt: new Date().toISOString(),
-  createdAt: new Date().toISOString(),
 }
 
 /*

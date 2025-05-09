@@ -4,7 +4,6 @@ import {
   ClientAdditionalInfo,
   Form,
   FormQuestion,
-  FormResponse,
   Media,
   Project,
   Semester,
@@ -78,13 +77,15 @@ export const FormSchema = z.object({
   createdAt: z.string(),
 }) satisfies z.ZodType<Form>
 
-export const FormResponseSchema = z.object({
+export const ProjectSchema = z.object({
   id: z.string(),
-  title: z.string(),
+  name: z.string(),
+  client: z.union([z.string(), UserSchema]),
+  additionalClients: z.array(z.union([z.string(), UserSchema])),
   description: z.string(),
-  client: UserSchema,
-  otherClients: z.array(z.union([UserSchema, z.string()])),
-  questionResponses: z.array(QuestionResponseSchema).optional(),
+  attachments: z.array(z.union([z.string(), MediaSchema])).optional(),
+  deadline: z.string().optional(),
+  timestamp: z.string(),
   updatedAt: z.string(),
   createdAt: z.string(),
   desiredOutput: z.string(),
@@ -93,19 +94,6 @@ export const FormResponseSchema = z.object({
   desiredTeamSkills: z.string().optional(),
   availableResources: z.string().optional(),
   futureConsideration: z.boolean(),
-}) satisfies z.ZodType<FormResponse>
-
-export const ProjectSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  clients: z.array(z.union([z.string(), UserSchema])),
-  description: z.string(),
-  attachments: z.array(z.union([z.string(), MediaSchema])).optional(),
-  deadline: z.string().optional(),
-  timestamp: z.string(),
-  updatedAt: z.string(),
-  createdAt: z.string(),
-  formResponse: z.union([z.string(), FormResponseSchema]),
 }) satisfies z.ZodType<Project>
 
 export const SemesterProjectSchema = z.object({
