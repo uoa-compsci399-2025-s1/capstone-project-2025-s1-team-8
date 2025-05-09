@@ -13,14 +13,14 @@ import {
   useSensors,
 } from '@dnd-kit/core'
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-
-// Components
 import ProjectContainer from './ProjectContainer'
 import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { FilterProvider } from '@/contexts/FilterContext'
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { PlaceholderProjectDetailsType } from '@/types/Project'
-import { FiAlertCircle, FiSave } from 'react-icons/fi'
+import { FiAlertCircle, FiSave, FiPrinter } from 'react-icons/fi'
+import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
+import { HiOutlineDocumentDownload } from 'react-icons/hi'
 
 type DNDType = {
   id: UniqueIdentifier
@@ -58,6 +58,12 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
   const [showNotification, setShowNotification] = useState<boolean>(false)
+
+  const buttonItems = [
+    { Icon: FiSave, value: 'save', label: 'Save' },
+    { Icon: FiPrinter, value: 'publish', label: 'Publish' },
+    { Icon: HiOutlineDocumentDownload, value: 'downloadcsv', label: 'Download CSV' },
+  ]
 
   useEffect(() => {
     if (hasChanges) {
@@ -100,6 +106,17 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
     setHasChanges(false)
     setShowNotification(false)
     // send changes to the backend
+    console.log('saving changes')
+  }
+
+  function handlePublishChanges() {
+    // send changes to the backend
+    console.log('publishing changes')
+  }
+
+  function handleDownloadCsv() {
+    // download csv of all approved projects
+    console.log('downloading csv')
   }
 
   function sortProjects(containerId: UniqueIdentifier, filter: string): void {
@@ -447,12 +464,21 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
             )}
           </DragOverlay>
         </DndContext>
-        <button
-          className={`flex absolute z-40 right-4 bottom-4 gap-4 p-3 rounded-full shadow-lg ${hasChanges ? 'bg-gradient-to-tl from-deeper-blue to-muted-blue cursor-pointer' : 'bg-grey-1 cursor-not-allowed'}`}
-          onClick={handleSaveChanges}
-          disabled={!hasChanges}
-        >
-          <FiSave className="w-6 h-6 text-white"></FiSave>
+        <button className="absolute z-40 right-4 bottom-4">
+          <RadialMenu
+            items={buttonItems}
+            onItemClick={(value) => {
+              if (value === 'save') {
+                handleSaveChanges()
+              }
+              if (value === 'publish') {
+                handlePublishChanges()
+              }
+              if (value === 'downloadcsv') {
+                handleDownloadCsv()
+              }
+            }}
+          />
         </button>
       </div>
     </div>
