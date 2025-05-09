@@ -5,7 +5,7 @@ import Input from '@/components/Generic/Input/InputField'
 import { MdOutlineMail, MdLock } from 'react-icons/md'
 import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
-import { handleRegister } from '@/lib/util/handleRegister'
+import { handleRegister } from '@/lib/services/user/Handlers'
 import { useState } from 'react'
 import { BsFillPersonFill } from 'react-icons/bs'
 
