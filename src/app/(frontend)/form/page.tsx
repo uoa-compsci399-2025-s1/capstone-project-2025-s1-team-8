@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useState } from 'react'
 import Button from '@/components/Generic/Button/Button'
 import Input from '@/components/Generic/Input/InputField'
@@ -35,6 +36,21 @@ export default function Form() {
   const deletePair = (index: number) => {
     setPairs(pairs.filter((_, i) => i !== index))
   }
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const data = Object.fromEntries(formData.entries())
+
+    // Add the pairs of names and emails to the data object
+    data['OtherClientDetails'] = pairs.map((pair) => ({
+      fullName: pair.fullName,
+      email: pair.email,
+    }))
+
+    console.log('Form submitted:', data)
+  }
+
 
   return (
     <div className="h-dvh w-dvw bg-gradient-to-b from-[#779ea7] to-[#dae6e2] flex flex-col items-center overflow-y-scroll py-[8%] px-[10%] gap-4 p-4">
