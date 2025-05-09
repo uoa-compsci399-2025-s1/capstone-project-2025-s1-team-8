@@ -1,7 +1,7 @@
 'use server'
 
 import { LoginRequestBodySchema } from '@/app/api/auth/login/route'
-import UserService from '@/lib/services/userService/UserService'
+import UserService from '@/lib/services/user/UserService'
 import { redirect } from 'next/navigation'
 import { typeToFlattenedError } from 'zod'
 
@@ -49,7 +49,7 @@ export const handleLogin = async (
  * @returns a boolean indicating whether the user is logged in or not.
  */
 export const isLoggedIn = async (): Promise<boolean> => {
-  const res = await UserService.getCurrentUserInfo()
+  const res = await UserService.getUserSelfData()
   return res.status === 200
 }
 
