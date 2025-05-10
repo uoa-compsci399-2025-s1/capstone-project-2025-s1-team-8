@@ -2,43 +2,33 @@ import { Meta, StoryObj } from '@storybook/react'
 import ProjectDnD from './ProjectDnD'
 import { UniqueIdentifier } from '@dnd-kit/core'
 import { mockProjects } from '@/mocks/Projects.mock'
+import { ProjectStatus } from '@/types/Project'
 
-const containers = [
+const semesterId = 'semester12026'
+const presetContainers = [
   {
-    id: 'container-1' as UniqueIdentifier,
-    title: 'Rejected',
+    id: 'rejected-container' as UniqueIdentifier,
+    title: ProjectStatus.Rejected,
     containerColor: 'light' as const,
     currentItems: [
-      {
-        id: `item-1`,
-        projectInfo: mockProjects[0],
-      },
-      {
-        id: `item-2`,
-        projectInfo: mockProjects[1],
-      },
+      { id: 'item-1', projectInfo: mockProjects[0] },
+      { id: 'item-2', projectInfo: mockProjects[1] },
     ],
     originalItems: [
-      {
-        id: `item-1`,
-        projectInfo: mockProjects[0],
-      },
-      {
-        id: `item-2`,
-        projectInfo: mockProjects[1],
-      },
+      { id: 'item-1', projectInfo: mockProjects[0] },
+      { id: 'item-2', projectInfo: mockProjects[1] },
     ],
   },
   {
-    id: 'container-2' as UniqueIdentifier,
-    title: 'Pending',
+    id: 'pending-container' as UniqueIdentifier,
+    title: ProjectStatus.Pending,
     containerColor: 'medium' as const,
     currentItems: [],
     originalItems: [],
   },
   {
-    id: 'container-3' as UniqueIdentifier,
-    title: 'Approved',
+    id: 'approved-container' as UniqueIdentifier,
+    title: ProjectStatus.Approved,
     containerColor: 'dark' as const,
     currentItems: [],
     originalItems: [],
@@ -50,7 +40,8 @@ const meta: Meta<typeof ProjectDnD> = {
   component: ProjectDnD,
   tags: ['autodocs'],
   args: {
-    presetContainers: containers,
+    presetContainers: presetContainers,
+    semesterId: semesterId,
   },
 }
 

@@ -27,7 +27,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     specialRequirements,
     numberOfTeams,
     futureConsideration,
-    Semesters: semesters,
+    semesters: semesters,
     submittedDate,
   },
 }) => {
@@ -40,10 +40,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     setTimeout(() => setCopied(false), 1000)
   }
 
-  const handleCopyAll = (
-    projectClientDetails: User,
-    otherClientDetails: User[],
-  ) => {
+  const handleCopyAll = (projectClientDetails: User, otherClientDetails: User[]) => {
     const allEmails = [
       projectClientDetails.email,
       ...otherClientDetails.map((client) => client.email),
@@ -58,14 +55,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     const mm = String(date.getMonth() + 1).padStart(2, '0') // January is 0!
     const yyyy = date.getFullYear()
     return `${dd}/${mm}/${yyyy}`
-  }
-
-  const convertNumberOfTeamstoString = (numberOfTeams: number) => {
-    if (numberOfTeams === 1) {
-      return '1 team'
-    } else {
-      return `Up to ${numberOfTeams} teams`
-    }
   }
 
   return (
@@ -117,11 +106,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         {/* capsules for information */}
         <div className="grid grid-cols-[max-content_auto_max-content_max-content] grid-flow-row gap-2.5">
           <Capsule className="col-start-1 mr-2" variant="muted_blue" text="Special requirements" />
-          <Capsule
-            className="col-start-2"
-            variant="beige"
-            text={specialRequirements}
-          />
+          <Capsule className="col-start-2" variant="beige" text={specialRequirements} />
 
           <Capsule className="col-start-3 mr-2" variant="muted_blue" text="Submitted" />
           <Capsule
@@ -131,11 +116,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Number of teams" />
-          <Capsule
-            className="col-start-2"
-            variant="beige"
-            text={convertNumberOfTeamstoString(numberOfTeams)}
-          />
+          <Capsule className="col-start-2" variant="beige" text={numberOfTeams} />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Future consideration" />
           <Capsule
@@ -144,21 +125,23 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             text={futureConsideration ? 'Yes' : 'No'}
           />
 
-          <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />
-          <div className="col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
-            {semesters.map((semester : Semester) => (
-              <Capsule variant="beige" text={semester.name} key={semester.id} />
-            ))}
-          </div>
+          {semesters && <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />}
+          {semesters && (
+            <div className="col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
+              {semesters.map((semester: Semester) => (
+                <Capsule variant="beige" text={semester.name} key={semester.id} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
       <div className="relative bg-transparent-blue max-w-full flex flex-col px-15 pt-12 py-19 rounded-b-2xl gap-5">
         <div className="flex flex-col">
           <div
-            className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3 pb-3`}
+            className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails?.length ?? 0} gap-x-3 pb-3`}
           >
-            {otherClientDetails.map((clientDetails) => (
+            {otherClientDetails?.map((clientDetails) => (
               <>
                 <h2 className="col-start-1 text-lg font-normal text-dark-blue font-inter alternate">
                   {clientDetails.firstName} {clientDetails.lastName}
@@ -173,7 +156,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             ))}
 
             <Button
-              onClick={() => handleCopyAll(projectClientDetails, otherClientDetails)}
+              onClick={() => handleCopyAll(projectClientDetails, otherClientDetails ?? [])}
               className="col-start-5 row-start-1"
               variant="muted_blue"
               size="sm"

@@ -19,20 +19,21 @@ import ProjectContainer from './ProjectContainer'
 import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { FilterProvider } from '@/contexts/FilterContext'
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
-import { ProjectDetailsType } from '@/types/Project'
+import { ProjectDetailsType, ProjectStatus } from '@/types/Project'
 import { FiAlertCircle, FiSave } from 'react-icons/fi'
 import { UserRole } from '@/types/User'
 
-type DNDType = {
+export type DNDType = {
   id: UniqueIdentifier
-  title: string
+  title: ProjectStatus
   containerColor: 'light' | 'medium' | 'dark'
   currentItems: ProjectCardType[]
   originalItems: ProjectCardType[]
 }
 
-type DndComponentProps = {
+export type DndComponentProps = {
   presetContainers: DNDType[]
+  semesterId: string
 }
 
 const defaultProjectInfo: ProjectDetailsType = {
@@ -41,12 +42,12 @@ const defaultProjectInfo: ProjectDetailsType = {
   projectTitle: '',
   projectClientDetails: {
     id: '',
-    firstName: '', 
-    lastName: '', 
+    firstName: '',
+    lastName: '',
     role: UserRole.Client,
     updatedAt: '',
     createdAt: '',
-    email: ''
+    email: '',
   },
   otherClientDetails: [],
   projectDescription: '',
@@ -60,8 +61,8 @@ const defaultProjectInfo: ProjectDetailsType = {
   submittedDate: new Date(),
 }
 
-const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
-  const [containers, setContainers] = useState<DNDType[]>(presetContainers.presetContainers)
+const ProjectDnD: React.FC<DndComponentProps> = ({ presetContainers, semesterId }) => {
+  const [containers, setContainers] = useState<DNDType[]>(presetContainers)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
   const [showNotification, setShowNotification] = useState<boolean>(false)
@@ -84,7 +85,6 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
     }
   }, [showNotification])
 
-  //TODO: onlick of save changes button, send all container originalItems (and their order) to the backend.
   //TODO: make wrapper container fetch the current ordering of items from the backend and display as the presetContainers
   //TODO: when items are moved around, remove the active filter styles
 
@@ -124,11 +124,17 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
                 a.projectInfo.projectTitle.localeCompare(b.projectInfo.projectTitle),
               )
             } else if (filter === 'clientName') {
-              sorted.sort((a, b) =>
-                a.projectInfo.projectClientDetails.name.localeCompare(
-                  b.projectInfo.projectClientDetails.name,
-                ),
-              )
+              sorted.sort((a, b) => {
+                const aFullName =
+                  a.projectInfo.projectClientDetails.firstName +
+                  ' ' +
+                  a.projectInfo.projectClientDetails.lastName
+                const bFullName =
+                  b.projectInfo.projectClientDetails.firstName +
+                  ' ' +
+                  b.projectInfo.projectClientDetails.lastName
+                return aFullName.localeCompare(bFullName)
+              })
             } else if (filter === 'submissionDate') {
               sorted.sort(
                 (a, b) =>

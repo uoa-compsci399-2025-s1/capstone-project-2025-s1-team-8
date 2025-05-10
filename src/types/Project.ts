@@ -1,4 +1,4 @@
-import { Semester, User } from "@/payload-types"
+import { Semester, User } from '@/payload-types'
 
 export enum ProjectStatus {
   Pending = 'pending',
