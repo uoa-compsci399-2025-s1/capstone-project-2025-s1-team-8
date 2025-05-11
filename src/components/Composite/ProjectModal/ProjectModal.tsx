@@ -56,7 +56,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   }
 
   const projectClient = projectInfo.client as UserCombinedInfo
-  const otherClientDetails = projectInfo.additionalClients ? projectInfo.additionalClients as UserCombinedInfo[]: []
+  const otherClientDetails = projectInfo.additionalClients
+    ? (projectInfo.additionalClients as UserCombinedInfo[])
+    : []
 
   return (
     <Modal open={open} onClose={onClose} className={className + ' min-h-fit w-[75%] top-5'}>
@@ -114,9 +116,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           <Capsule
             className="col-start-2"
             variant="beige"
-            text={
-              projectInfo.specialEquipmentRequirements
-            }
+            text={projectInfo.specialEquipmentRequirements}
           />
 
           <Capsule className="col-start-3 mr-2" variant="muted_blue" text="Submitted" />
@@ -179,9 +179,13 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           </div>
         </div>
         <Capsule variant="light_beige" text="Desired team skills" />
-        <p className="text-sm text-dark-blue font-inter text-left mb-3">{projectInfo.desiredTeamSkills}</p>
+        <p className="text-sm text-dark-blue font-inter text-left mb-3">
+          {projectInfo.desiredTeamSkills}
+        </p>
         <Capsule variant="light_beige" text="Available resources" />
-        <p className="text-sm text-dark-blue font-inter text-left">{projectInfo.availableResources}</p>
+        <p className="text-sm text-dark-blue font-inter text-left">
+          {projectInfo.availableResources}
+        </p>
       </div>
     </Modal>
   )

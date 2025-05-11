@@ -18,8 +18,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo }) => {
     projectInfo.description.length > 100
       ? projectInfo.description.slice(0, 100) + '...'
       : projectInfo.description
-    
-    const client = projectInfo.client as UserCombinedInfo
+
+  const client = projectInfo.client as UserCombinedInfo
 
   return (
     <div>
@@ -35,11 +35,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo }) => {
           </div>
         </div>
       </div>
-      <ProjectModal
-        projectInfo={projectInfo}
-        open={modalOpen}
-        onClose={() => toggleModal()}
-      />
+      <ProjectModal projectInfo={projectInfo} open={modalOpen} onClose={() => toggleModal()} />
     </div>
   )
 }
