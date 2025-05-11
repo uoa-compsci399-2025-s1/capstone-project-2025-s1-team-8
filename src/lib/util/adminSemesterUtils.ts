@@ -43,7 +43,6 @@ export const getAllSemesters = async (): Promise<void | {
   details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
 }> => {
   const { status, error, data } = await AdminSemesterService.getAllPaginatedSemesters()
-  console.log(data)
   if (status === 200) {
     const semestersDto: SemesterDTOPlaceholder[] = await Promise.all(
       data?.map(async (semester) => {
@@ -53,6 +52,11 @@ export const getAllSemesters = async (): Promise<void | {
           approvedProjects.data?.map(async (semesterProject) => {
             if (typeof semesterProject.project === 'object') {
               // ts should always be a fucking object im sick of it
+              const semestersResponse = await AdminSemesterService.getProjectSemesters(
+                semesterProject.project.id,
+              )
+              const semesters = semestersResponse.data
+              const semesterArray = semesters.map((semester: { name: string }) => semester.name)
               return {
                 projectId: semesterProject.project.id,
                 projectTitle: semesterProject.project.name,
@@ -63,11 +67,12 @@ export const getAllSemesters = async (): Promise<void | {
                 desiredTeamSkills: semesterProject.project.desiredTeamSkills,
                 availableResources: semesterProject.project.availableResources,
                 specialRequirements: semesterProject.project.specialEquipmentRequirements,
+                submittedDate: new Date(semesterProject.project.createdAt),
+                Semesters: semesterArray,
               }
             }
           }) || [],
         )
-
         const isCurrentOrUpcoming = await AdminSemesterService.isCurrentOrUpcoming(id)
 
         return {

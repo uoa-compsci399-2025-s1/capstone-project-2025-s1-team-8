@@ -6,6 +6,7 @@ import {
   PATCH as UpdateSemester,
   UpdateSemesterRequestBody,
 } from '@/app/api/admin/semesters/[id]/route'
+import { GET as GetSemesterProjects } from '@/app/api/projects/[id]/semesters/route'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { CreateSemesterData } from '@/types/Collections'
@@ -108,6 +109,21 @@ const AdminSemesterService = {
       }
     }
     return ''
+  },
+
+  getProjectSemesters: async function (projectId: string): Promise<{
+    status: StatusCodes
+    data?: Semester[]
+    error?: string
+  }> {
+    'use server'
+    const url = `/api/projects/${projectId}/semesters`
+    const response = await GetSemesterProjects(await buildNextRequest(url, { method: 'GET' }), {
+      params: Promise.resolve({ id: projectId }),
+    })
+    const { data, error } = { ...(await response.json()) }
+
+    return { status: response.status, data, error }
   },
 } as const
 
