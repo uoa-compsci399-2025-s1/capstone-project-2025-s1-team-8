@@ -21,8 +21,8 @@ export default function Client() {
     handleClientPageLoad().then((res) => {
       setUser(res.userInfo)
       setProjects(res.projects)
+      setSemesters([] as Semester[][])
       setIsLoaded(true)
-      //setSemesters(res.semesters)
     })
     isLoggedIn().then((res) => {
       setLoggedIn(res)
