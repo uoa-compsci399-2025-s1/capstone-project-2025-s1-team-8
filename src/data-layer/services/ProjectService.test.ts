@@ -34,7 +34,7 @@ describe('Project service methods test', () => {
       expect(page2.hasNextPage).toBe(false)
     })
 
-    it('should get all projects with target client ID covering both client and additiona clients', async () => {
+    it('should get all projects with target client ID covering both client and additional clients', async () => {
       await projectService.createProject({
         ...projectCreateMock,
         client: studentMock,
