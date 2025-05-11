@@ -5,32 +5,55 @@ import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import SemesterService from './SemesterService'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 import { ProjectStatus } from '@/types/Project'
-import { adminMock, clientMock } from '@/test-config/mocks/Auth.mock'
+import { adminMock, clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 
 describe('Project service methods test', () => {
   const projectService = new ProjectService()
   const semesterService = new SemesterService()
 
-  it('should get all projects', async () => {
-    const project1 = await projectService.createProject(projectMock)
-    const project2 = await projectService.createProject(projectMock2)
+  describe('getAllProjects', () => {
+    it('should get all projects', async () => {
+      const project1 = await projectService.createProject(projectMock)
+      const project2 = await projectService.createProject(projectMock2)
 
-    expect((await projectService.getAllProjects()).docs).toEqual(
-      expect.arrayContaining([project1, project2]),
-    )
-  })
+      expect((await projectService.getAllProjects()).docs).toEqual(
+        expect.arrayContaining([project1, project2]),
+      )
+    })
 
-  it('should get all projects with pagination', async () => {
-    await projectService.createProject(projectMock)
-    await projectService.createProject(projectMock2)
+    it('should get all projects with pagination', async () => {
+      await projectService.createProject(projectMock)
+      await projectService.createProject(projectMock2)
 
-    const page1 = await projectService.getAllProjects(1, 1)
-    const page2 = await projectService.getAllProjects(2, 1)
+      const page1 = await projectService.getAllProjects(1, 1)
+      const page2 = await projectService.getAllProjects(2, 1)
 
-    expect(page1.docs.length).toEqual(1)
-    expect(page1.hasNextPage).toBe(true)
-    expect(page2.docs.length).toEqual(2)
-    expect(page2.hasNextPage).toBe(false)
+      expect(page1.docs.length).toEqual(1)
+      expect(page1.hasNextPage).toBe(true)
+      expect(page2.docs.length).toEqual(2)
+      expect(page2.hasNextPage).toBe(false)
+    })
+
+    it('should get all projects with target client ID covering both client and additiona clients', async () => {
+      await projectService.createProject({
+        ...projectCreateMock,
+        client: studentMock,
+        additionalClients: [],
+      })
+      const project1 = await projectService.createProject(projectMock)
+      const project2 = await projectService.createProject({
+        ...projectCreateMock,
+        client: studentMock,
+        additionalClients: [clientMock],
+      })
+
+      const paginatedDocs = await projectService.getAllProjects(undefined, undefined, {
+        clientId: clientMock.id,
+      })
+
+      expect(paginatedDocs.docs.length).toBe(2)
+      expect(paginatedDocs.docs).toStrictEqual(expect.arrayContaining([project1, project2]))
+    })
   })
 
   it('should get project by ID', async () => {
