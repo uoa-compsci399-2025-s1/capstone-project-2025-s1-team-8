@@ -1,6 +1,6 @@
 import { NotFound, PaginatedDocs } from 'payload'
 
-import { Project, User } from '@/payload-types'
+import { Project } from '@/payload-types'
 import { CreateProjectData, UpdateProjectData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 import { CreateSemesterProjectData, UpdateSemesterProjectData } from '@/types/Collections'
@@ -79,9 +79,8 @@ export default class ProjectService {
     },
   ): Promise<PaginatedDocs<Project>> {
     const userService = new UserService()
-    let client: User
     try {
-      client = await userService.getUser(clientId)
+      await userService.getUser(clientId)
     } catch (error) {
       if (error instanceof NotFound) {
         throw new NotFound(() => {
@@ -93,9 +92,18 @@ export default class ProjectService {
     const data = await payload.find({
       collection: 'project',
       where: {
-        clients: {
-          contains: client,
-        },
+        or: [
+          {
+            client: {
+              equals: clientId,
+            },
+          },
+          {
+            additionalClients: {
+              contains: clientId,
+            },
+          },
+        ],
         ...(!!options?.published ? { published: { equals: options.published } } : {}),
         ...(!!options?.status ? { status: { equals: options.status } } : {}),
       },

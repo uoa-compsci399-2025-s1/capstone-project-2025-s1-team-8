@@ -5,7 +5,7 @@ import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import SemesterService from './SemesterService'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 import { ProjectStatus } from '@/types/Project'
-import { clientMock } from '@/test-config/mocks/Auth.mock'
+import { adminMock, clientMock } from '@/test-config/mocks/Auth.mock'
 
 describe('Project service methods test', () => {
   const projectService = new ProjectService()
@@ -60,24 +60,29 @@ describe('Project service methods test', () => {
     const project2 = await projectService.createProject(projectMock2)
 
     const clientProjects = await projectService.getProjectsByClientId(clientMock.id)
-    console.log(clientProjects)
     expect(clientProjects.docs).toStrictEqual(expect.arrayContaining([project1, project2]))
     await expect(projectService.getProjectsByClientId('1234567890')).rejects.toThrow(
       'User not found',
     )
   })
 
+  it('should get projects by additional clients', async () => {
+    await projectService.createProject(projectMock)
+    const project2 = await projectService.createProject({
+      ...projectCreateMock,
+      additionalClients: [adminMock],
+    })
+
+    const clientProjects = await projectService.getProjectsByClientId(adminMock.id)
+    expect(clientProjects.docs).toStrictEqual([project2])
+    await expect(projectService.getProjectsByClientId('1234567890')).rejects.toThrow(
+      'User not found',
+    )
+  })
+
   it('should get all projects by a client with pagination', async () => {
-    await projectService.createProject({
-      ...projectCreateMock,
-      clients: [clientMock],
-      name: 'Project 1',
-    })
-    await projectService.createProject({
-      ...projectCreateMock,
-      clients: [clientMock],
-      name: 'Project 2',
-    })
+    await projectService.createProject(projectCreateMock)
+    await projectService.createProject(projectCreateMock)
 
     const page = await projectService.getProjectsByClientId(clientMock.id, 1, 1)
     const page2 = await projectService.getProjectsByClientId(clientMock.id, 1, 2)
