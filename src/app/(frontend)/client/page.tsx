@@ -15,6 +15,7 @@ export default function Client() {
   const [projects, setProjects] = useState<Project[]>([])
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
   const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
+  const [semesters, setSemesters] = useState<Semester[][]>([])
 
   useEffect(() => {
     handleClientPageLoad().then((res) => {
@@ -31,8 +32,7 @@ export default function Client() {
   if (!isLoaded || !loginLoaded) {
     return null
   }
-  // Empty array for now
-  const semesters: Semester[][] = []
+  // Empty array for now, once endpoint is done replace with respective service
   for (let i = 0; i < projects.length; i++) {
     semesters.push([] as Semester[])
   }
