@@ -1,12 +1,19 @@
 import { StatusCodes } from 'http-status-codes'
 import { NextResponse } from 'next/server'
 import { NotFound } from 'payload'
+import { z } from 'zod'
 
 import ProjectService from '@/data-layer/services/ProjectService'
 import { Semester, SemesterProject } from '@/payload-types'
 import { Security } from '@/business-layer/middleware/Security'
 import { RequestWithUser } from '@/types/Requests'
 import { UserRole } from '@/types/User'
+import { CommonResponse } from '@/types/response-models/CommonResponse'
+
+export const GetProjectSemestersResponseSchema = CommonResponse.extend({
+  data: z.array(z.custom<Semester>()),
+})
+export type GetProjectSemestersResponse = z.infer<typeof GetProjectSemestersResponseSchema>
 
 class RouteWrapper {
   @Security('jwt', ['admin', 'client'])
@@ -28,7 +35,9 @@ class RouteWrapper {
         !project.additionalClients?.includes(req.user.id)
       ) {
         return NextResponse.json(
-          { error: 'This project is not associated with the requesting client' },
+          {
+            error: 'This project is not associated with the requesting client',
+          } as GetProjectSemestersResponse,
           { status: StatusCodes.UNAUTHORIZED },
         )
       }
@@ -44,10 +53,12 @@ class RouteWrapper {
 
       return NextResponse.json({
         data: Array.from(semestersMap.values()),
-      })
+      } as GetProjectSemestersResponse)
     } catch (error) {
       if (error instanceof NotFound) {
-        return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
+        return NextResponse.json({ error: 'Project not found' } as GetProjectSemestersResponse, {
+          status: StatusCodes.NOT_FOUND,
+        })
       }
       return NextResponse.json(
         { error: 'Internal server error' },

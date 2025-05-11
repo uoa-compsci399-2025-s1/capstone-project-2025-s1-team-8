@@ -6,7 +6,7 @@ import ProjectService from '@/data-layer/services/ProjectService'
 import SemesterService from '@/data-layer/services/SemesterService'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
-import { GET } from './route'
+import { GET, GetProjectSemestersResponse } from './route'
 import { projectCreateMock, semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 
@@ -20,7 +20,7 @@ describe('/api/projects/[id]/semesters', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
       const res = await GET(createMockNextRequest(''), { params: paramsToPromise({ id: 'a' }) })
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
-      expect((await res.json()).error).toBe('No scope')
+      expect(((await res.json()) as GetProjectSemestersResponse).error).toBe('No scope')
     })
 
     it("should return a 401 if the requesting user isn't associated to the project", async () => {
@@ -33,7 +33,7 @@ describe('/api/projects/[id]/semesters', async () => {
       })
 
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
-      expect((await res.json()).error).toBe(
+      expect(((await res.json()) as GetProjectSemestersResponse).error).toBe(
         'This project is not associated with the requesting client',
       )
     })
@@ -58,7 +58,7 @@ describe('/api/projects/[id]/semesters', async () => {
         params: paramsToPromise({ id: project.id }),
       })
 
-      const json = await res.json()
+      const json: GetProjectSemestersResponse = await res.json()
       expect(json.data.length).toStrictEqual(2)
       expect(json.data).toStrictEqual(expect.arrayContaining([semester, semester2]))
     })
