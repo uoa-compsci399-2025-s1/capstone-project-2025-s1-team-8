@@ -22,6 +22,7 @@ import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProje
 import { ProjectDetailsType, ProjectStatus } from '@/types/Project'
 import { FiAlertCircle, FiSave } from 'react-icons/fi'
 import { UserRole } from '@/types/User'
+import { updateProjectOrdersAndStatus } from './ProjectUpdates'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -85,7 +86,6 @@ const ProjectDnD: React.FC<DndComponentProps> = ({ presetContainers, semesterId 
     }
   }, [showNotification])
 
-  //TODO: make wrapper container fetch the current ordering of items from the backend and display as the presetContainers
   //TODO: when items are moved around, remove the active filter styles
 
   const [containerFilters, setContainerFilters] = useState<Record<string, string | undefined>>(() =>
@@ -103,10 +103,18 @@ const ProjectDnD: React.FC<DndComponentProps> = ({ presetContainers, semesterId 
     }
   }
 
-  function handleSaveChanges() {
+  async function handleSaveChanges() {
     setHasChanges(false)
     setShowNotification(false)
     // send changes to the backend
+    await updateProjectOrdersAndStatus({ containers, semesterId })
+
+    setContainers((prev) =>
+      prev.map((container) => ({
+        ...container,
+        originalItems: [...container.currentItems],
+      })),
+    )
   }
 
   function sortProjects(containerId: UniqueIdentifier, filter: string): void {
