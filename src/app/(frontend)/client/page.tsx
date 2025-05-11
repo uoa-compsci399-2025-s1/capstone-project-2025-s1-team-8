@@ -22,6 +22,7 @@ export default function Client() {
       setUser(res.userInfo)
       setProjects(res.projects)
       setIsLoaded(true)
+      //setSemesters(res.semesters)
     })
     isLoggedIn().then((res) => {
       setLoggedIn(res)
