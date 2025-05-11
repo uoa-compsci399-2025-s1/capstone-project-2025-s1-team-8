@@ -37,7 +37,6 @@ const ClientService = {
     const url = await buildNextRequestURL('api/users/me/projects', {})
     const response = await GetClientProjects(await buildNextRequest(url, { method: 'GET' }))
     const projects = await response.json()
-    //console.log(projects)
     return { projects: projects.data, status: response.status }
   },
 

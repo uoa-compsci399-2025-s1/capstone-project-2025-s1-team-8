@@ -57,7 +57,7 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo }) => {
         {clientInfo.affiliation && !isEditing ? (
           <Capsule text={clientInfo.affiliation} variant="beige" className="col-start-2" />
         ) : (
-          <input defaultValue={clientInfo.affiliation as string} className="editable-capsule" />
+          isEditing && <input defaultValue={clientInfo.affiliation as string} className="editable-capsule" />
         )}
       </div>
       <div>
