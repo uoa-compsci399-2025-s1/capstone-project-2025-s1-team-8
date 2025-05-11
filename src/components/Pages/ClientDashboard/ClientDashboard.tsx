@@ -8,7 +8,7 @@ import { UserCombinedInfo } from '@/types/Collections'
 interface ClientDashboardProps {
   client: UserCombinedInfo
   projects: Project[]
-  semesters: Semester [][]
+  semesters: Semester[][]
 }
 
 const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects, semesters }) => {
@@ -32,7 +32,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects, sem
         headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
         heading="My projects"
         projects={projects}
-        semesters = {semesters}
+        semesters={semesters}
       />
     </div>
   )

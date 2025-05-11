@@ -23,11 +23,11 @@ export default function Client() {
     return null
   }
 
-  const semesters: Semester[][] = [];
+  const semesters: Semester[][] = []
   for (let i = 0; i < projects.length; i++) {
     semesters.push([] as Semester[])
   }
-  
+
   return (
     <div className="flex justify-center items-center">
       <div>

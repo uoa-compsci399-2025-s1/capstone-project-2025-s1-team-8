@@ -7,7 +7,7 @@ interface ProjectListProps {
   headingClassName?: string
   heading: string
   projects: Project[]
-  semesters: Semester [][]
+  semesters: Semester[][]
 }
 
 const ProjectCardList: React.FC<ProjectListProps> = ({
@@ -23,7 +23,7 @@ const ProjectCardList: React.FC<ProjectListProps> = ({
 
       <div className="flex flex-col gap-4 overflow-x-visible overflow-y-auto max-h-[490px] p-[1px] pt-0.5 pb-3">
         {projects.map((project, index) => (
-          <ProjectCard key={index} projectInfo={project} semesters = {semesters[index]} />
+          <ProjectCard key={index} projectInfo={project} semesters={semesters[index]} />
         ))}
       </div>
     </div>

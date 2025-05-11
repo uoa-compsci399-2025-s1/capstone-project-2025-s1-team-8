@@ -121,11 +121,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Number of teams" />
-          <Capsule
-            className="col-start-2"
-            variant="beige"
-            text={projectInfo.numberOfTeams}
-          />
+          <Capsule className="col-start-2" variant="beige" text={projectInfo.numberOfTeams} />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Future consideration" />
           <Capsule
