@@ -10,6 +10,7 @@ import { mockProjects } from '@/mocks/Projects.mock'
 import { mockClients } from '@/mocks/Clients.mock'
 import { mockSemesters } from '@/mocks/Semesters.mock'
 import SadTeapot from 'src/assets/sad-teapot.svg'
+import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -74,7 +75,7 @@ const Admin = () => {
 
   return (
     <div>
-      <NavBar navElements={[{ href: '/admin', text: 'My Dashboard' }]} />
+      <NavBar navElements={[{ href: '/admin', text: 'My Dashboard' }]} onclick={handleLoginButtonClick} />
       <div className="hidden lg:block w-full">
         <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
           {AdminNavElements.map((nav, i) => (
