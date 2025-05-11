@@ -34,13 +34,16 @@ class RouteWrapper {
       }
 
       const semesterProjects = await projectService.getSemesterProjectsByProject(project.id)
-      const semesters: Set<Semester> = new Set()
+      const semestersMap: Map<string, Semester> = new Map()
       semesterProjects.forEach((semesterProject: SemesterProject) => {
-        semesters.add(semesterProject.semester as Semester)
+        const semester = semesterProject.semester as Semester
+        if (semester && semester.id) {
+          semestersMap.set(semester.id, semester)
+        }
       })
 
       return NextResponse.json({
-        data: [...semesters],
+        data: Array.from(semestersMap.values()),
       })
     } catch (error) {
       if (error instanceof NotFound) {
