@@ -5,13 +5,11 @@ import { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'
 import Button from '@/components/Generic/Button/Button'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
-import { BasicClientDetails } from '@/types/Project'
 import { Project, Semester } from '@/payload-types'
 import { UserCombinedInfo } from '@/types/Collections'
 
 interface ProjectModalProps extends ModalProps {
   projectInfo: Project
-  projectClient: UserCombinedInfo
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({
@@ -19,7 +17,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   onClose,
   className = '',
   projectInfo,
-  projectClient,
 }) => {
   const [copied, setCopied] = useState(false)
   const [copiedAll, setCopiedAll] = useState(false)
@@ -57,9 +54,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
       return `Up to ${numberOfTeams} teams`
     }
   }
-  const otherClientDetails = (projectInfo.clients as UserCombinedInfo[]).filter(
-    (client) => client.id !== projectClient.id,
-  )
+
+  const projectClient = projectInfo.client as UserCombinedInfo
+  const otherClientDetails = projectInfo.additionalClients ? projectInfo.additionalClients as UserCombinedInfo[]: []
 
   return (
     <Modal open={open} onClose={onClose} className={className + ' min-h-fit w-[75%] top-5'}>
@@ -108,7 +105,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         {/* desired output */}
         <Capsule variant="muted_blue" text="Desired output" />
         <p className="text-sm text-dark-blue font-inter text-left mb-7">
-          Placeholder for desired output for project
+          {projectInfo.desiredOutput}
         </p>
 
         {/* capsules for information */}
@@ -118,7 +115,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             className="col-start-2"
             variant="beige"
             text={
-              /*specialRequirements ? 'Yes' : 'No'*/ 'Placeholder for special requirements. Should be Yes or No'
+              projectInfo.specialEquipmentRequirements
             }
           />
 
@@ -133,14 +130,14 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           <Capsule
             className="col-start-2"
             variant="beige"
-            text={/*convertNumberOfTeamstoString(numberOfTeams)*/ 'Placeholder for number of teams'}
+            text={convertNumberOfTeamstoString(projectInfo.numberOfTeams)}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Future consideration" />
           <Capsule
             className="col-start-2"
             variant="beige"
-            text={futureConsideration ? 'Yes' : 'No'}
+            text={projectInfo.futureConsideration ? 'Yes' : 'No'}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />
@@ -182,9 +179,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           </div>
         </div>
         <Capsule variant="light_beige" text="Desired team skills" />
-        <p className="text-sm text-dark-blue font-inter text-left mb-3">{desiredTeamSkills}</p>
+        <p className="text-sm text-dark-blue font-inter text-left mb-3">{projectInfo.desiredTeamSkills}</p>
         <Capsule variant="light_beige" text="Available resources" />
-        <p className="text-sm text-dark-blue font-inter text-left">{availableResources}</p>
+        <p className="text-sm text-dark-blue font-inter text-left">{projectInfo.availableResources}</p>
       </div>
     </Modal>
   )

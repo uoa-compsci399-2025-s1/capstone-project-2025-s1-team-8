@@ -30,7 +30,6 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects }) =
         className="bg-muted-blue-op-45 px-7 md:px-15 pt-8 pb-12 rounded-2xl border-deeper-blue border"
         headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
         heading="My projects"
-        client={client}
         projects={projects}
       />
     </div>

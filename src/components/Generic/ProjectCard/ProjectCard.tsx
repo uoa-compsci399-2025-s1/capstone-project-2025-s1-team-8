@@ -5,10 +5,9 @@ import { UserCombinedInfo } from '@/types/Collections'
 
 interface ProjectCardProps {
   projectInfo: Project
-  client: UserCombinedInfo
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo, client }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo }) => {
   const [modalOpen, setModalOpen] = useState(false)
 
   function toggleModal() {
@@ -19,6 +18,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo, client }) => {
     projectInfo.description.length > 100
       ? projectInfo.description.slice(0, 100) + '...'
       : projectInfo.description
+    
+    const client = projectInfo.client as UserCombinedInfo
 
   return (
     <div>
@@ -36,7 +37,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo, client }) => {
       </div>
       <ProjectModal
         projectInfo={projectInfo}
-        projectClient={client}
         open={modalOpen}
         onClose={() => toggleModal()}
       />
