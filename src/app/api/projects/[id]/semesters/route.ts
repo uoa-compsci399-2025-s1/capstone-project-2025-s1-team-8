@@ -32,11 +32,13 @@ class RouteWrapper {
           { status: StatusCodes.UNAUTHORIZED },
         )
       }
+
       const semesterProjects = await projectService.getSemesterProjectsByProject(project.id)
       const semesters: Set<Semester> = new Set()
       semesterProjects.forEach((semesterProject: SemesterProject) => {
         semesters.add(semesterProject.semester as Semester)
       })
+
       return NextResponse.json({
         data: [...semesters],
       })
