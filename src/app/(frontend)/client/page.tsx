@@ -3,7 +3,7 @@
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import ClientDashboard from '@/components/Pages/ClientDashboard/ClientDashboard'
 import { useState, useEffect } from 'react'
-import { handleClientPageLoad } from '@/lib/util/util'
+import { handleClientPageLoad } from '@/lib/services/client/Handlers'
 import { UserCombinedInfo } from '@/types/Collections'
 import { Project } from '@/payload-types'
 import { Semester } from '@/payload-types'
@@ -21,7 +21,7 @@ export default function Client() {
     handleClientPageLoad().then((res) => {
       setUser(res.userInfo)
       setProjects(res.projects)
-      setSemesters([] as Semester[][])
+      setSemesters(res.semesters)
       setIsLoaded(true)
     })
     isLoggedIn().then((res) => {
@@ -33,11 +33,7 @@ export default function Client() {
   if (!isLoaded || !loginLoaded) {
     return null
   }
-  // Empty array for now, once endpoint is done replace with respective service
-  for (let i = 0; i < projects.length; i++) {
-    semesters.push([] as Semester[])
-  }
-
+  
   return (
     <div className="flex justify-center items-center">
       <div>

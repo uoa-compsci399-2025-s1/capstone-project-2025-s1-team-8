@@ -2,10 +2,11 @@ import { GET as GetClientInfo } from '@/app/api/users/me/route'
 import { GET as GetClientProjects } from '@/app/api/users/me/projects/route'
 import { PATCH as UpdateClientDetails } from '@/app/api/users/me/route'
 import { UpdateUserData, UserCombinedInfo } from '@/types/Collections'
-import { Project } from '@/payload-types'
+import { Project, Semester } from '@/payload-types'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
 import { StatusCodes } from 'http-status-codes'
+import { GET as GetSemesters } from '@/app/api/projects/[id]/semesters/route'
 
 const ClientService = {
   /**
@@ -64,6 +65,19 @@ const ClientService = {
       details,
     }
   },
+  
+  async getSemesterForProject(projectId: string): Promise<{
+    semesters: Semester[]
+    status: StatusCodes
+    error?: string
+    message?: string
+  }> {
+    'use server'
+    const url = await buildNextRequestURL(`/api/projects/${projectId}/semesters`, {})
+    const response = await GetSemesters(await buildNextRequest(url, { method: 'GET' }), {params: Promise.resolve({ id: projectId })})
+    const {data, error, message } = await response.json()
+    return { semesters: data, status: response.status, error, message }
+  }
 } as const
 
 export default ClientService
