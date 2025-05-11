@@ -25,7 +25,6 @@ export const handleClientPageLoad = async (): Promise<{
 }> => {
   const { userInfo, status } = await ClientService.getClientInfo()
   const clientProjectsRes = await ClientService.getClientProjects()
-  console.log(userInfo)
 
   if (status !== StatusCodes.OK) {
     redirect('/auth/login')
