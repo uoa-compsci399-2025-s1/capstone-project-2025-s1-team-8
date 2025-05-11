@@ -3,63 +3,14 @@ import * as nextHeaders from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import {
-  authMock,
-  clientMock,
   CODE_MOCK,
   googleUserResponseMock,
   JWT_MOCK,
-  JWT_SECRET_MOCK,
-  SCOPES_ARRAY_MOCK,
   SCOPES_MOCK,
   STATE_MOCK,
-  tokensMock,
 } from '@/test-config/mocks/Auth.mock'
 import { createMockNextRequest } from '@/test-config/utils'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
-
-vi.mock('@/business-layer/security/google', async () => {
-  const actual = await vi.importActual<typeof import('@/business-layer/security/google')>(
-    '@/business-layer/security/google',
-  )
-  return {
-    ...actual,
-    googleAuthScopes: SCOPES_ARRAY_MOCK,
-    oauth2Client: {
-      getToken: (code: string) => (code === CODE_MOCK ? { tokens: tokensMock } : null),
-    },
-  }
-})
-
-vi.mock('@/data-layer/services/UserService', () => {
-  return {
-    default: class {
-      getUserByEmail = vi.fn().mockResolvedValue(clientMock)
-      createUser = vi.fn().mockResolvedValue(clientMock)
-    },
-  }
-})
-
-vi.mock('@/data-layer/services/AuthService', () => {
-  return {
-    default: class {
-      createAuth = vi.fn().mockResolvedValue(authMock)
-      getAuthByEmail = vi.fn().mockResolvedValue(authMock)
-      updateAuth = vi.fn().mockResolvedValue(authMock)
-    },
-  }
-})
-
-vi.mock('@/business-layer/services/AuthService', () => {
-  return {
-    default: class {
-      generateJWT = vi.fn().mockReturnValue(JWT_MOCK)
-    },
-  }
-})
-
-vi.mock('next/navigation', () => ({
-  redirect: vi.fn(),
-}))
 
 import { GET as callback } from '@/app/api/auth/google/callback/route'
 
@@ -72,6 +23,7 @@ describe('GET /api/auth/google/callback', () => {
         ? { json: () => googleUserResponseMock }
         : null,
     )
+
     vi.spyOn(globalThis, 'fetch').mockResolvedValue({
       json: vi.fn().mockResolvedValue(googleUserResponseMock),
     } as unknown as Response)
@@ -84,6 +36,10 @@ describe('GET /api/auth/google/callback', () => {
       }),
     }))
 
+    vi.mock('next/navigation', () => ({
+      redirect: vi.fn(),
+    }))
+
     const mockCookieStore = {
       get: (key: string) => ({ value: key === 'state' ? STATE_MOCK : undefined }),
       set: mockSet,
@@ -93,8 +49,6 @@ describe('GET /api/auth/google/callback', () => {
     vi.spyOn(nextHeaders, 'cookies').mockResolvedValue(
       mockCookieStore as unknown as ReadonlyRequestCookies,
     )
-
-    process.env.JWT_SECRET = JWT_SECRET_MOCK
   })
 
   afterEach(() => vi.restoreAllMocks())
@@ -115,7 +69,7 @@ describe('GET /api/auth/google/callback', () => {
     })
   })
 
-  it('returns JWT token on success auth', async () => {
+  it('should return the correct redirection', async () => {
     const req = createMockNextRequest(
       `/api/auth/google/callback?code=${CODE_MOCK}&state=${STATE_MOCK}&scope=${SCOPES_MOCK}`,
     )

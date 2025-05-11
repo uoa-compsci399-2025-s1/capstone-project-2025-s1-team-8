@@ -61,6 +61,10 @@ export const GET = async (req: NextRequest) => {
   let user: User
   try {
     user = await userService.getUserByEmail(email)
+    await userService.updateUser(user.id, {
+      firstName,
+      lastName: lastName || '',
+    })
   } catch {
     const newUserData: CreateUserData = {
       email,
