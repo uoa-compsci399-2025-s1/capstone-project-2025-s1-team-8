@@ -4,23 +4,33 @@ import ProjectService from '@/data-layer/services/ProjectService'
 import { CreateProjectData } from '@/types/Collections'
 import { z, ZodError } from 'zod'
 import { Security } from '@/business-layer/middleware/Security'
-import { FormResponseSchema, MediaSchema, UserSchema } from '@/types/Payload'
+import { MediaSchema, UserSchema } from '@/types/Payload'
 
-export const CreateProjectRequestBody = z.object({
+export const CreateProjectRequestBodySchema = z.object({
   name: z.string(),
   description: z.string(),
+  client: z.union([z.string(), UserSchema]),
+  additionalClients: z
+    .union([
+      z.array(z.string()).nonempty('At least one client is required'),
+      z.array(UserSchema).nonempty('At least one client is required'),
+    ])
+    .optional(),
+  attachments: z.array(MediaSchema).max(5).optional(),
   deadline: z
     .string()
     .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
     .optional(),
   timestamp: z.string().datetime({ message: 'Invalid date format, should be in ISO 8601 format' }),
-  clients: z.union([
-    z.array(z.string()).nonempty('At least one client is required'),
-    z.array(UserSchema).nonempty('At least one client is required'),
-  ]),
-  attachments: z.array(MediaSchema).max(5).optional(),
-  formResponse: z.union([z.string(), FormResponseSchema]),
+  desiredOutput: z.string(),
+  specialEquipmentRequirements: z.string(),
+  numberOfTeams: z.string(),
+  desiredTeamSkills: z.string().optional(),
+  availableResources: z.string().optional(),
+  futureConsideration: z.boolean(),
 })
+
+export type CreateProjectRequestBody = z.infer<typeof CreateProjectRequestBodySchema>
 
 class RouteWrapper {
   /**
@@ -56,7 +66,7 @@ class RouteWrapper {
     const projectService = new ProjectService()
 
     try {
-      const body = CreateProjectRequestBody.parse(await req.json())
+      const body = CreateProjectRequestBodySchema.parse(await req.json())
       const data = await projectService.createProject(body as CreateProjectData)
       return NextResponse.json({ data }, { status: StatusCodes.CREATED })
     } catch (error) {

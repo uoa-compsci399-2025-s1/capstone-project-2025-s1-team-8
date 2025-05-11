@@ -7,17 +7,17 @@ export const Form: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
+      admin: {
+        description: 'The form name',
+      },
     },
     {
       name: 'description',
       type: 'text',
       required: true,
-    },
-    {
-      name: 'questions',
-      type: 'relationship',
-      relationTo: 'formQuestion',
-      hasMany: true,
+      admin: {
+        description: 'The form description',
+      },
     },
   ],
 }

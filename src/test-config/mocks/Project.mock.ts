@@ -1,9 +1,8 @@
 import { CreateProjectData, CreateSemesterProjectData } from '@/types/Collections'
 import { Project, SemesterProject } from '@/payload-types'
 import { ProjectStatus } from '@/types/Project'
-import { formResponseMock } from './Form.mock'
 import { semesterMock } from '@/test-config/mocks/Semester.mock'
-import { adminMock, clientMock } from './Auth.mock'
+import { clientMock } from './Auth.mock'
 
 /*
  * Project mocks
@@ -11,41 +10,62 @@ import { adminMock, clientMock } from './Auth.mock'
 
 export const projectMock: Project = {
   id: '67ff38a56a35e1b6cf43a681',
-  updatedAt: new Date().toISOString(),
-  createdAt: new Date().toISOString(),
   name: 'Project 1',
   description: 'Description 1',
-  clients: [clientMock],
-  formResponse: formResponseMock,
+  client: clientMock,
+  additionalClients: [clientMock],
   deadline: new Date().toISOString(),
   timestamp: new Date().toISOString(),
+  desiredOutput: 'cool project',
+  specialEquipmentRequirements: 'computer',
+  numberOfTeams: '5',
+  availableResources: 'nothing',
+  futureConsideration: false,
+  updatedAt: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
 }
 
 export const projectMock2: Project = {
   id: '67ff38a56a35e1b6cf43a68c',
-  updatedAt: new Date().toISOString(),
-  createdAt: new Date().toISOString(),
   name: 'Project 2',
   description: 'Description 2',
-  clients: [clientMock],
-  formResponse: '67ff38a56a35e1b6cf43a682',
+  client: clientMock,
+  deadline: new Date().toISOString(),
   timestamp: new Date().toISOString(),
+  desiredOutput: 'cool project',
+  specialEquipmentRequirements: 'computer',
+  numberOfTeams: '5',
+  availableResources: 'nothing',
+  futureConsideration: false,
+  updatedAt: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
 }
 
 export const projectCreateMock: CreateProjectData = {
-  name: 'Project 1',
-  description: 'Description 1',
-  clients: [clientMock],
-  formResponse: '67ff38a56a35e1b6cf43a682',
+  name: 'Project Create Mock',
+  description: 'Description 2',
+  client: clientMock,
+  deadline: new Date().toISOString(),
   timestamp: new Date().toISOString(),
+  desiredOutput: 'cool project',
+  specialEquipmentRequirements: 'computer',
+  numberOfTeams: '5',
+  availableResources: 'nothing',
+  futureConsideration: false,
 }
 
 export const projectCreateMock2: CreateProjectData = {
-  name: 'Project 2',
+  name: 'Project Create Mock 2',
   description: 'Description 2',
-  clients: [clientMock.id, adminMock.id],
-  formResponse: '67ff38a56a35e1b6cf43a682',
+  client: clientMock,
+  additionalClients: [clientMock],
+  deadline: new Date().toISOString(),
   timestamp: new Date().toISOString(),
+  desiredOutput: 'cool project',
+  specialEquipmentRequirements: 'computer',
+  numberOfTeams: '5',
+  availableResources: 'nothing',
+  futureConsideration: false,
 }
 
 /*
