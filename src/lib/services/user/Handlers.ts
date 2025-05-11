@@ -25,7 +25,7 @@ export async function handleLogin(formData: FormData): Promise<{
   if (!email && !password) return { error: 'Email and password are required' }
   if (!email) return { error: 'Email is required' }
   if (!password) return { error: 'Password is required' }
-  if (!(isValidEmail(email))) return { error: 'Invalid email address format' }
+  if (!isValidEmail(email)) return { error: 'Invalid email address format' }
 
   const { message, redirect, status, error, details } = await UserService.login({ email, password })
   if (status === 200) {

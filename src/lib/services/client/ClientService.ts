@@ -65,7 +65,7 @@ const ClientService = {
       details,
     }
   },
-  
+
   async getSemesterForProject(projectId: string): Promise<{
     semesters: Semester[]
     status: StatusCodes
@@ -74,10 +74,12 @@ const ClientService = {
   }> {
     'use server'
     const url = await buildNextRequestURL(`/api/projects/${projectId}/semesters`, {})
-    const response = await GetSemesters(await buildNextRequest(url, { method: 'GET' }), {params: Promise.resolve({ id: projectId })})
-    const {data, error, message } = await response.json()
+    const response = await GetSemesters(await buildNextRequest(url, { method: 'GET' }), {
+      params: Promise.resolve({ id: projectId }),
+    })
+    const { data, error, message } = await response.json()
     return { semesters: data, status: response.status, error, message }
-  }
+  },
 } as const
 
 export default ClientService

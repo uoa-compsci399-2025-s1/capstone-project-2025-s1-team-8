@@ -21,18 +21,20 @@ export const handleClientPageLoad = async (): Promise<{
   if (clientProjectsRes.status !== StatusCodes.OK) {
     redirect('/auth/login')
   }
-    const semestersList: Semester[][] = []
-    const projects = clientProjectsRes.projects
+  const semestersList: Semester[][] = []
+  const projects = clientProjectsRes.projects
 
-    for (let i = 0; i < projects.length; i++) {
-      const {semesters, status, error, message } = await ClientService.getSemesterForProject(projects[i].id)
-      if (status === StatusCodes.OK) {
-        semestersList.push(semesters)
-      } else{
-        semestersList.push([])
-        console.error(`Error fetching semesters for project ${projects[i].id}: ${error || message}`)
-      }
+  for (let i = 0; i < projects.length; i++) {
+    const { semesters, status, error, message } = await ClientService.getSemesterForProject(
+      projects[i].id,
+    )
+    if (status === StatusCodes.OK) {
+      semestersList.push(semesters)
+    } else {
+      semestersList.push([])
+      console.error(`Error fetching semesters for project ${projects[i].id}: ${error || message}`)
     }
-    console.log('Semesters List:', semestersList)
+  }
+  console.log('Semesters List:', semestersList)
   return { userInfo, projects: clientProjectsRes.projects, semesters: semestersList }
 }

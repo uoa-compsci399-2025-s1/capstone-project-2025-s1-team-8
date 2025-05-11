@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 const Homepage: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
   const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
-  useEffect(() =>{
+  useEffect(() => {
     isLoggedIn().then((res) => {
       setLoggedIn(res)
       setLoginLoaded(true)

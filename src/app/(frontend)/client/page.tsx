@@ -33,7 +33,7 @@ export default function Client() {
   if (!isLoaded || !loginLoaded) {
     return null
   }
-  
+
   return (
     <div className="flex justify-center items-center">
       <div>

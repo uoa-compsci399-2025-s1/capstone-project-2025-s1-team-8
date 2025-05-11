@@ -81,7 +81,11 @@ const Admin = () => {
 
   return (
     <div>
-      <NavBar navElements={[{ href: '/admin', text: 'My Dashboard' }]} onclick={handleLoginButtonClick} loggedIn={loggedIn} />
+      <NavBar
+        navElements={[{ href: '/admin', text: 'My Dashboard' }]}
+        onclick={handleLoginButtonClick}
+        loggedIn={loggedIn}
+      />
       <div className="hidden lg:block w-full">
         <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
           {AdminNavElements.map((nav, i) => (
