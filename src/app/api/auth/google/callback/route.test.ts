@@ -11,12 +11,16 @@ import {
 } from '@/test-config/mocks/Auth.mock'
 import { createMockNextRequest } from '@/test-config/utils'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
-
+import AuthService from '@/data-layer/services/AuthService'
 import { GET as callback } from '@/app/api/auth/google/callback/route'
+import UserService from '@/data-layer/services/UserService'
 
 const mockSet = vi.fn()
 
 describe('GET /api/auth/google/callback', () => {
+  const authDataService = new AuthService()
+  const userService = new UserService()
+
   beforeAll(() => {
     vi.stubGlobal('fetch', (url: string) =>
       url === 'https://www.googleapis.com/oauth2/v3/userinfo'
@@ -76,8 +80,44 @@ describe('GET /api/auth/google/callback', () => {
     req.cookies.set('state', STATE_MOCK)
 
     await callback(req)
-    expect(redirect).toHaveBeenCalled()
     expect(redirect).toHaveBeenCalledWith('/client')
+  })
+
+  it('should create a new auth and user document with the google user response data', async () => {
+    const req = createMockNextRequest(
+      `/api/auth/google/callback?code=${CODE_MOCK}&state=${STATE_MOCK}&scope=${SCOPES_MOCK}`,
+    )
+    req.cookies.set('state', STATE_MOCK)
+
+    await callback(req)
+    const auth = await authDataService.getAuthByEmail(googleUserResponseMock.email)
+    expect(auth.email).toBe(googleUserResponseMock.email)
+    const user = await userService.getUserByEmail(googleUserResponseMock.email)
+    expect(user.email).toBe(googleUserResponseMock.email)
+  })
+
+  it('should modify an existing user with the google user response data', async () => {
+    const req = createMockNextRequest(
+      `/api/auth/google/callback?code=${CODE_MOCK}&state=${STATE_MOCK}&scope=${SCOPES_MOCK}`,
+    )
+    req.cookies.set('state', STATE_MOCK)
+
+    const createdUser = await userService.createUser({
+      firstName: 'lol',
+      lastName: 'lolol',
+      role: 'client',
+      email: googleUserResponseMock.email,
+    })
+
+    await callback(req)
+
+    const user = await userService.getUserByEmail(googleUserResponseMock.email)
+    expect(user).toStrictEqual({
+      ...createdUser,
+      firstName: googleUserResponseMock.given_name,
+      lastName: googleUserResponseMock.family_name,
+      updatedAt: user.updatedAt,
+    })
   })
 
   it('returns 400 if state does not match', async () => {
