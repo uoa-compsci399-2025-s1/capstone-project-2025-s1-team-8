@@ -29,6 +29,15 @@ class RouteWrapper {
   @Security('jwt')
   static async GET(req: RequestWithUser) {
     const { user } = req
+    let clientAdditionalInfo;
+    if (user.role === UserRole.Client || user.role === UserRole.Admin) {
+      const userService = new UserService()
+      clientAdditionalInfo = await userService.getClientAdditionalInfo(user.id)
+      console.log(clientAdditionalInfo, "clientAdditionalInfo")
+      return NextResponse.json({
+        data: { ...user, ...clientAdditionalInfo }
+      })
+    }
     return NextResponse.json({
       data: user,
     })

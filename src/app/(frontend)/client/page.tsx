@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import { handleClientPageLoad } from '@/lib/util/util'
 import { UserCombinedInfo } from '@/types/Collections'
 import { Project } from '@/payload-types'
+import { Semester } from '@/payload-types'
 
 export default function Client() {
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
@@ -17,17 +18,23 @@ export default function Client() {
       setUser(res.userInfo)
       setProjects(res.projects)
     })
-  })
+  }, [])
   if (!isLoaded) {
     return null
   }
+
+  const semesters: Semester[][] = [];
+  for (let i = 0; i < projects.length; i++) {
+    semesters.push([] as Semester[])
+  }
+  
   return (
     <div className="flex justify-center items-center">
       <div>
         <NavBar navElements={[{ href: '/client', text: 'My Dashboard' }]} />
       </div>
       <div className="items-center justify-center w-full px-8 sm:px-15 lg:px-30 pt-40 pb-20">
-        <ClientDashboard client={user} projects={projects} />
+        <ClientDashboard client={user} projects={projects} semesters={semesters} />
       </div>
     </div>
   )

@@ -21,7 +21,7 @@ const ClientService = {
     const url = await buildNextRequestURL('/api/users/me', {})
     const response = await GetClientInfo(await buildNextRequest(url, { method: 'GET' }))
     const userInfo = await response.json()
-    return { userInfo, status: response.status }
+    return { userInfo: userInfo.data, status: response.status }
   },
 
   /**
@@ -37,7 +37,8 @@ const ClientService = {
     const url = await buildNextRequestURL('api/users/me/projects', {})
     const response = await GetClientProjects(await buildNextRequest(url, { method: 'GET' }))
     const projects = await response.json()
-    return { projects, status: response.status }
+    //console.log(projects)
+    return { projects: projects.data, status: response.status }
   },
 
   /**

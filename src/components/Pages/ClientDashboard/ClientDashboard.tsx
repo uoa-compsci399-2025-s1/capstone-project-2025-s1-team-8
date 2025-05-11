@@ -11,7 +11,7 @@ interface ClientDashboardProps {
   semesters: Semester [][]
 }
 
-const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects }) => {
+const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects, semesters }) => {
   return (
     <div>
       <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-[auto_1fr] gap-10 pb-12 items-stretch">
@@ -32,7 +32,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects }) =
         headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
         heading="My projects"
         projects={projects}
-        semesters = {[[]]}
+        semesters = {semesters}
       />
     </div>
   )

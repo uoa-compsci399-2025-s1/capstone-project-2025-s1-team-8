@@ -49,14 +49,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     return `${dd}/${mm}/${yyyy}`
   }
 
-  const convertNumberOfTeamstoString = (numberOfTeams: number) => {
-    if (numberOfTeams === 1) {
-      return '1 team'
-    } else {
-      return `Up to ${numberOfTeams} teams`
-    }
-  }
-
   const projectClient = projectInfo.client as UserCombinedInfo
   const otherClientDetails = projectInfo.additionalClients
     ? (projectInfo.additionalClients as UserCombinedInfo[])
@@ -132,7 +124,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           <Capsule
             className="col-start-2"
             variant="beige"
-            text={convertNumberOfTeamstoString(projectInfo.numberOfTeams)}
+            text={projectInfo.numberOfTeams}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Future consideration" />
