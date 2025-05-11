@@ -2,12 +2,13 @@ import CreateProjectCard from '@/components/Composite/CreateProjectCard/CreatePr
 import GradientTextArea from '@/components/Generic/GradientTextArea/GradientTextArea'
 import ClientProfile from '@/components/Composite/ClientProfile/ClientProfile'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
-import { Project } from '@/payload-types'
+import { Project, Semester } from '@/payload-types'
 import { UserCombinedInfo } from '@/types/Collections'
 
 interface ClientDashboardProps {
   client: UserCombinedInfo
   projects: Project[]
+  semesters: Semester [][]
 }
 
 const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects }) => {
@@ -31,6 +32,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects }) =
         headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
         heading="My projects"
         projects={projects}
+        semesters = {[[]]}
       />
     </div>
   )

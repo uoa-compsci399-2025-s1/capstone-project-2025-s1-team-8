@@ -10,6 +10,7 @@ import { UserCombinedInfo } from '@/types/Collections'
 
 interface ProjectModalProps extends ModalProps {
   projectInfo: Project
+  semesters: Semester[]
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({
@@ -17,6 +18,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   onClose,
   className = '',
   projectInfo,
+  semesters,
 }) => {
   const [copied, setCopied] = useState(false)
   const [copiedAll, setCopiedAll] = useState(false)
@@ -143,7 +145,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />
           <div className="col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
             {semesters.map((semester) => (
-              <Capsule variant="beige" text={semester} key={semester} />
+              <Capsule variant="beige" text={semester.name} key={semester.name} />
             ))}
           </div>
         </div>

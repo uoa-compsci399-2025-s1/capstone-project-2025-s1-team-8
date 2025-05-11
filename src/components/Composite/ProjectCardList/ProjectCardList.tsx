@@ -1,12 +1,13 @@
 import React from 'react'
 import ProjectCard from '@/components/Generic/ProjectCard/ProjectCard'
-import { Project } from '@/payload-types'
+import { Project, Semester } from '@/payload-types'
 
 interface ProjectListProps {
   className?: string
   headingClassName?: string
   heading: string
   projects: Project[]
+  semesters: Semester [][]
 }
 
 const ProjectCardList: React.FC<ProjectListProps> = ({
@@ -14,6 +15,7 @@ const ProjectCardList: React.FC<ProjectListProps> = ({
   headingClassName,
   heading,
   projects,
+  semesters,
 }) => {
   return (
     <div className={`relative w-full ${className}`}>
@@ -21,7 +23,7 @@ const ProjectCardList: React.FC<ProjectListProps> = ({
 
       <div className="flex flex-col gap-4 overflow-x-visible overflow-y-auto max-h-[490px] p-[1px] pt-0.5 pb-3">
         {projects.map((project, index) => (
-          <ProjectCard key={index} projectInfo={project} />
+          <ProjectCard key={index} projectInfo={project} semesters = {semesters[index]} />
         ))}
       </div>
     </div>
