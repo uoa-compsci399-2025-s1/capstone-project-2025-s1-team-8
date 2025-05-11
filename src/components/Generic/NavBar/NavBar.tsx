@@ -17,7 +17,12 @@ interface NavBarProps {
   onclick?: () => void
 }
 
-const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true, loggedIn = false, onclick }) => {
+const NavBar: React.FC<NavBarProps> = ({
+  navElements,
+  hasBg = true,
+  loggedIn = false,
+  onclick,
+}) => {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
   const [hasShadow, setHasShadow] = useState(false)

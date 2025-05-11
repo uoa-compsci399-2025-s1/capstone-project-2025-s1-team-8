@@ -40,7 +40,11 @@ export default function Client() {
   return (
     <div className="flex justify-center items-center">
       <div>
-        <NavBar navElements={[{ href: '/client', text: 'My Dashboard' }]} loggedIn={loggedIn} onclick={handleLoginButtonClick} />
+        <NavBar
+          navElements={[{ href: '/client', text: 'My Dashboard' }]}
+          loggedIn={loggedIn}
+          onclick={handleLoginButtonClick}
+        />
       </div>
       <div className="items-center justify-center w-full px-8 sm:px-15 lg:px-30 pt-40 pb-20">
         <ClientDashboard client={user} projects={projects} semesters={semesters} />
