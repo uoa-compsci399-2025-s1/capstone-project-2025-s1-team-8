@@ -37,13 +37,20 @@ class RouteWrapper {
    * @param params - The parameters object containing the project ID.
    */
   @Security('jwt', ['admin', 'client'])
-  static async GET(_req: RequestWithUser, { params }: { params: Promise<{ id: string }> }) {
+  static async GET(req: RequestWithUser, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const projectService = new ProjectService()
     try {
-      const data = await projectService.getProjectById(id)
+      const project = await projectService.getProjectById(id)
+      if (
+        req.user.role !== UserRole.Admin &&
+        (project.client as User).id !== req.user.id &&
+        !(project.additionalClients as User[])?.some((client) => client.id === req.user.id)
+      ) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: StatusCodes.UNAUTHORIZED })
+      }
       return NextResponse.json({
-        data,
+        data: project,
         // data: {
         //   ...fetchedForm,
         //   ...fetchedForm.questionResponses?.reduce(

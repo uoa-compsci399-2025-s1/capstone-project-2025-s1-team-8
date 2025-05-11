@@ -20,19 +20,37 @@ describe('tests /api/projects/[id]', async () => {
   describe('GET /api/projects/[id]', () => {
     it('should return a 401 if role is student', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
+
       const res = await GET(createMockNextRequest(''), {
         params: paramsToPromise({ id: 'nonexistent' }),
       })
+
+      expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
+    })
+
+    it("should return a 401 if the project isn't associated with the requesting client", async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, clientToken)
+
+      const project = await projectService.createProject({
+        ...projectCreateMock,
+        client: studentMock,
+      })
+
+      const res = await GET(createMockNextRequest(''), {
+        params: paramsToPromise({ id: project.id }),
+      })
+
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
     })
 
     it('should get a project correctly', async () => {
-      const project = await projectService.createProject(projectCreateMock)
-      const slug = { id: project.id }
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const project = await projectService.createProject(projectCreateMock)
+
       const res = await GET(createMockNextRequest(''), {
-        params: paramsToPromise(slug),
+        params: paramsToPromise({ id: project.id }),
       })
+
       expect(res.status).toBe(StatusCodes.OK)
       expect(await res.json()).toEqual({ data: project })
     })
