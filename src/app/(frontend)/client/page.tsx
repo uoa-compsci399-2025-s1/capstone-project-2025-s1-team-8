@@ -28,7 +28,7 @@ export default function Client() {
     })
   }, [])
 
-  if (!isLoaded && !loginLoaded) {
+  if (!isLoaded || !loginLoaded) {
     return null
   }
   // Empty array for now
