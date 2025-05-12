@@ -1,6 +1,4 @@
 import { Semester } from "@/payload-types";
-import { mock } from "node:test";
-
 export const mockSemesters: Semester[] = [
     {
         id: "s1",
