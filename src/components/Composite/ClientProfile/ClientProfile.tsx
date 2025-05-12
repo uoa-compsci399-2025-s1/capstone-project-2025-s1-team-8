@@ -3,7 +3,6 @@ import Capsule from '@/components/Generic/Capsule/Capsule'
 import { FiEdit, FiSave } from 'react-icons/fi'
 import { UserCombinedInfo } from '@/types/Collections'
 import { handleClientProfileUpdate } from '@/lib/services/client/Handlers'
-import { StatusCodes } from 'http-status-codes'
 
 interface ClientProfileProps {
   clientInfo: UserCombinedInfo
