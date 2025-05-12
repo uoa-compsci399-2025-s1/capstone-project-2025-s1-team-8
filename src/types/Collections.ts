@@ -3,7 +3,6 @@ import {
   SemesterProject,
   User,
   Project,
-  FormResponse,
   Form,
   Authentication,
   FormQuestion,
@@ -55,12 +54,6 @@ export type CreateClientAdditionalInfoData = Omit<
   'id' | 'createdAt' | 'updatedAt'
 >
 export type UpdateClientAdditionalInfoData = Partial<CreateClientAdditionalInfoData>
-
-/*
- * FormResponse Collection Types
- */
-export type CreateFormResponseData = Omit<FormResponse, 'id' | 'createdAt' | 'updatedAt'>
-export type UpdateFormResponseData = Partial<CreateFormResponseData>
 
 /*
  * Form Collection Types

@@ -10,7 +10,7 @@ import {
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET, PATCH, DELETE } from '@/app/api/projects/[id]/route'
-import { adminMock, clientMock } from '@/test-config/mocks/Auth.mock'
+import { adminMock } from '@/test-config/mocks/Auth.mock'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
@@ -61,7 +61,7 @@ describe('tests /api/projects/[id]', async () => {
     it('should update a project correctly', async () => {
       const project = await projectService.createProject({
         ...projectCreateMock,
-        clients: [clientMock, adminMock],
+        additionalClients: [adminMock],
       })
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await PATCH(createMockNextPatchRequest('', { name: 'Updated project' }), {
@@ -114,7 +114,6 @@ describe('tests /api/projects/[id]', async () => {
     it('should delete a project correctly', async () => {
       const project = await projectService.createProject({
         ...projectCreateMock,
-        clients: [clientMock],
       })
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
       const slug = { id: project.id }

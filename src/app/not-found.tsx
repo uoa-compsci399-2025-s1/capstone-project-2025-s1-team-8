@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 export default function NotFound() {
   return (
-    <div className="overflow-x-auto min-h-screen flex flex-col items-center space-y-8 bg-[linear-gradient(to_right,rgba(255,169,222,0.2),rgba(209,251,255,0.2)),linear-gradient(to_bottom,#fffef9,#D1FBFF)]">
+    <div className="overflow-x-auto min-h-screen flex flex-col bg-[linear-gradient(to_right,rgba(255,169,222,0.2),rgba(209,251,255,0.2)),linear-gradient(to_bottom,#fffef9,#D1FBFF)]">
       <NavBar hasBg={false} />
       <div className="flex flex-1 flex-col justify-center items-center space-y-8 p-10">
         <div className="flex flex-col sm:flex-row items-end my-10 mx-4 sm:mx-10 md:mx-25">

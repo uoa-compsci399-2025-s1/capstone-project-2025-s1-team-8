@@ -59,17 +59,27 @@ class RouterWrapper {
     let docs: SemesterProject[], nextPage: number | null | undefined
 
     if (req.user.role === UserRole.Student) {
-      const paginatedProjects = await projectService.getAllProjectsBySemester(id, limit, page, {
-        published: true,
-        status: status ? (status as ProjectStatus) : undefined,
-      })
+      const paginatedProjects = await projectService.getAllSemesterProjectsBySemester(
+        id,
+        limit,
+        page,
+        {
+          published: true,
+          status: status ? (status as ProjectStatus) : undefined,
+        },
+      )
       docs = paginatedProjects.docs
       nextPage = paginatedProjects.nextPage
     } else {
-      const paginatedProjects = await projectService.getAllProjectsBySemester(id, limit, page, {
-        published: !!published ? JSON.parse(published) : undefined,
-        status: status ? (status as ProjectStatus) : undefined,
-      })
+      const paginatedProjects = await projectService.getAllSemesterProjectsBySemester(
+        id,
+        limit,
+        page,
+        {
+          published: !!published ? JSON.parse(published) : undefined,
+          status: status ? (status as ProjectStatus) : undefined,
+        },
+      )
       docs = paginatedProjects.docs
       nextPage = paginatedProjects.nextPage
     }
@@ -97,7 +107,11 @@ class RouterWrapper {
         const project = await projectService.getProjectById(
           typeof body.project === 'string' ? body.project : body.project?.id,
         )
-        if (req.user.role !== UserRole.Admin && !project.clients.includes(req.user.id)) {
+        if (
+          req.user.role !== UserRole.Admin &&
+          project.client !== req.user.id &&
+          !project.additionalClients?.includes(req.user.id)
+        ) {
           return NextResponse.json(
             { error: 'The project is not associated with the user' },
             { status: StatusCodes.UNAUTHORIZED },
