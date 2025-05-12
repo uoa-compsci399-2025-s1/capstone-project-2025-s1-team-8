@@ -1,17 +1,8 @@
 import ClientModal from '@/components/Composite/ClientModal/ClientModal'
 import React, { useState } from 'react'
 import { FiCopy, FiCheck } from 'react-icons/fi'
-import { PlaceholderProjectDetailsType } from '@/types/Project'
 import { UserCombinedInfo } from '@/types/Collections'
 import { Project } from '@/payload-types'
-
-export interface ClientDTOPlaceholder {
-  name: string
-  email: string
-  affiliation?: string
-  introduction?: string
-  projects?: PlaceholderProjectDetailsType[]
-}
 
 export interface ClientCardProps {
   clientInfo: UserCombinedInfo

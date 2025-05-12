@@ -4,17 +4,7 @@ import Capsule from '@/components/Generic/Capsule/Capsule'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import { XMarkIcon } from '@heroicons/react/24/solid'
-import { PlaceholderProjectDetailsType } from '@/types/Project'
 import { Project, Semester } from '@/payload-types'
-
-export interface SemesterDTOPlaceholder {
-  semesterName: string
-  startDate: Date
-  endDate: Date
-  submissionDeadline: Date
-  approvedProjects: PlaceholderProjectDetailsType[]
-  currentOrUpcoming?: 'current' | 'upcoming' | string //Used for styling the current and upcoming semesters. If not current or upcoming semester, leave blank
-}
 
 const SemesterCard: React.FC<Semester> = ({ name, startDate, endDate, deadline }) => {
   const approvedProjects: Project[] = [] // Placeholder for approved projects
