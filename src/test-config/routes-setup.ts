@@ -72,15 +72,15 @@ beforeEach(async () => {
 
   vi.mock('next/headers', () => ({
     cookies: vi.fn(() => ({
-      set: (key: string, value: string) => {
+      set: vi.fn().mockImplementation((key: string, value: string, _cookie) => {
         cookies[key] = value
-      },
-      get: (key: string) => {
+      }),
+      get: vi.fn().mockImplementation((key: string) => {
         return { value: cookies[key] }
-      },
-      delete: (key: string) => {
+      }),
+      delete: vi.fn().mockImplementation((key: string) => {
         delete cookies[key]
-      },
+      }),
     })),
   }))
 
