@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import { FiEdit, FiSave } from 'react-icons/fi'
 import { UserCombinedInfo } from '@/types/Collections'
-import { handleClientProfileUpdate } from '@/lib/services/client/Handlers'
+import { handleClientUpdateSave } from '@/lib/services/client/Handlers'
 
 interface ClientProfileProps {
   clientInfo: UserCombinedInfo
@@ -24,36 +24,21 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo }) => {
   )
 
   const handleSave = async () => {
-    const names = name.split(' ')
-    const firstName = names[0]
-    const lastName = names[1]
-    if (!firstName || !lastName) {
-      setName(previousName)
-      setIsEditing(false)
-      alert('Please enter a valid first and last name.') //placeholder
-      return
-    }
-
-    if (names.length > 2) {
-      setName(previousName)
-      setIsEditing(false)
-      alert('Please enter only first and last name.') //placeholder
-      return
-    }
-
-    const res = await handleClientProfileUpdate(firstName, lastName, affiliation, introduction)
-    if (res.error) {
-      setName(previousName)
-      setAffiliation(previousAffiliation)
-      setIntroduction(previousIntroduction)
-      alert('Error updating profile: ' + res.error || res.details) //placeholder
-      return
-    }
-
-    setPreviousName(name)
-    setPreviousAffiliation(affiliation)
-    setPreviousIntroduction(introduction)
-    setIsEditing(false)
+    await handleClientUpdateSave(
+      name,
+      previousName,
+      affiliation,
+      previousAffiliation,
+      introduction,
+      previousIntroduction,
+      setName,
+      setAffiliation,
+      setIntroduction,
+      setPreviousName,
+      setPreviousAffiliation,
+      setPreviousIntroduction,
+      setIsEditing,
+    )
   }
 
   return (
