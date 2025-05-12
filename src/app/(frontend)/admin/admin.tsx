@@ -8,6 +8,7 @@ import { motion } from 'framer-motion'
 import { mockClients } from '@/mocks/Clients.mock'
 import { mockSemesters } from '@/mocks/Semesters.mock'
 import SadTeapot from 'src/assets/sad-teapot.svg'
+import { updateProjectOrdersAndStatus } from '@/components/Composite/ProjectDragAndDrop/ProjectUpdates'
 
 interface AdminProps {
   ProjectData: DndComponentProps
@@ -74,6 +75,7 @@ const Admin: React.FC<AdminProps> = ({ ProjectData }) => {
                 <ProjectDnD
                   semesterId={ProjectData.semesterId}
                   presetContainers={ProjectData.presetContainers}
+                  onSaveChanges={updateProjectOrdersAndStatus}
                 />
               </div>
 

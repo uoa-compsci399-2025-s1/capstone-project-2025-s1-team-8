@@ -22,7 +22,7 @@ import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProje
 import { ProjectDetailsType, ProjectStatus } from '@/types/Project'
 import { FiAlertCircle, FiSave } from 'react-icons/fi'
 import { UserRole } from '@/types/User'
-import { updateProjectOrdersAndStatus } from './ProjectUpdates'
+import { UpdateParams } from './ProjectUpdates'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -34,7 +34,8 @@ export type DNDType = {
 
 export type DndComponentProps = {
   presetContainers: DNDType[]
-  semesterId: string
+  semesterId: string,
+  onSaveChanges: (params: UpdateParams) => Promise<void>
 }
 
 const defaultProjectInfo: ProjectDetailsType = {
@@ -62,7 +63,7 @@ const defaultProjectInfo: ProjectDetailsType = {
   submittedDate: new Date(),
 }
 
-const ProjectDnD: React.FC<DndComponentProps> = ({ presetContainers, semesterId }) => {
+const ProjectDnD: React.FC<DndComponentProps> = ({ presetContainers, semesterId, onSaveChanges }) => {
   const [containers, setContainers] = useState<DNDType[]>(presetContainers)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
@@ -106,8 +107,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({ presetContainers, semesterId 
   async function handleSaveChanges() {
     setHasChanges(false)
     setShowNotification(false)
-    // send changes to the backend
-    await updateProjectOrdersAndStatus({ containers, semesterId })
+    await onSaveChanges({ containers, semesterId })
 
     setContainers((prev) =>
       prev.map((container) => ({

@@ -3,7 +3,7 @@ import AdminProjectService from '@/lib/services/admin/AdminProjectService'
 import { ProjectStatus } from '@/types/Project'
 import { DNDType } from './ProjectDnD'
 
-interface UpdateParams {
+export interface UpdateParams {
   containers: DNDType[]
   semesterId: string
 }
