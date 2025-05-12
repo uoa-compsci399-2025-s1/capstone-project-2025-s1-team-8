@@ -14,7 +14,11 @@ export const handleClientPageLoad = async (): Promise<{
   const { userInfo, status } = await ClientService.getClientInfo()
   const clientProjectsRes = await ClientService.getClientProjects()
 
-  if (status !== StatusCodes.OK || clientProjectsRes.status !== StatusCodes.OK || (userInfo.role !== 'client' && userInfo.role !== 'admin') ) {
+  if (
+    status !== StatusCodes.OK ||
+    clientProjectsRes.status !== StatusCodes.OK ||
+    (userInfo.role !== 'client' && userInfo.role !== 'admin')
+  ) {
     redirect('/not-found')
   }
 
@@ -36,15 +40,25 @@ export const handleClientPageLoad = async (): Promise<{
   return { userInfo, projects: clientProjectsRes.projects, semesters: semestersList }
 }
 
-export const handleClientProfileUpdate = async (firstName: string, lastName: string, affiliation: string, introduction: string): Promise<{
+export const handleClientProfileUpdate = async (
+  firstName: string,
+  lastName: string,
+  affiliation: string,
+  introduction: string,
+): Promise<{
   updatedUser: UserCombinedInfo
   status: StatusCodes
   error?: string
   details?: string
 }> => {
-  const {updatedUser, status, error, details} = await ClientService.updateClientDetails({firstName, lastName, affiliation, introduction})
+  const { updatedUser, status, error, details } = await ClientService.updateClientDetails({
+    firstName,
+    lastName,
+    affiliation,
+    introduction,
+  })
   if (status !== StatusCodes.OK) {
     console.error(`Error updating client profile: ${error || details}`)
   }
-  return {updatedUser, status, error, details}
+  return { updatedUser, status, error, details }
 }
