@@ -10,7 +10,7 @@ import { UserCombinedInfo } from '@/types/Collections'
 
 interface ProjectModalProps extends ModalProps {
   projectInfo: Project
-  semesters: Semester[]
+  semesters?: Semester[]
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({
@@ -20,6 +20,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   projectInfo,
   semesters,
 }) => {
+  if (!semesters) semesters = []
   const [copied, setCopied] = useState(false)
   const [copiedAll, setCopiedAll] = useState(false)
 
