@@ -16,20 +16,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   open,
   onClose,
   className = '',
-  projectInfo: {
-    projectTitle,
-    projectClientDetails,
-    otherClientDetails,
-    projectDescription,
-    desiredOutput,
-    desiredTeamSkills,
-    availableResources,
-    specialRequirements,
-    numberOfTeams,
-    futureConsideration,
-    semesters,
-    submittedDate,
-  },
+  projectInfo,
 }) => {
   const [copied, setCopied] = useState(false)
   const [copiedAll, setCopiedAll] = useState(false)
@@ -71,22 +58,22 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
         {/* title */}
         <h1 className="text-4xl font-normal m-0 text-dark-blue font-dm-serif-display">
-          {projectTitle}
+          {projectInfo.projectTitle}
         </h1>
 
         {/* client details */}
         <div className="flex flex-row gap-3">
           <h2 className="flex text-lg font-normal text-steel-blue font-inter">
-            {projectClientDetails.firstName} {projectClientDetails.lastName}
+            {projectInfo.projectClientDetails.firstName} {projectInfo.projectClientDetails.lastName}
           </h2>
           <h2 className="flex text-lg font-normal text-deeper-blue font-inter">|</h2>
           <h2 className="flex text-lg font-normal text-deeper-blue font-inter">
-            {projectClientDetails.email}
+            {projectInfo.projectClientDetails.email}
           </h2>
           <button
             className="flex"
             style={{ pointerEvents: 'initial' }}
-            onClick={() => handleCopy(projectClientDetails.email)}
+            onClick={() => handleCopy(projectInfo.projectClientDetails.email)}
           >
             {copied ? (
               <FiCheck className="self-center size-5.5 text-dark-blue" />
@@ -97,40 +84,44 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         </div>
 
         {/* project description*/}
-        <p className="text-sm text-dark-blue font-inter text-left pb-3">{projectDescription}</p>
+        <p className="text-sm text-dark-blue font-inter text-left pb-3">
+          {projectInfo.projectDescription}
+        </p>
 
         {/* desired output */}
         <Capsule variant="muted_blue" text="Desired output" />
-        <p className="text-sm text-dark-blue font-inter text-left mb-7">{desiredOutput}</p>
+        <p className="text-sm text-dark-blue font-inter text-left mb-7">
+          {projectInfo.desiredOutput}
+        </p>
 
         {/* capsules for information */}
         <div className="grid grid-cols-[max-content_auto_max-content_max-content] grid-flow-row gap-2.5">
           <Capsule className="col-start-1 mr-2" variant="muted_blue" text="Special requirements" />
-          <Capsule className="col-start-2" variant="beige" text={specialRequirements} />
+          <Capsule className="col-start-2" variant="beige" text={projectInfo.specialRequirements} />
 
           <Capsule className="col-start-3 mr-2" variant="muted_blue" text="Submitted" />
           <Capsule
             className="col-start-4 mr-2"
             variant="gradient"
-            text={convertDatetoddmmYYYY(submittedDate)}
+            text={convertDatetoddmmYYYY(projectInfo.submittedDate)}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Number of teams" />
-          <Capsule className="col-start-2" variant="beige" text={numberOfTeams} />
+          <Capsule className="col-start-2" variant="beige" text={projectInfo.numberOfTeams} />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Future consideration" />
           <Capsule
             className="col-start-2"
             variant="beige"
-            text={futureConsideration ? 'Yes' : 'No'}
+            text={projectInfo.futureConsideration ? 'Yes' : 'No'}
           />
 
-          {semesters && semesters.length > 0 && (
+          {projectInfo.semesters && projectInfo.semesters.length > 0 && (
             <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />
           )}
-          {semesters && semesters.length > 0 && (
+          {projectInfo.semesters && projectInfo.semesters.length > 0 && (
             <div className="col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
-              {semesters.map((semester: Semester) => (
+              {projectInfo.semesters.map((semester: Semester) => (
                 <Capsule variant="beige" text={semester.name} key={semester.id} />
               ))}
             </div>
@@ -139,12 +130,12 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
       </div>
 
       <div className="relative bg-transparent-blue max-w-full flex flex-col px-15 pt-12 py-19 rounded-b-2xl gap-5">
-        {otherClientDetails && otherClientDetails.length > 0 && (
+        {projectInfo.otherClientDetails && projectInfo.otherClientDetails.length > 0 && (
           <div className="flex flex-col">
             <div
-              className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails?.length ?? 0} gap-x-3 pb-3`}
+              className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${projectInfo.otherClientDetails?.length ?? 0} gap-x-3 pb-3`}
             >
-              {otherClientDetails?.map((clientDetails) => (
+              {projectInfo.otherClientDetails?.map((clientDetails) => (
                 <>
                   <h2 className="col-start-1 text-lg font-normal text-dark-blue font-inter alternate">
                     {clientDetails.firstName} {clientDetails.lastName}
@@ -159,7 +150,12 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
               ))}
 
               <Button
-                onClick={() => handleCopyAll(projectClientDetails, otherClientDetails ?? [])}
+                onClick={() =>
+                  handleCopyAll(
+                    projectInfo.projectClientDetails,
+                    projectInfo.otherClientDetails ?? [],
+                  )
+                }
                 className="col-start-5 row-start-1"
                 variant="muted_blue"
                 size="sm"
@@ -169,15 +165,21 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             </div>
           </div>
         )}
-        {desiredTeamSkills && desiredTeamSkills != '' && (
+        {projectInfo.desiredTeamSkills && projectInfo.desiredTeamSkills != '' && (
           <Capsule variant="light_beige" text="Desired team skills" />
         )}
-        {desiredTeamSkills && desiredTeamSkills != '' && (
-          <p className="text-sm text-dark-blue font-inter text-left mb-3">{desiredTeamSkills}</p>
+        {projectInfo.desiredTeamSkills && projectInfo.desiredTeamSkills != '' && (
+          <p className="text-sm text-dark-blue font-inter text-left mb-3">
+            {projectInfo.desiredTeamSkills}
+          </p>
         )}
-        {availableResources && <Capsule variant="light_beige" text="Available resources" />}
-        {availableResources && (
-          <p className="text-sm text-dark-blue font-inter text-left">{availableResources}</p>
+        {projectInfo.availableResources && (
+          <Capsule variant="light_beige" text="Available resources" />
+        )}
+        {projectInfo.availableResources && (
+          <p className="text-sm text-dark-blue font-inter text-left">
+            {projectInfo.availableResources}
+          </p>
         )}
       </div>
     </Modal>

@@ -35,7 +35,7 @@ export type DNDType = {
 
 export type DndComponentProps = {
   presetContainers: DNDType[]
-  semesterId: string,
+  semesterId: string
   onSaveChanges: (params: UpdateParams) => Promise<void>
 }
 
@@ -64,7 +64,11 @@ const defaultProjectInfo: ProjectDetailsType = {
   submittedDate: new Date(),
 }
 
-const ProjectDnD: React.FC<DndComponentProps> = ({ presetContainers, semesterId, onSaveChanges }) => {
+const ProjectDnD: React.FC<DndComponentProps> = ({
+  presetContainers,
+  semesterId,
+  onSaveChanges,
+}) => {
   const [containers, setContainers] = useState<DNDType[]>(presetContainers)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
