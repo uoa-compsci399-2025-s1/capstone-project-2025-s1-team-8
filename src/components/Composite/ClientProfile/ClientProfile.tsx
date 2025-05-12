@@ -11,7 +11,7 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo }) => {
   const [isEditing, setIsEditing] = useState(false)
 
   const handleSave = () => {
-    console.log('Saving data')
+    console.log('Saving data') //call endpoint here
     setIsEditing(false)
   }
 

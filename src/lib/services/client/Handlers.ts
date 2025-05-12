@@ -38,6 +38,6 @@ export const handleClientPageLoad = async (): Promise<{
       console.error(`Error fetching semesters for project ${projects[i].id}: ${error || message}`)
     }
   }
-  console.log('Semesters List:', semestersList)
+
   return { userInfo, projects: clientProjectsRes.projects, semesters: semestersList }
 }
