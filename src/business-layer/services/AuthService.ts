@@ -7,10 +7,11 @@ import { UserRoleWithoutAdmin } from '@/types/User'
 
 export default class AuthService {
   /**
-   * Generates a state with internal role
+   * Generates a state with internal role.
+   * Generates this state by joining a random UUID generated with crypto and joining the role by a semicolon.
    *
    * @param role The {@link UserRoleWithoutAdmin} to encrypt with a state
-   * @returns The state
+   * @returns The state and role in base64
    */
   public generateState(role: UserRoleWithoutAdmin): string {
     return Buffer.from(crypto.randomUUID().toString() + ';' + role).toString('base64')
