@@ -25,9 +25,15 @@ let cookies: Record<string, string> = {}
 
 beforeEach(async () => {
   // Need to mock the auth service decode for it to decode the correct mocks
-  vi.mock('@/business-layer/services/AuthService', () => {
+  vi.mock('@/business-layer/services/AuthService', async () => {
+    const actual = await vi.importActual<typeof import('@/business-layer/services/AuthService')>(
+      '@/business-layer/services/AuthService',
+    )
+
     return {
       default: class {
+        generateState = new actual.default().generateState
+        decryptState = new actual.default().decryptState
         hashPassword = vi.fn().mockImplementation((password) => {
           return Buffer.from(password).toString('base64')
         })

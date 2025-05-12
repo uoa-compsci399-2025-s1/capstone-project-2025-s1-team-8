@@ -3,8 +3,29 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 
 import { User } from '@/payload-types'
 import { SALT_ROUNDS } from '@/types/Auth'
+import { UserRoleWithoutAdmin } from '@/types/User'
 
 export default class AuthService {
+  /**
+   * Generates a state with internal role
+   *
+   * @param role The {@link UserRoleWithoutAdmin} to encrypt with a state
+   * @returns The state
+   */
+  public generateState(role: UserRoleWithoutAdmin): string {
+    return Buffer.from(crypto.randomUUID().toString() + ';' + role).toString('base64')
+  }
+
+  /**
+   * Used to decrypt a state with user role
+   *
+   * @param state The state to decrypt
+   * @returns The user role that's decrypted
+   */
+  public decryptState(state: string): UserRoleWithoutAdmin {
+    return Buffer.from(state, 'base64').toString().split(';')[1] as UserRoleWithoutAdmin
+  }
+
   /**
    * Hashes a plain text password using bcrypt.
    *
