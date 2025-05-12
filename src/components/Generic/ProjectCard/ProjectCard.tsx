@@ -29,7 +29,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo }) => {
             <p className="text-dark-blue text-base font-semibold pb-0.5">
               {projectInfo.projectTitle}
             </p>
-            <p className="text-dark-blue text-xs">{projectInfo.projectClientDetails.name}</p>
+            <p className="text-dark-blue text-xs">
+              {projectInfo.projectClientDetails.firstName +
+                ' ' +
+                (projectInfo.projectClientDetails.lastName ?? '')}
+            </p>
             <p className="text-grey-1 pt-3 pb-2 text-xs">{truncatedDescription}</p>
           </div>
         </div>

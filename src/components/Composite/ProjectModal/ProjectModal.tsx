@@ -64,7 +64,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         {/* client details */}
         <div className="flex flex-row gap-3">
           <h2 className="flex text-lg font-normal text-steel-blue font-inter">
-            {projectInfo.projectClientDetails.firstName} {projectInfo.projectClientDetails.lastName}
+            {projectInfo.projectClientDetails.firstName +
+              ' ' +
+              (projectInfo.projectClientDetails.lastName ?? '')}
           </h2>
           <h2 className="flex text-lg font-normal text-deeper-blue font-inter">|</h2>
           <h2 className="flex text-lg font-normal text-deeper-blue font-inter">
