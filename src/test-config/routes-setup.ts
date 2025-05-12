@@ -37,8 +37,8 @@ beforeEach(async () => {
 
     return {
       default: class {
-        generateState = new actual.default().generateState
-        decryptState = new actual.default().decryptState
+        generateState = new actual.default().generateState.bind(new actual.default())
+        decryptState = new actual.default().decryptState.bind(new actual.default())
         hashPassword = vi.fn().mockImplementation((password) => {
           return Buffer.from(password).toString('base64')
         })
