@@ -23,7 +23,7 @@ import { PlaceholderProjectDetailsType } from '@/types/Project'
 import { FiSave } from 'react-icons/fi'
 import Notification from '@/components/Generic/Notification/Notification'
 
-import { User } from '@/payload-types'
+import { Project, User } from '@/payload-types'
 
 type DNDType = {
   id: UniqueIdentifier
@@ -37,23 +37,21 @@ type DndComponentProps = {
   presetContainers: DNDType[]
 }
 
-const defaultProjectInfo: PlaceholderProjectDetailsType = {
-  projectId: '',
-  projectTitle: '',
-  projectClientDetails: {
-    name: '',
-    email: '',
-  },
-  otherClientDetails: [],
-  projectDescription: '',
+const defaultProjectInfo: Project = {
+  id: '',
+  name: '',
+  client: "",
+  additionalClients: [],
+  description: '',
+  deadline: new Date().toISOString(),
   desiredOutput: '',
+  timestamp: new Date().toISOString(),
+  specialEquipmentRequirements: '',
+  numberOfTeams: "",
   desiredTeamSkills: '',
-  availableResources: '',
-  specialRequirements: false,
-  numberOfTeams: 0,
-  futureConsideration: false,
-  Semesters: [],
-  submittedDate: new Date(),
+  futureConsideration: true,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 }
 
 const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
@@ -165,7 +163,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
     }
   }
 
-  const findItemInfo = (id: UniqueIdentifier | undefined): PlaceholderProjectDetailsType => {
+  const findItemInfo = (id: UniqueIdentifier | undefined): Project => {
     if (!id) return defaultProjectInfo
 
     const container = findValueOfItems(id, 'item')
