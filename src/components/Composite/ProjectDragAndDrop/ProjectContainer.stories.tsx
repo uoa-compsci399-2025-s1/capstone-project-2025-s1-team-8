@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react'
 import ProjectContainer from './ProjectContainer'
 import { DndContext } from '@dnd-kit/core'
 import { FilterProvider } from '@/contexts/FilterContext'
-import { mockProjects } from '@/mocks/newProjects.mock'
+import { mockProjects } from '@/mocks/projects.mock'
 import { SortableKeys } from '@/components/Generic/Filter/ProjectFilterAssets'
 import { useState } from 'react'
 
