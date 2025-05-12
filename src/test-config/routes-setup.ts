@@ -37,8 +37,9 @@ beforeEach(async () => {
 
     return {
       default: class {
-        generateState = new actual.default().generateState.bind(new actual.default())
-        decryptState = new actual.default().decryptState.bind(new actual.default())
+        private authServiceInstance = new actual.default()
+        generateState = this.authServiceInstance.generateState.bind(this.authServiceInstance)
+        decryptState = this.authServiceInstance.decryptState.bind(this.authServiceInstance)
         hashPassword = vi.fn().mockImplementation((password) => {
           return Buffer.from(password).toString('base64')
         })
