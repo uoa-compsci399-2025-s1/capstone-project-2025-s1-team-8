@@ -14,17 +14,39 @@ export default class ProjectService {
    *
    * @param limit The number of projects to return
    * @param page The page number to return
+   * @param options Optional filtering to search for client as well
    * @returns The list of projects
    */
   public async getAllProjects(
     limit: number = 100,
     page: number = 1,
+    options?: {
+      clientId: string
+    },
   ): Promise<PaginatedDocs<Project>> {
     const data = await payload.find({
       collection: 'project',
       limit,
       pagination: true,
       page: page,
+      where: {
+        ...(!!options?.clientId
+          ? {
+              or: [
+                {
+                  client: {
+                    equals: options.clientId,
+                  },
+                },
+                {
+                  additionalClients: {
+                    contains: options.clientId,
+                  },
+                },
+              ],
+            }
+          : {}),
+      },
     })
     return data
   }

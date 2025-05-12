@@ -9,6 +9,7 @@ import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { GET, GetProjectSemestersResponse } from './route'
 import { projectCreateMock, semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
+import { clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 
 describe('/api/projects/[id]/semesters', async () => {
   const cookieStore = await cookies()
@@ -25,7 +26,10 @@ describe('/api/projects/[id]/semesters', async () => {
 
     it("should return a 401 if the requesting user isn't associated to the project", async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      const project = await projectService.createProject(projectCreateMock)
+      const project = await projectService.createProject({
+        ...projectCreateMock,
+        client: studentMock,
+      })
       await projectService.createSemesterProject(semesterProjectCreateMock)
 
       const res = await GET(createMockNextRequest(''), {
@@ -36,6 +40,29 @@ describe('/api/projects/[id]/semesters', async () => {
       expect(((await res.json()) as GetProjectSemestersResponse).error).toBe(
         'This project is not associated with the requesting client',
       )
+    })
+
+    it('should return a 200 if the client is an additional client', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, clientToken)
+      const semester = await semesterService.createSemester(semesterCreateMock)
+      const project = await projectService.createProject({
+        ...projectCreateMock,
+        client: studentMock,
+        additionalClients: [clientMock],
+      })
+      await projectService.createSemesterProject({
+        ...semesterProjectCreateMock,
+        project,
+        semester,
+      })
+
+      const res = await GET(createMockNextRequest(''), {
+        params: paramsToPromise({ id: project.id }),
+      })
+
+      expect(res.status).toBe(StatusCodes.OK)
+      const json: GetProjectSemestersResponse = await res.json()
+      expect(json.data).toStrictEqual([semester])
     })
 
     it('should return all the semesters that are releated to a project', async () => {
