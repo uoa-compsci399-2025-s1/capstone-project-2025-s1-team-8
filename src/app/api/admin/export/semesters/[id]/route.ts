@@ -18,11 +18,11 @@ class RouteWrapper {
     const { id } = await params
     const projectService = new ProjectService()
     try {
-      let projects = await projectService.getAllProjectsBySemester(id)
+      let projects = await projectService.getAllSemesterProjectsBySemester(id)
       const allSemesterProjects: SemesterProjectType[] = [...projects.docs]
       while (projects.nextPage) {
         allSemesterProjects.push(...projects.docs)
-        projects = await projectService.getAllProjectsBySemester(id, 100, projects.nextPage)
+        projects = await projectService.getAllSemesterProjectsBySemester(id, 100, projects.nextPage)
       }
       const csvHeaders = [
         'id',
