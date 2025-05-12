@@ -131,7 +131,7 @@ describe('GET /api/auth/google/callback', () => {
     const json = await response.json()
 
     expect(response.status).toBe(StatusCodes.BAD_REQUEST)
-    expect(json.error).toBe("State missing, or state doesn't match browser state. ")
+    expect(json.error).toBe("State missing or state doesn't match browser state. ")
   })
 
   it('returns 400 if code is missing', async () => {
