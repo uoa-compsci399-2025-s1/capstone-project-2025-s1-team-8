@@ -12,6 +12,7 @@ import {
   STUDENT_JWT_MOCK,
   studentMock,
   tokensMock,
+  UUID_MOCK,
 } from './mocks/Auth.mock'
 import AuthService from '@/business-layer/services/AuthService'
 import { payload } from '@/data-layer/adapters/Payload'
@@ -24,6 +25,10 @@ let studentToken: string
 let cookies: Record<string, string> = {}
 
 beforeEach(async () => {
+  vi.stubGlobal('crypto', {
+    // stubGlobal changes the values of global variables
+    randomUUID: () => UUID_MOCK,
+  })
   // Need to mock the auth service decode for it to decode the correct mocks
   vi.mock('@/business-layer/services/AuthService', async () => {
     const actual = await vi.importActual<typeof import('@/business-layer/services/AuthService')>(

@@ -47,8 +47,9 @@ describe('tests /api/auth/register', () => {
     const allUsersBeforeRegister = (await userService.getAllUsers()).docs
 
     await POST(createMockNextPostRequest('/api/auth/register', body))
-
-    expect((await userService.getAllUsers()).docs).toStrictEqual(allUsersBeforeRegister)
+    const currentAllUsers = (await userService.getAllUsers()).docs
+    expect(currentAllUsers.length).toEqual(allUsersBeforeRegister.length)
+    expect(currentAllUsers).toEqual(expect.arrayContaining(allUsersBeforeRegister))
   })
 
   it('should return a 409 conflict if user already exists', async () => {

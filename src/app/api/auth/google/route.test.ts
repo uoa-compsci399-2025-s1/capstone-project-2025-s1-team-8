@@ -1,9 +1,14 @@
-import { REDIRECT_URI_MOCK, SCOPES_ARRAY_MOCK, STATE_MOCK } from '@/test-config/mocks/Auth.mock'
+import {
+  REDIRECT_URI_MOCK,
+  SCOPES_ARRAY_MOCK,
+  CLIENT_STATE_MOCK,
+} from '@/test-config/mocks/Auth.mock'
 import { GET } from './route'
 import { redirect } from 'next/navigation'
 import { oauth2Client } from '@/business-layer/security/google'
 import * as nextHeaders from 'next/headers'
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
+import { buildNextRequest } from '@/utils/buildNextRequest'
 
 vi.mock('@/business-layer/security/google', () => ({
   oauth2Client: {
@@ -26,11 +31,6 @@ vi.mock('next/navigation', () => ({
 describe('Google Auth tests', async () => {
   const mockSet = vi.fn()
   beforeAll(() => {
-    // stubGlobal changes the values of global variables
-    vi.stubGlobal('crypto', {
-      randomUUID: () => STATE_MOCK,
-    })
-
     const mockCookieStore: Partial<ReadonlyRequestCookies> = {
       set: mockSet,
     }
@@ -42,12 +42,13 @@ describe('Google Auth tests', async () => {
 
   afterEach(() => {
     vi.restoreAllMocks()
+    vi.resetAllMocks()
   })
 
   it('should redirect to Google OAuth URL with state and scopes', async () => {
-    await GET()
+    await GET(await buildNextRequest('/api/auth/google?role=client'))
     expect(redirect).toHaveBeenCalled()
-    expect(mockSet).toHaveBeenCalledWith('state', STATE_MOCK, {
+    expect(mockSet).toHaveBeenCalledWith('state', CLIENT_STATE_MOCK, {
       maxAge: 60,
       httpOnly: true,
       sameSite: 'lax',
@@ -56,13 +57,13 @@ describe('Google Auth tests', async () => {
     expect(oauth2Client.generateAuthUrl).toHaveBeenCalledWith({
       scope: SCOPES_ARRAY_MOCK,
       include_granted_scopes: true,
-      state: STATE_MOCK,
+      state: CLIENT_STATE_MOCK,
     })
     expect(redirect).toHaveBeenCalledWith(
       oauth2Client.generateAuthUrl({
         scope: SCOPES_ARRAY_MOCK,
         include_granted_scopes: true,
-        state: STATE_MOCK,
+        state: CLIENT_STATE_MOCK,
       }),
     )
     expect(redirect).toHaveBeenCalledWith(REDIRECT_URI_MOCK)
