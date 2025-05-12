@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import ProjectCardList from './ProjectCardList'
-import { mockProjects } from '@/mocks/Projects.mock'
+import { mockProjects } from '@/mocks/newProjects.mock'
+import { mockSemestersNested } from '@/mocks/newSemesters.mock'
 
 const meta: Meta<typeof ProjectCardList> = {
   title: 'Composite/ProjectCardList',
@@ -22,6 +23,7 @@ export const AsCard: Story = {
     headingClassName: 'text-xl sm:text-2xl py-4 sm:py-6',
     heading: 'My projects',
     projects: mockProjects,
+    semesters: mockSemestersNested,
   },
 }
 
@@ -32,6 +34,7 @@ export const InModal: Story = {
     headingClassName: 'text-3xl pb-3 tracking-wide',
     heading: 'Projects',
     projects: mockProjects,
+    semesters: mockSemestersNested,
   },
 }
 
@@ -41,5 +44,6 @@ export const InCard: Story = {
     headingClassName: 'text-xl sm:text-2xl py-4 sm:py-6',
     heading: 'Approved projects',
     projects: mockProjects,
+    semesters: mockSemestersNested,
   },
 }
