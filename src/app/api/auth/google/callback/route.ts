@@ -76,7 +76,7 @@ export const GET = async (req: NextRequest) => {
       firstName,
       lastName,
       role: businessAuthService.decryptState(state),
-    }
+    })
   }
 
   if (fetchedAuth) {
