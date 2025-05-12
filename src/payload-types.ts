@@ -76,7 +76,6 @@ export interface Config {
     semesterProject: SemesterProject;
     semester: Semester;
     formQuestion: FormQuestion;
-    formResponse: FormResponse;
     form: Form;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -93,7 +92,6 @@ export interface Config {
     semesterProject: SemesterProjectSelect<false> | SemesterProjectSelect<true>;
     semester: SemesterSelect<false> | SemesterSelect<true>;
     formQuestion: FormQuestionSelect<false> | FormQuestionSelect<true>;
-    formResponse: FormResponseSelect<false> | FormResponseSelect<true>;
     form: FormSelect<false> | FormSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -165,10 +163,6 @@ export interface Authentication {
   /**
    * The type of authentication
    */
-  type: 'oauth' | 'password';
-  /**
-   * The type of authentication
-   */
   provider?: 'google' | null;
   /**
    * The provider account id of the user authentication
@@ -209,7 +203,7 @@ export interface User {
   id: string;
   email: string;
   firstName: string;
-  lastName: string;
+  lastName?: string | null;
   role: 'admin' | 'client' | 'student';
   image?: (string | null) | Media;
   updatedAt: string;
@@ -252,25 +246,31 @@ export interface ClientAdditionalInfo {
  */
 export interface Project {
   id: string;
+  /**
+   * The name of the project, e.g. Encapsulate
+   */
   name: string;
-  clients: (string | User)[];
+  /**
+   * The description of the project, e.g. Best capstone project!
+   */
   description: string;
+  /**
+   * The client that submitted the form
+   */
+  client: string | User;
+  /**
+   * The clients that are related to this project.
+   */
+  additionalClients?: (string | User)[] | null;
   attachments?: (string | Media)[] | null;
   deadline?: string | null;
   timestamp: string;
-  formResponse: string | FormResponse;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "formResponse".
- */
-export interface FormResponse {
-  id: string;
-  name: string;
-  description: string;
-  clients?: (string | User)[] | null;
+  desiredOutput: string;
+  specialEquipmentRequirements: string;
+  numberOfTeams: string;
+  desiredTeamSkills?: string | null;
+  availableResources?: string | null;
+  futureConsideration: boolean;
   questionResponses?:
     | {
         question: string | FormQuestion;
@@ -287,7 +287,26 @@ export interface FormResponse {
  */
 export interface FormQuestion {
   id: string;
+  /**
+   * The question title, e.g. Whats your name?
+   */
   question: string;
+  /**
+   * The description of this question provides more information about how the question can be answered! E.g. Enter a number
+   */
+  description: string;
+  /**
+   * An identifiable field name key, e.g. final_presentation_confirm
+   */
+  fieldName: string;
+  /**
+   * The question ordering ascending order, e.g. 0
+   */
+  order: number;
+  /**
+   * If the question is required or not, e.g. true
+   */
+  required: boolean;
   updatedAt: string;
   createdAt: string;
 }
@@ -328,9 +347,14 @@ export interface Semester {
  */
 export interface Form {
   id: string;
+  /**
+   * The form name
+   */
   name: string;
+  /**
+   * The form description
+   */
   description: string;
-  questions?: (string | FormQuestion)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -376,10 +400,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'formQuestion';
         value: string | FormQuestion;
-      } | null)
-    | ({
-        relationTo: 'formResponse';
-        value: string | FormResponse;
       } | null)
     | ({
         relationTo: 'form';
@@ -449,7 +469,6 @@ export interface AdminSelect<T extends boolean = true> {
 export interface AuthenticationSelect<T extends boolean = true> {
   email?: T;
   password?: T;
-  type?: T;
   provider?: T;
   providerAccountId?: T;
   refreshToken?: T;
@@ -509,12 +528,25 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface ProjectSelect<T extends boolean = true> {
   name?: T;
-  clients?: T;
   description?: T;
+  client?: T;
+  additionalClients?: T;
   attachments?: T;
   deadline?: T;
   timestamp?: T;
-  formResponse?: T;
+  desiredOutput?: T;
+  specialEquipmentRequirements?: T;
+  numberOfTeams?: T;
+  desiredTeamSkills?: T;
+  availableResources?: T;
+  futureConsideration?: T;
+  questionResponses?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -550,24 +582,10 @@ export interface SemesterSelect<T extends boolean = true> {
  */
 export interface FormQuestionSelect<T extends boolean = true> {
   question?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "formResponse_select".
- */
-export interface FormResponseSelect<T extends boolean = true> {
-  name?: T;
   description?: T;
-  clients?: T;
-  questionResponses?:
-    | T
-    | {
-        question?: T;
-        answer?: T;
-        id?: T;
-      };
+  fieldName?: T;
+  order?: T;
+  required?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -578,7 +596,6 @@ export interface FormResponseSelect<T extends boolean = true> {
 export interface FormSelect<T extends boolean = true> {
   name?: T;
   description?: T;
-  questions?: T;
   updatedAt?: T;
   createdAt?: T;
 }

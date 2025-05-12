@@ -5,9 +5,13 @@ import {
   adminMock,
   CLIENT_JWT_MOCK,
   clientMock,
+  CODE_MOCK,
+  JWT_MOCK,
   JWT_SECRET_MOCK,
+  SCOPES_ARRAY_MOCK,
   STUDENT_JWT_MOCK,
   studentMock,
+  tokensMock,
 } from './mocks/Auth.mock'
 import AuthService from '@/business-layer/services/AuthService'
 import { payload } from '@/data-layer/adapters/Payload'
@@ -31,10 +35,10 @@ beforeEach(async () => {
           return Buffer.from(hash, 'base64').toString() === password
         })
         generateJWT = vi.fn().mockImplementation((user, _token) => {
-          if (user === adminMock) return ADMIN_JWT_MOCK
+          if (user === adminMock || user.email === adminMock.email) return ADMIN_JWT_MOCK
           if (user === clientMock || user.email === clientMock.email) return CLIENT_JWT_MOCK
-          if (user === studentMock) return STUDENT_JWT_MOCK
-          return ''
+          if (user === studentMock || user.email === studentMock.email) return STUDENT_JWT_MOCK
+          return JWT_MOCK
         })
         decodeJWT = vi.fn().mockImplementation((token) => {
           if (token === ADMIN_JWT_MOCK) return { user: adminMock, accessToken: ACCESS_TOKEN_MOCK }
@@ -43,6 +47,19 @@ beforeEach(async () => {
             return { user: studentMock, accessToken: ACCESS_TOKEN_MOCK }
           return null
         })
+      },
+    }
+  })
+
+  vi.mock('@/business-layer/security/google', async () => {
+    const actual = await vi.importActual<typeof import('@/business-layer/security/google')>(
+      '@/business-layer/security/google',
+    )
+    return {
+      ...actual,
+      googleAuthScopes: SCOPES_ARRAY_MOCK,
+      oauth2Client: {
+        getToken: (code: string) => (code === CODE_MOCK ? { tokens: tokensMock } : null),
       },
     }
   })
@@ -66,6 +83,18 @@ beforeEach(async () => {
   adminToken = authService.generateJWT(adminMock, ACCESS_TOKEN_MOCK)
   clientToken = authService.generateJWT(clientMock, ACCESS_TOKEN_MOCK)
   studentToken = authService.generateJWT(studentMock, ACCESS_TOKEN_MOCK)
+  await payload.create({
+    collection: 'user',
+    data: adminMock,
+  })
+  await payload.create({
+    collection: 'user',
+    data: clientMock,
+  })
+  await payload.create({
+    collection: 'user',
+    data: studentMock,
+  })
 })
 
 afterEach(async () => {

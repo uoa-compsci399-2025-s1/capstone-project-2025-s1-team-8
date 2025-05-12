@@ -1,8 +1,8 @@
 import z from 'zod'
-import { ClientCombinedInfo } from './Payload'
+import { ClientCombinedInfoSchema } from './Payload'
 
 export const JWTResponseSchema = z.object({
-  user: ClientCombinedInfo,
+  user: ClientCombinedInfoSchema,
   access_token: z.string(),
 })
 

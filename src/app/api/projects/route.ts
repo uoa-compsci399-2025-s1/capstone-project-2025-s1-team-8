@@ -1,10 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 import ProjectService from '@/data-layer/services/ProjectService'
-import { CreateProjectRequestBody } from '@/types/request-models/ProjectRequests'
 import { CreateProjectData } from '@/types/Collections'
-import { ZodError } from 'zod'
+import { z, ZodError } from 'zod'
 import { Security } from '@/business-layer/middleware/Security'
+import { MediaSchema, UserSchema } from '@/types/Payload'
+import { RequestWithUser } from '@/types/Requests'
+import { UserRole } from '@/types/User'
+
+export const CreateProjectRequestBodySchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  client: z.union([z.string(), UserSchema]),
+  additionalClients: z
+    .union([
+      z.array(z.string()).nonempty('At least one client is required'),
+      z.array(UserSchema).nonempty('At least one client is required'),
+    ])
+    .optional(),
+  attachments: z.array(MediaSchema).max(5).optional(),
+  deadline: z
+    .string()
+    .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
+    .optional(),
+  timestamp: z.string().datetime({ message: 'Invalid date format, should be in ISO 8601 format' }),
+  desiredOutput: z.string(),
+  specialEquipmentRequirements: z.string(),
+  numberOfTeams: z.string(),
+  desiredTeamSkills: z.string().optional(),
+  availableResources: z.string().optional(),
+  futureConsideration: z.boolean(),
+})
+
+export type CreateProjectRequestBody = z.infer<typeof CreateProjectRequestBodySchema>
 
 class RouteWrapper {
   /**
@@ -14,7 +42,7 @@ class RouteWrapper {
    * @returns A JSON response containing the list of projects and the next page cursor.
    */
   @Security('jwt', ['client', 'admin'])
-  static async GET(req: NextRequest) {
+  static async GET(req: RequestWithUser) {
     const projectService = new ProjectService()
     const searchParams = req.nextUrl.searchParams
     const page = parseInt(searchParams.get('page') || '1')
@@ -25,8 +53,15 @@ class RouteWrapper {
         { status: StatusCodes.BAD_REQUEST },
       )
     }
-    const { docs: projects, nextPage } = await projectService.getAllProjects(limit, page)
-    return NextResponse.json({ data: projects, nextPage })
+    let docs, nextPage
+    if (req.user.role === UserRole.Admin) {
+      ;({ docs, nextPage } = await projectService.getAllProjects(limit, page))
+    } else {
+      ;({ docs, nextPage } = await projectService.getAllProjects(limit, page, {
+        clientId: req.user.id,
+      }))
+    }
+    return NextResponse.json({ data: docs, nextPage })
   }
 
   /**
@@ -40,7 +75,7 @@ class RouteWrapper {
     const projectService = new ProjectService()
 
     try {
-      const body = CreateProjectRequestBody.parse(await req.json())
+      const body = CreateProjectRequestBodySchema.parse(await req.json())
       const data = await projectService.createProject(body as CreateProjectData)
       return NextResponse.json({ data }, { status: StatusCodes.CREATED })
     } catch (error) {

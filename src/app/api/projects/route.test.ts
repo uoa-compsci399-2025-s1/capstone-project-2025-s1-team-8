@@ -7,6 +7,7 @@ import { projectCreateMock, projectCreateMock2 } from '@/test-config/mocks/Proje
 import { GET, POST } from './route'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
+import { clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 
 describe('test /api/projects', async () => {
   const projectService = new ProjectService()
@@ -71,6 +72,21 @@ describe('test /api/projects', async () => {
       const data = await res.json()
       expect(data.data.length).toEqual(1)
       expect(data.nextPage).not.toBeNull()
+    })
+
+    it('should only return projects related to the client', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, clientToken)
+      const relatedProject = await projectService.createProject({
+        ...projectCreateMock,
+        client: studentMock,
+        additionalClients: [clientMock],
+      })
+      await projectService.createProject({ ...projectCreateMock, client: studentMock })
+
+      const res = await GET(createMockNextRequest('http://localhost:3000/api/projects'))
+
+      const json = await res.json()
+      expect(json.data).toStrictEqual([relatedProject])
     })
   })
 

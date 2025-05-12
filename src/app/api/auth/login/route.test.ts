@@ -1,17 +1,20 @@
 import { StatusCodes } from 'http-status-codes'
 import * as nextHeaders from 'next/headers'
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
 
-import UserService from '@/data-layer/services/UserService'
-import { CLIENT_JWT_MOCK, clientMock } from '@/test-config/mocks/Auth.mock'
+import {
+  ADMIN_JWT_MOCK,
+  adminMock,
+  CLIENT_JWT_MOCK,
+  clientMock,
+} from '@/test-config/mocks/Auth.mock'
 import AuthDataService from '@/data-layer/services/AuthService'
 import AuthService from '@/business-layer/services/AuthService'
 import { createMockNextPostRequest } from '@/test-config/utils'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { POST } from './route'
-import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
 
 describe('tests /api/auth/login', async () => {
-  const userService = new UserService()
   const authService = new AuthService()
   const authDataService = new AuthDataService()
 
@@ -26,28 +29,50 @@ describe('tests /api/auth/login', async () => {
     )
   })
 
-  it('should login a user', async () => {
-    await userService.createUser(clientMock)
+  it('should login a client to the client page', async () => {
     await authDataService.createAuth({
       email: clientMock.email,
       password: await authService.hashPassword('password123'),
-      type: 'password',
     })
 
-    const response = await POST(
+    const res = await POST(
       createMockNextPostRequest('/api/auth/login', {
         email: clientMock.email,
         password: 'password123',
       }),
     )
 
-    expect(response.status).toBe(StatusCodes.OK)
     expect(mockSet).toHaveBeenCalledWith(AUTH_COOKIE_NAME, CLIENT_JWT_MOCK, {
       maxAge: 60 * 60,
       httpOnly: true,
       sameSite: 'strict',
       // secure: process.env.NODE_ENV === 'production',
     })
+    const json = await res.json()
+    expect(json).toEqual({ message: 'Login successful', redirect: '/client' })
+  })
+
+  it('should login an admin to the admin page', async () => {
+    await authDataService.createAuth({
+      email: adminMock.email,
+      password: await authService.hashPassword('password123'),
+    })
+
+    const res = await POST(
+      createMockNextPostRequest('/api/auth/login', {
+        email: adminMock.email,
+        password: 'password123',
+      }),
+    )
+
+    expect(mockSet).toHaveBeenCalledWith(AUTH_COOKIE_NAME, ADMIN_JWT_MOCK, {
+      maxAge: 60 * 60,
+      httpOnly: true,
+      sameSite: 'strict',
+      // secure: process.env.NODE_ENV === 'production',
+    })
+    const json = await res.json()
+    expect(json).toEqual({ message: 'Login successful', redirect: '/admin' })
   })
 
   it('should return a 401 if the body is malformed', async () => {
@@ -62,11 +87,9 @@ describe('tests /api/auth/login', async () => {
   })
 
   it('should return a 401 if the email or password is incorrect', async () => {
-    userService.createUser(clientMock)
     await authDataService.createAuth({
       email: clientMock.email,
       password: await authService.hashPassword('password123'),
-      type: 'password',
     })
 
     const res = await POST(

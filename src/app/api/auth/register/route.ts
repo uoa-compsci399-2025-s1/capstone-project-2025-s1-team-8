@@ -26,13 +26,19 @@ export const POST = async (req: NextRequest) => {
     const body = RegisterRequestBodySchema.parse(await req.json())
     let user: User
 
+    const auth = await authDataService.getAuthByEmail(body.email)
+    if (auth)
+      return NextResponse.json(
+        { error: 'A user with that email already exists' },
+        { status: StatusCodes.CONFLICT },
+      )
+
     try {
       user = await userService.getUserByEmail(body.email)
-      if (user)
-        return NextResponse.json(
-          { error: 'A user with that email already exists' },
-          { status: StatusCodes.CONFLICT },
-        )
+      user = await userService.updateUser(user.id, {
+        firstName: body.firstName,
+        lastName: body.lastName,
+      })
     } catch {
       user = await userService.createUser(body as CreateUserData)
     }
@@ -41,7 +47,6 @@ export const POST = async (req: NextRequest) => {
     await authDataService.createAuth({
       email: body.email,
       password: hash,
-      type: 'password',
     })
 
     return NextResponse.json(

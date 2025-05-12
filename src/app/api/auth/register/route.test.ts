@@ -33,7 +33,23 @@ describe('tests /api/auth/register', () => {
 
     const auth = await authService.getAuthByEmail(body.email)
     expect(auth.password).not.toEqual(body.password)
-    expect(auth.type).toEqual('password')
+  })
+
+  it('should use an existing user when signing up', async () => {
+    const body: RegisterRequestBody = {
+      firstName: 'jeffery',
+      lastName: 'ji',
+      email: 'test@example.com',
+      password: 'password123',
+      role: UserRoleWithoutAdmin.Client,
+    }
+    await userService.createUser(body)
+    const allUsersBeforeRegister = (await userService.getAllUsers()).docs
+
+    await POST(createMockNextPostRequest('/api/auth/register', body))
+    expect((await userService.getAllUsers()).docs.length).toStrictEqual(
+      allUsersBeforeRegister.length,
+    )
   })
 
   it('should return a 409 conflict if user already exists', async () => {

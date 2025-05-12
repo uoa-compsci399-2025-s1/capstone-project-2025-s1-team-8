@@ -1,14 +1,13 @@
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
+import { redirect } from 'next/navigation'
 
 import { googleAuthScopes, oauth2Client } from '@/business-layer/security/google'
-
 import { UserRole } from '@/types/User'
 import UserService from '@/data-layer/services/UserService'
 import AuthService from '@/data-layer/services/AuthService'
 import BusinessAuthService from '@/business-layer/services/AuthService'
 import { AUTH_COOKIE_NAME, UserInfoResponse, UserInfoResponseSchema } from '@/types/Auth'
-import { CreateUserData } from '@/types/Collections'
 import { User } from '@/payload-types'
 
 export const GET = async (req: NextRequest) => {
@@ -58,23 +57,31 @@ export const GET = async (req: NextRequest) => {
   }: UserInfoResponse = UserInfoResponseSchema.parse(await userInfoResponse.json())
 
   const userService = new UserService()
+  const authService = new AuthService()
+
+  const fetchedAuth = await authService.getAuthByEmail(email)
   let user: User
   try {
     user = await userService.getUserByEmail(email)
+    if (!fetchedAuth) {
+      user = await userService.updateUser(user.id, {
+        firstName,
+        lastName,
+      })
+    }
   } catch {
-    const newUserData: CreateUserData = {
+    user = await userService.createUser({
       email,
       firstName,
-      lastName: lastName || '',
+      lastName,
       role: UserRole.Client,
-    }
-    user = await userService.createUser(newUserData)
+    })
   }
 
-  const authService = new AuthService()
-  const fetchedAuth = await authService.getAuthByEmail(email)
   if (fetchedAuth) {
     await authService.updateAuth(fetchedAuth.id, {
+      provider: 'google',
+      providerAccountId: sub,
       accessToken: tokens.access_token,
       expiresAt: tokens.expiry_date,
       scope: scopes.join(' '),
@@ -83,7 +90,6 @@ export const GET = async (req: NextRequest) => {
   } else {
     await authService.createAuth({
       email,
-      type: 'oauth',
       provider: 'google',
       providerAccountId: sub,
       accessToken: tokens.access_token,
@@ -95,7 +101,6 @@ export const GET = async (req: NextRequest) => {
 
   const businessAuthService = new BusinessAuthService()
   const token = businessAuthService.generateJWT(user, tokens.access_token)
-  const response = NextResponse.json({ token })
 
   cookieStore.set(AUTH_COOKIE_NAME, token, {
     httpOnly: true,
@@ -104,5 +109,14 @@ export const GET = async (req: NextRequest) => {
     maxAge: 60 * 60,
   })
 
-  return response
+  switch (user.role) {
+    case UserRole.Admin:
+      return redirect('/admin')
+    case UserRole.Client:
+      return redirect('/client')
+    case UserRole.Student:
+      return redirect('/student')
+    default:
+      return redirect('/')
+  }
 }

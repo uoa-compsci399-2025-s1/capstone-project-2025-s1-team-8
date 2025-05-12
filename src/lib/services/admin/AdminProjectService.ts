@@ -1,11 +1,10 @@
 import { SemesterProject } from '@/payload-types'
 import { UpdateSemesterProjectData } from '@/types/Collections'
-import { PatchSemesterProjectRequestBody } from '@/types/request-models/ProjectRequests'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { typeToFlattenedError } from 'zod'
-import { PATCH as UpdateSemesterProject } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
+import { PatchSemesterProjectRequestBody, PATCH as UpdateSemesterProject } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
 
-const ProjectService = {
+const AdminProjectService = {
   UpdateSemesterProject: async function (
     semesterId: string,
     semesterProjectId: string,
@@ -27,4 +26,4 @@ const ProjectService = {
     return { data, error, details }
   },
 }
-export default ProjectService
+export default AdminProjectService

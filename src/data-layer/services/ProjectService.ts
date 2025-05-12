@@ -1,6 +1,6 @@
 import { NotFound, PaginatedDocs } from 'payload'
 
-import { Project, User } from '@/payload-types'
+import { Project } from '@/payload-types'
 import { CreateProjectData, UpdateProjectData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 import { CreateSemesterProjectData, UpdateSemesterProjectData } from '@/types/Collections'
@@ -14,17 +14,39 @@ export default class ProjectService {
    *
    * @param limit The number of projects to return
    * @param page The page number to return
+   * @param options Optional filtering to search for client as well
    * @returns The list of projects
    */
   public async getAllProjects(
     limit: number = 100,
     page: number = 1,
+    options?: {
+      clientId: string
+    },
   ): Promise<PaginatedDocs<Project>> {
     const data = await payload.find({
       collection: 'project',
       limit,
       pagination: true,
       page: page,
+      where: {
+        ...(!!options?.clientId
+          ? {
+              or: [
+                {
+                  client: {
+                    equals: options.clientId,
+                  },
+                },
+                {
+                  additionalClients: {
+                    contains: options.clientId,
+                  },
+                },
+              ],
+            }
+          : {}),
+      },
     })
     return data
   }
@@ -79,9 +101,8 @@ export default class ProjectService {
     },
   ): Promise<PaginatedDocs<Project>> {
     const userService = new UserService()
-    let client: User
     try {
-      client = await userService.getUser(clientId)
+      await userService.getUser(clientId)
     } catch (error) {
       if (error instanceof NotFound) {
         throw new NotFound(() => {
@@ -93,9 +114,18 @@ export default class ProjectService {
     const data = await payload.find({
       collection: 'project',
       where: {
-        clients: {
-          contains: client,
-        },
+        or: [
+          {
+            client: {
+              equals: clientId,
+            },
+          },
+          {
+            additionalClients: {
+              contains: clientId,
+            },
+          },
+        ],
         ...(!!options?.published ? { published: { equals: options.published } } : {}),
         ...(!!options?.status ? { status: { equals: options.status } } : {}),
       },
@@ -148,6 +178,10 @@ export default class ProjectService {
     })
   }
 
+  /*
+   * Semester Project Methods
+   */
+
   /**
    * Creates a new semesterProject
    *
@@ -192,7 +226,7 @@ export default class ProjectService {
   }
 
   /**
-   * Retrieves all projects by semester
+   * Retrieves all semester projects by semester
    *
    * @param id The ID the the semester
    * @param limit The limit of projects to fetch
@@ -200,7 +234,7 @@ export default class ProjectService {
    * @param options Additional filtering params such as published or project status
    * @returns The paginated semester projects
    */
-  public async getAllProjectsBySemester(
+  public async getAllSemesterProjectsBySemester(
     id: string,
     limit: number = 100,
     page: number = 1,
@@ -209,7 +243,7 @@ export default class ProjectService {
       status?: ProjectStatus
     },
   ): Promise<PaginatedDocs<SemesterProject>> {
-    const semesterProjects = await payload.find({
+    return await payload.find({
       collection: 'semesterProject',
       limit,
       pagination: true,
@@ -220,7 +254,26 @@ export default class ProjectService {
         ...(!!options?.status ? { status: { equals: options.status } } : {}),
       },
     })
-    return semesterProjects
+  }
+
+  /**
+   * Method used to retrieve all {@link SemesterProject}'s that are related to a certain {@link Project}
+   *
+   * @param id The ID of the {@link Project} that's related to the {@link SemesterProject}'s returned
+   * @returns A list of semester projects
+   */
+  public async getSemesterProjectsByProject(id: string): Promise<SemesterProject[]> {
+    return (
+      await payload.find({
+        collection: 'semesterProject',
+        pagination: false,
+        where: {
+          project: {
+            equals: id,
+          },
+        },
+      })
+    ).docs
   }
 
   /**
