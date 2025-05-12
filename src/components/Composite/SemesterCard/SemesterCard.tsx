@@ -5,6 +5,7 @@ import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import { PlaceholderProjectDetailsType } from '@/types/Project'
+import { Project, Semester } from '@/payload-types'
 
 export interface SemesterDTOPlaceholder {
   semesterName: string
@@ -15,14 +16,16 @@ export interface SemesterDTOPlaceholder {
   currentOrUpcoming?: 'current' | 'upcoming' | string //Used for styling the current and upcoming semesters. If not current or upcoming semester, leave blank
 }
 
-const SemesterCard: React.FC<SemesterDTOPlaceholder> = ({
-  semesterName,
+const SemesterCard: React.FC<Semester> = ({
+  name,
   startDate,
   endDate,
-  submissionDeadline,
-  approvedProjects,
-  currentOrUpcoming = '',
+  deadline,
 }) => {
+  const approvedProjects: Project[] = [] // Placeholder for approved projects
+  let currentOrUpcoming = 'current' // Placeholder for current or upcoming semester
+  currentOrUpcoming = ''
+
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
@@ -57,7 +60,7 @@ const SemesterCard: React.FC<SemesterDTOPlaceholder> = ({
               : 'text-white'
           } text-base sm:text-lg font-semibold`}
         >
-          {semesterName}
+          {name}
         </p>
 
         {currentOrUpcoming && (
@@ -108,7 +111,7 @@ const SemesterCard: React.FC<SemesterDTOPlaceholder> = ({
           {/* Details Section */}
           <div className="pb-4 sm:pb-6">
             <h2 className="text-2xl sm:text-3xl text-dark-blue font-dm-serif-display py-4">
-              {semesterName}
+              {name}
             </h2>
 
             <div className="grid grid-cols-[auto_1fr] grid-rows-3 gap-3 py-3 text-sm sm:text-base">
@@ -130,7 +133,7 @@ const SemesterCard: React.FC<SemesterDTOPlaceholder> = ({
                 className="small-info-tag pb-0.5"
               />
               <Capsule
-                text={new Date(submissionDeadline).toLocaleDateString()}
+                text={new Date(deadline).toLocaleDateString()}
                 variant="beige"
                 className="small-info-tag pb-0.5"
               />
