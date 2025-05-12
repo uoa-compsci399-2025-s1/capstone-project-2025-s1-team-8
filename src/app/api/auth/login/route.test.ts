@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import * as nextHeaders from 'next/headers'
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
 
-import UserService from '@/data-layer/services/UserService'
 import {
   ADMIN_JWT_MOCK,
   adminMock,
@@ -13,10 +13,8 @@ import AuthService from '@/business-layer/services/AuthService'
 import { createMockNextPostRequest } from '@/test-config/utils'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { POST } from './route'
-import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
 
 describe('tests /api/auth/login', async () => {
-  const userService = new UserService()
   const authService = new AuthService()
   const authDataService = new AuthDataService()
 
@@ -32,7 +30,6 @@ describe('tests /api/auth/login', async () => {
   })
 
   it('should login a client to the client page', async () => {
-    await userService.createUser(clientMock)
     await authDataService.createAuth({
       email: clientMock.email,
       password: await authService.hashPassword('password123'),
@@ -56,7 +53,6 @@ describe('tests /api/auth/login', async () => {
   })
 
   it('should login an admin to the admin page', async () => {
-    await userService.createUser(adminMock)
     await authDataService.createAuth({
       email: adminMock.email,
       password: await authService.hashPassword('password123'),
@@ -91,7 +87,6 @@ describe('tests /api/auth/login', async () => {
   })
 
   it('should return a 401 if the email or password is incorrect', async () => {
-    userService.createUser(clientMock)
     await authDataService.createAuth({
       email: clientMock.email,
       password: await authService.hashPassword('password123'),

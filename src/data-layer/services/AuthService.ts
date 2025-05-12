@@ -31,6 +31,7 @@ export default class AuthService {
             equals: email,
           },
         },
+        limit: 1,
       })
     ).docs[0]
   }
