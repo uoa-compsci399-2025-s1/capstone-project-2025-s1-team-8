@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 import { z, ZodError } from 'zod'
 import { NotFound } from 'payload'
+
 import ProjectService from '@/data-layer/services/ProjectService'
 import SemesterService from '@/data-layer/services/SemesterService'
 import { ProjectStatus } from '@/types/Project'
@@ -12,18 +13,22 @@ import { UserRole } from '@/types/User'
 import { SemesterProject } from '@/payload-types'
 import { ProjectSchema } from '@/types/Payload'
 
-export const CreateSemesterProjectRequestBody = z.object({
+export const CreateSemesterProjectRequestBodySchema = z.object({
   number: z.number().min(1).nullable().optional(),
   project: z.union([z.string(), ProjectSchema]),
   status: z.nativeEnum(ProjectStatus),
   published: z.boolean(),
 })
+export type CreateSemesterProjectRequestBody = z.infer<
+  typeof CreateSemesterProjectRequestBodySchema
+>
 
 class RouterWrapper {
   /**
    * Fetches all projects for a semester
-   * @param req - The request object.
-   * @param params - The parameters object containing the semester ID.
+   *
+   * @param req The request object.
+   * @param params The parameters object containing the semester ID.
    * @returns A JSON response containing the list of projects and the next page cursor.
    */
   @Security('jwt', ['student', 'admin'])
@@ -59,17 +64,27 @@ class RouterWrapper {
     let docs: SemesterProject[], nextPage: number | null | undefined
 
     if (req.user.role === UserRole.Student) {
-      const paginatedProjects = await projectService.getAllProjectsBySemester(id, limit, page, {
-        published: true,
-        status: status ? (status as ProjectStatus) : undefined,
-      })
+      const paginatedProjects = await projectService.getAllSemesterProjectsBySemester(
+        id,
+        limit,
+        page,
+        {
+          published: true,
+          status: status ? (status as ProjectStatus) : undefined,
+        },
+      )
       docs = paginatedProjects.docs
       nextPage = paginatedProjects.nextPage
     } else {
-      const paginatedProjects = await projectService.getAllProjectsBySemester(id, limit, page, {
-        published: !!published ? JSON.parse(published) : undefined,
-        status: status ? (status as ProjectStatus) : undefined,
-      })
+      const paginatedProjects = await projectService.getAllSemesterProjectsBySemester(
+        id,
+        limit,
+        page,
+        {
+          published: !!published ? JSON.parse(published) : undefined,
+          status: status ? (status as ProjectStatus) : undefined,
+        },
+      )
       docs = paginatedProjects.docs
       nextPage = paginatedProjects.nextPage
     }
@@ -79,8 +94,9 @@ class RouterWrapper {
 
   /**
    * Creates a new project for a semester
-   * @param req - The request object.
-   * @param params - The parameters object containing the semester ID.
+   *
+   * @param req The request object.
+   * @param params The parameters object containing the semester ID.
    * @return A JSON response containing the created semester project.
    */
   @Security('jwt', ['admin', 'client'])
@@ -92,7 +108,7 @@ class RouterWrapper {
     try {
       const semester = await semesterService.getSemester(id)
       const bodyData = await req.json()
-      const body = CreateSemesterProjectRequestBody.parse(bodyData)
+      const body = CreateSemesterProjectRequestBodySchema.parse(bodyData)
       try {
         const project = await projectService.getProjectById(
           typeof body.project === 'string' ? body.project : body.project?.id,
