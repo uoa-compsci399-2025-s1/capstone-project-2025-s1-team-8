@@ -8,7 +8,6 @@ import UserService from '@/data-layer/services/UserService'
 import AuthService from '@/data-layer/services/AuthService'
 import BusinessAuthService from '@/business-layer/services/AuthService'
 import { AUTH_COOKIE_NAME, UserInfoResponse, UserInfoResponseSchema } from '@/types/Auth'
-import { CreateUserData } from '@/types/Collections'
 import { User } from '@/payload-types'
 
 export const GET = async (req: NextRequest) => {
@@ -59,25 +58,27 @@ export const GET = async (req: NextRequest) => {
   }: UserInfoResponse = UserInfoResponseSchema.parse(await userInfoResponse.json())
 
   const userService = new UserService()
+  const authService = new AuthService()
+
+  const fetchedAuth = await authService.getAuthByEmail(email)
   let user: User
   try {
     user = await userService.getUserByEmail(email)
-    await userService.updateUser(user.id, {
-      firstName,
-      lastName: lastName || '',
-    })
+    if (!fetchedAuth) {
+      user = await userService.updateUser(user.id, {
+        firstName,
+        lastName,
+      })
+    }
   } catch {
-    const newUserData: CreateUserData = {
+    user = await userService.createUser({
       email,
       firstName,
-      lastName: lastName || '',
+      lastName,
       role: businessAuthService.decryptState(state),
     }
-    user = await userService.createUser(newUserData)
   }
 
-  const authService = new AuthService()
-  const fetchedAuth = await authService.getAuthByEmail(email)
   if (fetchedAuth) {
     await authService.updateAuth(fetchedAuth.id, {
       provider: 'google',
