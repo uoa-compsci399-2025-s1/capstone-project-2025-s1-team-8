@@ -17,7 +17,7 @@ export const User: CollectionConfig = {
     {
       name: 'lastName',
       type: 'text',
-      required: true,
+      required: false,
     },
     {
       name: 'role',

@@ -203,7 +203,7 @@ export interface User {
   id: string;
   email: string;
   firstName: string;
-  lastName: string;
+  lastName?: string | null;
   role: 'admin' | 'client' | 'student';
   image?: (string | null) | Media;
   updatedAt: string;

@@ -35,6 +35,10 @@ export const POST = async (req: NextRequest) => {
 
     try {
       user = await userService.getUserByEmail(body.email)
+      user = await userService.updateUser(user.id, {
+        firstName: body.firstName,
+        lastName: body.lastName,
+      })
     } catch {
       user = await userService.createUser(body as CreateUserData)
     }

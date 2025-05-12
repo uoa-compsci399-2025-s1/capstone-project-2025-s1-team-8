@@ -32,7 +32,7 @@ export const MediaSchema = z.object({
 export const UserSchema = z.object({
   id: z.string(),
   firstName: z.string(),
-  lastName: z.string(),
+  lastName: z.string().optional(),
   role: z.nativeEnum(UserRole),
   image: z.union([z.string(), MediaSchema]).nullable().optional(),
   updatedAt: z.string(),
