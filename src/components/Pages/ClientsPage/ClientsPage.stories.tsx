@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import ClientsPage from './ClientsPage'
-import { clientMocks as mockClients } from '@/mocks/clients.mock'
+import { clientMocks as mockClients } from '@/mocks/newClients.mock'
 
 const meta: Meta<typeof ClientsPage> = {
   title: 'Pages/ClientsPage',

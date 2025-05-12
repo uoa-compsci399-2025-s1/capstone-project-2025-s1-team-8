@@ -1,5 +1,5 @@
 import { Project } from '@/payload-types'
-import { clientMocks } from './clients.mock'
+import { clientMocks } from './newClients.mock'
 
 export const mockProjects: Project[] = [
   {
