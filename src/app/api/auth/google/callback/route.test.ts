@@ -1,4 +1,5 @@
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
+import { StatusCodes } from 'http-status-codes'
 import * as nextHeaders from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -129,7 +130,7 @@ describe('GET /api/auth/google/callback', () => {
     const response = await callback(req)
     const json = await response.json()
 
-    expect(response.status).toBe(400)
+    expect(response.status).toBe(StatusCodes.BAD_REQUEST)
     expect(json.error).toBe("State missing, or state doesn't match browser state. ")
   })
 
@@ -142,7 +143,7 @@ describe('GET /api/auth/google/callback', () => {
     const response = await callback(req)
     const json = await response.json()
 
-    expect(response.status).toBe(400)
+    expect(response.status).toBe(StatusCodes.BAD_REQUEST)
     expect(json.error).toBe('No code provided')
   })
 })
