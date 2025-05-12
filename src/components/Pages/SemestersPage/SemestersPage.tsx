@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react'
-import { SemesterDTOPlaceholder } from '@/components/Composite/SemesterCard/SemesterCard'
 import SemesterCard from '@/components/Composite/SemesterCard/SemesterCard'
 import Button from '@/components/Generic/Button/Button'
 import SemesterForm from '@/components/Composite/SemesterForm/SemesterForm'
+import { Semester } from '@/payload-types'
 
 interface SemestersPageProps {
-  semesters: SemesterDTOPlaceholder[]
+  semesters: Semester[]
 }
 
 const SemestersPage: React.FC<SemestersPageProps> = ({ semesters }) => {
@@ -42,8 +42,9 @@ const SemestersPage: React.FC<SemestersPageProps> = ({ semesters }) => {
       </div>
       {semesters.map((semester) => (
         <div
-          key={semester.semesterName}
-          ref={semester.currentOrUpcoming === 'current' ? currentSemesterRef : null}
+          key={semester.name}
+          //ref={semester.currentOrUpcoming === 'current' ? currentSemesterRef : null}
+          ref={null}
         >
           <SemesterCard {...semester} />
         </div>

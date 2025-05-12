@@ -23,6 +23,8 @@ import { PlaceholderProjectDetailsType } from '@/types/Project'
 import { FiSave } from 'react-icons/fi'
 import Notification from '@/components/Generic/Notification/Notification'
 
+import { User } from '@/payload-types'
+
 type DNDType = {
   id: UniqueIdentifier
   title: string
@@ -115,19 +117,19 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
             const sorted = [...container.currentItems]
             if (filter === 'projectName') {
               sorted.sort((a, b) =>
-                a.projectInfo.projectTitle.localeCompare(b.projectInfo.projectTitle),
+                a.projectInfo.name.localeCompare(b.projectInfo.name),
               )
             } else if (filter === 'clientName') {
               sorted.sort((a, b) =>
-                a.projectInfo.projectClientDetails.name.localeCompare(
-                  b.projectInfo.projectClientDetails.name,
+                ((a.projectInfo.client as User).firstName + " " + (a.projectInfo.client as User).lastName).localeCompare(
+                  (b.projectInfo.client as User).firstName + " " + (b.projectInfo.client as User).lastName,
                 ),
               )
             } else if (filter === 'submissionDate') {
               sorted.sort(
                 (a, b) =>
-                  new Date(a.projectInfo.submittedDate).getTime() -
-                  new Date(b.projectInfo.submittedDate).getTime(),
+                  new Date(a.projectInfo.createdAt).getTime() -
+                  new Date(b.projectInfo.createdAt).getTime(),
               )
             }
 
