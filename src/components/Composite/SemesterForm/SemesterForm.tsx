@@ -3,16 +3,24 @@ import Modal from '@/components/Generic/Modal/Modal'
 import Button from '@/components/Generic/Button/Button'
 import { ModalProps } from '@/components/Generic/Modal/Modal'
 import Input from '@/components/Generic/Input/InputField'
-import { handleCreateSemester } from '@/lib/util/adminSemesterUtils'
+import {
+  handleCreateSemester,
+  handleUpdateSemester,
+  handleDeleteSemester,
+} from '@/lib/util/adminSemesterUtils'
 
 interface SemesterFormProps extends ModalProps {
+  semesterId: string
   semesterName?: string
   startDate?: Date
   endDate?: Date
   submissionDeadline?: Date
+  edit?: boolean
+  onCreated?: () => void
 }
 
 const SemesterForm: React.FC<SemesterFormProps> = ({
+  semesterId,
   open,
   onClose,
   className = '',
@@ -20,6 +28,8 @@ const SemesterForm: React.FC<SemesterFormProps> = ({
   startDate,
   endDate,
   submissionDeadline,
+  edit = false,
+  onCreated,
 }) => {
   const [errorState, setErrorState] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
@@ -36,7 +46,37 @@ const SemesterForm: React.FC<SemesterFormProps> = ({
       setErrorMessage(res.details.formErrors[0])
       setErrorState(true)
     } else if (res?.message) {
-      // pop up notification ?
+      onCreated?.()
+      onClose()
+      // @TODO dont reload but call getAllSemesters again? - this goes all the way back to admin page
+      // window.location.reload()
+    }
+  }
+
+  const editSemester = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const res = await handleUpdateSemester(formData, semesterId)
+    if (res?.error) {
+      setErrorMessage(res.error)
+      setErrorState(true)
+    }
+    if (res?.details) {
+      setErrorMessage(res.details.formErrors[0])
+      setErrorState(true)
+    } else if (res?.message) {
+      onClose()
+      window.location.reload()
+    }
+  }
+
+  const deleteSemester = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const res = await handleDeleteSemester(semesterId)
+    if (res?.error) {
+      setErrorMessage(res.error)
+      setErrorState(true)
+    } else if (res?.message) {
       onClose()
       window.location.reload()
     }
@@ -51,10 +91,10 @@ const SemesterForm: React.FC<SemesterFormProps> = ({
       }
     >
       <h1 className="text-3xl font-normal m-0 text-dark-blue font-dm-serif-display">
-        Create a new semester
+        {edit ? 'Edit semester' : 'Create a new semester'}
       </h1>
       <p className="text-sm text-dark-blue font-inter">All fields are required.</p>
-      <form onSubmit={createSemester}>
+      <form onSubmit={edit ? editSemester : createSemester}>
         <div className="flex flex-col gap-4 pt-1 pb-8">
           <div className="flex flex-col gap-1.5">
             <p className="text-sm font-medium text-dark-blue font-inter">Semester name</p>
@@ -110,7 +150,7 @@ const SemesterForm: React.FC<SemesterFormProps> = ({
 
         <div className="flex flex-row gap-5">
           <Button variant="dark" size="sm" type="submit">
-            Create
+            {edit ? 'Edit' : 'Create'}
           </Button>
           <Button variant="muted_blue" size="sm" onClick={onClose}>
             Cancel

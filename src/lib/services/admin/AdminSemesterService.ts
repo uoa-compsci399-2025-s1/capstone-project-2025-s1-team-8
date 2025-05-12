@@ -6,6 +6,7 @@ import {
   PATCH as UpdateSemester,
   UpdateSemesterRequestBody,
 } from '@/app/api/admin/semesters/[id]/route'
+import { DELETE as DeleteSemester } from '@/app/api/admin/semesters/[id]/route'
 import { GET as GetSemesterProjects } from '@/app/api/projects/[id]/semesters/route'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
 import { buildNextRequest } from '@/utils/buildNextRequest'
@@ -92,6 +93,21 @@ const AdminSemesterService = {
     const { data, error, details } = await response.json()
 
     return { status: response.status, data, error, details }
+  },
+
+  deleteSemester: async function (semesterId: string): Promise<{
+    status: StatusCodes
+    data?: Semester
+    error?: string
+  }> {
+    'use server'
+    const url = `/api/admin/semesters/${semesterId}`
+    const response = await DeleteSemester(await buildNextRequest(url, { method: 'DELETE' }), {
+      params: Promise.resolve({ id: semesterId }),
+    })
+    const { error } = await response.json()
+
+    return { status: response.status, error }
   },
 
   isCurrentOrUpcoming: async function (semesterId: string) {
