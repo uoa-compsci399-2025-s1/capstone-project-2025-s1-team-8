@@ -24,6 +24,7 @@ const SemesterService = {
     const { data, nextPage, error } = { ...(await response.json()) }
     return { data, nextPage, error }
   },
+  
   getAllPaginatedProjectsBySemesterId: async function (
     semesterId: string,
     options: {
