@@ -2,6 +2,8 @@ import ClientModal from '@/components/Composite/ClientModal/ClientModal'
 import React, { useState } from 'react'
 import { FiCopy, FiCheck } from 'react-icons/fi'
 import { PlaceholderProjectDetailsType } from '@/types/Project'
+import { UserCombinedInfo } from '@/types/Collections'
+import { Project } from '@/payload-types'
 
 export interface ClientDTOPlaceholder {
   name: string
@@ -11,7 +13,12 @@ export interface ClientDTOPlaceholder {
   projects?: PlaceholderProjectDetailsType[]
 }
 
-const ClientCard: React.FC<ClientDTOPlaceholder> = (clientInfo) => {
+export interface ClientCardProps {
+  clientInfo: UserCombinedInfo,
+  projects?: Project[]
+}
+
+const ClientCard: React.FC<ClientCardProps> = ({clientInfo, projects = []}) => {
   const [copied, setCopied] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -33,7 +40,7 @@ const ClientCard: React.FC<ClientDTOPlaceholder> = (clientInfo) => {
             className="text-light-beige font-semibold text-xl cursor-pointer"
             onClick={() => handleModal()}
           >
-            {clientInfo.name}
+            {clientInfo.firstName + ' ' + clientInfo.lastName}
           </p>
           <p className="text-light-beige text-base self-end">{clientInfo.email}</p>
         </div>
@@ -48,11 +55,11 @@ const ClientCard: React.FC<ClientDTOPlaceholder> = (clientInfo) => {
       <ClientModal
         open={open}
         onClose={() => handleModal()}
-        clientFullName={clientInfo.name}
+        clientFullName={clientInfo.firstName + ' ' + clientInfo.lastName}
         clientEmail={clientInfo.email}
-        affiliation={clientInfo.affiliation}
-        introduction={clientInfo.introduction}
-        projects={clientInfo.projects}
+        affiliation={clientInfo.affiliation ?? ""}
+        introduction={clientInfo.introduction?? ""}
+        projects={projects}
       />
     </>
   )
