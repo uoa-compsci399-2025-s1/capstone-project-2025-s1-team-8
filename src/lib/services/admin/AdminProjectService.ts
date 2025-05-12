@@ -2,7 +2,10 @@ import { SemesterProject } from '@/payload-types'
 import { UpdateSemesterProjectData } from '@/types/Collections'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { typeToFlattenedError } from 'zod'
-import { PatchSemesterProjectRequestBody, PATCH as UpdateSemesterProject } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
+import {
+  PatchSemesterProjectRequestBody,
+  PATCH as UpdateSemesterProject,
+} from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
 
 const AdminProjectService = {
   UpdateSemesterProject: async function (
