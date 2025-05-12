@@ -38,10 +38,7 @@ describe('tests /api/admin/forms', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const body = { name: 'updated name', description: 'updated description' }
       const form1 = await formService.createForm(formMock)
-      const mockedReq = createMockNextPatchRequest(
-        'http://localhost:3000/api/admin/forms/' + form1.id,
-        body,
-      )
+      const mockedReq = createMockNextPatchRequest('api/admin/forms/' + form1.id, body)
       const res = await PATCH(mockedReq)
       const json = await res.json()
       expect(json.data.name).toEqual('updated name')
@@ -52,10 +49,7 @@ describe('tests /api/admin/forms', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       await formService.createForm(formMock)
       const invalidBody = { name: 123, description: true }
-      const mockedReq = createMockNextPatchRequest(
-        'http://localhost:3000/api/admin/forms/1',
-        invalidBody,
-      )
+      const mockedReq = createMockNextPatchRequest('api/admin/forms/1', invalidBody)
       const res = await PATCH(mockedReq)
       const json = await res.json()
       expect(res.status).toBe(StatusCodes.BAD_REQUEST)

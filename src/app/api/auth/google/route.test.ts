@@ -8,7 +8,7 @@ import { redirect } from 'next/navigation'
 import { oauth2Client } from '@/business-layer/security/google'
 import * as nextHeaders from 'next/headers'
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
-import { buildNextRequest } from '@/utils/buildNextRequest'
+import { createMockNextRequest } from '@/test-config/utils'
 
 vi.mock('@/business-layer/security/google', () => ({
   oauth2Client: {
@@ -46,7 +46,7 @@ describe('Google Auth tests', async () => {
   })
 
   it('should redirect to Google OAuth URL with state and scopes', async () => {
-    await GET(await buildNextRequest('api/auth/google?role=client'))
+    await GET(createMockNextRequest('api/auth/google?role=client'))
     expect(redirect).toHaveBeenCalled()
     expect(mockSet).toHaveBeenCalledWith('state', CLIENT_STATE_MOCK, {
       maxAge: 60,
