@@ -14,7 +14,7 @@ export async function updateProjectOrdersAndStatus({
 }: UpdateParams): Promise<void> {
   for (const container of containers) {
     const status = container.title as ProjectStatus
-    
+
     for (let i = 0; i < container.currentItems.length; i++) {
       const project = container.currentItems[i]
       const updatedOrderAndStatus = {
