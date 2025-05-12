@@ -17,7 +17,7 @@ const ProjectCardList: React.FC<ProjectListProps> = ({
   projects,
   semesters,
 }) => {
-  if (!semesters){
+  if (!semesters) {
     semesters = []
     for (let i = 0; i < projects.length; i++) {
       semesters.push([])
