@@ -118,13 +118,13 @@ const Admin: React.FC<AdminProps> = ({ ClientData }) => {
                 <ProjectDnD presetContainers={containers} />
               </div>
 
-            <div
-              className="admin-dash-carousel-item"
-              aria-hidden={activeNav !== 1}
-              tabIndex={activeNav === 1 ? 0 : -1}
-            >
-              {ClientData && <ClientsPage clients={ClientData} />}
-            </div>
+              <div
+                className="admin-dash-carousel-item"
+                aria-hidden={activeNav !== 1}
+                tabIndex={activeNav === 1 ? 0 : -1}
+              >
+                {ClientData && <ClientsPage clients={ClientData} />}
+              </div>
 
               <div
                 className="admin-dash-carousel-item"

@@ -4,11 +4,9 @@ import AdminService from '@/lib/services/admin'
 
 export default async function AdminPage() {
   const { data } = await AdminService.getAllUsers()
-  console.log(data)
   return (
     <>
       <Admin ClientData={data} />
-      {data && <p>{data}</p>}
     </>
   )
 }

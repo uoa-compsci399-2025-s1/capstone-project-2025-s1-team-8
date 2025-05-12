@@ -33,7 +33,9 @@ const ClientsPage: React.FC<ClientsPageProps> = ({ clients }) => {
       <div className="pt-8">
         <ClientGroup
           clients={clients.filter((client) =>
-            client.name.toLowerCase().includes(searchValue.trim().toLowerCase()),
+            `${client.firstName} ${client.lastName ?? ''}`
+              .toLowerCase()
+              .includes(searchValue.trim().toLowerCase()),
           )}
         />
       </div>

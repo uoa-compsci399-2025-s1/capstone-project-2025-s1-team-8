@@ -1,9 +1,10 @@
 import React from 'react'
 import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
+import { ClientCombinedInfo } from '@/types/Payload'
 import ClientCard from '@/components/Generic/ClientCard/ClientCard'
 
 export interface ClientGroupProps {
-  clients: ClientDTOPlaceholder[]
+  clients: ClientCombinedInfo[]
 }
 
 const ClientGroup: React.FC<ClientGroupProps> = ({ clients }) => {

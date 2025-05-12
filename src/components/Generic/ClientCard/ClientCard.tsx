@@ -11,7 +11,9 @@ export interface ClientDTOPlaceholder {
   projects?: PlaceholderProjectDetailsType[]
 }
 
-const ClientCard: React.FC<ClientDTOPlaceholder> = (clientInfo) => {
+import { ClientCombinedInfo } from '@/types/Payload'
+
+const ClientCard: React.FC<ClientCombinedInfo> = (clientInfo) => {
   const [copied, setCopied] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -33,7 +35,7 @@ const ClientCard: React.FC<ClientDTOPlaceholder> = (clientInfo) => {
             className="text-light-beige font-semibold text-xl cursor-pointer"
             onClick={() => handleModal()}
           >
-            {clientInfo.name}
+            {`${clientInfo.firstName}${clientInfo.lastName ? ' ' + clientInfo.lastName : ''}`}
           </p>
           <p className="text-light-beige text-base self-end">{clientInfo.email}</p>
         </div>
@@ -48,11 +50,11 @@ const ClientCard: React.FC<ClientDTOPlaceholder> = (clientInfo) => {
       <ClientModal
         open={open}
         onClose={() => handleModal()}
-        clientFullName={clientInfo.name}
+        clientFullName={`${clientInfo.firstName}${clientInfo.lastName ? ' ' + clientInfo.lastName : ''}`}
         clientEmail={clientInfo.email}
         affiliation={clientInfo.affiliation}
         introduction={clientInfo.introduction}
-        projects={clientInfo.projects}
+        projects={[]}
       />
     </>
   )
