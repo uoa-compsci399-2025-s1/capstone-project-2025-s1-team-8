@@ -1,8 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react'
-import SemesterCard, { SemesterDTOPlaceholder } from './SemesterCard'
-import { mockSemesters } from '@/mocks/Semesters.mock'
+import SemesterCard from './SemesterCard'
+import { mockSemesters } from '@/mocks/newSemesters.mock'
+import { Semester } from '@/payload-types'
 
-const mockProps: SemesterDTOPlaceholder = mockSemesters[0]
+const mockProps: Semester = mockSemesters[0]
 
 export default {
   title: 'Composite/SemesterCard',
@@ -17,15 +18,15 @@ export const Default: Story = {}
 export const CurrentSemester: Story = {
   args: {
     ...Default.args,
-    semesterName: 'Current Semester',
-    currentOrUpcoming: 'current',
+    name: 'Current Semester',
+    //currentOrUpcoming: 'current',
   },
 }
 
 export const UpcomingSemester: Story = {
   args: {
     ...Default.args,
-    semesterName: 'Upcoming Semester',
-    currentOrUpcoming: 'upcoming',
+    name: 'Upcoming Semester',
+    //currentOrUpcoming: 'upcoming',
   },
 }
