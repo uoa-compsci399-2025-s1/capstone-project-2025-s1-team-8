@@ -7,7 +7,7 @@ interface ProjectListProps {
   headingClassName?: string
   heading: string
   projects: Project[]
-  semesters: Semester[][]
+  semesters?: Semester[][]
 }
 
 const ProjectCardList: React.FC<ProjectListProps> = ({
@@ -17,6 +17,12 @@ const ProjectCardList: React.FC<ProjectListProps> = ({
   projects,
   semesters,
 }) => {
+  if (!semesters){
+    semesters = []
+    for (let i = 0; i < projects.length; i++) {
+      semesters.push([])
+    }
+  }
   return (
     <div className={`relative w-full ${className}`}>
       <h2 className={`text-dark-blue font-inter ${headingClassName}`}>{heading}</h2>
