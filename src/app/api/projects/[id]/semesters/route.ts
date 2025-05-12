@@ -31,9 +31,8 @@ class RouteWrapper {
       const project = await projectService.getProjectById(id)
       if (
         req.user.role !== UserRole.Admin &&
-        project.client !== req.user.id &&
         (project.client as User).id !== req.user.id &&
-        !project.additionalClients?.includes(req.user.id)
+        !(project.additionalClients as User[])?.some((client) => client.id === req.user.id)
       ) {
         return NextResponse.json(
           {
