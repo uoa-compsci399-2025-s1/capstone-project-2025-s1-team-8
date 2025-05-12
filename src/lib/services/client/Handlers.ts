@@ -21,7 +21,7 @@ export const handleClientPageLoad = async (): Promise<{
   if (clientProjectsRes.status !== StatusCodes.OK) {
     redirect('/auth/login')
   }
-  if (userInfo.role !== 'client') {
+  if (userInfo.role !== 'client' && userInfo.role !== 'admin') {
     redirect('/auth/login')
   }
   const semestersList: Semester[][] = []
