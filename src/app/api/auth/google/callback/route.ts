@@ -73,7 +73,7 @@ export const GET = async (req: NextRequest) => {
     user = await userService.createUser({
       email,
       firstName,
-      lastName: lastName || '',
+      lastName,
       role: UserRole.Client,
     })
   }
