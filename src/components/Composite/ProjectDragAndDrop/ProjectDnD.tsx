@@ -20,7 +20,8 @@ import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProj
 import { FilterProvider } from '@/contexts/FilterContext'
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { ProjectDetailsType, ProjectStatus } from '@/types/Project'
-import { FiAlertCircle, FiSave } from 'react-icons/fi'
+import { FiSave } from 'react-icons/fi'
+import Notification from '@/components/Generic/Notification/Notification'
 import { UserRole } from '@/types/User'
 import { UpdateParams } from './ProjectUpdates'
 
@@ -422,17 +423,13 @@ const ProjectDnD: React.FC<DndComponentProps> = ({ presetContainers, semesterId,
 
   return (
     <div className="mx-auto w-full relative">
-      <div
-        className={` ${showNotification ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 fixed top-6 right-6 z-50 bg-light-pink ring ring-2 ring-pink-soft shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`}
-      >
-        <div className="flex items-center gap-2">
-          <FiAlertCircle className="text-pink-accent w-5 h-5 flex-shrink-0" />
-          <p className="text-dark-pink font-medium">Unsaved changes</p>
-        </div>
-
-        <p className="text-dark-pink text-sm">
-          You&rsquo;ve made changes to the project order. Don&rsquo;t forget to save!
-        </p>
+      <div className="fixed top-6 right-6 z-50">
+        <Notification
+          isVisible={showNotification}
+          title={'Unsaved Changes'}
+          message={"You've made changes to the project order. Don't forget to save!"}
+          type={'warning'}
+        />
       </div>
 
       <div className="flex gap-7 flex-wrap md:flex-nowrap">
