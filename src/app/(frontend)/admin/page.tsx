@@ -10,9 +10,3 @@ export default async function AdminPage() {
     </>
   )
 }
-
-//Still to do:
-//error handling and unauthorised rerouting to error page
-//Edit button for projects
-//Removing all extra fields if not filled in - project modal
-//Updating using save button

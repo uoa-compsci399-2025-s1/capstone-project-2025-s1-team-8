@@ -62,12 +62,23 @@ const AdminProjectService = {
         console.error('Failed to fetch projects')
         return []
       }
-      const projects: ProjectCardType[] = data.map(
-        (semesterProject: SemesterProject, index: number) => {
+
+      const sortedData = data.sort((a: SemesterProject, b: SemesterProject) => {
+        const aNum = a.number
+        const bNum = b.number
+      
+        if (aNum == null && bNum == null) return 0
+        if (aNum == null) return 1  // a goes after b
+        if (bNum == null) return -1 // b goes after a
+      
+        return bNum - aNum // descending order
+      })
+      
+      const projects: ProjectCardType[] = sortedData.map(
+        (semesterProject: SemesterProject) => {
           const project = semesterProject.project as Project
-          // TODO: don't pass if the question wasn't answered: for non-required questions
           return {
-            id: `item-${project.id}` as UniqueIdentifier, ////needs to contain 'item' for drag and drop logic
+            id: `item-${project.id}` as UniqueIdentifier, // needs to contain 'item' for drag and drop logic
             projectInfo: {
               semesterProjectId: semesterProject.id,
               projectId: project.id,
@@ -96,7 +107,6 @@ const AdminProjectService = {
       fetchProjects(ProjectStatus.Approved),
       fetchProjects(ProjectStatus.Rejected),
     ])
-    //TODO: need to order projects by their number!!
     return {
       data: {
         semesterId: semesterId,
