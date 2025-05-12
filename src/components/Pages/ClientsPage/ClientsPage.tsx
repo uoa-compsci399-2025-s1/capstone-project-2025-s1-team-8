@@ -2,9 +2,10 @@ import { useState } from 'react'
 import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
 import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/16/solid'
+import { ClientCombinedInfo } from '@/types/Payload'
 
 interface ClientsPageProps {
-  clients: ClientDTOPlaceholder[]
+  clients: ClientCombinedInfo[]
 }
 
 const ClientsPage: React.FC<ClientsPageProps> = ({ clients }) => {
