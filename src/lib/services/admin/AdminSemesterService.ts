@@ -30,6 +30,7 @@ const AdminSemesterService = {
 
     return { status: response.status, data, nextPage, error }
   },
+
   getAllPaginatedProjectsBySemesterId: async function (
     semesterId: string,
     options: {
