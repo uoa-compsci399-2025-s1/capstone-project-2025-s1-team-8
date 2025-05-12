@@ -1,7 +1,7 @@
 import { GET as GetClientInfo } from '@/app/api/users/me/route'
 import { GET as GetClientProjects } from '@/app/api/users/me/projects/route'
 import { PATCH as UpdateClientDetails } from '@/app/api/users/me/route'
-import { UpdateUserData, UserCombinedInfo } from '@/types/Collections'
+import { UpdateClientAdditionalInfoData, UpdateUserData, UserCombinedInfo } from '@/types/Collections'
 import { Project, Semester } from '@/payload-types'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
@@ -46,7 +46,7 @@ const ClientService = {
    * @param updatedClient The updated client information.
    * @returns {updatedUser: UserCombinedInfo, status: StatusCodes, error?: string, details?: string}
    */
-  async updateClientDetails(updatedClient: UpdateUserData): Promise<{
+  async updateClientDetails(updatedClient: Omit<UpdateUserData & Partial<UpdateClientAdditionalInfoData>, "email">): Promise<{
     updatedUser: UserCombinedInfo
     status: StatusCodes
     error?: string
