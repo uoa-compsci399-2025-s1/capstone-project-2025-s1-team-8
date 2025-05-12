@@ -5,10 +5,9 @@ import { typeToFlattenedError } from 'zod'
 
 import { LoginRequestBodySchema } from '@/app/api/auth/login/route'
 import UserService from './UserService'
-import { isValidEmail } from '@/lib/util/util'
 import { RegisterRequestBodySchema } from '@/app/api/auth/register/route'
 import { UserRoleWithoutAdmin } from '@/types/User'
-import { validateEmail, validatePassword } from '@/utils/authUtils'
+import { isValidEmail, isValidPassword } from '@/lib/util/util'
 
 /**
  * This function handles the form submission for user login.
@@ -79,13 +78,9 @@ export const handleRegister = async (
   const password = formData.get('password') as string
   const role = UserRoleWithoutAdmin.Client
 
-  if (!email) return { error: 'Email is required' }
-  if (!password) return { error: 'Password is required' }
-  if (!firstName) return { error: 'First name is required' }
-  if (!lastName) return { error: 'Last name is required' }
-  if (!validateEmail(email)) return { error: 'Invalid email address' }
-  if (!validatePassword(password).isValid) {
-    return { error: validatePassword(password).error }
+  if (!isValidEmail(email)) return { error: 'Invalid email address' }
+  if (!isValidPassword(password).isValid) {
+    return { error: isValidPassword(password).error }
   }
 
   const { message, status, error, details } = await UserService.register({

@@ -31,33 +31,27 @@ export default function RegisterPage() {
       <p className="text-xl font-extrabold text-dark-blue pl-2">KIA ORA</p>
       <form onSubmit={submitForm}>
         <div className="flex flex-col gap-4">
-          <div>
-            <Input
-              name="firstName"
-              placeholder="First Name"
-              type="firstName"
-              startIcon={<BsFillPersonFill className="text-muted-blue h-full" />}
-              required={true}
-            />
-          </div>
-          <div>
-            <Input
-              name="lastName"
-              placeholder="Last Name"
-              type="lastName"
-              startIcon={<BsFillPersonFill className="text-muted-blue h-full" />}
-              required={true}
-            />
-          </div>
-          <div>
-            <Input
-              name="email"
-              placeholder="Email Address"
-              type="email"
-              startIcon={<MdOutlineMail className="text-muted-blue h-full" />}
-              required={true}
-            />
-          </div>
+          <Input
+            name="firstName"
+            placeholder="First Name"
+            type="firstName"
+            startIcon={<BsFillPersonFill className="text-muted-blue h-full" />}
+            required={true}
+          />
+          <Input
+            name="lastName"
+            placeholder="Last Name"
+            type="lastName"
+            startIcon={<BsFillPersonFill className="text-muted-blue h-full" />}
+            required={true}
+          />
+          <Input
+            name="email"
+            placeholder="Email Address"
+            type="email"
+            startIcon={<MdOutlineMail className="text-muted-blue h-full" />}
+            required={true}
+          />
           <div>
             <Input
               name="password"
