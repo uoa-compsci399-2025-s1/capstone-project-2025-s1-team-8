@@ -16,6 +16,6 @@ type Story = StoryObj<typeof ClientCard>
 export const Default: Story = {
   args: {
     clientInfo: mockClients[0],
-    projects: mockProjects
+    projects: mockProjects,
   },
 }
