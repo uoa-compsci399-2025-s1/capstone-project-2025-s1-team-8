@@ -14,11 +14,11 @@ export interface ClientDTOPlaceholder {
 }
 
 export interface ClientCardProps {
-  clientInfo: UserCombinedInfo,
+  clientInfo: UserCombinedInfo
   projects?: Project[]
 }
 
-const ClientCard: React.FC<ClientCardProps> = ({clientInfo, projects = []}) => {
+const ClientCard: React.FC<ClientCardProps> = ({ clientInfo, projects = [] }) => {
   const [copied, setCopied] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -57,8 +57,8 @@ const ClientCard: React.FC<ClientCardProps> = ({clientInfo, projects = []}) => {
         onClose={() => handleModal()}
         clientFullName={clientInfo.firstName + ' ' + clientInfo.lastName}
         clientEmail={clientInfo.email}
-        affiliation={clientInfo.affiliation ?? ""}
-        introduction={clientInfo.introduction?? ""}
+        affiliation={clientInfo.affiliation ?? ''}
+        introduction={clientInfo.introduction ?? ''}
         projects={projects}
       />
     </>

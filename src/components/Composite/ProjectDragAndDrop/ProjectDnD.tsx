@@ -116,13 +116,17 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
           case 'submissionDate':
             const sorted = [...container.currentItems]
             if (filter === 'projectName') {
-              sorted.sort((a, b) =>
-                a.projectInfo.name.localeCompare(b.projectInfo.name),
-              )
+              sorted.sort((a, b) => a.projectInfo.name.localeCompare(b.projectInfo.name))
             } else if (filter === 'clientName') {
               sorted.sort((a, b) =>
-                ((a.projectInfo.client as User).firstName + " " + (a.projectInfo.client as User).lastName).localeCompare(
-                  (b.projectInfo.client as User).firstName + " " + (b.projectInfo.client as User).lastName,
+                (
+                  (a.projectInfo.client as User).firstName +
+                  ' ' +
+                  (a.projectInfo.client as User).lastName
+                ).localeCompare(
+                  (b.projectInfo.client as User).firstName +
+                    ' ' +
+                    (b.projectInfo.client as User).lastName,
                 ),
               )
             } else if (filter === 'submissionDate') {

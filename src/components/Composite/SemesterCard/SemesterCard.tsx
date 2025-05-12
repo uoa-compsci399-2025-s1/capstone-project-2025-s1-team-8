@@ -16,12 +16,7 @@ export interface SemesterDTOPlaceholder {
   currentOrUpcoming?: 'current' | 'upcoming' | string //Used for styling the current and upcoming semesters. If not current or upcoming semester, leave blank
 }
 
-const SemesterCard: React.FC<Semester> = ({
-  name,
-  startDate,
-  endDate,
-  deadline,
-}) => {
+const SemesterCard: React.FC<Semester> = ({ name, startDate, endDate, deadline }) => {
   const approvedProjects: Project[] = [] // Placeholder for approved projects
   let currentOrUpcoming = 'current' // Placeholder for current or upcoming semester
   currentOrUpcoming = ''
