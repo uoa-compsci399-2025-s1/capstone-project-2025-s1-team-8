@@ -14,6 +14,7 @@ import { User } from '@/payload-types'
 export const GET = async (req: NextRequest) => {
   const params = req.nextUrl.searchParams
   const cookieStore = await cookies()
+  const businessAuthService = new BusinessAuthService()
 
   const state = params.get('state')
   const cookieState = cookieStore.get('state')
@@ -70,7 +71,7 @@ export const GET = async (req: NextRequest) => {
       email,
       firstName,
       lastName: lastName || '',
-      role: UserRole.Client,
+      role: businessAuthService.decryptState(state),
     }
     user = await userService.createUser(newUserData)
   }
@@ -98,7 +99,6 @@ export const GET = async (req: NextRequest) => {
     })
   }
 
-  const businessAuthService = new BusinessAuthService()
   const token = businessAuthService.generateJWT(user, tokens.access_token)
 
   cookieStore.set(AUTH_COOKIE_NAME, token, {
