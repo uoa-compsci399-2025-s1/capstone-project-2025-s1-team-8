@@ -17,6 +17,8 @@ interface SemesterFormProps extends ModalProps {
   submissionDeadline?: Date
   edit?: boolean
   onCreated?: () => void
+  onUpdated?: () => void
+  onDeleted?: () => void
 }
 
 const SemesterForm: React.FC<SemesterFormProps> = ({
@@ -30,6 +32,8 @@ const SemesterForm: React.FC<SemesterFormProps> = ({
   submissionDeadline,
   edit = false,
   onCreated,
+  onUpdated,
+  onDeleted,
 }) => {
   const [errorState, setErrorState] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
@@ -48,8 +52,6 @@ const SemesterForm: React.FC<SemesterFormProps> = ({
     } else if (res?.message) {
       onCreated?.()
       onClose()
-      // @TODO dont reload but call getAllSemesters again? - this goes all the way back to admin page
-      // window.location.reload()
     }
   }
 
@@ -65,8 +67,8 @@ const SemesterForm: React.FC<SemesterFormProps> = ({
       setErrorMessage(res.details.formErrors[0])
       setErrorState(true)
     } else if (res?.message) {
+      onUpdated?.()
       onClose()
-      window.location.reload()
     }
   }
 
@@ -77,8 +79,8 @@ const SemesterForm: React.FC<SemesterFormProps> = ({
       setErrorMessage(res.error)
       setErrorState(true)
     } else if (res?.message) {
+      onDeleted?.()
       onClose()
-      window.location.reload()
     }
   }
 

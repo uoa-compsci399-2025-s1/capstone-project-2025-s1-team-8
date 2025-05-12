@@ -6,8 +6,10 @@ import NavBar from '@/components/Generic/NavBar/NavBar'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { mockClients } from '@/mocks/Clients.mock'
-import { mockSemesters } from '@/mocks/Semesters.mock'
 import SadTeapot from 'src/assets/sad-teapot.svg'
+import { getAllSemesters } from '@/lib/util/adminSemesterUtils'
+import { SemesterDTOPlaceholder } from '@/components/Composite/SemesterCard/SemesterCard'
+import { FiAlertCircle } from 'react-icons/fi'
 
 interface AdminProps {
   ProjectData: DndComponentProps
@@ -16,6 +18,39 @@ interface AdminProps {
 const Admin: React.FC<AdminProps> = ({ ProjectData }) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
   const [activeNav, setActiveNav] = useState<number | null>(null)
+  const [semestersData, setSemestersData] = useState<SemesterDTOPlaceholder[]>([])
+  const [showNotification, setShowNotification] = useState<boolean>(false)
+  const [created, setCreated] = useState(false)
+  const [updated, setUpdated] = useState(false)
+  const [deleted, setDeleted] = useState(false)
+  const fetchSemesters = async () => {
+    const res = await getAllSemesters()
+    if (res?.data) {
+      setSemestersData(res.data)
+    }
+  }
+  const message = created
+    ? 'Semester created successfully'
+    : updated
+      ? 'Semester updated successfully'
+      : deleted
+        ? 'Semester deleted successfully'
+        : ''
+
+  useEffect(() => {
+    fetchSemesters()
+  }, [])
+
+  useEffect(() => {
+    if (showNotification) {
+      fetchSemesters()
+      const timer = setTimeout(() => {
+        setShowNotification(false)
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [showNotification])
 
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
@@ -36,6 +71,15 @@ const Admin: React.FC<AdminProps> = ({ ProjectData }) => {
       <NavBar navElements={[{ href: '/admin', text: 'My Dashboard' }]} />
       <div className="hidden lg:block w-full">
         <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
+          <div
+            className={` ${showNotification ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 fixed top-6 right-6 z-50 bg-light-pink ring ring-2 ring-pink-soft shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`}
+          >
+            <div className="flex items-center gap-2">
+              <FiAlertCircle className="text-pink-accent w-5 h-5 flex-shrink-0" />
+              <p className="text-dark-pink font-medium">{message}</p>
+            </div>
+          </div>
+
           {AdminNavElements.map((nav, i) => (
             <button
               key={nav}
@@ -91,7 +135,21 @@ const Admin: React.FC<AdminProps> = ({ ProjectData }) => {
                 aria-hidden={activeNav !== 2}
                 tabIndex={activeNav === 2 ? 0 : -1}
               >
-                <SemestersPage semesters={mockSemesters} />
+                <SemestersPage
+                  semesters={semestersData}
+                  created={() => {
+                    setShowNotification(true)
+                    setCreated(true)
+                  }}
+                  updated={() => {
+                    setShowNotification(true)
+                    setUpdated(true)
+                  }}
+                  deleted={() => {
+                    setShowNotification(true)
+                    setDeleted(true)
+                  }}
+                />
               </div>
             </motion.div>
           </div>
