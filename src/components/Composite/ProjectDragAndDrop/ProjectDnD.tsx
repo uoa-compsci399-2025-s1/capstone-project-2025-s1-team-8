@@ -464,7 +464,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
             )}
           </DragOverlay>
         </DndContext>
-        <button className="absolute z-40 right-4 bottom-4">
+        <div className="absolute z-40 right-4 bottom-4">
           <RadialMenu
             items={buttonItems}
             onItemClick={(value) => {
@@ -479,7 +479,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
               }
             }}
           />
-        </button>
+        </div>
       </div>
     </div>
   )
