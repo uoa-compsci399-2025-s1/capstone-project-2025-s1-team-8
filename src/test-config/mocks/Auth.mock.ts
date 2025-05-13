@@ -1,16 +1,23 @@
 import { Authentication, User } from '@/payload-types'
 import { UserInfoResponse } from '@/types/Auth'
 import { CreateAuthenticationData } from '@/types/Collections'
-import { UserRole } from '@/types/User'
+import { UserRole, UserRoleWithoutAdmin } from '@/types/User'
 
 export const CODE_MOCK = 'coolcode'
-export const STATE_MOCK = 'coolstate'
+export const UUID_MOCK = 'cool_uuid'
+export const STATE_MOCK = 'cool_state'
+export const CLIENT_STATE_MOCK = Buffer.from(
+  UUID_MOCK + ';' + UserRoleWithoutAdmin.Client,
+).toString('base64')
+export const STUDENT_STATE_MOCK = Buffer.from(
+  UUID_MOCK + ';' + UserRoleWithoutAdmin.Student,
+).toString('base64')
 export const SCOPES_ARRAY_MOCK = [
   'https://www.googleapis.com/auth/userinfo.email',
   'https://www.googleapis.com/auth/userinfo.profile',
 ]
 export const SCOPES_MOCK = encodeURIComponent(SCOPES_ARRAY_MOCK.join(' '))
-export const REDIRECT_URI_MOCK = `https://accounts.google.com/o/oauth2/v2/auth?state=${STATE_MOCK}&scope=${SCOPES_MOCK}`
+export const REDIRECT_URI_MOCK = `https://accounts.google.com/o/oauth2/v2/auth?state=${CLIENT_STATE_MOCK}&scope=${SCOPES_MOCK}`
 
 export const ACCESS_TOKEN_MOCK = 'access_token'
 export const ID_TOKEN_MOCK = 'id_token'
