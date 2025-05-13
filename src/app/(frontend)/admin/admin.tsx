@@ -11,6 +11,7 @@ import { mockSemesters } from '@/test-config/mocks/Semester.mock'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
 import { UserCombinedInfo } from '@/types/Collections'
 import { UserRole } from '@/types/User'
+import { redirect } from 'next/navigation'
 
 interface AdminProps {
   ProjectData: DndComponentProps
@@ -41,7 +42,7 @@ const Admin: React.FC<AdminProps> = ({ ProjectData }) => {
   if (activeNav === null || !loginLoaded) return null
 
   if (!loggedInUser || loggedInUser.role !== UserRole.Admin) {
-    return null
+    redirect("/not-found")
   }
 
   return (
