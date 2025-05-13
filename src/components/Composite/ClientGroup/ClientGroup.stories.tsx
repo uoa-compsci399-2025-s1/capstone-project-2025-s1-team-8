@@ -10,10 +10,15 @@ const meta: Meta<typeof ClientGroup> = {
 
 export default meta
 
+const mockClientsWithProjects = mockClients.map((c) => ({
+  client: c,
+  projects: [],
+}))
+
 type Story = StoryObj<typeof ClientGroup>
 
 export const Default: Story = {
   args: {
-    clients: mockClients,
+    clients: mockClientsWithProjects,
   },
 }

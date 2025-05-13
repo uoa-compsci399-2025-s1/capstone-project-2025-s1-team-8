@@ -17,6 +17,7 @@ import {
   updateProjectOrdersAndStatus,
 } from '@/components/Composite/ProjectDragAndDrop/ProjectUpdates'
 import { handleCSVDownload } from './Handlers'
+import { StatusCodes } from 'http-status-codes'
 
 const AdminProjectService = {
   updateSemesterProject: async function (
@@ -40,16 +41,19 @@ const AdminProjectService = {
     return { data, error, details }
   },
 
-  getAssociatedSemestersByProject: async function (projectId: string): Promise<{
-    data: Semester[]
+  getProjectSemesters: async function (projectId: string): Promise<{
+    status: StatusCodes
+    data?: Semester[]
     error?: string
   }> {
     'use server'
-    const url = `/projects/${projectId}/semesters`
+    const url = `/api/projects/${projectId}/semesters`
     const response = await GetProjectSemesters(await buildNextRequest(url, { method: 'GET' }), {
       params: Promise.resolve({ id: projectId }),
     })
-    return await response.json()
+    const { data, error } = { ...(await response.json()) }
+
+    return { status: response.status, data, error }
   },
 
   getNextSemesterProjects: async function (): Promise<{
@@ -146,7 +150,7 @@ const AdminProjectService = {
     semesterProject: SemesterProject,
   ): Promise<ProjectCardType> {
     const project = semesterProject.project as Project
-    const { data: semesters } = await AdminProjectService.getAssociatedSemestersByProject(
+    const { data: semesters } = await AdminProjectService.getProjectSemesters(
       project.id,
     )
 
@@ -154,7 +158,7 @@ const AdminProjectService = {
       id: `item-${project.id}` as UniqueIdentifier,
       projectInfo: {
         ...project,
-        semesters: semesters,
+        semesters: semesters ?? [],
         semesterProjectId: semesterProject.id,
       },
     }

@@ -1,12 +1,196 @@
-'use server'
-import Admin from './admin'
-import AdminProjectService from '@/lib/services/admin/AdminProjectService'
+'use client'
+import ClientsPage from '@/components/Pages/ClientsPage/ClientsPage'
+import SemestersPage from '@/components/Pages/SemestersPage/SemestersPage'
+import ProjectDnD, { DndComponentProps } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
+import NavBar from '@/components/Generic/NavBar/NavBar'
+import React, { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
+import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
+import { getAllSemesters } from '@/lib/util/adminSemesterUtils'
+import { Semester } from '@/payload-types'
+import { FiAlertCircle } from 'react-icons/fi'
+import MobileAdminView from '@/app/(frontend)/admin/MobileAdminView'
+import { UserCombinedInfo } from '@/types/Collections'
+import { redirect } from 'next/navigation'
+import { UserRole } from '@/types/User'
+import { getAllClients } from '@/lib/util/adminClientUtils'
+import { ProjectDetails } from '@/types/Project'
+import { getNextSemesterProjects } from '@/lib/util/adminProjectUtils'
+import { handlePublishChanges, updateProjectOrdersAndStatus } from '@/components/Composite/ProjectDragAndDrop/ProjectUpdates'
+import { handleCSVDownload } from '@/lib/services/admin/Handlers'
 
-export default async function AdminPage() {
-  const { data } = await AdminProjectService.getNextSemesterProjects()
+const Admin = () => {
+  const AdminNavElements = ['Projects', 'Clients', 'Semesters']
+
+  const [activeNav, setActiveNav] = useState<number | null>(null)
+  const [loggedInUser, setLoggedInUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
+  const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
+  const [semestersData, setSemestersData] = useState<Semester[]>([])
+  const [showNotification, setShowNotification] = useState<boolean>(false)
+  const [created, setCreated] = useState(false)
+  const [updated, setUpdated] = useState(false)
+  const [deleted, setDeleted] = useState(false)
+  const [clientsData, setClientsData] = useState<
+    { client: UserCombinedInfo; projects: ProjectDetails[] }[]
+  >([])
+  const [dndContainers, setDndContainers] = useState<DndComponentProps>({} as DndComponentProps)
+
+  const fetchSemesters = async () => {
+    const res = await getAllSemesters()
+    if (res?.data) {
+      setSemestersData(res.data)
+    }
+  }
+
+  const fetchClients = async () => {
+    const res = await getAllClients()
+    if (res?.data) {
+      setClientsData(res.data)
+    }
+  }
+
+  const fetchDndContainers = async () => {
+    const res = await getNextSemesterProjects()
+    if (res?.data) {
+      setDndContainers(res.data)
+    }
+  }
+
+  const message = created
+    ? 'Semester created successfully'
+    : updated
+      ? 'Semester updated successfully'
+      : deleted
+        ? 'Semester deleted successfully'
+        : ''
+
+  useEffect(() => {
+    fetchSemesters()
+    fetchClients()
+    fetchDndContainers()
+  }, [])
+
+  useEffect(() => {
+    if (showNotification) {
+      fetchSemesters()
+      const timer = setTimeout(() => {
+        setShowNotification(false)
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [showNotification])
+
+  useEffect(() => {
+    const saved = localStorage.getItem('adminNav')
+    setActiveNav(saved !== null ? Number(saved) : 0)
+    getLoggedInUser().then((res) => {
+      setLoggedInUser(res)
+      setLoginLoaded(true)
+    })
+  }, [])
+
+  useEffect(() => {
+    if (activeNav !== null) {
+      localStorage.setItem('adminNav', String(activeNav))
+    }
+  }, [activeNav])
+
+  // Don't render anything until activeNav is ready
+  if (activeNav === null || !loginLoaded) return null
+  if (!loggedInUser || loggedInUser.role !== UserRole.Admin) {
+    redirect('/not-found')
+  }
+
   return (
-    <>
-      <Admin ProjectData={data} />
-    </>
+    <div>
+      <NavBar onclick={handleLoginButtonClick} user={loggedInUser} />
+      <div className="hidden lg:block w-full">
+        <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
+          <div
+            className={` ${showNotification ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 fixed top-6 right-6 z-50 bg-light-pink ring ring-2 ring-pink-soft shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`}
+          >
+            <div className="flex items-center gap-2">
+              <FiAlertCircle className="text-pink-accent w-5 h-5 flex-shrink-0" />
+              <p className="text-dark-pink font-medium">{message}</p>
+            </div>
+          </div>
+          {AdminNavElements.map((nav, i) => (
+            <button
+              key={nav}
+              onClick={() => setActiveNav(i)}
+              className="relative group p-2 nav-link-text"
+            >
+              <p>{nav}</p>
+              <span
+                className={`
+                nav-link-text-underline
+                scale-x-0 group-hover:scale-x-100
+                ${activeNav === i ? 'scale-x-100' : ''}
+              `}
+              />
+            </button>
+          ))}
+        </div>
+
+        <div className="py-4 relative min-h-[300px]">
+          <div className="flex flex-col overflow-hidden w-full">
+            <motion.div
+              className="flex flex-1 min-h-0 [direction:ltr]"
+              transition={{
+                tension: 190,
+                friction: 200,
+                mass: 0.4,
+              }}
+              initial={false}
+              animate={{ x: activeNav * -100 + '%' }}
+            >
+              <div
+                className="admin-dash-carousel-item"
+                aria-hidden={activeNav !== 0}
+                tabIndex={activeNav === 0 ? 0 : -1}
+              >
+                <ProjectDnD {...dndContainers} onSaveChanges={updateProjectOrdersAndStatus} onPublishChanges={handlePublishChanges} onDownloadCsv={handleCSVDownload} />
+              </div>
+
+              <div
+                className="admin-dash-carousel-item"
+                aria-hidden={activeNav !== 1}
+                tabIndex={activeNav === 1 ? 0 : -1}
+              >
+                <ClientsPage clients={clientsData} />
+              </div>
+
+              <div
+                className="admin-dash-carousel-item"
+                aria-hidden={activeNav !== 2}
+                tabIndex={activeNav === 2 ? 0 : -1}
+              >
+                <SemestersPage
+                  semesters={semestersData}
+                  created={() => {
+                    setShowNotification(true)
+                    setCreated(true)
+                  }}
+                  updated={() => {
+                    setShowNotification(true)
+                    setUpdated(true)
+                  }}
+                  deleted={() => {
+                    setShowNotification(true)
+                    setDeleted(true)
+                  }}
+                />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+
+      {/* mobile view */}
+      <MobileAdminView />
+    </div>
   )
 }
+
+export default Admin

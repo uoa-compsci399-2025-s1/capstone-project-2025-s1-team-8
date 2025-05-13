@@ -149,6 +149,11 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
   async function handleDownloadCsv() {
     await onDownloadCsv(semesterId)
+    setSuccessNotification('Download successful!')
+
+    setTimeout(() => {
+      setSuccessNotification(null)
+    }, 5000)
   }
 
   function sortProjects(containerId: UniqueIdentifier, filter: string): void {
