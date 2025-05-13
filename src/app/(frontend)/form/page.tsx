@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useForm, SubmitHandler, useWatch } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import Button from '@/components/Generic/Button/Button'
 import Input from '@/components/Generic/Input/InputField'
 import Textarea from '@/components/Generic/Textarea/Textarea'
@@ -9,7 +9,7 @@ import Radio from '@/components/Generic/Radio/Radio'
 import Checkbox from '@/components/Generic/Checkbox/Checkbox'
 import { semesterNames } from '@/test-config/mocks/Semester.mock'
 import { FiCheck } from 'react-icons/fi'
-import { HiX } from 'react-icons/hi'
+import { HiX, HiExclamation } from 'react-icons/hi'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Project } from '@/payload-types'
@@ -17,6 +17,13 @@ import { Project } from '@/payload-types'
 interface OtherClientDetails {
   fullName: string
   email: string
+}
+
+interface formProject extends Project {
+  meetingAttendance: boolean
+  futureSemesters: string[]
+  finalPresentationAttendance: boolean
+  projectSupportAndMaintenance: boolean
 }
 
 export default function Form() {
@@ -42,12 +49,15 @@ export default function Form() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting, isSubmitted },
-  } = useForm<Project>()
+  } = useForm<formProject>()
 
-  const onSubmit: SubmitHandler<Project> = (data) => {
+  const hasFutureConsideration = watch('futureConsideration', false);
+  const onSubmit: SubmitHandler<formProject> = (data) => {
     console.log(data)
   }
+
 
   // const clientName = useWatch({
   //   control: register(),
@@ -380,7 +390,14 @@ export default function Form() {
                   If you replied yes to the question above, what semesters would you like your
                   project to be considered for?
                 </p>
-                <Checkbox name="FutureSemesters" values={semesterNames} />
+                <Checkbox 
+                  values={semesterNames} 
+                  error={!!errors.futureSemesters}
+                  errorMessage={errors.futureSemesters?.message}
+                  {...register('futureSemesters', {
+                    required: hasFutureConsideration ? 'Future Semesters is required' : false,
+                  })}
+                />
               </li>
               <li>
                 <label htmlFor="MeetingAttendance">
@@ -394,19 +411,21 @@ export default function Form() {
                 </p>
                 <label className="flex mb-3">
                   <input
-                    name="MeetingAttendance"
                     type="checkbox"
                     style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
                     className="opacity-0 peer"
-                    required={false}
+                    {...register('meetingAttendance', {
+                      required: 'Meeting Attendance is required',
+                    })}
                   />
                   <span
-                    className="w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] border-steel-blue rounded-sm 
+                    className={`${!!errors.finalPresentationAttendance ? 'border-pink-accent hover:outline-dark-pink peer-focus:outline-dark-pink' : 'border-steel-blue hover:outline-deeper-blue peer-focus:outline-deeper-blue'}
+                        w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] rounded-sm
                         peer-checked:bg-steel-blue 
                         [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
-                        peer-focus:outline peer-focus:outline-deeper-blue
-                        hover:outline hover:outline-deeper-blue
-                        transition-colors duration-150"
+                        hover:outline 
+                        peer-focus:outline 
+                        transition-colors duration-150`}
                   >
                     <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
                   </span>
@@ -415,6 +434,12 @@ export default function Form() {
                     scheduled 2-3 weeks apart.
                   </p>
                 </label>
+                {!!errors.meetingAttendance && (
+                  <div className="flex items-center gap-2 text-xs text-pink-accent min-h-[1.25rem] mt-2">
+                    <HiExclamation className="w-3 h-3" />
+                    <p>{errors.meetingAttendance?.message}</p>
+                  </div>
+                )}
               </li>
               <li>
                 <label htmlFor="FinalPresentationAttendance">
@@ -427,20 +452,21 @@ export default function Form() {
                 </p>
                 <label className="flex mb-3">
                   <input
-                    name="FinalPresentationAttendance"
                     type="checkbox"
                     style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
                     className="opacity-0 peer"
-                    required={false}
-
+                    {...register('finalPresentationAttendance', {
+                      required: 'Final Presentation Attendance is required',
+                    })}
                   />
                   <span
-                    className="w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] border-steel-blue rounded-sm 
+                    className={`${!!errors.finalPresentationAttendance ? 'border-pink-accent hover:outline-dark-pink peer-focus:outline-dark-pink' : 'border-steel-blue hover:outline-deeper-blue peer-focus:outline-deeper-blue'}
+                        w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] rounded-sm
                         peer-checked:bg-steel-blue 
                         [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
-                        hover:outline hover:outline-deeper-blue
-                        peer-focus:outline peer-focus:outline-deeper-blue
-                        transition-colors duration-150"
+                        hover:outline 
+                        peer-focus:outline 
+                        transition-colors duration-150`}
                   >
                     <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
                   </span>
@@ -448,6 +474,12 @@ export default function Form() {
                     I confirm that I will be able to attend final presentation <b>in-person</b>.
                   </p>
                 </label>
+                {!!errors.finalPresentationAttendance && (
+                  <div className="flex items-center gap-2 text-xs text-pink-accent min-h-[1.25rem] mt-2">
+                    <HiExclamation className="w-3 h-3" />
+                    <p>{errors.finalPresentationAttendance?.message}</p>
+                  </div>
+                )}
               </li>
               <li>
                 <label htmlFor="ProjectSupportAndMaintenance">
