@@ -44,7 +44,6 @@ const Admin: React.FC<AdminProps> = ({ ProjectData }) => {
   if (!loggedInUser || loggedInUser.role !== UserRole.Admin) {
     redirect('/not-found')
   }
-
   return (
     <div>
       <NavBar onclick={handleLoginButtonClick} user={loggedInUser} />
@@ -80,18 +79,26 @@ const Admin: React.FC<AdminProps> = ({ ProjectData }) => {
               initial={false}
               animate={{ x: activeNav * -100 + '%' }}
             >
-              <div
+             <div
                 className="admin-dash-carousel-item"
                 aria-hidden={activeNav !== 0}
                 tabIndex={activeNav === 0 ? 0 : -1}
               >
-                <ProjectDnD
+                {ProjectData &&<ProjectDnD
                   semesterId={ProjectData.semesterId}
                   presetContainers={ProjectData.presetContainers}
                   onSaveChanges={ProjectData.onSaveChanges}
                   onPublishChanges={ProjectData.onPublishChanges}
                   onDownloadCsv={ProjectData.onDownloadCsv}
-                />
+                />}
+                {
+                  !ProjectData && 
+                  <div className="flex items-center justify-center h-full">
+                    <p className="text-2xl font-dm-serif-display text-dark-blue">
+                      No projects available
+                    </p>
+                  </div>
+                }
               </div>
 
               <div
