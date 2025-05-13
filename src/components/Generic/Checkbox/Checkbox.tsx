@@ -14,8 +14,6 @@ const Checkbox: FC<CheckboxProps> = ({
   errorMessage = 'Please select at least one option',
 }) => {
   const borderErrorStyle = `${error ? 'border-pink-accent hover:outline-dark-pink peer-focus:outline-dark-pink' : 'border-steel-blue hover:outline-deeper-blue peer-focus:outline-deeper-blue'}`
-  const dotErrorStyle = `${error ? 'bg-pink-accent' : 'bg-steel-blue'} 
-  w-[8px] h-[8px] rounded-full self-center m-auto transition-opacity duration-300`
   return (
     <div className={`flex flex-col`}>
       {values.map((value, index) => (

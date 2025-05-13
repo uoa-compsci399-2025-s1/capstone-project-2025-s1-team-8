@@ -173,34 +173,7 @@ export default function Form() {
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <ol
               className="flex flex-col gap-10 list-decimal list-outside text-dark-blue font-inter text-lg whitespace-pre-wrap ml-5"
-              type="1"
             >
-              <li>
-                <label htmlFor="ClientName">
-                  Main client&apos;s (applicant&apos;s) name{' '}
-                  <span className="text-pink-accent">*</span>
-                </label>
-                <p className="form-question-subheading">Please provide your name.</p>
-                <Input
-                  id="ClientName"
-                  name="ClientName"
-                  type="text"
-                  placeholder="Enter the main client's name"
-                />
-              </li>
-              <li>
-                <label htmlFor="ClientEmail">
-                  Main client&apos;s (applicant&apos;s) email{' '}
-                  <span className="text-pink-accent">*</span>
-                </label>
-                <p className="form-question-subheading">Please provide your email.</p>
-                <Input
-                  id="ClientEmail"
-                  name="ClientEmail"
-                  type="text"
-                  placeholder="Enter the main client's email"
-                />
-              </li>
               <li>
                 <div className="flex justify-between items-center">
                   <div>
@@ -466,6 +439,7 @@ export default function Form() {
                     style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
                     className="opacity-0 peer"
                     required={false}
+
                   />
                   <span
                     className="w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] border-steel-blue rounded-sm 
@@ -499,10 +473,14 @@ export default function Form() {
                     required={false}
                   />
                   <Checkbox
-                    name="ProjectSupport"
                     values={[
                       'I understand that no resources will be available for support or maintenance after the semester ends, and that neither the University nor the participating students assume any liability for the project outcome.',
                     ]}
+                    error={!!errors.projectSupportAndMaintenance}
+                    errorMessage={errors.projectSupportAndMaintenance?.message}
+                    {...register('projectSupportAndMaintenance', {
+                      required: 'Project Support and Maintenance is required',
+                    })}
                   />
                 </label>
               </li>
