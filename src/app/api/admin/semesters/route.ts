@@ -20,7 +20,7 @@ class RouteWrapper {
    * @param req The request object containing the request body
    * @returns The created semester.
    */
-  // @Security('jwt', ['admin'])
+  @Security('jwt', ['admin'])
   static async POST(req: NextRequest) {
     try {
       const parsedBody = CreateSemesterRequestBody.parse(await req.json())
