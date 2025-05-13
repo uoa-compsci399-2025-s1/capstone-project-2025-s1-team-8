@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import SemesterCard from '@/components/Composite/SemesterCard/SemesterCard'
 import Button from '@/components/Generic/Button/Button'
 import SemesterForm from '@/components/Composite/SemesterForm/SemesterForm'
 import { Semester } from '@/payload-types'
+import { isCurrentOrUpcoming } from '@/lib/util/adminSemesterUtils'
 
 interface SemestersPageProps {
   semesters: Semester[]
@@ -13,11 +14,25 @@ interface SemestersPageProps {
 
 const SemestersPage: React.FC<SemestersPageProps> = ({ semesters, created, updated, deleted }) => {
   const [modalOpen, setModalOpen] = useState(false)
+  const [semesterStatuses, setSemesterStatuses] = useState<Record<string, string>>({})
   const currentSemesterRef = useRef<HTMLDivElement>(null)
 
   function toggleModal() {
     setModalOpen(!modalOpen)
   }
+
+  useEffect(() => {
+    const loadStatuses = async () => {
+      const statuses: Record<string, string> = {}
+      for (const semester of semesters) {
+        if (semester.id) {
+          statuses[semester.id] = await isCurrentOrUpcoming(semester.id)
+        }
+      }
+      setSemesterStatuses(statuses)
+    }
+    loadStatuses()
+  }, [semesters])
 
   const scrollToCurrentSemester = () => {
     currentSemesterRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -44,8 +59,10 @@ const SemestersPage: React.FC<SemestersPageProps> = ({ semesters, created, updat
       </div>
       {semesters.map((semester) => (
         <div
-          key={semester.name}
-          ref={semester.currentOrUpcoming === 'current' ? currentSemesterRef : null}
+          key={semester.id || semester.name}
+          ref={
+            semester.id && semesterStatuses[semester.id] === 'current' ? currentSemesterRef : null
+          }
         >
           <SemesterCard {...semester} />
         </div>

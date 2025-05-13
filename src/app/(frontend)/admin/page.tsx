@@ -11,6 +11,8 @@ import { mockClients } from '@/test-config/mocks/User.mock'
 import SadTeapot from 'src/assets/sad-teapot.svg'
 import { handleLoginButtonClick, isLoggedIn } from '@/lib/services/user/Handlers'
 import { getAllSemesters } from '@/lib/util/adminSemesterUtils'
+import { Semester } from '@/payload-types'
+import { FiAlertCircle } from 'react-icons/fi'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -18,7 +20,7 @@ const Admin = () => {
   const [activeNav, setActiveNav] = useState<number | null>(null)
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
   const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
-  const [semestersData, setSemestersData] = useState<SemesterDTOPlaceholder[]>([])
+  const [semestersData, setSemestersData] = useState<Semester[]>([])
   const [showNotification, setShowNotification] = useState<boolean>(false)
   const [created, setCreated] = useState(false)
   const [updated, setUpdated] = useState(false)
@@ -121,6 +123,14 @@ const Admin = () => {
       />
       <div className="hidden lg:block w-full">
         <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
+          <div
+            className={` ${showNotification ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 fixed top-6 right-6 z-50 bg-light-pink ring ring-2 ring-pink-soft shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`}
+          >
+            <div className="flex items-center gap-2">
+              <FiAlertCircle className="text-pink-accent w-5 h-5 flex-shrink-0" />
+              <p className="text-dark-pink font-medium">{message}</p>
+            </div>
+          </div>
           {AdminNavElements.map((nav, i) => (
             <button
               key={nav}

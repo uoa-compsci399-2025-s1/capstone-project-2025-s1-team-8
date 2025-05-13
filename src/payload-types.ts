@@ -319,7 +319,7 @@ export interface SemesterProject {
   number?: number | null;
   project: string | Project;
   semester: string | Semester;
-  status: 'pending' | 'approved' | 'rejected';
+  status: 'pending' | 'accepted' | 'rejected';
   published: boolean;
   updatedAt: string;
   createdAt: string;

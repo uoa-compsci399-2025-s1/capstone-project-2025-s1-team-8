@@ -3,9 +3,8 @@
 import { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 import { typeToFlattenedError } from 'zod'
 import AdminSemesterService from '@/lib/services/admin/AdminSemesterService'
-import { SemesterDTOPlaceholder } from '@/components/Composite/SemesterCard/SemesterCard'
-import { ProjectDetailsType } from '@/types/Project'
-import { Project, Semester, User } from '@/payload-types'
+import { Project, Semester, SemesterProject, User } from '@/payload-types'
+import { ProjectDetails } from '@/types/Project'
 
 export const handleCreateSemester = async (
   formData: FormData,
@@ -71,53 +70,43 @@ export const handleDeleteSemester = async (
 
 export const getAllSemesters = async (): Promise<void | {
   error?: string
-  data?: SemesterDTOPlaceholder[]
-  details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
+  data?: Semester[]
 }> => {
   const { status, error, data } = await AdminSemesterService.getAllPaginatedSemesters()
   if (status === 200) {
-    const semestersDto: SemesterDTOPlaceholder[] = await Promise.all(
-      data?.map(async (semester) => {
-        const id = semester.id
-        const approvedProjects = await AdminSemesterService.getAllPaginatedProjectsBySemesterId(id)
-        const approvedProjectsDto: ProjectDetailsType[] = await Promise.all(
-          approvedProjects.data?.map(async (semesterProject) => {
-            const project = semesterProject.project as Project
-            const semestersResponse = await AdminSemesterService.getProjectSemesters(project.id)
-            return {
-              semesterProjectId: semesterProject.id as string,
-              projectId: project.id as string,
-              projectTitle: project.name as string,
-              projectClientDetails: project.client as User,
-              otherClientDetails: project.additionalClients as User[],
-              projectDescription: project.description as string,
-              desiredOutput: project.desiredOutput as string,
-              numberOfTeams: project.numberOfTeams as string,
-              futureConsideration: project.futureConsideration,
-              desiredTeamSkills: project.desiredTeamSkills as string,
-              availableResources: project.availableResources as string,
-              specialRequirements: project.specialEquipmentRequirements as string,
-              submittedDate: new Date(project.createdAt),
-              semesters: semestersResponse.data as Semester[],
-            }
-          }) || [],
-        )
-        const isCurrentOrUpcoming = await AdminSemesterService.isCurrentOrUpcoming(id)
-
-        return {
-          id: semester.id,
-          semesterName: semester.name,
-          startDate: new Date(semester.startDate),
-          endDate: new Date(semester.endDate),
-          submissionDeadline: new Date(semester.deadline),
-          approvedProjects: approvedProjectsDto,
-          currentOrUpcoming: isCurrentOrUpcoming,
-        }
-      }) || [],
-    )
-
-    return { data: semestersDto }
+    return { data }
   } else {
     return { error }
   }
+}
+
+export const getAllSemesterProjects = async (
+  id: string,
+): Promise<void | {
+  error?: string
+  data?: ProjectDetails[]
+}> => {
+  const { status, error, data } = await AdminSemesterService.getAllPaginatedProjectsBySemesterId(id)
+  if (status === 200) {
+    const projectPromises =
+      data?.map(async (semesterProject) => {
+        const project = semesterProject.project as Project
+        const semesters = await AdminSemesterService.getProjectSemesters(project.id)
+
+        return {
+          ...project,
+          semesters: semesters.data || [],
+          semesterProjectId: semesterProject.id,
+        } as ProjectDetails
+      }) || []
+
+    const projects = await Promise.all(projectPromises)
+    return { data: projects }
+  } else {
+    return { error }
+  }
+}
+
+export const isCurrentOrUpcoming = async (id: string): Promise<'current' | 'upcoming' | ''> => {
+  return await AdminSemesterService.isCurrentOrUpcoming(id)
 }
