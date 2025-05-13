@@ -23,6 +23,7 @@ let clientToken: string
 let studentToken: string
 
 let cookies: Record<string, string> = {}
+let headers: Record<string, string> = {}
 
 beforeEach(async () => {
   vi.stubGlobal('crypto', {
@@ -88,6 +89,11 @@ beforeEach(async () => {
         delete cookies[key]
       }),
     })),
+    headers: vi.fn(() => ({
+      get: vi.fn().mockImplementation((key: string): string => {
+        return headers[key]
+      }),
+    })),
   }))
 
   const authService = new AuthService()
@@ -114,6 +120,7 @@ afterEach(async () => {
     await clearCollection(payload, slug as CollectionSlug)
   }
   cookies = {}
+  headers = {}
 })
 
 export { adminToken, clientToken, studentToken }
