@@ -1,23 +1,28 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { CreateProjectData } from '@/types/Collections'
 import { z, ZodError } from 'zod'
 import { Security } from '@/business-layer/middleware/Security'
-import { MediaSchema, UserSchema } from '@/types/Payload'
+import { MediaSchema, ProjectSchema } from '@/types/Payload'
 import { RequestWithUser } from '@/types/Requests'
-import { UserRole } from '@/types/User'
+import { UserRole, UserRoleWithoutAdmin } from '@/types/User'
+import { User } from '@/payload-types'
+import UserService from '@/data-layer/services/UserService'
+import { NotFound } from 'payload'
+import { CommonResponse } from '@/types/response-models/CommonResponse'
+
+export const CreateProjectClientSchema = z.object({
+  firstName: z.string(),
+  lastName: z.string().optional(),
+  email: z.string(),
+})
+export type CreateProjectClient = z.infer<typeof CreateProjectClientSchema>
 
 export const CreateProjectRequestBodySchema = z.object({
   name: z.string(),
   description: z.string(),
-  client: z.union([z.string(), UserSchema]),
-  additionalClients: z
-    .union([
-      z.array(z.string()).nonempty('At least one client is required'),
-      z.array(UserSchema).nonempty('At least one client is required'),
-    ])
-    .optional(),
+  additionalClients: z.array(CreateProjectClientSchema).optional(),
   attachments: z.array(MediaSchema).max(5).optional(),
   deadline: z
     .string()
@@ -31,8 +36,12 @@ export const CreateProjectRequestBodySchema = z.object({
   availableResources: z.string().optional(),
   futureConsideration: z.boolean(),
 })
-
 export type CreateProjectRequestBody = z.infer<typeof CreateProjectRequestBodySchema>
+
+export const CreateProjectResponseSchema = CommonResponse.extend({
+  data: ProjectSchema.optional(),
+})
+export type CreateProjectResponse = z.infer<typeof CreateProjectResponseSchema>
 
 class RouteWrapper {
   /**
@@ -44,6 +53,7 @@ class RouteWrapper {
   @Security('jwt', ['client', 'admin'])
   static async GET(req: RequestWithUser) {
     const projectService = new ProjectService()
+
     const searchParams = req.nextUrl.searchParams
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '100')
@@ -53,6 +63,7 @@ class RouteWrapper {
         { status: StatusCodes.BAD_REQUEST },
       )
     }
+
     let docs, nextPage
     if (req.user.role === UserRole.Admin) {
       ;({ docs, nextPage } = await projectService.getAllProjects(limit, page))
@@ -71,25 +82,49 @@ class RouteWrapper {
    * @returns A JSON response containing the created project.
    */
   @Security('jwt', ['client', 'admin'])
-  static async POST(req: NextRequest) {
+  static async POST(req: RequestWithUser) {
     const projectService = new ProjectService()
+    const userService = new UserService()
 
     try {
       const body = CreateProjectRequestBodySchema.parse(await req.json())
-      const data = await projectService.createProject(body as CreateProjectData)
-      return NextResponse.json({ data }, { status: StatusCodes.CREATED })
+
+      const clients: User[] = []
+      body.additionalClients?.map(async ({ firstName, lastName, email }) => {
+        try {
+          clients.push(await userService.getUserByEmail(email))
+        } catch (err) {
+          if (err instanceof NotFound) {
+            clients.push(
+              await userService.createUser({
+                firstName,
+                lastName,
+                email,
+                role: UserRoleWithoutAdmin.Client,
+              }),
+            )
+          }
+          throw err
+        }
+      })
+
+      const data = await projectService.createProject({
+        ...body,
+        client: req.user.id,
+        additionalClients: clients,
+      } as CreateProjectData)
+      return NextResponse.json({ data } as CreateProjectResponse, { status: StatusCodes.CREATED })
     } catch (error) {
       if (error instanceof ZodError) {
         return NextResponse.json(
-          { error: 'Invalid request body', details: error.flatten() },
+          { error: 'Invalid request body', details: error.flatten() } as CreateProjectResponse,
           { status: StatusCodes.BAD_REQUEST },
         )
       }
       console.error(error)
-      return NextResponse.json(
-        { error: 'Bad request body' },
-        { status: StatusCodes.INTERNAL_SERVER_ERROR },
-      )
+      return NextResponse.json({ error: 'Bad request body' } as CreateProjectResponse, {
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+      })
     }
   }
 }
