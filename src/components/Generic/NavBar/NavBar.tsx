@@ -82,7 +82,7 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true, user, onclic
           </div> */}
           {user && user.role === UserRole.Admin && (
             <div className="relative group p-2">
-              <Link href={"/client"} className="nav-link-text">
+              <Link href={'/client'} className="nav-link-text">
                 {'My Client Dashboard'}
               </Link>
               <span
