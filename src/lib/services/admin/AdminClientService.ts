@@ -1,4 +1,3 @@
-import { Project } from '@/payload-types'
 import { GET as GetUsers } from '@/app/api/admin/users/route'
 import { GET as GetUserById } from '@/app/api/admin/users/[id]/route'
 import { PATCH as UpdateUser } from '@/app/api/admin/users/[id]/route'
@@ -8,16 +7,19 @@ import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { typeToFlattenedError } from 'zod'
 import { UpdateUserRequestBody } from '@/app/api/admin/users/[id]/route'
-import { ClientCombinedInfo } from '@/types/Payload'
+import { UserCombinedInfo } from '@/types/Collections'
 import { StatusCodes } from 'http-status-codes'
 import { UserRole } from '@/types/User'
+import { ProjectDetails } from '@/types/Project'
+import { Project } from '@/payload-types'
+import AdminProjectService from './AdminProjectService'
 
 const AdminClientService = {
   getAllUsers: async function (
     options: { limit?: number; cursor?: number; role?: UserRole } = {},
   ): Promise<{
     status: StatusCodes
-    data?: ClientCombinedInfo[]
+    data?: UserCombinedInfo[]
     nextPage?: string
     error?: string
   }> {
@@ -31,7 +33,7 @@ const AdminClientService = {
 
   getUserById: async function (userId: string): Promise<{
     status: StatusCodes
-    data: ClientCombinedInfo
+    data: UserCombinedInfo
     error?: string
   }> {
     'use server'
@@ -49,7 +51,7 @@ const AdminClientService = {
     user: UpdateUserRequestBody,
   ): Promise<{
     status: StatusCodes
-    data: ClientCombinedInfo
+    data: UserCombinedInfo
     error?: string
     details?: typeToFlattenedError<UpdateUserRequestBody>
   }> {
@@ -85,7 +87,7 @@ const AdminClientService = {
     options: { page?: number; limit?: number } = {},
   ): Promise<{
     status: StatusCodes
-    data: Project[]
+    data: ProjectDetails[]
     nextPage?: string
     error?: string
   }> {
@@ -96,7 +98,16 @@ const AdminClientService = {
     })
     const { data, nextPage, error } = { ...(await response.json()) }
 
-    return { status: response.status, data, nextPage, error }
+    const projectDetailsList: ProjectDetails[] = await Promise.all(
+      data.map(async (project: Project) => {
+        const semesterResult = await AdminProjectService.getProjectSemesters(project.id)
+        return {
+          ...project,
+          semesters: semesterResult.data ?? [],
+        }
+      }),
+    )
+    return { status: response.status, data: projectDetailsList, nextPage, error }
   },
 } as const
 export default AdminClientService
