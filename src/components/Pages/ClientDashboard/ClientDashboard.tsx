@@ -9,9 +9,25 @@ interface ClientDashboardProps {
   client: UserCombinedInfo
   projects: Project[]
   semesters: Semester[][]
+  onSave?: (
+    firstName: string,
+    lastName: string,
+    affiliation: string,
+    introduction: string,
+  ) => Promise<{
+    updatedUser: UserCombinedInfo
+    status: StatusCodes
+    error?: string
+    details?: string
+  }>
 }
 
-const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects, semesters }) => {
+const ClientDashboard: React.FC<ClientDashboardProps> = ({
+  client,
+  projects,
+  semesters,
+  onSave,
+}) => {
   return (
     <div>
       <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-[auto_1fr] gap-10 pb-12 items-stretch">
@@ -24,7 +40,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects, sem
           />
         </div>
         <div className="lg:col-start-2 lg:row-span-2">
-          <ClientProfile clientInfo={client} />
+          <ClientProfile clientInfo={client} onSave={onSave} />
         </div>
       </div>
       <ProjectCardList

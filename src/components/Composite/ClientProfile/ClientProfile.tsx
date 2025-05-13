@@ -2,13 +2,23 @@ import React, { useState } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import { FiEdit, FiSave } from 'react-icons/fi'
 import { UserCombinedInfo } from '@/types/Collections'
-import { handleClientUpdateSave } from '@/lib/services/client/Handlers'
 
 interface ClientProfileProps {
   clientInfo: UserCombinedInfo
+  onSave?: (
+    firstName: string,
+    lastName: string,
+    affiliation: string,
+    introduction: string,
+  ) => Promise<{
+    updatedUser: UserCombinedInfo
+    status: StatusCodes
+    error?: string
+    details?: string
+  }>
 }
 
-const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo }) => {
+const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [name, setName] = useState<string>(clientInfo.firstName + ' ' + clientInfo.lastName)
   const [previousName, setPreviousName] = useState<string>(
@@ -41,14 +51,14 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo }) => {
       return
     }
 
-    /*const res = await handleClientProfileUpdate(firstName, lastName, affiliation, introduction)
-  if (res.error) {
-    setName(previousName)
-    setAffiliation(previousAffiliation)
-    setIntroduction(previousIntroduction)
-    alert('Error updating profile: ' + res.error || res.details) //placeholder
-    return
-  }*/
+    const res = await onSave(firstName, lastName, affiliation, introduction)
+    if (res.error) {
+      setName(previousName)
+      setAffiliation(previousAffiliation)
+      setIntroduction(previousIntroduction)
+      alert('Error updating profile: ' + res.error || res.details) //placeholder
+      return
+    }
 
     setPreviousName(name)
     setPreviousAffiliation(affiliation)

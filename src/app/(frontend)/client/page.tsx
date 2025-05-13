@@ -8,6 +8,7 @@ import { UserCombinedInfo } from '@/types/Collections'
 import { Project } from '@/payload-types'
 import { Semester } from '@/payload-types'
 import { handleLoginButtonClick, isLoggedIn } from '@/lib/services/user/Handlers'
+import { handleClientProfileUpdate } from '@/lib/services/client/Handlers'
 
 export default function Client() {
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
@@ -44,7 +45,12 @@ export default function Client() {
         />
       </div>
       <div className="items-center justify-center w-full px-8 sm:px-15 lg:px-30 pt-40 pb-20">
-        <ClientDashboard client={user} projects={projects} semesters={semesters} />
+        <ClientDashboard
+          client={user}
+          projects={projects}
+          semesters={semesters}
+          onSave={handleClientProfileUpdate}
+        />
       </div>
     </div>
   )
