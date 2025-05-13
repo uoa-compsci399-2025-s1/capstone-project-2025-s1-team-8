@@ -4,13 +4,15 @@ import { cookies } from 'next/headers'
 import { createMockNextPostRequest, createMockNextRequest } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock, projectCreateMock2 } from '@/test-config/mocks/Project.mock'
-import { GET, POST } from './route'
+import { CreateProjectResponse, GET, POST } from './route'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import { clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
+import UserService from '@/data-layer/services/UserService'
 
 describe('test /api/projects', async () => {
   const projectService = new ProjectService()
+  const userService = new UserService()
   const cookieStore = await cookies()
 
   describe('GET /api/projects', () => {
@@ -102,11 +104,14 @@ describe('test /api/projects', async () => {
 
     it('should create a project', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      const req = createMockNextPostRequest('', projectCreateMock)
-      const res = await POST(req)
-      expect(res.status).toBe(StatusCodes.CREATED)
+
+      const res = await POST(createMockNextPostRequest('', projectCreateMock))
       const project = (await res.json()).data
-      expect(project).toEqual(await projectService.getProjectById(project.id))
+
+      expect(res.status).toBe(StatusCodes.CREATED)
+      const fetchedProject = await projectService.getProjectById(project.id)
+      expect(project).toEqual(fetchedProject)
+      expect(fetchedProject.client).toStrictEqual(clientMock)
 
       // Project with client ID's instead of client objects
       const req2 = createMockNextPostRequest('api/projects', projectCreateMock2)
@@ -114,6 +119,30 @@ describe('test /api/projects', async () => {
       expect(res2.status).toBe(StatusCodes.CREATED)
       const project2 = (await res2.json()).data
       expect(project2).toEqual(await projectService.getProjectById(project2.id))
+    })
+
+    it('should create a new client if the additional clients are non-existent', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, clientToken)
+
+      const additionalClientMock = {
+        firstName: 'test',
+        lastName: 'lastname',
+        email: 'nonexistent@gmail.com',
+      }
+      await expect(userService.getUserByEmail(additionalClientMock.email)).rejects.toThrow(
+        'Not Found',
+      )
+
+      const res = await POST(
+        createMockNextPostRequest('', {
+          ...projectCreateMock,
+          additionalClients: [additionalClientMock],
+        }),
+      )
+      const project: CreateProjectResponse = await res.json()
+      expect([await userService.getUserByEmail(additionalClientMock.email)]).toStrictEqual(
+        project.data?.additionalClients,
+      )
     })
 
     it('should fail to create a project', async () => {
