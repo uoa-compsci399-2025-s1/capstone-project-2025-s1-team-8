@@ -218,5 +218,20 @@ describe('test /api/projects', async () => {
       const res = await POST(req)
       expect(res.status).toBe(StatusCodes.BAD_REQUEST)
     })
+
+    it('should return a 400 if the semesters are non-existent', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+
+      const res = await POST(
+        createMockNextPostRequest('', {
+          ...projectCreateMock,
+          semesters: ['wow'],
+        }),
+      )
+      expect(res.status).toBe(StatusCodes.BAD_REQUEST)
+      expect(((await res.json()) as CreateProjectResponse).error).toBe(
+        'Invalid request body, one or more semesters are invalid',
+      )
+    })
   })
 })

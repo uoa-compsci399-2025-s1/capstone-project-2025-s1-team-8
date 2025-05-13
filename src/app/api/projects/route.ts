@@ -148,9 +148,16 @@ class RouteWrapper {
           { error: 'Invalid request body', details: error.flatten() } as CreateProjectResponse,
           { status: StatusCodes.BAD_REQUEST },
         )
+      } else if (error instanceof NotFound) {
+        return NextResponse.json(
+          {
+            error: 'Invalid request body, one or more semesters are invalid',
+          } as CreateProjectResponse,
+          { status: StatusCodes.BAD_REQUEST },
+        )
       }
       console.error(error)
-      return NextResponse.json({ error: 'Bad request body' } as CreateProjectResponse, {
+      return NextResponse.json({ error: 'Internal server error' } as CreateProjectResponse, {
         status: StatusCodes.INTERNAL_SERVER_ERROR,
       })
     }
