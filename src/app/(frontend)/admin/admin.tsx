@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
 import SadTeapot from 'src/assets/sad-teapot.svg'
 import { mockClients } from '@/test-config/mocks/User.mock'
 import { mockSemesters } from '@/test-config/mocks/Semester.mock'
-import { handleLoginButtonClick,getLoggedInUser } from '@/lib/services/user/Handlers'
+import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
 import { UserCombinedInfo } from '@/types/Collections'
 import { UserRole } from '@/types/User'
 
@@ -40,7 +40,7 @@ const Admin: React.FC<AdminProps> = ({ ProjectData }) => {
   // Don't render anything until activeNav is ready
   if (activeNav === null || !loginLoaded) return null
 
-  if(!loggedInUser || loggedInUser.role !== UserRole.Admin) {
+  if (!loggedInUser || loggedInUser.role !== UserRole.Admin) {
     return null
   }
 
