@@ -17,7 +17,7 @@ const Homepage: React.FC = () => {
       setLoggedInUser(res)
       setLoginLoaded(true)
     })
-  })
+  }, [])
   if (!loginLoaded) {
     return null
   }
