@@ -200,7 +200,7 @@ describe('test /api/projects', async () => {
       ).toBeTruthy()
 
       const projectsInSemester2 = await projectService.getAllSemesterProjectsBySemester(
-        semester1.id,
+        semester2.id,
       )
       expect(
         projectsInSemester2.docs.some(
