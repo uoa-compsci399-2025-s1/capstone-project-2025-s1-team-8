@@ -27,14 +27,6 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true, user, onclic
         ? '/client'
         : '/'
     : '/'
-  /*(() => {
-    if (user?.role === 'admin') {
-      return '/admin'
-    } else if (user?.role === 'client') {
-      return '/client'
-    } 
-    return '/'
-  })()*/
 
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
