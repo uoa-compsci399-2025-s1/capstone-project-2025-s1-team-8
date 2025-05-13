@@ -83,7 +83,6 @@ export const getAllSemesters = async (): Promise<void | {
         const approvedProjectsDto: ProjectDetailsType[] = await Promise.all(
           approvedProjects.data?.map(async (semesterProject) => {
             const project = semesterProject.project as Project
-            // ts should always be a fucking object im sick of it
             const semestersResponse = await AdminSemesterService.getProjectSemesters(project.id)
             return {
               semesterProjectId: semesterProject.id as string,

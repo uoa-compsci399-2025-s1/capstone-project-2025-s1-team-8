@@ -72,6 +72,7 @@ const SemesterForm: React.FC<SemesterFormProps> = ({
     }
   }
 
+  //eslint-disable-next-line @typescript-eslint/no-unused-vars
   const deleteSemester = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const res = await handleDeleteSemester(semesterId)

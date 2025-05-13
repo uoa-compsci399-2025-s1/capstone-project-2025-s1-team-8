@@ -15,6 +15,7 @@ import { UpdateSemesterData } from '@/types/Collections'
 import { ProjectStatus } from '@/types/Project'
 import { typeToFlattenedError } from 'zod'
 import { StatusCodes } from 'http-status-codes'
+import { SemesterType } from '@/types/Semester'
 
 const AdminSemesterService = {
   getAllPaginatedSemesters: async function (
@@ -112,17 +113,21 @@ const AdminSemesterService = {
 
   isCurrentOrUpcoming: async function (semesterId: string) {
     'use server'
-    const url = buildNextRequestURL('/api/semesters', { timeframe: 'current' })
-    const response = await GetSemesters(await buildNextRequest(url, { method: 'GET' }))
-    const { data } = { ...(await response.json()) }
+    const urlCurrent = buildNextRequestURL('/api/semesters', { timeframe: SemesterType.Current })
+    const responseCurrent = await GetSemesters(
+      await buildNextRequest(urlCurrent, { method: 'GET' }),
+    )
+    const dataCurrent = await responseCurrent.json()
 
-    if (data[0].id === semesterId) {
+    const urlNext = buildNextRequestURL('/api/semesters', { timeframe: SemesterType.Next })
+    const responseNext = await GetSemesters(await buildNextRequest(urlNext, { method: 'GET' }))
+    const dataNext = await responseNext.json()
+
+    if (dataCurrent.data[0].id === semesterId) {
       return 'current'
-    } else if (data[0]) {
-      const currentDate = new Date()
-      if (data[0].startDate > currentDate) {
-        return 'upcoming'
-      }
+    }
+    if (dataNext.data[0].id === semesterId) {
+      return 'upcoming'
     }
     return ''
   },
