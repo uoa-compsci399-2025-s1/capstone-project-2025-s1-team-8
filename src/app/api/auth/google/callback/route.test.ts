@@ -1,4 +1,5 @@
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
+import { StatusCodes } from 'http-status-codes'
 import * as nextHeaders from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -7,7 +8,7 @@ import {
   googleUserResponseMock,
   JWT_MOCK,
   SCOPES_MOCK,
-  STATE_MOCK,
+  CLIENT_STATE_MOCK,
 } from '@/test-config/mocks/Auth.mock'
 import { createMockNextRequest } from '@/test-config/utils'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
@@ -34,7 +35,7 @@ describe('GET /api/auth/google/callback', () => {
 
     vi.mock('next/headers', () => ({
       cookies: () => ({
-        get: (key: string) => ({ value: key === 'state' ? STATE_MOCK : undefined }),
+        get: (key: string) => ({ value: key === 'state' ? CLIENT_STATE_MOCK : undefined }),
         set: mockSet,
         delete: vi.fn(),
       }),
@@ -45,7 +46,7 @@ describe('GET /api/auth/google/callback', () => {
     }))
 
     const mockCookieStore = {
-      get: (key: string) => ({ value: key === 'state' ? STATE_MOCK : undefined }),
+      get: (key: string) => ({ value: key === 'state' ? CLIENT_STATE_MOCK : undefined }),
       set: mockSet,
       delete: vi.fn(),
     }
@@ -59,9 +60,9 @@ describe('GET /api/auth/google/callback', () => {
 
   it('should set jwt to cookie', async () => {
     const req = createMockNextRequest(
-      `/api/auth/google/callback?code=${CODE_MOCK}&state=${STATE_MOCK}&scope=${SCOPES_MOCK}`,
+      `/api/auth/google/callback?code=${CODE_MOCK}&state=${CLIENT_STATE_MOCK}&scope=${SCOPES_MOCK}`,
     )
-    req.cookies.set('state', STATE_MOCK)
+    req.cookies.set('state', CLIENT_STATE_MOCK)
 
     await callback(req)
 
@@ -75,9 +76,9 @@ describe('GET /api/auth/google/callback', () => {
 
   it('should return the correct redirection', async () => {
     const req = createMockNextRequest(
-      `/api/auth/google/callback?code=${CODE_MOCK}&state=${STATE_MOCK}&scope=${SCOPES_MOCK}`,
+      `/api/auth/google/callback?code=${CODE_MOCK}&state=${CLIENT_STATE_MOCK}&scope=${SCOPES_MOCK}`,
     )
-    req.cookies.set('state', STATE_MOCK)
+    req.cookies.set('state', CLIENT_STATE_MOCK)
 
     await callback(req)
     expect(redirect).toHaveBeenCalledWith('/client')
@@ -85,9 +86,9 @@ describe('GET /api/auth/google/callback', () => {
 
   it('should create a new auth and user document with the google user response data', async () => {
     const req = createMockNextRequest(
-      `/api/auth/google/callback?code=${CODE_MOCK}&state=${STATE_MOCK}&scope=${SCOPES_MOCK}`,
+      `/api/auth/google/callback?code=${CODE_MOCK}&state=${CLIENT_STATE_MOCK}&scope=${SCOPES_MOCK}`,
     )
-    req.cookies.set('state', STATE_MOCK)
+    req.cookies.set('state', CLIENT_STATE_MOCK)
 
     await callback(req)
     const auth = await authDataService.getAuthByEmail(googleUserResponseMock.email)
@@ -98,9 +99,9 @@ describe('GET /api/auth/google/callback', () => {
 
   it('should modify an existing user with the google user response data', async () => {
     const req = createMockNextRequest(
-      `/api/auth/google/callback?code=${CODE_MOCK}&state=${STATE_MOCK}&scope=${SCOPES_MOCK}`,
+      `/api/auth/google/callback?code=${CODE_MOCK}&state=${CLIENT_STATE_MOCK}&scope=${SCOPES_MOCK}`,
     )
-    req.cookies.set('state', STATE_MOCK)
+    req.cookies.set('state', CLIENT_STATE_MOCK)
 
     const createdUser = await userService.createUser({
       firstName: 'lol',
@@ -124,25 +125,25 @@ describe('GET /api/auth/google/callback', () => {
     const req = createMockNextRequest(
       `/api/auth/google/callback?code=${CODE_MOCK}&state=wrong_state&scope=${SCOPES_MOCK}`,
     )
-    req.cookies.set('state', STATE_MOCK)
+    req.cookies.set('state', CLIENT_STATE_MOCK)
 
     const response = await callback(req)
     const json = await response.json()
 
-    expect(response.status).toBe(400)
-    expect(json.error).toBe("State missing, or state doesn't match browser state. ")
+    expect(response.status).toBe(StatusCodes.BAD_REQUEST)
+    expect(json.error).toBe("State missing or state doesn't match browser state. ")
   })
 
   it('returns 400 if code is missing', async () => {
     const req = createMockNextRequest(
-      `/api/auth/google/callback?state=${STATE_MOCK}&scope=${SCOPES_MOCK}`,
+      `/api/auth/google/callback?state=${CLIENT_STATE_MOCK}&scope=${SCOPES_MOCK}`,
     )
-    req.cookies.set('state', STATE_MOCK)
+    req.cookies.set('state', CLIENT_STATE_MOCK)
 
     const response = await callback(req)
     const json = await response.json()
 
-    expect(response.status).toBe(400)
+    expect(response.status).toBe(StatusCodes.BAD_REQUEST)
     expect(json.error).toBe('No code provided')
   })
 })
