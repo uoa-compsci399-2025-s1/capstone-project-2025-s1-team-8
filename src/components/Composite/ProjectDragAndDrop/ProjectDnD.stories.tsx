@@ -1,8 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
 import ProjectDnD from './ProjectDnD'
 import { UniqueIdentifier } from '@dnd-kit/core'
-import { mockProjects } from '@/mocks/Projects.mock'
-import { ProjectStatus } from '@/types/Project'
+import { mockProjects } from '@/test-config/mocks/Project.mock'
 
 const semesterId = 'semester12026'
 const presetContainers = [

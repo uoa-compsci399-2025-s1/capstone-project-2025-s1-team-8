@@ -1,9 +1,10 @@
-import { ProjectDetailsType } from '@/types/Project'
 import React, { useState } from 'react'
 import ProjectModal from '@/components/Composite/ProjectModal/ProjectModal'
+import { UserCombinedInfo } from '@/types/Collections'
+import { ProjectDetails } from '@/types/Project'
 
 interface ProjectCardProps {
-  projectInfo: ProjectDetailsType
+  projectInfo: ProjectDetails
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo }) => {
@@ -14,9 +15,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo }) => {
   }
 
   const truncatedDescription =
-    projectInfo.projectDescription.length > 100
-      ? projectInfo.projectDescription.slice(0, 100) + '...'
-      : projectInfo.projectDescription
+    projectInfo.description.length > 100
+      ? projectInfo.description.slice(0, 100) + '...'
+      : projectInfo.description
+
+  const client = projectInfo.client as UserCombinedInfo
 
   return (
     <div>
@@ -26,19 +29,18 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo }) => {
       >
         <div className="text-left">
           <div className="relative z-10">
-            <p className="text-dark-blue text-base font-semibold pb-0.5">
-              {projectInfo.projectTitle}
-            </p>
-            <p className="text-dark-blue text-xs">
-              {projectInfo.projectClientDetails.firstName +
-                ' ' +
-                (projectInfo.projectClientDetails.lastName ?? '')}
-            </p>
+            <p className="text-dark-blue text-base font-semibold pb-0.5">{projectInfo.name}</p>
+            <p className="text-dark-blue text-xs">{client.firstName + ' ' + client.lastName}</p>
             <p className="text-grey-1 pt-3 pb-2 text-xs">{truncatedDescription}</p>
           </div>
         </div>
       </div>
-      <ProjectModal projectInfo={projectInfo} open={modalOpen} onClose={() => toggleModal()} />
+      <ProjectModal
+        projectInfo={projectInfo}
+        semesters={projectInfo.semesters}
+        open={modalOpen}
+        onClose={() => toggleModal()}
+      />
     </div>
   )
 }

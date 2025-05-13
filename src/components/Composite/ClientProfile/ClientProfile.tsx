@@ -1,17 +1,70 @@
 import React, { useState } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
-import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
 import { FiEdit, FiSave } from 'react-icons/fi'
+import { UserCombinedInfo } from '@/types/Collections'
+import { StatusCodes } from 'http-status-codes'
 
 interface ClientProfileProps {
-  clientInfo: ClientDTOPlaceholder
+  clientInfo: UserCombinedInfo
+  onSave?: (
+    firstName: string,
+    lastName: string,
+    affiliation: string,
+    introduction: string,
+  ) => Promise<{
+    updatedUser: UserCombinedInfo
+    status: StatusCodes
+    error?: string
+    details?: string
+  }>
 }
 
-const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo }) => {
-  const [isEditing, setIsEditing] = useState(false)
+const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => {
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [name, setName] = useState<string>(clientInfo.firstName + ' ' + clientInfo.lastName)
+  const [previousName, setPreviousName] = useState<string>(
+    clientInfo.firstName + ' ' + clientInfo.lastName,
+  )
+  const [affiliation, setAffiliation] = useState<string>(clientInfo.affiliation ?? '')
+  const [previousAffiliation, setPreviousAffiliation] = useState<string>(
+    clientInfo.affiliation ?? '',
+  )
+  const [introduction, setIntroduction] = useState<string>(clientInfo.introduction ?? '')
+  const [previousIntroduction, setPreviousIntroduction] = useState<string>(
+    clientInfo.introduction ?? '',
+  )
 
-  const handleSave = () => {
-    console.log('Saving data')
+  const handleSave = async () => {
+    const names = name.split(' ')
+    const firstName = names[0]
+    const lastName = names[1]
+    if (!firstName || !lastName) {
+      setName(previousName)
+      setIsEditing(false)
+      alert('Please enter a valid first and last name.') //placeholder
+      return
+    }
+
+    if (names.length > 2) {
+      setName(previousName)
+      setIsEditing(false)
+      alert('Please enter only first and last name.') //placeholder
+      return
+    }
+    if (onSave) {
+      const res = await onSave(firstName, lastName, affiliation, introduction)
+      if (res.error) {
+        setName(previousName)
+        setAffiliation(previousAffiliation)
+        setIntroduction(previousIntroduction)
+        alert('Error updating profile: ' + res.error || res.details) //placeholder
+        return
+      }
+    }
+
+    setPreviousName(name)
+    setPreviousAffiliation(affiliation)
+    setPreviousIntroduction(introduction)
     setIsEditing(false)
   }
 
@@ -34,9 +87,13 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo }) => {
       <div className="grid grid-cols-[max-content_auto] gap-3 pb-8">
         <Capsule text="Name" variant="muted_blue" className="ring-1 ring-muted-blue col-start-1" />
         {isEditing ? (
-          <input defaultValue={clientInfo.name} className="editable-capsule" />
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="editable-capsule"
+          />
         ) : (
-          <Capsule text={clientInfo.name} variant="beige" className="col-start-2" />
+          <Capsule text={name} variant="beige" className="col-start-2" />
         )}
 
         <Capsule text="Email" variant="muted_blue" className="ring-1 ring-muted-blue col-start-1" />
@@ -47,24 +104,29 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo }) => {
           variant="muted_blue"
           className="ring-1 ring-muted-blue col-start-1 mr-5"
         />
-        {clientInfo.affiliation && !isEditing ? (
-          <Capsule text={clientInfo.affiliation} variant="beige" className="col-start-2" />
+        {affiliation && !isEditing ? (
+          <Capsule text={affiliation} variant="beige" className="col-start-2" />
         ) : (
-          <input defaultValue={clientInfo.affiliation} className="editable-capsule" />
+          isEditing && (
+            <input
+              value={affiliation}
+              onChange={(e) => setAffiliation(e.target.value)}
+              className="editable-capsule"
+            />
+          )
         )}
       </div>
       <div>
         <Capsule text="Introduction" variant="muted_blue" className="mb-5" />
         {isEditing ? (
           <textarea
-            defaultValue={clientInfo.introduction}
+            value={introduction}
+            onChange={(e) => setIntroduction(e.target.value)}
             className="resize-none min-h-[270px] w-full 
             text-dark-blue whitespace-pre-line text-sm border border-deeper-blue rounded-xl bg-light-beige p-3 focus:outline-deeper-blue"
           />
         ) : (
-          <p className="text-dark-blue whitespace-pre-line text-sm px-1">
-            {clientInfo.introduction}
-          </p>
+          <p className="text-dark-blue whitespace-pre-line text-sm px-1">{introduction}</p>
         )}
       </div>
     </div>

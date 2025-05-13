@@ -17,12 +17,13 @@ import ProjectContainer from './ProjectContainer'
 import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { FilterProvider } from '@/contexts/FilterContext'
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
-import { ProjectDetailsType, ProjectStatus } from '@/types/Project'
+import { ProjectDetails, ProjectStatus } from '@/types/Project'
 import { FiSave, FiPrinter } from 'react-icons/fi'
 import Notification from '@/components/Generic/Notification/Notification'
 import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
-import { UserRole } from '@/types/User'
+
+import { Project, User } from '@/payload-types'
 import { UpdateParams } from './ProjectUpdates'
 
 export type DNDType = {
@@ -39,29 +40,26 @@ export type DndComponentProps = {
   onSaveChanges: (params: UpdateParams) => Promise<void>
 }
 
-const defaultProjectInfo: ProjectDetailsType = {
-  semesterProjectId: '',
-  projectId: '',
-  projectTitle: '',
-  projectClientDetails: {
-    id: '',
-    firstName: '',
-    lastName: '',
-    role: UserRole.Client,
-    updatedAt: '',
-    createdAt: '',
-    email: '',
-  },
-  otherClientDetails: [],
-  projectDescription: '',
+const defaultProjectInfo: ProjectDetails = {
+  id: '',
+  name: '',
+  description: '',
+  client: '',
+  additionalClients: null,
+  attachments: null,
+  deadline: null,
+  timestamp: '',
   desiredOutput: '',
-  desiredTeamSkills: '',
-  availableResources: '',
-  specialRequirements: '',
+  specialEquipmentRequirements: '',
   numberOfTeams: '',
+  desiredTeamSkills: null,
+  availableResources: null,
   futureConsideration: false,
+  questionResponses: null,
+  updatedAt: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
   semesters: [],
-  submittedDate: new Date(),
+  semesterProjectId: undefined,
 }
 
 const ProjectDnD: React.FC<DndComponentProps> = ({
@@ -149,26 +147,24 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
           case 'submissionDate':
             const sorted = [...container.currentItems]
             if (filter === 'projectName') {
-              sorted.sort((a, b) =>
-                a.projectInfo.projectTitle.localeCompare(b.projectInfo.projectTitle),
-              )
+              sorted.sort((a, b) => a.projectInfo.name.localeCompare(b.projectInfo.name))
             } else if (filter === 'clientName') {
-              sorted.sort((a, b) => {
-                const aFullName =
-                  a.projectInfo.projectClientDetails.firstName +
+              sorted.sort((a, b) =>
+                (
+                  (a.projectInfo.client as User).firstName +
                   ' ' +
-                  a.projectInfo.projectClientDetails.lastName
-                const bFullName =
-                  b.projectInfo.projectClientDetails.firstName +
-                  ' ' +
-                  b.projectInfo.projectClientDetails.lastName
-                return aFullName.localeCompare(bFullName)
-              })
+                  (a.projectInfo.client as User).lastName
+                ).localeCompare(
+                  (b.projectInfo.client as User).firstName +
+                    ' ' +
+                    (b.projectInfo.client as User).lastName,
+                ),
+              )
             } else if (filter === 'submissionDate') {
               sorted.sort(
                 (a, b) =>
-                  new Date(a.projectInfo.submittedDate).getTime() -
-                  new Date(b.projectInfo.submittedDate).getTime(),
+                  new Date(a.projectInfo.createdAt).getTime() -
+                  new Date(b.projectInfo.createdAt).getTime(),
               )
             }
 
@@ -200,7 +196,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }
   }
 
-  const findItemInfo = (id: UniqueIdentifier | undefined): ProjectDetailsType => {
+  const findItemInfo = (id: UniqueIdentifier | undefined): Project => {
     if (!id) return defaultProjectInfo
 
     const container = findValueOfItems(id, 'item')
