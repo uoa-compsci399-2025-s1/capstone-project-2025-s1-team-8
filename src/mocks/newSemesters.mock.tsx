@@ -35,7 +35,7 @@ export const mockSemestersNested: Semester[][] = [
   [mockSemesters[1], mockSemesters[2]],
 ]
 
-export const semesterNames1: String[] = [
+export const semesterNames1: string[] = [
   'Semester 1 2024',
   'Semester 2 2024',
   'Semester 1 2025',
