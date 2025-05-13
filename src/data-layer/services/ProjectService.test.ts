@@ -306,7 +306,6 @@ describe('Project service methods test', () => {
       semester: semester2.id,
       status: ProjectStatus.Accepted,
     })
-
     const res = await projectService.getAllSemesterProjectsBySemester(semester1.id, 100, 1, {
       status: ProjectStatus.Accepted,
     })

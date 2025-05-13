@@ -43,7 +43,7 @@ export default class SemesterService {
     const currentDate = new Date().toISOString()
 
     let filter: Where = {}
-    let sort: Sort = []
+    let sort: Sort = '-startDate'
 
     switch (timeframe) {
       case SemesterType.Current:
@@ -94,7 +94,7 @@ export default class SemesterService {
       pagination: true,
       page: page,
       where: filter,
-      sort,
+      sort: sort,
     })
     return data
   }

@@ -6,15 +6,14 @@ import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardL
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import { Semester } from '@/payload-types'
 import { ProjectDetails } from '@/types/Project'
+import { getAllSemesterProjects, isCurrentOrUpcoming } from '@/lib/util/adminSemesterUtils'
 
-const SemesterCard: React.FC<Semester> = ({ name, startDate, endDate, deadline }) => {
-  const approvedProjects: ProjectDetails[] = [] // Placeholder for approved projects
-  let currentOrUpcoming = 'current' // Placeholder for current or upcoming semester
-  currentOrUpcoming = ''
-
+const SemesterCard: React.FC<Semester> = ({ id, name, startDate, endDate, deadline }) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
+  const [approvedProjectsList, setApprovedProjectsList] = useState<ProjectDetails[]>([])
+  const [currentOrUpcoming, setCurrentOrUpcoming] = useState('')
 
   useEffect(() => {
     if (isOpen && contentRef.current) {
@@ -23,6 +22,24 @@ const SemesterCard: React.FC<Semester> = ({ name, startDate, endDate, deadline }
       setHeight('0px')
     }
   }, [isOpen])
+
+  useEffect(() => {
+    fetchProjects()
+  }, [])
+
+  useEffect(() => {
+    fetchCurrentOrUpcoming()
+  }, [])
+
+  const fetchProjects = async () => {
+    const res = await getAllSemesterProjects(id)
+    if (res?.data) {
+      setApprovedProjectsList(res.data)
+    }
+  }
+  const fetchCurrentOrUpcoming = async () => {
+    setCurrentOrUpcoming(await isCurrentOrUpcoming(id))
+  }
 
   return (
     <div className="relative w-full flex flex-col gap-4">
@@ -131,7 +148,7 @@ const SemesterCard: React.FC<Semester> = ({ name, startDate, endDate, deadline }
             className="pb-1"
             headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
             heading="Approved projects"
-            projects={approvedProjects}
+            projects={approvedProjectsList}
           />
         </div>
       </div>

@@ -4,13 +4,15 @@ import SemestersPage from '@/components/Pages/SemestersPage/SemestersPage'
 import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import { UniqueIdentifier } from '@dnd-kit/core'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { mockProjects } from '@/test-config/mocks/Project.mock'
 import { mockClients } from '@/test-config/mocks/User.mock'
-import { mockSemesters } from '@/test-config/mocks/Semester.mock'
-import SadTeapot from 'src/assets/sad-teapot.svg'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
+import { getAllSemesters } from '@/lib/util/adminSemesterUtils'
+import { Semester } from '@/payload-types'
+import { FiAlertCircle } from 'react-icons/fi'
+import MobileAdminView from '@/app/(frontend)/admin/MobileAdminView'
 import { UserCombinedInfo } from '@/types/Collections'
 import { redirect } from 'next/navigation'
 import { UserRole } from '@/types/User'
@@ -21,6 +23,39 @@ const Admin = () => {
   const [activeNav, setActiveNav] = useState<number | null>(null)
   const [loggedInUser, setLoggedInUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
   const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
+  const [semestersData, setSemestersData] = useState<Semester[]>([])
+  const [showNotification, setShowNotification] = useState<boolean>(false)
+  const [created, setCreated] = useState(false)
+  const [updated, setUpdated] = useState(false)
+  const [deleted, setDeleted] = useState(false)
+  const fetchSemesters = async () => {
+    const res = await getAllSemesters()
+    if (res?.data) {
+      setSemestersData(res.data)
+    }
+  }
+  const message = created
+    ? 'Semester created successfully'
+    : updated
+      ? 'Semester updated successfully'
+      : deleted
+        ? 'Semester deleted successfully'
+        : ''
+
+  useEffect(() => {
+    fetchSemesters()
+  }, [])
+
+  useEffect(() => {
+    if (showNotification) {
+      fetchSemesters()
+      const timer = setTimeout(() => {
+        setShowNotification(false)
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [showNotification])
 
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
@@ -90,6 +125,14 @@ const Admin = () => {
       <NavBar onclick={handleLoginButtonClick} user={loggedInUser} />
       <div className="hidden lg:block w-full">
         <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
+          <div
+            className={` ${showNotification ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 fixed top-6 right-6 z-50 bg-light-pink ring ring-2 ring-pink-soft shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`}
+          >
+            <div className="flex items-center gap-2">
+              <FiAlertCircle className="text-pink-accent w-5 h-5 flex-shrink-0" />
+              <p className="text-dark-pink font-medium">{message}</p>
+            </div>
+          </div>
           {AdminNavElements.map((nav, i) => (
             <button
               key={nav}
@@ -141,7 +184,21 @@ const Admin = () => {
                 aria-hidden={activeNav !== 2}
                 tabIndex={activeNav === 2 ? 0 : -1}
               >
-                <SemestersPage semesters={mockSemesters} />
+                <SemestersPage
+                  semesters={semestersData}
+                  created={() => {
+                    setShowNotification(true)
+                    setCreated(true)
+                  }}
+                  updated={() => {
+                    setShowNotification(true)
+                    setUpdated(true)
+                  }}
+                  deleted={() => {
+                    setShowNotification(true)
+                    setDeleted(true)
+                  }}
+                />
               </div>
             </motion.div>
           </div>
@@ -149,24 +206,7 @@ const Admin = () => {
       </div>
 
       {/* mobile view */}
-      <div className="lg:hidden pt-30">
-        <div
-          className="mx-[10%] p-5 sm:p-6 rounded-2xl w-4/5 h-[calc(100vh-180px)] sm:h-[calc(100vh-200px)] min-w-3xs overflow-y-hidden
-        flex-1 flex-col flex items-center justify-center
-        border border-gray-300
-        bg-[linear-gradient(to_right,rgba(255,169,222,0.25),rgba(209,251,255,0.2)),linear-gradient(to_bottom,#fffef9,#d1fbff)]"
-        >
-          <SadTeapot className="mt-3 mb-3" />
-          <div className="space-y-6 pb-10 px-6 sm:px-8">
-            <p className="text-2xl sm:text-3xl md:text-4xl font-dm-serif-display text-dark-blue">
-              Please switch to a desktop device
-            </p>
-            <p className="text-xs sm:test-sm md:text-base font-inter text-dark-blue">
-              The current device is not supported for the admin dashboard.{' '}
-            </p>
-          </div>
-        </div>
-      </div>
+      <MobileAdminView />
     </div>
   )
 }
