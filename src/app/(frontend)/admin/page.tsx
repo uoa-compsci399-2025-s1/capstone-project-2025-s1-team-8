@@ -4,13 +4,13 @@ import SemestersPage from '@/components/Pages/SemestersPage/SemestersPage'
 import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import { UniqueIdentifier } from '@dnd-kit/core'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { mockProjects } from '@/test-config/mocks/Project.mock'
 import { mockClients } from '@/test-config/mocks/User.mock'
-import { mockSemesters } from '@/test-config/mocks/Semester.mock'
 import SadTeapot from 'src/assets/sad-teapot.svg'
 import { handleLoginButtonClick, isLoggedIn } from '@/lib/services/user/Handlers'
+import { getAllSemesters } from '@/lib/util/adminSemesterUtils'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -18,6 +18,39 @@ const Admin = () => {
   const [activeNav, setActiveNav] = useState<number | null>(null)
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
   const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
+  const [semestersData, setSemestersData] = useState<SemesterDTOPlaceholder[]>([])
+  const [showNotification, setShowNotification] = useState<boolean>(false)
+  const [created, setCreated] = useState(false)
+  const [updated, setUpdated] = useState(false)
+  const [deleted, setDeleted] = useState(false)
+  const fetchSemesters = async () => {
+    const res = await getAllSemesters()
+    if (res?.data) {
+      setSemestersData(res.data)
+    }
+  }
+  const message = created
+    ? 'Semester created successfully'
+    : updated
+      ? 'Semester updated successfully'
+      : deleted
+        ? 'Semester deleted successfully'
+        : ''
+
+  useEffect(() => {
+    fetchSemesters()
+  }, [])
+
+  useEffect(() => {
+    if (showNotification) {
+      fetchSemesters()
+      const timer = setTimeout(() => {
+        setShowNotification(false)
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [showNotification])
 
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
@@ -139,7 +172,21 @@ const Admin = () => {
                 aria-hidden={activeNav !== 2}
                 tabIndex={activeNav === 2 ? 0 : -1}
               >
-                <SemestersPage semesters={mockSemesters} />
+                <SemestersPage
+                  semesters={semestersData}
+                  created={() => {
+                    setShowNotification(true)
+                    setCreated(true)
+                  }}
+                  updated={() => {
+                    setShowNotification(true)
+                    setUpdated(true)
+                  }}
+                  deleted={() => {
+                    setShowNotification(true)
+                    setDeleted(true)
+                  }}
+                />
               </div>
             </motion.div>
           </div>
