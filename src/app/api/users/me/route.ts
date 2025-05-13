@@ -33,8 +33,9 @@ class RouteWrapper {
     if (user.role === UserRole.Client || user.role === UserRole.Admin) {
       const userService = new UserService()
       clientAdditionalInfo = await userService.getClientAdditionalInfo(user.id)
+      const userInfo = await userService.getUser(user.id)
       return NextResponse.json({
-        data: { ...user, ...clientAdditionalInfo },
+        data: { ...userInfo, ...clientAdditionalInfo },
       })
     }
     return NextResponse.json({
