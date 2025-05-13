@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import ProjectModal from '@/components/Composite/ProjectModal/ProjectModal'
 import { UserCombinedInfo } from '@/types/Collections'
-import { ProjectWithSemesters } from '@/types/Project'
+import { ProjectDetails } from '@/types/Project'
 
 interface ProjectCardProps {
-  projectInfo: ProjectWithSemesters
+  projectInfo: ProjectDetails
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo }) => {

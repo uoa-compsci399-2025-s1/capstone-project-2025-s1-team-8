@@ -4,11 +4,11 @@ import { redirect } from 'next/navigation'
 import ClientService from '@/lib/services/client/ClientService'
 import { StatusCodes } from 'http-status-codes'
 import { UserCombinedInfo } from '@/types/Collections'
-import { ProjectWithSemesters } from '@/types/Project'
+import { ProjectDetails } from '@/types/Project'
 
 export const handleClientPageLoad = async (): Promise<{
   userInfo: UserCombinedInfo
-  projects: ProjectWithSemesters[]
+  projects: ProjectDetails[]
 }> => {
   const { userInfo, status } = await ClientService.getClientInfo()
   const clientProjectsRes = await ClientService.getClientProjects()
@@ -22,7 +22,7 @@ export const handleClientPageLoad = async (): Promise<{
   }
 
   const projects = clientProjectsRes.projects ?? []
-  const projectsWithSemesters: ProjectWithSemesters[] = []
+  const projectsWithSemesters: ProjectDetails[] = []
 
   for (let i = 0; i < projects.length; i++) {
     const { semesters, status, error, message } = await ClientService.getSemesterForProject(

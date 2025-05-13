@@ -6,7 +6,7 @@ export enum ProjectStatus {
   Rejected = 'rejected',
 }
 
-export type ProjectWithSemesters = Project & {
+export type ProjectDetails = Project & {
   semesters: Semester[]
   semesterProjectId?: string
 }

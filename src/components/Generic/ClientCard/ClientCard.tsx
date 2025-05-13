@@ -2,11 +2,11 @@ import ClientModal from '@/components/Composite/ClientModal/ClientModal'
 import React, { useState } from 'react'
 import { FiCopy, FiCheck } from 'react-icons/fi'
 import { UserCombinedInfo } from '@/types/Collections'
-import { ProjectWithSemesters } from '@/types/Project'
+import { ProjectDetails } from '@/types/Project'
 
 export interface ClientCardProps {
   clientInfo: UserCombinedInfo
-  projects?: ProjectWithSemesters[]
+  projects?: ProjectDetails[]
 }
 
 const ClientCard: React.FC<ClientCardProps> = ({ clientInfo, projects }) => {

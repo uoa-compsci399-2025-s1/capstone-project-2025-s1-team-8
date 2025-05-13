@@ -7,12 +7,12 @@ import { handleClientPageLoad } from '@/lib/services/client/Handlers'
 import { UserCombinedInfo } from '@/types/Collections'
 import { handleLoginButtonClick, isLoggedIn } from '@/lib/services/user/Handlers'
 import { handleClientProfileUpdate } from '@/lib/services/client/Handlers'
-import { ProjectWithSemesters } from '@/types/Project'
+import { ProjectDetails } from '@/types/Project'
 
 export default function Client() {
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
   const [user, setUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
-  const [projects, setProjects] = useState<ProjectWithSemesters[]>([])
+  const [projects, setProjects] = useState<ProjectDetails[]>([])
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
   const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
 

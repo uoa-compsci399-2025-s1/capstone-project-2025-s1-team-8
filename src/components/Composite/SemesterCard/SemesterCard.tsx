@@ -5,10 +5,10 @@ import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import { Semester } from '@/payload-types'
-import { ProjectWithSemesters } from '@/types/Project'
+import { ProjectDetails } from '@/types/Project'
 
 const SemesterCard: React.FC<Semester> = ({ name, startDate, endDate, deadline }) => {
-  const approvedProjects: ProjectWithSemesters[] = [] // Placeholder for approved projects
+  const approvedProjects: ProjectDetails[] = [] // Placeholder for approved projects
   let currentOrUpcoming = 'current' // Placeholder for current or upcoming semester
   currentOrUpcoming = ''
 

@@ -4,11 +4,11 @@ import ClientProfile from '@/components/Composite/ClientProfile/ClientProfile'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import { UserCombinedInfo } from '@/types/Collections'
 import { StatusCodes } from 'http-status-codes'
-import { ProjectWithSemesters } from '@/types/Project'
+import { ProjectDetails } from '@/types/Project'
 
 interface ClientDashboardProps {
   client: UserCombinedInfo
-  projects: ProjectWithSemesters[]
+  projects: ProjectDetails[]
   onSave?: (
     firstName: string,
     lastName: string,
