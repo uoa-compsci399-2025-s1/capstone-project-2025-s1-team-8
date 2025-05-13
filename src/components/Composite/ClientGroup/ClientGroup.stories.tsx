@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import ClientGroup from './ClientGroup'
-import { clientMocks } from '@/test-config/mocks/User.mock'
+import { mockClients } from '@/test-config/mocks/User.mock'
 
 const meta: Meta<typeof ClientGroup> = {
   component: ClientGroup,
@@ -14,6 +14,6 @@ type Story = StoryObj<typeof ClientGroup>
 
 export const Default: Story = {
   args: {
-    clients: clientMocks,
+    clients: mockClients,
   },
 }

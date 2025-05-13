@@ -29,7 +29,7 @@ export const clientAdditionalInfoCreateMock: CreateClientAdditionalInfoData = {
   affiliation: 'Very cool company',
 }
 
-export const clientMocks: UserCombinedInfo[] = [
+export const mockClients: UserCombinedInfo[] = [
   {
     id: '1',
     firstName: 'David',
