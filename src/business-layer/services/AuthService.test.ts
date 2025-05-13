@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 
 import AuthService from './AuthService'
 import { ACCESS_TOKEN_MOCK, CLIENT_JWT_MOCK, clientMock } from '@/test-config/mocks/Auth.mock'
+import { UserRoleWithoutAdmin } from '@/types/User'
 
 describe('Auth service tests', () => {
   const authService = new AuthService()
@@ -19,6 +20,27 @@ describe('Auth service tests', () => {
 
   afterEach(() => {
     vi.clearAllMocks()
+  })
+
+  describe('generateState', () => {
+    it('should return a state with a custom role', () => {
+      const state = authService.generateState(UserRoleWithoutAdmin.Client)
+      expect(Buffer.from(state, 'base64').toString().split(';')[1]).toBe(
+        UserRoleWithoutAdmin.Client,
+      )
+
+      const state2 = authService.generateState(UserRoleWithoutAdmin.Student)
+      expect(Buffer.from(state2, 'base64').toString().split(';')[1]).toBe(
+        UserRoleWithoutAdmin.Student,
+      )
+    })
+  })
+
+  describe('decryptState', () => {
+    it('should decrypt a state correctly', () => {
+      const state = authService.generateState(UserRoleWithoutAdmin.Client)
+      expect(authService.decryptState(state)).toBe(UserRoleWithoutAdmin.Client)
+    })
   })
 
   describe('standard auth tests', () => {

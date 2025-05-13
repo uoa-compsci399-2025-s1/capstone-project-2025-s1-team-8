@@ -1,9 +1,21 @@
-import { googleAuthScopes, oauth2Client } from '@/business-layer/security/google'
+import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { NextRequest, NextResponse } from 'next/server'
 
-export const GET = async () => {
-  const state = crypto.randomUUID().toString()
+import { googleAuthScopes, oauth2Client } from '@/business-layer/security/google'
+import { UserRoleWithoutAdmin } from '@/types/User'
+import AuthService from '@/business-layer/services/AuthService'
+
+export const GET = async (req: NextRequest) => {
+  const params = req.nextUrl.searchParams
+  const role = params.get('role') as UserRoleWithoutAdmin
+
+  if (!role || !Object.values(UserRoleWithoutAdmin).includes(role)) {
+    return NextResponse.json({ error: 'Invalid role' }, { status: StatusCodes.BAD_REQUEST })
+  }
+  const authService = new AuthService()
+  const state = authService.generateState(role)
   const cookieStore = await cookies()
   // Set state to prevent CSRF attacks
   cookieStore.set('state', state, {
