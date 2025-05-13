@@ -14,6 +14,7 @@ import { UserCombinedInfo } from '@/types/Collections'
 import { cookies } from 'next/headers'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
+import { User } from '@/payload-types'
 
 describe('test /api/admin/users/[id]', async () => {
   const userService = new UserService()
@@ -45,17 +46,14 @@ describe('test /api/admin/users/[id]', async () => {
     })
 
     it('fetch client by Id', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const clientMock = await userService.createUser(clientCreateMock)
       const clientAdditionalInfoMock = await userService.createClientAdditionalInfo({
         ...clientAdditionalInfoCreateMock,
         client: clientMock,
       })
-      const id =
-        typeof clientAdditionalInfoMock.client === 'object'
-          ? clientAdditionalInfoMock.client.id
-          : clientAdditionalInfoMock.client
+      const id = (clientAdditionalInfoMock.client as User).id
 
-      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await GET({} as NextRequest, {
         params: paramsToPromise({ id }),
       })
@@ -126,28 +124,27 @@ describe('test /api/admin/users/[id]', async () => {
     })
 
     it("update client user's firstName by Id", async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+
       const clientMock = await userService.createUser(clientCreateMock)
       const clientAdditionalInfoMock = await userService.createClientAdditionalInfo({
         ...clientAdditionalInfoCreateMock,
         client: clientMock,
       })
-      const id =
-        typeof clientAdditionalInfoMock.client === 'object'
-          ? clientAdditionalInfoMock.client.id
-          : clientAdditionalInfoMock.client
-      const payload = { firstName: 'Sheena Lin' }
-      const mockedReq = createMockNextPatchRequest(
-        'http://localhost:3000/api/admin/users/' + id,
-        payload,
+      const id = (clientAdditionalInfoMock.client as User).id
+      const res = await PATCH(
+        createMockNextPatchRequest(`api/admin/users/${id}`, {
+          firstName: 'Sheena Lin',
+        }),
+        {
+          params: paramsToPromise({ id }),
+        },
       )
-      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const res = await PATCH(mockedReq, {
-        params: paramsToPromise({ id }),
-      })
       const json = await res.json()
-      clientMock.firstName = 'Sheena Lin'
+
       const combinedClientInfo: UserCombinedInfo = {
         ...clientMock,
+        firstName: 'Sheena Lin',
         introduction: clientAdditionalInfoCreateMock.introduction,
         affiliation: clientAdditionalInfoCreateMock.affiliation,
         updatedAt: json.data.updatedAt,
@@ -157,32 +154,28 @@ describe('test /api/admin/users/[id]', async () => {
     })
 
     it('update client user by Id with existing introduction and affiliation', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+
       const clientMock = await userService.createUser(clientCreateMock)
       const clientAdditionalInfoMock = await userService.createClientAdditionalInfo({
         ...clientAdditionalInfoCreateMock,
         client: clientMock,
       })
-      const id =
-        typeof clientAdditionalInfoMock.client === 'object'
-          ? clientAdditionalInfoMock.client.id
-          : clientAdditionalInfoMock.client
+      const id = (clientAdditionalInfoMock.client as User).id
       const payload = {
         firstName: 'Sheena Lin',
         introduction: 'new intro',
         affiliation: 'new affiliation',
       }
-      const mockedReq = createMockNextPatchRequest(
-        'http://localhost:3000/api/admin/users/' + id,
-        payload,
-      )
-      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const res = await PATCH(mockedReq, {
+
+      const res = await PATCH(createMockNextPatchRequest(`api/admin/users/${id}`, payload), {
         params: paramsToPromise({ id }),
       })
       const json = await res.json()
-      clientMock.firstName = 'Sheena Lin'
+
       const combinedClientInfo: UserCombinedInfo = {
         ...clientMock,
+        firstName: 'Sheena Lin',
         introduction: 'new intro',
         affiliation: 'new affiliation',
         updatedAt: json.data.updatedAt,
@@ -192,21 +185,21 @@ describe('test /api/admin/users/[id]', async () => {
     })
 
     it('update client user by Id with no AdditionalClientInfo', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const clientMock = await userService.createUser(clientCreateMock)
       const id = clientMock.id
-      const payload = { firstName: 'Sheenaaaaaa' }
-      const mockedReq = createMockNextPatchRequest(
-        'http://localhost:3000/api/admin/users/' + id,
-        payload,
+
+      const res = await PATCH(
+        createMockNextPatchRequest('api/admin/users/' + id, { firstName: 'Sheenaaaaaa' }),
+        {
+          params: paramsToPromise({ id }),
+        },
       )
-      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const res = await PATCH(mockedReq, {
-        params: paramsToPromise({ id }),
-      })
       const json = await res.json()
-      clientMock.firstName = 'Sheenaaaaaa'
+
       const combinedClientInfo: UserCombinedInfo = {
         ...clientMock,
+        firstName: 'Sheenaaaaaa',
         updatedAt: json.data.updatedAt,
       }
       expect(res.status).toBe(StatusCodes.OK)
@@ -214,6 +207,7 @@ describe('test /api/admin/users/[id]', async () => {
     })
 
     it('update name, intro, affiliation of client user by Id with no AdditionalClientInfo', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const clientMock = await userService.createUser(clientCreateMock)
       const id = clientMock.id
       const payload = {
@@ -221,18 +215,15 @@ describe('test /api/admin/users/[id]', async () => {
         introduction: 'introooo',
         affiliation: 'afil',
       }
-      const mockedReq = createMockNextPatchRequest(
-        'http://localhost:3000/api/admin/users/' + id,
-        payload,
-      )
-      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const res = await PATCH(mockedReq, {
+
+      const res = await PATCH(createMockNextPatchRequest(`api/admin/users/${id}`, payload), {
         params: paramsToPromise({ id }),
       })
       const json = await res.json()
-      clientMock.firstName = 'Sheenaaaaaa'
+
       const combinedClientInfo: UserCombinedInfo = {
         ...clientMock,
+        firstName: 'Sheenaaaaaa',
         introduction: 'introooo',
         affiliation: 'afil',
         updatedAt: json.data.updatedAt,
@@ -242,19 +233,19 @@ describe('test /api/admin/users/[id]', async () => {
     })
 
     it('update student user by Id', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const userService = new UserService()
       const newStudent = await userService.createUser(studentCreateMock)
       const id = newStudent.id
-      const payload = { firstName: 'Sheena' }
-      const mockedReq = createMockNextPatchRequest(
-        'http://localhost:3000/api/admin/users/' + id,
-        payload,
+
+      const res = await PATCH(
+        createMockNextPatchRequest(`api/admin/users/${id}`, { firstName: 'Sheena' }),
+        {
+          params: paramsToPromise({ id }),
+        },
       )
-      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const res = await PATCH(mockedReq, {
-        params: paramsToPromise({ id }),
-      })
       const json = await res.json()
+
       expect(res.status).toBe(StatusCodes.OK)
       expect(json.data).toEqual({
         ...newStudent,
@@ -299,8 +290,8 @@ describe('test /api/admin/users/[id]', async () => {
     })
 
     it('should delete a user', async () => {
-      const newUser = await userService.createUser(clientCreateMock)
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const newUser = await userService.createUser(clientCreateMock)
       const res = await DELETE({} as NextRequest, {
         params: paramsToPromise({ id: newUser.id }),
       })
