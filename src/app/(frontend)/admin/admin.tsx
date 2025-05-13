@@ -5,9 +5,11 @@ import ProjectDnD, { DndComponentProps } from '@/components/Composite/ProjectDra
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { mockClients } from '@/mocks/Clients.mock'
-import { mockSemesters } from '@/mocks/Semesters.mock'
 import SadTeapot from 'src/assets/sad-teapot.svg'
+import { mockClients } from '@/test-config/mocks/User.mock'
+import { mockSemesters } from '@/test-config/mocks/Semester.mock'
+import { handleLoginButtonClick, isLoggedIn } from '@/lib/services/user/Handlers'
+
 
 interface AdminProps {
   ProjectData: DndComponentProps
@@ -16,10 +18,16 @@ interface AdminProps {
 const Admin: React.FC<AdminProps> = ({ ProjectData }) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
   const [activeNav, setActiveNav] = useState<number | null>(null)
+  const [loggedIn, setLoggedIn] = useState<boolean>(false)
+  const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
 
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
     setActiveNav(saved !== null ? Number(saved) : 0)
+    isLoggedIn().then((res) => {
+      setLoggedIn(res)
+      setLoginLoaded(true)
+    })
   }, [])
 
   useEffect(() => {
@@ -29,11 +37,15 @@ const Admin: React.FC<AdminProps> = ({ ProjectData }) => {
   }, [activeNav])
 
   // Don't render anything until activeNav is ready
-  if (activeNav === null) return null
+  if (activeNav === null || !loginLoaded) return null
 
   return (
     <div>
-      <NavBar navElements={[{ href: '/admin', text: 'My Dashboard' }]} />
+      <NavBar
+        navElements={[{ href: '/admin', text: 'My Dashboard' }]}
+        onclick={handleLoginButtonClick}
+        loggedIn={loggedIn}
+      />
       <div className="hidden lg:block w-full">
         <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
           {AdminNavElements.map((nav, i) => (
