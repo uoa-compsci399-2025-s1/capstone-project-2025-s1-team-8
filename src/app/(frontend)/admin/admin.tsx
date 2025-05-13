@@ -8,7 +8,9 @@ import { motion } from 'framer-motion'
 import SadTeapot from 'src/assets/sad-teapot.svg'
 import { mockClients } from '@/test-config/mocks/User.mock'
 import { mockSemesters } from '@/test-config/mocks/Semester.mock'
-import { handleLoginButtonClick, isLoggedIn } from '@/lib/services/user/Handlers'
+import { handleLoginButtonClick,getLoggedInUser } from '@/lib/services/user/Handlers'
+import { UserCombinedInfo } from '@/types/Collections'
+import { UserRole } from '@/types/User'
 
 interface AdminProps {
   ProjectData: DndComponentProps
@@ -17,14 +19,14 @@ interface AdminProps {
 const Admin: React.FC<AdminProps> = ({ ProjectData }) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
   const [activeNav, setActiveNav] = useState<number | null>(null)
-  const [loggedIn, setLoggedIn] = useState<boolean>(false)
+  const [loggedInUser, setLoggedInUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
   const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
 
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
     setActiveNav(saved !== null ? Number(saved) : 0)
-    isLoggedIn().then((res) => {
-      setLoggedIn(res)
+    getLoggedInUser().then((res) => {
+      setLoggedInUser(res)
       setLoginLoaded(true)
     })
   }, [])
@@ -38,12 +40,16 @@ const Admin: React.FC<AdminProps> = ({ ProjectData }) => {
   // Don't render anything until activeNav is ready
   if (activeNav === null || !loginLoaded) return null
 
+  if(!loggedInUser || loggedInUser.role !== UserRole.Admin) {
+    return null
+  }
+
   return (
     <div>
       <NavBar
         navElements={[{ href: '/admin', text: 'My Dashboard' }]}
         onclick={handleLoginButtonClick}
-        loggedIn={loggedIn}
+        user={loggedInUser}
       />
       <div className="hidden lg:block w-full">
         <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
