@@ -108,8 +108,6 @@ class RouteWrapper {
         }) || [],
       )
 
-      console.log(clients)
-
       const data = await projectService.createProject({
         ...body,
         client: req.user.id,
