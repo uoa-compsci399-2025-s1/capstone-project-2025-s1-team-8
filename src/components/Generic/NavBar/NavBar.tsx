@@ -86,7 +86,7 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true, user, onclic
                 {'My Client Dashboard'}
               </Link>
               <span
-                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === "/client" ? 'scale-x-100' : ''}`}
+                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/client' ? 'scale-x-100' : ''}`}
               />
             </div>
           )}
