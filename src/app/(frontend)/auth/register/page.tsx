@@ -49,7 +49,7 @@ export default function RegisterPage() {
           <Input
             name="email"
             placeholder="Email Address"
-            type="text"
+            type="email"
             startIcon={<MdOutlineMail className="text-muted-blue h-full" />}
             required={true}
           />
