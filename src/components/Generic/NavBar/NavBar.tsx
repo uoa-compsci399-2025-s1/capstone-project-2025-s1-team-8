@@ -18,13 +18,8 @@ interface NavBarProps {
   onclick?: () => void
 }
 
-const NavBar: React.FC<NavBarProps> = ({
-  navElements,
-  hasBg = true,
-  user,
-  onclick,
-}) => {
-  const dashboardLink = user ? user.role === 'admin' ? '/admin' : '/client' : '/'
+const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true, user, onclick }) => {
+  const dashboardLink = user ? (user.role === 'admin' ? '/admin' : '/client') : '/'
   /*(() => {
     if (user?.role === 'admin') {
       return '/admin'
@@ -79,13 +74,13 @@ const NavBar: React.FC<NavBarProps> = ({
             <span className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/' ? 'scale-x-100' : ''}`} />
           </div> */}
           <div className="relative group p-2">
-              <Link href={dashboardLink} className="nav-link-text">
-                {user ? 'My DashBoard': "Published Projects"}
-              </Link>
-              <span
-                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === dashboardLink ? 'scale-x-100' : ''}`}
-              />
-            </div>
+            <Link href={dashboardLink} className="nav-link-text">
+              {user ? 'My DashBoard' : 'Published Projects'}
+            </Link>
+            <span
+              className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === dashboardLink ? 'scale-x-100' : ''}`}
+            />
+          </div>
 
           <div className="relative group p-2">
             {
@@ -149,11 +144,11 @@ const NavBar: React.FC<NavBarProps> = ({
           </Link>
         </div>
         <div className="p-[5%]">
-            {/* {navElement} */}
-            <Link href={dashboardLink} className="nav-link-text">
-              {user ? "My Dashboard": "Published Projects"}
-            </Link>
-          </div>
+          {/* {navElement} */}
+          <Link href={dashboardLink} className="nav-link-text">
+            {user ? 'My Dashboard' : 'Published Projects'}
+          </Link>
+        </div>
         <div className="p-[5%]">
           {
             <button onClick={onclick} className="nav-link-text font-bold">
