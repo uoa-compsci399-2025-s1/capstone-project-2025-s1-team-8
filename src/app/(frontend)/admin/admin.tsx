@@ -48,7 +48,6 @@ const Admin: React.FC<AdminProps> = ({ ProjectData }) => {
   return (
     <div>
       <NavBar
-        navElements={[{ href: '/admin', text: 'My Dashboard' }]}
         onclick={handleLoginButtonClick}
         user={loggedInUser}
       />
