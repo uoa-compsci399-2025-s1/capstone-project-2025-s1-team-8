@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 
 import AuthService from '../services/AuthService'
 import { JWTResponse } from '@/types/Middleware'
@@ -14,9 +14,19 @@ export class UnauthorizedAuthError extends Error {
 export async function payloadAuthentication(securityName: string, scopes?: string[]) {
   if (securityName === 'jwt') {
     const cookieStore = await cookies()
+    const headersList = await headers()
     return new Promise((resolve, reject) => {
       try {
-        const token = cookieStore.get(AUTH_COOKIE_NAME)?.value
+        let token: string = cookieStore.get(AUTH_COOKIE_NAME)?.value || ''
+
+        // Enable header based auth when NODE_ENV set the test mode
+        if (process.env.NODE_ENV !== 'production') {
+          const authHeader = headersList.get('authorization') || ''
+          if (!token && !authHeader.startsWith('Bearer '))
+            return reject(new UnauthorizedAuthError('No token provided'))
+          else if (!token) token = authHeader.split(' ')[1] // Gets part after Bearer
+        }
+
         if (!token) return reject(new UnauthorizedAuthError('No token provided'))
         const authService = new AuthService()
         const decodedToken = authService.decodeJWT(token) as JWTResponse
