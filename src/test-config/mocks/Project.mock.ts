@@ -102,7 +102,7 @@ export const semesterProjectCreateMock2: CreateSemesterProjectData = {
   number: 2,
   project: projectMock,
   semester: semesterMock,
-  status: ProjectStatus.Approved,
+  status: ProjectStatus.Accepted,
   published: false,
 }
 
