@@ -2,12 +2,12 @@ import { useState } from 'react'
 import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/16/solid'
 import { UserCombinedInfo } from '@/types/Collections'
-import { Project } from '@/payload-types'
+import { ProjectDetails } from '@/types/Project'
 
 interface ClientsPageProps {
   clients: {
     client: UserCombinedInfo
-    projects?: Project[]
+    projects?: ProjectDetails[]
   }[]
 }
 

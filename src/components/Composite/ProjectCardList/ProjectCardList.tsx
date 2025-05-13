@@ -1,13 +1,12 @@
 import React from 'react'
 import ProjectCard from '@/components/Generic/ProjectCard/ProjectCard'
-import { PlaceholderProjectDetailsType } from '@/types/Project'
-import { Project } from '@/payload-types'
+import { ProjectDetails } from '@/types/Project'
 
 interface ProjectListProps {
   className?: string
   headingClassName?: string
   heading: string
-  projects: Project[]
+  projects: ProjectDetails[]
 }
 
 const ProjectCardList: React.FC<ProjectListProps> = ({

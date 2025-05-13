@@ -1,8 +1,9 @@
 import { CreateProjectData, CreateSemesterProjectData } from '@/types/Collections'
 import { Project, SemesterProject } from '@/payload-types'
 import { ProjectStatus } from '@/types/Project'
-import { semesterMock } from '@/test-config/mocks/Semester.mock'
+import { semesterMock, mockSemesters } from '@/test-config/mocks/Semester.mock'
 import { clientMock } from './Auth.mock'
+import { ProjectDetails } from '@/types/Project'
 
 /*
  * Project mocks
@@ -40,6 +41,12 @@ export const projectMock2: Project = {
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
 }
+
+export const mockProjects: Project[] = [
+  projectMock,
+  projectMock2,
+  { ...projectMock, name: 'Project 3', description: 'Description 3' },
+]
 
 export const projectCreateMock: CreateProjectData = {
   name: 'Project Create Mock',
@@ -98,3 +105,27 @@ export const semesterProjectCreateMock2: CreateSemesterProjectData = {
   status: ProjectStatus.Accepted,
   published: false,
 }
+
+/*
+ * ProjectDetails mocks
+ */
+export const ProjectDetailsMock: ProjectDetails = {
+  ...projectMock,
+  semesters: [semesterMock],
+}
+
+export const ProjectDetailsMock2: ProjectDetails = {
+  ...projectMock2,
+  semesters: [mockSemesters[0], mockSemesters[1]],
+}
+
+export const ProjectDetailsMock3: ProjectDetails = {
+  ...projectMock,
+  semesters: mockSemesters,
+}
+
+export const projectDetailsListMock: ProjectDetails[] = [
+  ProjectDetailsMock,
+  ProjectDetailsMock2,
+  ProjectDetailsMock3,
+]

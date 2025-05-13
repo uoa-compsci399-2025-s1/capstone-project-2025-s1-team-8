@@ -1,11 +1,16 @@
 import { GET as GetClientInfo } from '@/app/api/users/me/route'
 import { GET as GetClientProjects } from '@/app/api/users/me/projects/route'
 import { PATCH as UpdateClientDetails } from '@/app/api/users/me/route'
-import { UpdateUserData, UserCombinedInfo } from '@/types/Collections'
-import { Project } from '@/payload-types'
+import {
+  UpdateClientAdditionalInfoData,
+  UpdateUserData,
+  UserCombinedInfo,
+} from '@/types/Collections'
+import { Project, Semester } from '@/payload-types'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
 import { StatusCodes } from 'http-status-codes'
+import { GET as GetSemesters } from '@/app/api/projects/[id]/semesters/route'
 
 const ClientService = {
   /**
@@ -21,7 +26,7 @@ const ClientService = {
     const url = await buildNextRequestURL('/api/users/me', {})
     const response = await GetClientInfo(await buildNextRequest(url, { method: 'GET' }))
     const userInfo = await response.json()
-    return { userInfo, status: response.status }
+    return { userInfo: userInfo.data, status: response.status }
   },
 
   /**
@@ -37,7 +42,7 @@ const ClientService = {
     const url = await buildNextRequestURL('api/users/me/projects', {})
     const response = await GetClientProjects(await buildNextRequest(url, { method: 'GET' }))
     const projects = await response.json()
-    return { projects, status: response.status }
+    return { projects: projects.data, status: response.status }
   },
 
   /**
@@ -45,7 +50,9 @@ const ClientService = {
    * @param updatedClient The updated client information.
    * @returns {updatedUser: UserCombinedInfo, status: StatusCodes, error?: string, details?: string}
    */
-  async updateClientDetails(updatedClient: UpdateUserData): Promise<{
+  async updateClientDetails(
+    updatedClient: Omit<UpdateUserData & Partial<UpdateClientAdditionalInfoData>, 'email'>,
+  ): Promise<{
     updatedUser: UserCombinedInfo
     status: StatusCodes
     error?: string
@@ -63,6 +70,21 @@ const ClientService = {
       error,
       details,
     }
+  },
+
+  async getSemesterForProject(projectId: string): Promise<{
+    semesters: Semester[]
+    status: StatusCodes
+    error?: string
+    message?: string
+  }> {
+    'use server'
+    const url = await buildNextRequestURL(`/api/projects/${projectId}/semesters`, {})
+    const response = await GetSemesters(await buildNextRequest(url, { method: 'GET' }), {
+      params: Promise.resolve({ id: projectId }),
+    })
+    const { data, error, message } = await response.json()
+    return { semesters: data, status: response.status, error, message }
   },
 } as const
 

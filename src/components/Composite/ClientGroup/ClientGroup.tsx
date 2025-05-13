@@ -1,12 +1,12 @@
 import React from 'react'
-import { UserCombinedInfo } from '@/types/Collections'
 import ClientCard from '@/components/Generic/ClientCard/ClientCard'
-import { Project } from '@/payload-types'
+import { UserCombinedInfo } from '@/types/Collections'
+import { ProjectDetails } from '@/types/Project'
 
 export interface ClientGroupProps {
   clients: {
     client: UserCombinedInfo
-    projects?: Project[]
+    projects?: ProjectDetails[]
   }[]
 }
 
@@ -14,7 +14,7 @@ const ClientGroup: React.FC<ClientGroupProps> = ({ clients }) => {
   return (
     <div className="w-full rounded-2xl overflow-hidden border border-beige divide-beige divide-y-2">
       {clients.map((client, index) => (
-        <ClientCard key={index} {...client} />
+        <ClientCard key={index} clientInfo={client} />
       ))}
     </div>
   )
