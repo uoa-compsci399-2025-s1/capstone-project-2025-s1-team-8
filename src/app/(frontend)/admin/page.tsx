@@ -14,7 +14,7 @@ export default async function AdminPage() {
       }
     })
   )
-  console.log(clientsWithProjects)
+  console.log(JSON.stringify(clientsWithProjects, null, 2))
 
   return (
     <>

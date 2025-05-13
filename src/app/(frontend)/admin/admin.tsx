@@ -6,26 +6,34 @@ import NavBar from '@/components/Generic/NavBar/NavBar'
 import { UniqueIdentifier } from '@dnd-kit/core'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { mockProjects } from '@/mocks/Projects.mock'
-import { mockSemesters } from '@/mocks/Semesters.mock'
-import { UserCombinedInfo } from '@/types/Collections'
+import { mockProjects } from '@/test-config/mocks/Project.mock'
+import { mockSemesters } from '@/test-config/mocks/Semester.mock'
 import SadTeapot from 'src/assets/sad-teapot.svg'
-import { Project } from '@/payload-types'
+import { handleLoginButtonClick, isLoggedIn } from '@/lib/services/user/Handlers'
+import { UserCombinedInfo } from '@/types/Collections'
+import { ProjectDetails } from '@/types/Project'
 
 interface AdminProps {
   ClientData: {
     client: UserCombinedInfo
-    projects?: Project[]
+    projects?: ProjectDetails[]
   }[]
 }
 
 const Admin: React.FC<AdminProps> = ({ ClientData }) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
+
   const [activeNav, setActiveNav] = useState<number | null>(null)
+  const [loggedIn, setLoggedIn] = useState<boolean>(false)
+  const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
 
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
     setActiveNav(saved !== null ? Number(saved) : 0)
+    isLoggedIn().then((res) => {
+      setLoggedIn(res)
+      setLoginLoaded(true)
+    })
   }, [])
 
   useEffect(() => {
@@ -81,7 +89,11 @@ const Admin: React.FC<AdminProps> = ({ ClientData }) => {
 
   return (
     <div>
-      <NavBar navElements={[{ href: '/admin', text: 'My Dashboard' }]} />
+      <NavBar
+        navElements={[{ href: '/admin', text: 'My Dashboard' }]}
+        onclick={handleLoginButtonClick}
+        loggedIn={loggedIn}
+      />
       <div className="hidden lg:block w-full">
         <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
           {AdminNavElements.map((nav, i) => (
