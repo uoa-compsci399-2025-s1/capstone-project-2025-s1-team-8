@@ -21,7 +21,6 @@ export async function payloadAuthentication(securityName: string, scopes?: strin
 
         // Enable header based auth when NODE_ENV set the test mode
         if (process.env.NODE_ENV !== 'production') {
-          console.log('yolo')
           const authHeader = headersList.get('authorization') || ''
           if (!token && !authHeader.startsWith('Bearer '))
             return reject(new UnauthorizedAuthError('No token provided'))
