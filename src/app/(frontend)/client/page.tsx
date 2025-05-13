@@ -5,7 +5,7 @@ import ClientDashboard from '@/components/Pages/ClientDashboard/ClientDashboard'
 import { useState, useEffect } from 'react'
 import { handleClientPageLoad } from '@/lib/services/client/Handlers'
 import { UserCombinedInfo } from '@/types/Collections'
-import { handleLoginButtonClick, isLoggedIn } from '@/lib/services/user/Handlers'
+import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 import { handleClientProfileUpdate } from '@/lib/services/client/Handlers'
 import { ProjectDetails } from '@/types/Project'
 
@@ -13,8 +13,6 @@ export default function Client() {
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
   const [user, setUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
   const [projects, setProjects] = useState<ProjectDetails[]>([])
-  const [loggedIn, setLoggedIn] = useState<boolean>(false)
-  const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
 
   useEffect(() => {
     handleClientPageLoad().then((res) => {
@@ -22,13 +20,9 @@ export default function Client() {
       setProjects(res.projects)
       setIsLoaded(true)
     })
-    isLoggedIn().then((res) => {
-      setLoggedIn(res)
-      setLoginLoaded(true)
-    })
   }, [])
 
-  if (!isLoaded || !loginLoaded) {
+  if (!isLoaded) {
     return null
   }
 
@@ -36,8 +30,7 @@ export default function Client() {
     <div className="flex justify-center items-center">
       <div>
         <NavBar
-          navElements={[{ href: '/client', text: 'My Dashboard' }]}
-          loggedIn={loggedIn}
+          user={user}
           onclick={handleLoginButtonClick}
         />
       </div>

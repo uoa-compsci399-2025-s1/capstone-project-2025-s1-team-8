@@ -8,6 +8,7 @@ import UserService from './UserService'
 import { RegisterRequestBodySchema } from '@/app/api/auth/register/route'
 import { UserRoleWithoutAdmin } from '@/types/User'
 import { isValidEmail, isValidPassword } from '@/lib/util/util'
+import { UserCombinedInfo } from '@/types/Collections'
 
 /**
  * This function handles the form submission for user login.
@@ -42,9 +43,9 @@ export async function handleLogin(formData: FormData): Promise<{
  *
  * @returns a boolean indicating whether the user is logged in or not.
  */
-export async function isLoggedIn(): Promise<boolean> {
+export async function getLoggedInUser(): Promise<UserCombinedInfo> {
   const res = await UserService.getUserSelfData()
-  return res.status === 200
+  return res.user
 }
 
 /**
@@ -52,7 +53,7 @@ export async function isLoggedIn(): Promise<boolean> {
  * Redirects to the appropriate page based on the login status.
  */
 export async function handleLoginButtonClick() {
-  const status = await isLoggedIn()
+  const status = await getLoggedInUser()
   if (status) {
     await UserService.logout()
     redirect('/')
