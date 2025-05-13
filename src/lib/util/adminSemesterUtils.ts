@@ -3,7 +3,7 @@
 import { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 import { typeToFlattenedError } from 'zod'
 import AdminSemesterService from '@/lib/services/admin/AdminSemesterService'
-import { Project, Semester, SemesterProject, User } from '@/payload-types'
+import { Project, Semester } from '@/payload-types'
 import { ProjectDetails } from '@/types/Project'
 
 export const handleCreateSemester = async (

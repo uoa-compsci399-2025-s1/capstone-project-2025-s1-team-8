@@ -116,7 +116,7 @@ describe('tests /api/semesters/[id]/projects', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       await projectService.createSemesterProject({
         ...semesterProjectCreateMock,
-        status: ProjectStatus.Approved,
+        status: ProjectStatus.Accepted,
       })
       await projectService.createSemesterProject({
         ...semesterProjectCreateMock,
@@ -124,11 +124,11 @@ describe('tests /api/semesters/[id]/projects', async () => {
       })
       await projectService.createSemesterProject({
         ...semesterProjectCreateMock,
-        status: ProjectStatus.Approved,
+        status: ProjectStatus.Accepted,
       })
 
       const res = await GET(
-        createMockNextRequest(`api/semesters/${semesterMock.id}/projects?status=approved`),
+        createMockNextRequest(`api/semesters/${semesterMock.id}/projects?status=accepted`),
         { params: paramsToPromise({ id: semesterMock.id }) },
       )
       expect(res.status).toBe(StatusCodes.OK)
@@ -182,7 +182,7 @@ describe('tests /api/semesters/[id]/projects', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       await projectService.createSemesterProject({
         ...semesterProjectCreateMock,
-        status: ProjectStatus.Approved,
+        status: ProjectStatus.Accepted,
         published: true,
       })
       await projectService.createSemesterProject({
@@ -192,13 +192,13 @@ describe('tests /api/semesters/[id]/projects', async () => {
       })
       await projectService.createSemesterProject({
         ...semesterProjectCreateMock,
-        status: ProjectStatus.Approved,
+        status: ProjectStatus.Accepted,
         published: true,
       })
 
       const res = await GET(
         createMockNextRequest(
-          `api/semesters/${semesterMock.id}/projects?status=approved&published=true`,
+          `api/semesters/${semesterMock.id}/projects?status=accepted&published=true`,
         ),
         { params: paramsToPromise({ id: semesterMock.id }) },
       )
