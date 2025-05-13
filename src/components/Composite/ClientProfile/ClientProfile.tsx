@@ -24,7 +24,7 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo }) => {
   )
 
   const handleSave = async () => {
-    await handleClientUpdateSave(
+    /*await handleClientUpdateSave(
       name,
       previousName,
       affiliation,
@@ -38,7 +38,7 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo }) => {
       setPreviousAffiliation,
       setPreviousIntroduction,
       setIsEditing,
-    )
+    )*/
   }
 
   return (
