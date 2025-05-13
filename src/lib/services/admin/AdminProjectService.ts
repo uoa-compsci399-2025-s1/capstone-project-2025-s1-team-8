@@ -12,7 +12,13 @@ import { ProjectStatus } from '@/types/Project'
 import { DndComponentProps } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { UniqueIdentifier } from '@dnd-kit/core'
-import { updateProjectOrdersAndStatus } from '@/components/Composite/ProjectDragAndDrop/ProjectUpdates'
+import {
+  handlePublishChanges,
+  updateProjectOrdersAndStatus,
+} from '@/components/Composite/ProjectDragAndDrop/ProjectUpdates'
+import { handleCSVDownload } from './Handlers'
+import { GET as GetCSV } from '@/app/api/admin/export/semesters/[id]/route'
+import { StatusCodes } from 'http-status-codes'
 
 const AdminProjectService = {
   updateSemesterProject: async function (
@@ -90,6 +96,7 @@ const AdminProjectService = {
           },
         ],
         onSaveChanges: updateProjectOrdersAndStatus,
+        onPublishChanges: handlePublishChanges,
       },
     }
   },

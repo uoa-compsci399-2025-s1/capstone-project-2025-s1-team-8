@@ -25,6 +25,7 @@ import { HiOutlineDocumentDownload } from 'react-icons/hi'
 
 import { User } from '@/payload-types'
 import { UpdateParams } from './ProjectUpdates'
+import { redirect } from 'next/navigation'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -38,6 +39,7 @@ export type DndComponentProps = {
   presetContainers: DNDType[]
   semesterId: string
   onSaveChanges: (params: UpdateParams) => Promise<void>
+  onPublishChanges: (params: UpdateParams) => Promise<void>
 }
 
 const defaultProjectInfo: ProjectDetails = {
@@ -66,6 +68,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   presetContainers,
   semesterId,
   onSaveChanges,
+  onPublishChanges,
 }) => {
   const [containers, setContainers] = useState<DNDType[]>(presetContainers)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
@@ -133,9 +136,9 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     )
   }
 
-  function handlePublishChanges() {
+  async function handlePublishChanges() {
     // send changes to the backend
-    console.log('publishing changes')
+    await onPublishChanges({ containers, semesterId })
     setSuccessNotification('The approved projects have been published!')
 
     setTimeout(() => {
@@ -143,9 +146,8 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }, 5000)
   }
 
-  function handleDownloadCsv() {
-    // download csv of all approved projects
-    console.log('downloading csv')
+  async function handleDownloadCsv() {
+    redirect(`/api/admin/export/semesters/${semesterId}`)
   }
 
   function sortProjects(containerId: UniqueIdentifier, filter: string): void {

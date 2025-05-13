@@ -30,3 +30,18 @@ export async function updateProjectOrdersAndStatus({
     }
   }
 }
+
+export async function handlePublishChanges({
+  containers,
+  semesterId,
+}: UpdateParams): Promise<void> {
+  const container = containers[2]
+  for (let i = 0; i < container.currentItems.length; i++) {
+    const project = container.currentItems[i]
+    await AdminProjectService.updateSemesterProject(
+      semesterId,
+      project.projectInfo.semesterProjectId ?? '',
+      { published: true },
+    )
+  }
+}
