@@ -12,6 +12,8 @@ import { mockSemesters } from '@/test-config/mocks/Semester.mock'
 import SadTeapot from 'src/assets/sad-teapot.svg'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
 import { UserCombinedInfo } from '@/types/Collections'
+import { redirect } from 'next/navigation'
+import { UserRole } from '@/types/User'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -37,6 +39,9 @@ const Admin = () => {
 
   // Don't render anything until activeNav is ready
   if (activeNav === null || !loginLoaded) return null
+  if (!loggedInUser || loggedInUser.role !== UserRole.Admin) {
+    redirect('/not-found')
+  }
 
   const containers = [
     {
