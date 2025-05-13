@@ -90,14 +90,18 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true, user, onclic
               />
             </div>
           )}
-          <div className="relative group p-2">
-            <Link href={dashboardLink} className="nav-link-text">
-              {user ? 'My DashBoard' : 'Published Projects'}
-            </Link>
-            <span
-              className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === dashboardLink ? 'scale-x-100' : ''}`}
-            />
-          </div>
+          {user && (
+            <div className="relative group p-2">
+              <Link href={dashboardLink} className="nav-link-text">
+                {user.role === UserRole.Admin || user.role == UserRole.Client
+                  ? 'My DashBoard'
+                  : 'Published Projects'}
+              </Link>
+              <span
+                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === dashboardLink ? 'scale-x-100' : ''}`}
+              />
+            </div>
+          )}
           <div className="relative group p-2">
             {
               <button onClick={onclick} className="nav-link-text font-bold">
