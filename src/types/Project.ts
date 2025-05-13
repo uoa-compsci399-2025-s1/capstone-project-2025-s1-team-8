@@ -1,4 +1,4 @@
-import { Semester, Project } from "@/payload-types";
+import { Semester, Project } from '@/payload-types'
 
 export enum ProjectStatus {
   Pending = 'pending',
@@ -7,6 +7,6 @@ export enum ProjectStatus {
 }
 
 export type ProjectWithSemesters = Project & {
-  semesters: Semester[];
-  semesterProjectId?: string;
+  semesters: Semester[]
+  semesterProjectId?: string
 }

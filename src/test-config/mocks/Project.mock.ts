@@ -108,7 +108,7 @@ export const semesterProjectCreateMock2: CreateSemesterProjectData = {
 
 /*
  * ProjectWithSemesters mocks
-  */
+ */
 export const projectWithSemestersMock: ProjectWithSemesters = {
   ...projectMock,
   semesters: [semesterMock],
