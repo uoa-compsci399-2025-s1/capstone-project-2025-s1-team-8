@@ -5,7 +5,7 @@ import Input from '@/components/Generic/Input/InputField'
 import Textarea from '@/components/Generic/Textarea/Textarea'
 import Radio from '@/components/Generic/Radio/Radio'
 import Checkbox from '@/components/Generic/Checkbox/Checkbox'
-import { semesterNames1 } from '@/mocks/newSemesters.mock'
+import { semesterNames } from '@/test-config/mocks/Semester.mock'
 import { FiCheck } from 'react-icons/fi'
 import { HiX } from 'react-icons/hi'
 import { useSearchParams } from 'next/navigation'
@@ -363,7 +363,7 @@ export default function Form() {
                   If you replied yes to the question above, what semesters would you like your
                   project to be considered for?
                 </p>
-                <Checkbox name="FutureSemesters" values={semesterNames1} />
+                <Checkbox name="FutureSemesters" values={semesterNames} />
               </li>
               <li>
                 <label htmlFor="MeetingAttendance">

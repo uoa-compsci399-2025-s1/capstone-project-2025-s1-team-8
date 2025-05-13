@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import DraggableProjectCard from './DraggableProjectCard'
 import { ProjectCardType } from './DraggableProjectCard'
-import { mockProjects } from '@/mocks/newProjects.mock'
+import { mockProjects } from '@/test-config/mocks/Project.mock'
 
 const meta: Meta<typeof DraggableProjectCard> = {
   component: DraggableProjectCard,

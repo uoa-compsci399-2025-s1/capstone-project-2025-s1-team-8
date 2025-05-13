@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import ProjectCardList from './ProjectCardList'
-import { mockProjects } from '@/mocks/newProjects.mock'
-import { mockSemestersNested } from '@/mocks/newSemesters.mock'
+import { mockProjects } from '@/test-config/mocks/Project.mock'
+import { mockSemestersNested } from '@/test-config/mocks/Semester.mock'
 
 const meta: Meta<typeof ProjectCardList> = {
   title: 'Composite/ProjectCardList',

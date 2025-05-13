@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
 import ProjectDnD from './ProjectDnD'
 import { UniqueIdentifier } from '@dnd-kit/core'
-import { mockProjects } from '@/mocks/newProjects.mock'
+import { mockProjects } from '@/test-config/mocks/Project.mock'
 
 const containers = [
   {

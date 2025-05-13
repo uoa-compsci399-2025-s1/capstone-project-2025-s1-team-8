@@ -41,6 +41,12 @@ export const projectMock2: Project = {
   createdAt: new Date().toISOString(),
 }
 
+export const mockProjects: Project[] = [
+  projectMock,
+  projectMock2,
+  { ...projectMock, name: 'Project 3', description: 'Description 3' },
+]
+
 export const projectCreateMock: CreateProjectData = {
   name: 'Project Create Mock',
   description: 'Description 2',
