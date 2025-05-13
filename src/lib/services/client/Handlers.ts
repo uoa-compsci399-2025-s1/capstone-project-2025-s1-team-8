@@ -23,7 +23,7 @@ export const handleClientPageLoad = async (): Promise<{
   }
 
   const semestersList: Semester[][] = []
-  const projects = clientProjectsRes.projects
+  const projects = clientProjectsRes.projects ?? []
 
   for (let i = 0; i < projects.length; i++) {
     const { semesters, status, error, message } = await ClientService.getSemesterForProject(
