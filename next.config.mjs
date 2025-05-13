@@ -2,17 +2,27 @@ import { withPayload } from '@payloadcms/next/withPayload'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Your Next.js config here
   webpack(config) {
-    // Add rule to handle SVG imports with @svgr/webpack
     config.module.rules.push({
-      test: /\.svg$/,
+      test: /\.svg$/i,
       use: ['@svgr/webpack'],
     })
 
-    // Any other custom Webpack modifications (if needed) can go here
-
     return config
+  },
+
+  // Experimental Turbopack configuration for handling SVG files.
+  // Turbopack is still in experimental stages, so this configuration is included
+  // alongside the Webpack rule to provide a fallback and ensure compatibility.
+  experimental: {
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
   },
   output: 'standalone',
 }

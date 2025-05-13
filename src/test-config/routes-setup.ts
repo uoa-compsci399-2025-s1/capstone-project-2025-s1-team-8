@@ -12,6 +12,7 @@ import {
   STUDENT_JWT_MOCK,
   studentMock,
   tokensMock,
+  UUID_MOCK,
 } from './mocks/Auth.mock'
 import AuthService from '@/business-layer/services/AuthService'
 import { payload } from '@/data-layer/adapters/Payload'
@@ -24,10 +25,21 @@ let studentToken: string
 let cookies: Record<string, string> = {}
 
 beforeEach(async () => {
+  vi.stubGlobal('crypto', {
+    // stubGlobal changes the values of global variables
+    randomUUID: () => UUID_MOCK,
+  })
   // Need to mock the auth service decode for it to decode the correct mocks
-  vi.mock('@/business-layer/services/AuthService', () => {
+  vi.mock('@/business-layer/services/AuthService', async () => {
+    const actual = await vi.importActual<typeof import('@/business-layer/services/AuthService')>(
+      '@/business-layer/services/AuthService',
+    )
+
     return {
       default: class {
+        private authServiceInstance = new actual.default()
+        generateState = this.authServiceInstance.generateState.bind(this.authServiceInstance)
+        decryptState = this.authServiceInstance.decryptState.bind(this.authServiceInstance)
         hashPassword = vi.fn().mockImplementation((password) => {
           return Buffer.from(password).toString('base64')
         })
@@ -66,15 +78,15 @@ beforeEach(async () => {
 
   vi.mock('next/headers', () => ({
     cookies: vi.fn(() => ({
-      set: (key: string, value: string) => {
+      set: vi.fn().mockImplementation((key: string, value: string, _cookie) => {
         cookies[key] = value
-      },
-      get: (key: string) => {
+      }),
+      get: vi.fn().mockImplementation((key: string) => {
         return { value: cookies[key] }
-      },
-      delete: (key: string) => {
+      }),
+      delete: vi.fn().mockImplementation((key: string) => {
         delete cookies[key]
-      },
+      }),
     })),
   }))
 

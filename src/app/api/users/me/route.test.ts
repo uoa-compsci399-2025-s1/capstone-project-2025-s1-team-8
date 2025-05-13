@@ -60,7 +60,7 @@ describe('tests /api/users/me', async () => {
       })
       const changedName = 'CHANGED Sheena Lin'
 
-      const mockedReq = createMockNextPatchRequest('http://localhost:3000/api/users/me/', {
+      const mockedReq = createMockNextPatchRequest('/api/users/me/', {
         firstName: changedName,
       })
       const res = await PATCH(mockedReq)

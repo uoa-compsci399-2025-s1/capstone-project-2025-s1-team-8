@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build --experimental-build-mode compile",
-    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev --turbopack",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
@@ -55,6 +55,7 @@
     "react-dom": "19.0.0",
     "react-hook-form": "^7.56.3",
     "react-icons": "^5.5.0",
+    "react-laag": "^2.0.5",
     "sharp": "0.32.6",
     "storybook-preset-inline-svg": "^1.0.1",
     "svg-inline-loader": "^0.8.2",
