@@ -1,44 +1,25 @@
 'use client'
-import React, { FC, ReactNode, useState } from 'react'
-import { ExclamationTriangleIcon } from '@heroicons/react/16/solid'
+import React, { FC, ReactNode, useState, type InputHTMLAttributes } from 'react'
+import { HiExclamation } from 'react-icons/hi'
 import { LuEyeOff, LuEye } from 'react-icons/lu'
 
-interface InputProps {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   type?: 'text' | 'number' | 'email' | 'password' | 'date' | 'time' | string
-  id?: string
-  name?: string
-  placeholder?: string
-  defaultValue?: string | number
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   className?: string
-  min?: string
-  max?: string
-  step?: number
   error?: boolean
   errorMessage?: string
   startIcon?: ReactNode
   endIcon?: ReactNode
-  required?: boolean
-  value?: string
 }
 
 const Input: FC<InputProps> = ({
   type = 'text',
-  id,
-  name,
-  placeholder,
-  defaultValue,
-  onChange,
   className = '',
-  min,
-  max,
-  step,
   error = false,
   errorMessage = '',
   startIcon,
   endIcon,
-  required = false,
-  value,
+  ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false)
   const isPasswordType = type === 'password'
@@ -51,20 +32,7 @@ const Input: FC<InputProps> = ({
         {startIcon && (
           <span className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5">{startIcon}</span>
         )}
-        <input
-          type={actualType}
-          id={id}
-          name={name}
-          placeholder={placeholder}
-          defaultValue={defaultValue}
-          onChange={onChange}
-          min={min}
-          max={max}
-          step={step}
-          className={inputClasses}
-          required={required}
-          value={value}
-        />
+        <input type={actualType} className={inputClasses} {...props} />
         {isPasswordType ? (
           <button
             type="button"
@@ -80,7 +48,7 @@ const Input: FC<InputProps> = ({
       </div>
       {error && errorMessage != '' && (
         <div className="flex items-center gap-2 text-xs text-pink-accent min-h-[1.25rem] mt-2">
-          <ExclamationTriangleIcon className="w-3 h-3" />
+          <HiExclamation className="w-3 h-3" />
           <p>{errorMessage}</p>
         </div>
       )}

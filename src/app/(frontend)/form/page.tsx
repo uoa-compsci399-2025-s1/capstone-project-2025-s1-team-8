@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { useForm, SubmitHandler, useWatch } from 'react-hook-form'
 import Button from '@/components/Generic/Button/Button'
 import Input from '@/components/Generic/Input/InputField'
 import Textarea from '@/components/Generic/Textarea/Textarea'
@@ -11,6 +12,7 @@ import { FiCheck } from 'react-icons/fi'
 import { HiX } from 'react-icons/hi'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { Project } from '@/payload-types'
 
 interface OtherClientDetails {
   fullName: string
@@ -37,20 +39,19 @@ export default function Form() {
     setPairs(pairs.filter((_, i) => i !== index))
   }
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    const data = Object.fromEntries(formData.entries())
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isSubmitted },
+  } = useForm<Project>()
 
-    // Add the pairs of names and emails to the data object
-    data['OtherClientDetails'] = pairs.map((pair) => ({
-      fullName: pair.fullName,
-      email: pair.email,
-    }))
-
-    console.log('Form submitted:', data)
+  const onSubmit: SubmitHandler<Project> = (data) => {
+    console.log(data)
   }
 
+  // const clientName = useWatch({
+  //   control: register(),
+  // })
 
   return (
     <div className="h-dvh w-dvw bg-gradient-to-b from-[#779ea7] to-[#dae6e2] flex flex-col items-center overflow-y-scroll py-[8%] px-[10%] gap-4 p-4">
@@ -169,7 +170,7 @@ export default function Form() {
           <p className="text-dark-blue font-inter pb-6">
             <span className="text-pink-accent">*</span> Required
           </p>
-          <form className="flex flex-col gap-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <ol
               className="flex flex-col gap-10 list-decimal list-outside text-dark-blue font-inter text-lg whitespace-pre-wrap ml-5"
               type="1"
@@ -185,7 +186,6 @@ export default function Form() {
                   name="ClientName"
                   type="text"
                   placeholder="Enter the main client's name"
-                  required={true}
                 />
               </li>
               <li>
@@ -263,10 +263,12 @@ export default function Form() {
                 </p>
                 <Input
                   id="ProjectTitle"
-                  name="ProjectTitle"
                   type="text"
                   placeholder="Enter the project title"
                   defaultValue={projectName}
+                  error={!!errors.name}
+                  errorMessage={errors.name?.message}
+                  {...register('name', { required: 'Project Title is required' })}
                 />
               </li>
               <li>
@@ -277,10 +279,12 @@ export default function Form() {
                   Please provide a short description (3-10 sentences) of the project.
                 </p>
                 <Textarea
-                  id="ProjectDescription"
-                  name="ProjectDescription"
+                  id="Description"
                   placeholder="Enter the project description"
                   className="h-25"
+                  error={!!errors.description}
+                  errorMessage={errors.description?.message}
+                  {...register('description', { required: 'Project Description is required' })}
                 />
               </li>
               <li>
@@ -293,9 +297,11 @@ export default function Form() {
                 </p>
                 <Textarea
                   id="DesiredOutput"
-                  name="DesiredOutput"
                   placeholder="Enter the desired output"
                   className="h-25"
+                  error={!!errors.desiredOutput}
+                  errorMessage={errors.desiredOutput?.message}
+                  {...register('desiredOutput', { required: 'Desired Output is required' })}
                 />
               </li>
               <li>
@@ -307,7 +313,16 @@ export default function Form() {
                   yes, please specify the required equipment. Note: We can only accept a limited
                   number of projects with special equipment needs.
                 </p>
-                <Radio name="SpecialEquipmentRequirements" values={['No']} customInput={true} />
+                <Radio
+                  values={['No']}
+                  customInput={true}
+                  error={!!errors.specialEquipmentRequirements}
+                  errorMessage={errors.specialEquipmentRequirements?.message}
+                  {...register('specialEquipmentRequirements', {
+                    required: 'Please Select One Option',
+                    validate: (value) => value !== "" || 'Input Field must not be empty'
+                  })}
+                />
               </li>
               <li>
                 <label htmlFor="SpecialEquipmentRequirements">
@@ -316,7 +331,7 @@ export default function Form() {
                 <p className="form-question-subheading">
                   Would you be open to the idea of <b>multiple teams working on your project</b>? If
                   yes, please specify the maximum number of teams you would be happy to work
-                  with. To make it easier for you, all team meetings will be combined into the same
+                  with. To make it easier for you, all team meetings will be combined into the same
                   time slot, ensuring you won&apos;t need to allocate more meeting time than you
                   would with one team.
                   <br />
@@ -331,9 +346,14 @@ export default function Form() {
                   expectations.
                 </p>
                 <Radio
-                  name="NumberOfTeams"
                   values={['No, only 1 team', 'Yes, up to 4 teams']}
                   customInput={true}
+                  error={!!errors.numberOfTeams}
+                  errorMessage={errors.numberOfTeams?.message}
+                  {...register('numberOfTeams', {
+                    required: 'Number of Teams is required',
+                    validate: (value) => value !== "" || 'Number of Teams is required'
+                  })}
                 />
               </li>
               <li>
@@ -345,9 +365,9 @@ export default function Form() {
                 </p>
                 <Textarea
                   id="DesiredTeamSkills"
-                  name="DesiredTeamSkills"
                   placeholder="Enter any desired team skills"
                   className="h-25"
+                  {...register('desiredTeamSkills')}
                 />
               </li>
               <li>
@@ -358,9 +378,9 @@ export default function Form() {
                 </p>
                 <Textarea
                   id="AvailableResources"
-                  name="AvailableResources"
                   placeholder="Enter any available resources"
                   className="h-25"
+                  {...register('availableResources')}
                 />
               </li>
               <li>
@@ -371,7 +391,15 @@ export default function Form() {
                   If your project is not selected by students in the upcoming semester, would you
                   like it to be considered for following semesters?
                 </p>
-                <Radio name="FutureConsideration" values={['Yes', 'No']} required={true} />
+                <Radio
+                  values={['Yes', 'No']}
+                  required={false}
+                  error={!!errors.futureConsideration}
+                  errorMessage={errors.futureConsideration?.message}
+                  {...register('futureConsideration', {
+                    required: 'Future Consideration is required',
+                  })}
+                />
               </li>
               <li>
                 <label htmlFor="FutureSemesters">Future Semesters</label>
@@ -379,7 +407,14 @@ export default function Form() {
                   If you replied yes to the question above, what semesters would you like your
                   project to be considered for?
                 </p>
-                <Checkbox name="FutureSemesters" values={semesterNames1} />
+                <Checkbox 
+                  values={semesterNames1} 
+                  error={!!errors.futureSemesters}
+                  errorMessage={errors.futureSemesters?.message}
+                  {...register('futureSemesters', {
+                    required: 'Future Semesters is required',
+                  })}
+                />
               </li>
               <li>
                 <label htmlFor="MeetingAttendance">
@@ -397,7 +432,7 @@ export default function Form() {
                     type="checkbox"
                     style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
                     className="opacity-0 peer"
-                    required={true}
+                    required={false}
                   />
                   <span
                     className="w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] border-steel-blue rounded-sm 
@@ -430,7 +465,7 @@ export default function Form() {
                     type="checkbox"
                     style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
                     className="opacity-0 peer"
-                    required={true}
+                    required={false}
                   />
                   <span
                     className="w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] border-steel-blue rounded-sm 
@@ -461,7 +496,7 @@ export default function Form() {
                     type="checkbox"
                     style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
                     className="opacity-0 peer"
-                    required={true}
+                    required={false}
                   />
                   <Checkbox
                     name="ProjectSupport"
