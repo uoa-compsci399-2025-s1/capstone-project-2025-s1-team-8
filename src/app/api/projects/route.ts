@@ -89,24 +89,26 @@ class RouteWrapper {
     try {
       const body = CreateProjectRequestBodySchema.parse(await req.json())
 
-      const clients: User[] = []
-      body.additionalClients?.map(async ({ firstName, lastName, email }) => {
-        try {
-          clients.push(await userService.getUserByEmail(email))
-        } catch (err) {
-          if (err instanceof NotFound) {
-            clients.push(
-              await userService.createUser({
+      const clients: User[] = await Promise.all(
+        body.additionalClients?.map(async ({ firstName, lastName, email }) => {
+          try {
+            return await userService.getUserByEmail(email)
+          } catch (err) {
+            if (err instanceof NotFound) {
+              return await userService.createUser({
                 firstName,
                 lastName,
                 email,
                 role: UserRoleWithoutAdmin.Client,
-              }),
-            )
+              })
+            } else {
+              throw err
+            }
           }
-          throw err
-        }
-      })
+        }) || [],
+      )
+
+      console.log(clients)
 
       const data = await projectService.createProject({
         ...body,
