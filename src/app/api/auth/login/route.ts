@@ -42,7 +42,7 @@ export const POST = async (req: NextRequest) => {
       maxAge: 60 * 60,
     })
 
-    return NextResponse.json({ message: 'Login successful', redirect: `/${user.role}` })
+    return NextResponse.json({ message: 'Login successful', redirect: `/${user.role}`, token })
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json(
