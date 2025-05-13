@@ -11,6 +11,8 @@ import { UserCombinedInfo } from '@/types/Collections'
 import { StatusCodes } from 'http-status-codes'
 import { UserRole } from '@/types/User'
 import { ProjectDetails } from '@/types/Project'
+import { Project } from '@/payload-types'
+import AdminProjectService from './AdminProjectService'
 
 const AdminClientService = {
   getAllUsers: async function (
@@ -96,7 +98,16 @@ const AdminClientService = {
     })
     const { data, nextPage, error } = { ...(await response.json()) }
 
-    return { status: response.status, data, nextPage, error }
+    const projectDetailsList: ProjectDetails[] = await Promise.all(
+      data.map(async (project: Project) => {
+        const semesterResult = await AdminProjectService.getProjectSemesters(project.id)
+        return {
+          ...project,
+          semesters: semesterResult.data ?? [],
+        }
+      })
+    )
+    return { status: response.status, data: projectDetailsList, nextPage, error }
   },
 } as const
 export default AdminClientService
