@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react'
 import ProjectContainer from './ProjectContainer'
 import { DndContext } from '@dnd-kit/core'
 import { FilterProvider } from '@/contexts/FilterContext'
-import { mockProjects } from '@/test-config/mocks/Project.mock'
+import { ProjectDetailsMock, ProjectDetailsMock2 } from '@/test-config/mocks/Project.mock'
 import { SortableKeys } from '@/components/Generic/Filter/ProjectFilterAssets'
 import { useState } from 'react'
 
@@ -41,11 +41,11 @@ export const Default: Story = {
     projects: [
       {
         id: 'proj-1',
-        projectInfo: mockProjects[0],
+        projectInfo: ProjectDetailsMock,
       },
       {
         id: 'proj-2',
-        projectInfo: mockProjects[1],
+        projectInfo: ProjectDetailsMock2,
       },
     ],
     onChange: () => {},

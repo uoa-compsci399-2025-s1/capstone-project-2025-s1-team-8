@@ -5,12 +5,11 @@ import { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'
 import Button from '@/components/Generic/Button/Button'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
-import { Project, Semester } from '@/payload-types'
 import { UserCombinedInfo } from '@/types/Collections'
+import { ProjectDetails } from '@/types/Project'
 
 interface ProjectModalProps extends ModalProps {
-  projectInfo: Project
-  semesters?: Semester[]
+  projectInfo: ProjectDetails
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({
@@ -18,9 +17,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   onClose,
   className = '',
   projectInfo,
-  semesters,
 }) => {
-  if (!semesters) semesters = []
+  if (!projectInfo.semesters) projectInfo.semesters = []
   const [copied, setCopied] = useState(false)
   const [copiedAll, setCopiedAll] = useState(false)
 
@@ -133,7 +131,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
           <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />
           <div className="col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
-            {semesters.map((semester) => (
+            {projectInfo.semesters.map((semester) => (
               <Capsule variant="beige" text={semester.name} key={semester.id} />
             ))}
           </div>

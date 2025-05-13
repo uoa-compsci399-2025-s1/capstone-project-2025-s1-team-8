@@ -5,10 +5,11 @@ import { CSS } from '@dnd-kit/utilities'
 import { BsThreeDots } from 'react-icons/bs'
 import { Project } from '@/payload-types'
 import { UserCombinedInfo } from '@/types/Collections'
+import { ProjectDetails } from '@/types/Project'
 
 export interface ProjectCardType {
   id: UniqueIdentifier
-  projectInfo: Project
+  projectInfo: ProjectDetails
   onClick?: () => void
 }
 

@@ -23,7 +23,7 @@ import Notification from '@/components/Generic/Notification/Notification'
 import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
 
-import { Project, User } from '@/payload-types'
+import { User } from '@/payload-types'
 import { UpdateParams } from './ProjectUpdates'
 
 export type DNDType = {
@@ -196,7 +196,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }
   }
 
-  const findItemInfo = (id: UniqueIdentifier | undefined): Project => {
+  const findItemInfo = (id: UniqueIdentifier | undefined): ProjectDetails => {
     if (!id) return defaultProjectInfo
 
     const container = findValueOfItems(id, 'item')
