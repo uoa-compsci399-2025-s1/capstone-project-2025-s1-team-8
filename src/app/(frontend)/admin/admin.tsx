@@ -10,7 +10,6 @@ import { mockClients } from '@/test-config/mocks/User.mock'
 import { mockSemesters } from '@/test-config/mocks/Semester.mock'
 import { handleLoginButtonClick, isLoggedIn } from '@/lib/services/user/Handlers'
 
-
 interface AdminProps {
   ProjectData: DndComponentProps
 }

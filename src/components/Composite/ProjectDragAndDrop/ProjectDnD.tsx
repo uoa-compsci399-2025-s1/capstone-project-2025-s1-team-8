@@ -73,7 +73,6 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   const [showNotification, setShowNotification] = useState<boolean>(false)
   const [successNotification, setSuccessNotification] = useState<string | null>(null)
 
-
   const buttonItems = [
     { Icon: FiSave, value: 'save', label: 'Save' },
     { Icon: FiPrinter, value: 'publish', label: 'Publish' },
@@ -118,11 +117,11 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   async function handleSaveChanges() {
     setHasChanges(false)
     setShowNotification(false)
-    setSuccessNotification("Your changes have been saved successfully!");
+    setSuccessNotification('Your changes have been saved successfully!')
 
     setTimeout(() => {
-      setSuccessNotification(null);
-    }, 5000);
+      setSuccessNotification(null)
+    }, 5000)
     //TODO: have some error handling in case changes aren't saved
     await onSaveChanges({ containers, semesterId })
 
@@ -137,11 +136,11 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   function handlePublishChanges() {
     // send changes to the backend
     console.log('publishing changes')
-    setSuccessNotification("The approved projects have been published!");
+    setSuccessNotification('The approved projects have been published!')
 
     setTimeout(() => {
-      setSuccessNotification(null);
-    }, 5000);
+      setSuccessNotification(null)
+    }, 5000)
   }
 
   function handleDownloadCsv() {
@@ -462,7 +461,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
         <Notification
           isVisible={successNotification != null}
           title={'Success'}
-          message={successNotification?? ''}
+          message={successNotification ?? ''}
           type={'success'}
         />
       </div>
