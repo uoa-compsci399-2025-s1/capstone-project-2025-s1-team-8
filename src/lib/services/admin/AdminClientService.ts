@@ -105,7 +105,7 @@ const AdminClientService = {
           ...project,
           semesters: semesterResult.data ?? [],
         }
-      })
+      }),
     )
     return { status: response.status, data: projectDetailsList, nextPage, error }
   },

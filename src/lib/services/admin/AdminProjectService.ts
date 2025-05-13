@@ -46,8 +46,5 @@ const AdminProjectService = {
 
     return { status: response.status, data, error }
   },
-
-
-
 }
 export default AdminProjectService
