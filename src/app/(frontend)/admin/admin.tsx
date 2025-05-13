@@ -87,6 +87,7 @@ const Admin: React.FC<AdminProps> = ({ ProjectData }) => {
                   presetContainers={ProjectData.presetContainers}
                   onSaveChanges={ProjectData.onSaveChanges}
                   onPublishChanges={ProjectData.onPublishChanges}
+                  onDownloadCsv={ProjectData.onDownloadCsv}
                 />
               </div>
 

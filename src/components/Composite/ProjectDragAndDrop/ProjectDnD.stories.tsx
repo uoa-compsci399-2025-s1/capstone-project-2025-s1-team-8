@@ -45,6 +45,9 @@ const meta: Meta<typeof ProjectDnD> = {
     onSaveChanges: async ({ containers, semesterId }) => {
       console.log('Mock save called', containers, semesterId)
     },
+    onDownloadCsv: async (semesterId) => {
+      console.log('Mock download called', semesterId)
+    },
     onPublishChanges: async () => {
       console.log('Mock publish called')
     },

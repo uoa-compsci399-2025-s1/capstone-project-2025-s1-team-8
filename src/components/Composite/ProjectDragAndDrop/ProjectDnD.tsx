@@ -25,7 +25,6 @@ import { HiOutlineDocumentDownload } from 'react-icons/hi'
 
 import { User } from '@/payload-types'
 import { UpdateParams } from './ProjectUpdates'
-import { redirect } from 'next/navigation'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -40,6 +39,7 @@ export type DndComponentProps = {
   semesterId: string
   onSaveChanges: (params: UpdateParams) => Promise<void>
   onPublishChanges: (params: UpdateParams) => Promise<void>
+  onDownloadCsv: (semesterId: string) => Promise<void>
 }
 
 const defaultProjectInfo: ProjectDetails = {
@@ -69,6 +69,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   semesterId,
   onSaveChanges,
   onPublishChanges,
+  onDownloadCsv,
 }) => {
   const [containers, setContainers] = useState<DNDType[]>(presetContainers)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
@@ -81,7 +82,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     { Icon: FiPrinter, value: 'publish', label: 'Publish' },
     { Icon: HiOutlineDocumentDownload, value: 'downloadcsv', label: 'Download CSV' },
   ]
-
+  console.log(typeof onDownloadCsv)
   useEffect(() => {
     if (hasChanges) {
       setShowNotification(true)
@@ -147,7 +148,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   }
 
   async function handleDownloadCsv() {
-    redirect(`/api/admin/export/semesters/${semesterId}`)
+    await onDownloadCsv(semesterId)
   }
 
   function sortProjects(containerId: UniqueIdentifier, filter: string): void {

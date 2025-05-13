@@ -16,6 +16,7 @@ import {
   handlePublishChanges,
   updateProjectOrdersAndStatus,
 } from '@/components/Composite/ProjectDragAndDrop/ProjectUpdates'
+import { handleCSVDownload } from './Handlers'
 
 const AdminProjectService = {
   updateSemesterProject: async function (
@@ -94,6 +95,7 @@ const AdminProjectService = {
         ],
         onSaveChanges: updateProjectOrdersAndStatus,
         onPublishChanges: handlePublishChanges,
+        onDownloadCsv: handleCSVDownload,
       },
     }
   },
