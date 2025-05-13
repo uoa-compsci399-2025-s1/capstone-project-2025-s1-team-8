@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
-import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/16/solid'
+import { UserCombinedInfo } from '@/types/Collections'
 
 interface ClientsPageProps {
-  clients: ClientDTOPlaceholder[]
+  clients: UserCombinedInfo[]
 }
 
 const ClientsPage: React.FC<ClientsPageProps> = ({ clients }) => {
@@ -32,7 +32,9 @@ const ClientsPage: React.FC<ClientsPageProps> = ({ clients }) => {
       <div className="pt-8">
         <ClientGroup
           clients={clients.filter((client) =>
-            client.name.toLowerCase().includes(searchValue.trim().toLowerCase()),
+            (client.firstName + ' ' + client.lastName)
+              .toLowerCase()
+              .includes(searchValue.trim().toLowerCase()),
           )}
         />
       </div>

@@ -5,11 +5,12 @@ import { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'
 import Button from '@/components/Generic/Button/Button'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
-import { ProjectDetailsType } from '@/types/Project'
-import { Semester, User } from '@/payload-types'
+import { Project, Semester } from '@/payload-types'
+import { UserCombinedInfo } from '@/types/Collections'
 
 interface ProjectModalProps extends ModalProps {
-  projectInfo: ProjectDetailsType
+  projectInfo: Project
+  semesters?: Semester[]
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({
@@ -17,7 +18,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   onClose,
   className = '',
   projectInfo,
+  semesters,
 }) => {
+  if (!semesters) semesters = []
   const [copied, setCopied] = useState(false)
   const [copiedAll, setCopiedAll] = useState(false)
 
@@ -27,7 +30,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     setTimeout(() => setCopied(false), 1000)
   }
 
-  const handleCopyAll = (projectClientDetails: User, otherClientDetails: User[]) => {
+  const handleCopyAll = (
+    projectClientDetails: UserCombinedInfo,
+    otherClientDetails: UserCombinedInfo[],
+  ) => {
     const allEmails = [
       projectClientDetails.email,
       ...otherClientDetails.map((client) => client.email),
@@ -44,6 +50,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     return `${dd}/${mm}/${yyyy}`
   }
 
+  const projectClient = projectInfo.client as UserCombinedInfo
+  const otherClientDetails = projectInfo.additionalClients
+    ? (projectInfo.additionalClients as UserCombinedInfo[])
+    : []
+
   return (
     <Modal open={open} onClose={onClose} className={className + ' min-h-fit w-[75%] top-5'}>
       <div className="relative max-w-full flex flex-col p-15 pt-19 rounded-t-2xl gap-5 pointer-events-none">
@@ -58,24 +69,22 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
         {/* title */}
         <h1 className="text-4xl font-normal m-0 text-dark-blue font-dm-serif-display">
-          {projectInfo.projectTitle}
+          {projectInfo.name}
         </h1>
 
         {/* client details */}
         <div className="flex flex-row gap-3">
           <h2 className="flex text-lg font-normal text-steel-blue font-inter">
-            {projectInfo.projectClientDetails.firstName +
-              ' ' +
-              (projectInfo.projectClientDetails.lastName ?? '')}
+            {projectClient.firstName + ' ' + projectClient.lastName}
           </h2>
           <h2 className="flex text-lg font-normal text-deeper-blue font-inter">|</h2>
           <h2 className="flex text-lg font-normal text-deeper-blue font-inter">
-            {projectInfo.projectClientDetails.email}
+            {projectClient.email}
           </h2>
           <button
             className="flex"
             style={{ pointerEvents: 'initial' }}
-            onClick={() => handleCopy(projectInfo.projectClientDetails.email)}
+            onClick={() => handleCopy(projectClient.email)}
           >
             {copied ? (
               <FiCheck className="self-center size-5.5 text-dark-blue" />
@@ -87,7 +96,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
         {/* project description*/}
         <p className="text-sm text-dark-blue font-inter text-left pb-3">
-          {projectInfo.projectDescription}
+          {projectInfo.description}
         </p>
 
         {/* desired output */}
@@ -99,13 +108,17 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         {/* capsules for information */}
         <div className="grid grid-cols-[max-content_auto_max-content_max-content] grid-flow-row gap-2.5">
           <Capsule className="col-start-1 mr-2" variant="muted_blue" text="Special requirements" />
-          <Capsule className="col-start-2" variant="beige" text={projectInfo.specialRequirements} />
+          <Capsule
+            className="col-start-2"
+            variant="beige"
+            text={projectInfo.specialEquipmentRequirements}
+          />
 
           <Capsule className="col-start-3 mr-2" variant="muted_blue" text="Submitted" />
           <Capsule
             className="col-start-4 mr-2"
             variant="gradient"
-            text={convertDatetoddmmYYYY(projectInfo.submittedDate)}
+            text={convertDatetoddmmYYYY(new Date(projectInfo.createdAt))}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Number of teams" />
@@ -118,71 +131,52 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             text={projectInfo.futureConsideration ? 'Yes' : 'No'}
           />
 
-          {projectInfo.semesters && projectInfo.semesters.length > 0 && (
-            <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />
-          )}
-          {projectInfo.semesters && projectInfo.semesters.length > 0 && (
-            <div className="col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
-              {projectInfo.semesters.map((semester: Semester) => (
-                <Capsule variant="beige" text={semester.name} key={semester.id} />
-              ))}
-            </div>
-          )}
+          <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />
+          <div className="col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
+            {semesters.map((semester) => (
+              <Capsule variant="beige" text={semester.name} key={semester.name} />
+            ))}
+          </div>
         </div>
       </div>
 
       <div className="relative bg-transparent-blue max-w-full flex flex-col px-15 pt-12 py-19 rounded-b-2xl gap-5">
-        {projectInfo.otherClientDetails && projectInfo.otherClientDetails.length > 0 && (
-          <div className="flex flex-col">
-            <div
-              className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${projectInfo.otherClientDetails?.length ?? 0} gap-x-3 pb-3`}
-            >
-              {projectInfo.otherClientDetails?.map((clientDetails) => (
-                <>
-                  <h2 className="col-start-1 text-lg font-normal text-dark-blue font-inter alternate">
-                    {clientDetails.firstName} {clientDetails.lastName}
-                  </h2>
-                  <h2 className="col-start-2 text-lg font-normal text-deeper-blue font-inter email">
-                    |
-                  </h2>
-                  <h2 className="col-start-3 text-lg font-normal text-deeper-blue font-inter email">
-                    {clientDetails.email}
-                  </h2>
-                </>
-              ))}
+        <div className="flex flex-col">
+          <div
+            className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3 pb-3`}
+          >
+            {otherClientDetails.map((clientDetails) => (
+              <>
+                <h2 className="col-start-1 text-lg font-normal text-dark-blue font-inter alternate">
+                  {clientDetails.firstName + ' ' + clientDetails.lastName}
+                </h2>
+                <h2 className="col-start-2 text-lg font-normal text-deeper-blue font-inter email">
+                  |
+                </h2>
+                <h2 className="col-start-3 text-lg font-normal text-deeper-blue font-inter email">
+                  {clientDetails.email}
+                </h2>
+              </>
+            ))}
 
-              <Button
-                onClick={() =>
-                  handleCopyAll(
-                    projectInfo.projectClientDetails,
-                    projectInfo.otherClientDetails ?? [],
-                  )
-                }
-                className="col-start-5 row-start-1"
-                variant="muted_blue"
-                size="sm"
-              >
-                {copiedAll ? <FiCheck className="self-center size-4" /> : <p>Copy All Emails</p>}
-              </Button>
-            </div>
+            <Button
+              onClick={() => handleCopyAll(projectClient, otherClientDetails)}
+              className="col-start-5 row-start-1"
+              variant="muted_blue"
+              size="sm"
+            >
+              {copiedAll ? <FiCheck className="self-center size-4" /> : <p>Copy All Emails</p>}
+            </Button>
           </div>
-        )}
-        {projectInfo.desiredTeamSkills && projectInfo.desiredTeamSkills != '' && (
-          <Capsule variant="light_beige" text="Desired team skills" />
-        )}
-        {projectInfo.desiredTeamSkills && projectInfo.desiredTeamSkills != '' && (
-          <p className="text-sm text-dark-blue font-inter text-left mb-3">
-            {projectInfo.desiredTeamSkills}
-          </p>
-        )}
-        {projectInfo.availableResources && (
-          <Capsule variant="light_beige" text="Available resources" />
-        )}
-        {projectInfo.availableResources && (
-          <p className="text-sm text-dark-blue font-inter text-left">
-            {projectInfo.availableResources}
-          </p>
-        )}
+        </div>
+        <Capsule variant="light_beige" text="Desired team skills" />
+        <p className="text-sm text-dark-blue font-inter text-left mb-3">
+          {projectInfo.desiredTeamSkills}
+        </p>
+        <Capsule variant="light_beige" text="Available resources" />
+        <p className="text-sm text-dark-blue font-inter text-left">
+          {projectInfo.availableResources}
+        </p>
       </div>
     </Modal>
   )

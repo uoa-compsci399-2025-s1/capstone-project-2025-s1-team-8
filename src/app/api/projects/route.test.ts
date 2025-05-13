@@ -15,21 +15,21 @@ describe('test /api/projects', async () => {
 
   describe('GET /api/projects', () => {
     it('should return a 401 if user is not authenticated', async () => {
-      const res = await GET(createMockNextRequest('http://localhost:3000/api/projects'))
+      const res = await GET(createMockNextRequest('api/projects'))
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
       expect(await res.json()).toEqual({ error: 'No token provided' })
     })
 
     it('should return a 401 if the user is a student', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
-      const res = await GET(createMockNextRequest('http://localhost:3000/api/projects'))
+      const res = await GET(createMockNextRequest('api/projects'))
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
       expect(await res.json()).toEqual({ error: 'No scope' })
     })
 
     it('should get no projects if none are created', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      const res = await GET(createMockNextRequest('http://localhost:3000/api/projects'))
+      const res = await GET(createMockNextRequest('api/projects'))
       expect(res.status).toBe(StatusCodes.OK)
       expect((await res.json()).data).toEqual([])
     })
@@ -38,7 +38,7 @@ describe('test /api/projects', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
       await projectService.createProject(projectCreateMock)
       await projectService.createProject(projectCreateMock)
-      const res = await GET(createMockNextRequest('http://localhost:3000/api/projects'))
+      const res = await GET(createMockNextRequest('api/projects'))
       expect(res.status).toBe(StatusCodes.OK)
       const data = await res.json()
       expect(data.data.length).toEqual(2)
@@ -46,9 +46,9 @@ describe('test /api/projects', async () => {
 
     it('should return bad Request if limit is more than 100 or less than 1', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const res = await GET(createMockNextRequest('http://localhost:3000/api/projects?limit=101'))
+      const res = await GET(createMockNextRequest('api/projects?limit=101'))
       expect(res.status).toBe(StatusCodes.BAD_REQUEST)
-      const res2 = await GET(createMockNextRequest('http://localhost:3000/api/projects?limit=0'))
+      const res2 = await GET(createMockNextRequest('api/projects?limit=0'))
       expect(res2.status).toBe(StatusCodes.BAD_REQUEST)
     })
 
@@ -57,17 +57,13 @@ describe('test /api/projects', async () => {
       await projectService.createProject(projectCreateMock)
       await projectService.createProject(projectCreateMock)
       await projectService.createProject(projectCreateMock)
-      const res1 = await GET(
-        createMockNextRequest('http://localhost:3000/api/projects?page=2&limit=2'),
-      )
+      const res1 = await GET(createMockNextRequest('api/projects?page=2&limit=2'))
       expect(res1.status).toBe(StatusCodes.OK)
       const data1 = await res1.json()
       expect(data1.data.length).toEqual(1)
       expect(data1.nextPage).toBeNull()
 
-      const res = await GET(
-        createMockNextRequest('http://localhost:3000/api/projects?page=1&limit=1'),
-      )
+      const res = await GET(createMockNextRequest('api/projects?page=1&limit=1'))
       expect(res.status).toBe(StatusCodes.OK)
       const data = await res.json()
       expect(data.data.length).toEqual(1)
@@ -83,7 +79,7 @@ describe('test /api/projects', async () => {
       })
       await projectService.createProject({ ...projectCreateMock, client: studentMock })
 
-      const res = await GET(createMockNextRequest('http://localhost:3000/api/projects'))
+      const res = await GET(createMockNextRequest('api/projects'))
 
       const json = await res.json()
       expect(json.data).toStrictEqual([relatedProject])
@@ -92,14 +88,14 @@ describe('test /api/projects', async () => {
 
   describe('POST /api/projects', () => {
     it('should return a 401 if user is not authenticated', async () => {
-      const res = await POST(createMockNextRequest('http://localhost:3000/api/projects'))
+      const res = await POST(createMockNextRequest('/api/projects'))
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
       expect(await res.json()).toEqual({ error: 'No token provided' })
     })
 
     it('should return a 401 if the user is a student', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
-      const res = await POST(createMockNextRequest('http://localhost:3000/api/projects'))
+      const res = await POST(createMockNextRequest('/api/projects'))
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
       expect(await res.json()).toEqual({ error: 'No scope' })
     })
@@ -113,10 +109,7 @@ describe('test /api/projects', async () => {
       expect(project).toEqual(await projectService.getProjectById(project.id))
 
       // Project with client ID's instead of client objects
-      const req2 = createMockNextPostRequest(
-        'https://localhost:3000/api/projects',
-        projectCreateMock2,
-      )
+      const req2 = createMockNextPostRequest('api/projects', projectCreateMock2)
       const res2 = await POST(req2)
       expect(res2.status).toBe(StatusCodes.CREATED)
       const project2 = (await res2.json()).data

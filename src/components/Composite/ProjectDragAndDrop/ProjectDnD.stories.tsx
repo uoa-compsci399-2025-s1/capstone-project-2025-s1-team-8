@@ -1,34 +1,44 @@
 import { Meta, StoryObj } from '@storybook/react'
 import ProjectDnD from './ProjectDnD'
 import { UniqueIdentifier } from '@dnd-kit/core'
-import { mockProjects } from '@/mocks/Projects.mock'
-import { ProjectStatus } from '@/types/Project'
+import { mockProjects } from '@/test-config/mocks/Project.mock'
 
-const semesterId = 'semester12026'
-const presetContainers = [
+const containers = [
   {
-    id: 'rejected-container' as UniqueIdentifier,
-    title: ProjectStatus.Rejected,
+    id: 'container-1' as UniqueIdentifier,
+    title: 'Rejected',
     containerColor: 'light' as const,
     currentItems: [
-      { id: 'item-1', projectInfo: mockProjects[0] },
-      { id: 'item-2', projectInfo: mockProjects[1] },
+      {
+        id: `item-1`,
+        projectInfo: mockProjects[0],
+      },
+      {
+        id: `item-2`,
+        projectInfo: mockProjects[1],
+      },
     ],
     originalItems: [
-      { id: 'item-1', projectInfo: mockProjects[0] },
-      { id: 'item-2', projectInfo: mockProjects[1] },
+      {
+        id: `item-1`,
+        projectInfo: mockProjects[0],
+      },
+      {
+        id: `item-2`,
+        projectInfo: mockProjects[1],
+      },
     ],
   },
   {
-    id: 'pending-container' as UniqueIdentifier,
-    title: ProjectStatus.Pending,
+    id: 'container-2' as UniqueIdentifier,
+    title: 'Pending',
     containerColor: 'medium' as const,
     currentItems: [],
     originalItems: [],
   },
   {
-    id: 'approved-container' as UniqueIdentifier,
-    title: ProjectStatus.Approved,
+    id: 'container-3' as UniqueIdentifier,
+    title: 'Accepted',
     containerColor: 'dark' as const,
     currentItems: [],
     originalItems: [],
@@ -40,11 +50,7 @@ const meta: Meta<typeof ProjectDnD> = {
   component: ProjectDnD,
   tags: ['autodocs'],
   args: {
-    presetContainers: presetContainers,
-    semesterId: semesterId,
-    onSaveChanges: async ({ containers, semesterId }) => {
-      console.log('Mock save called', containers, semesterId)
-    },
+    presetContainers: containers,
   },
 }
 

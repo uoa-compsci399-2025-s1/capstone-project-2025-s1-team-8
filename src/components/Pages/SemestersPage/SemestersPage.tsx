@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react'
-import { SemesterDTOPlaceholder } from '@/components/Composite/SemesterCard/SemesterCard'
 import SemesterCard from '@/components/Composite/SemesterCard/SemesterCard'
 import Button from '@/components/Generic/Button/Button'
 import SemesterForm from '@/components/Composite/SemesterForm/SemesterForm'
+import { Semester } from '@/payload-types'
 
 interface SemestersPageProps {
-  semesters: SemesterDTOPlaceholder[]
+  semesters: Semester[]
   created: () => void
   updated: () => void
   deleted: () => void
@@ -13,7 +13,6 @@ interface SemestersPageProps {
 
 const SemestersPage: React.FC<SemestersPageProps> = ({ semesters, created, updated, deleted }) => {
   const [modalOpen, setModalOpen] = useState(false)
-
   const currentSemesterRef = useRef<HTMLDivElement>(null)
 
   function toggleModal() {
@@ -45,7 +44,7 @@ const SemestersPage: React.FC<SemestersPageProps> = ({ semesters, created, updat
       </div>
       {semesters.map((semester) => (
         <div
-          key={semester.semesterName}
+          key={semester.name}
           ref={semester.currentOrUpcoming === 'current' ? currentSemesterRef : null}
         >
           <SemesterCard {...semester} />
