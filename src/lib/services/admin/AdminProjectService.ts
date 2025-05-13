@@ -13,7 +13,6 @@ import { DndComponentProps } from '@/components/Composite/ProjectDragAndDrop/Pro
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { UniqueIdentifier } from '@dnd-kit/core'
 import { updateProjectOrdersAndStatus } from '@/components/Composite/ProjectDragAndDrop/ProjectUpdates'
-import { UserRole } from '@/types/User'
 
 const AdminProjectService = {
   updateSemesterProject: async function (
@@ -144,44 +143,13 @@ const AdminProjectService = {
     const { data: semesters } = await AdminProjectService.getAssociatedSemestersByProject(
       project.id,
     )
-    console.log(semesters)
-
-    const defaultUser = {
-      id: '',
-      firstName: '',
-      lastName: '',
-      role: UserRole.Client,
-      updatedAt: '',
-      createdAt: '',
-      email: '',
-    }
-
-    const projectClientDetails = typeof project.client === 'object' ? project.client : defaultUser
-
-    const otherClientDetails: User[] = Array.isArray(project.additionalClients)
-      ? project.additionalClients.map((client) =>
-          typeof client === 'object' ? client : { ...defaultUser, id: client },
-        )
-      : []
 
     return {
       id: `item-${project.id}` as UniqueIdentifier,
       projectInfo: {
-        semesterProjectId: semesterProject.id,
-        projectId: project.id,
-        projectTitle: project.name,
-        projectClientDetails: projectClientDetails,
-        otherClientDetails: otherClientDetails,
-        projectDescription: project.description,
-        desiredOutput: project.desiredOutput,
-        desiredTeamSkills: project.desiredTeamSkills ?? undefined,
-        // availableResources: project.attachments ?? undefined,
-        availableResources: '',
-        specialRequirements: project.specialEquipmentRequirements,
-        numberOfTeams: project.numberOfTeams,
-        futureConsideration: project.futureConsideration,
+        ...project,
         semesters: semesters,
-        submittedDate: new Date(project.createdAt),
+        semesterProjectId: semesterProject.id,
       },
     }
   },
