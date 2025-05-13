@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { UserCombinedInfo } from '@/types/Collections'
 import { User } from '@/payload-types'
+import { UserRole } from '@/types/User'
 
 interface NavLink {
   href: string
@@ -19,7 +20,13 @@ interface NavBarProps {
 }
 
 const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true, user, onclick }) => {
-  const dashboardLink = user ? (user.role === 'admin' ? '/admin' : '/client') : '/'
+  const dashboardLink = user
+    ? user.role === UserRole.Admin
+      ? '/admin'
+      : user.role === UserRole.Client
+        ? '/client'
+        : '/'
+    : '/'
   /*(() => {
     if (user?.role === 'admin') {
       return '/admin'
@@ -73,6 +80,16 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true, user, onclic
             </Link>
             <span className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/' ? 'scale-x-100' : ''}`} />
           </div> */}
+          {user && user.role === UserRole.Admin && (
+            <div className="relative group p-2">
+              <Link href={"/client"} className="nav-link-text">
+                {'My Client Dashboard'}
+              </Link>
+              <span
+                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === dashboardLink ? 'scale-x-100' : ''}`}
+              />
+            </div>
+          )}
           <div className="relative group p-2">
             <Link href={dashboardLink} className="nav-link-text">
               {user ? 'My DashBoard' : 'Published Projects'}
@@ -81,7 +98,6 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true, user, onclic
               className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === dashboardLink ? 'scale-x-100' : ''}`}
             />
           </div>
-
           <div className="relative group p-2">
             {
               <button onClick={onclick} className="nav-link-text font-bold">
