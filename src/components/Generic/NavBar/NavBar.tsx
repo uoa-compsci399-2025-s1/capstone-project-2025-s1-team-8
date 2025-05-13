@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-// import { isLoggedIn } from '@/lib/services/user/Handlers'
+import { UserCombinedInfo } from '@/types/Collections'
+import { User } from '@/payload-types'
+import { UserRole } from '@/types/User'
 
 interface NavLink {
   href: string
@@ -13,16 +15,19 @@ interface NavLink {
 interface NavBarProps {
   navElements?: NavLink[]
   hasBg?: boolean
-  loggedIn?: boolean
+  user?: UserCombinedInfo | User
   onclick?: () => void
 }
 
-const NavBar: React.FC<NavBarProps> = ({
-  navElements,
-  hasBg = true,
-  loggedIn = false,
-  onclick,
-}) => {
+const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true, user, onclick }) => {
+  const dashboardLink = user
+    ? user.role === UserRole.Admin
+      ? '/admin'
+      : user.role === UserRole.Client
+        ? '/client'
+        : '/'
+    : '/'
+
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
   const [hasShadow, setHasShadow] = useState(false)
@@ -67,14 +72,36 @@ const NavBar: React.FC<NavBarProps> = ({
             </Link>
             <span className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/' ? 'scale-x-100' : ''}`} />
           </div> */}
+          {user && user.role === UserRole.Admin && (
+            <div className="relative group p-2">
+              <Link href={'/client'} className="nav-link-text">
+                {'My Client Dashboard'}
+              </Link>
+              <span
+                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/client' ? 'scale-x-100' : ''}`}
+              />
+            </div>
+          )}
+          {user && (
+            <div className="relative group p-2">
+              <Link href={dashboardLink} className="nav-link-text">
+                {user.role === UserRole.Admin || user.role == UserRole.Client
+                  ? 'My DashBoard'
+                  : 'Published Projects'}
+              </Link>
+              <span
+                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === dashboardLink ? 'scale-x-100' : ''}`}
+              />
+            </div>
+          )}
           <div className="relative group p-2">
             {
               <button onClick={onclick} className="nav-link-text font-bold">
-                {loggedIn ? 'Logout' : 'Login'}
+                {user ? 'Logout' : 'Login'}
               </button>
             }
             <span
-              className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100  ${pathname === '/auth/signin' ? 'scale-x-100' : ''}`}
+              className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100  ${pathname === '/auth/login' ? 'scale-x-100' : ''}`}
             />
           </div>
         </div>
@@ -129,9 +156,15 @@ const NavBar: React.FC<NavBarProps> = ({
           </Link>
         </div>
         <div className="p-[5%]">
+          {/* {navElement} */}
+          <Link href={dashboardLink} className="nav-link-text">
+            {user ? 'My Dashboard' : 'Published Projects'}
+          </Link>
+        </div>
+        <div className="p-[5%]">
           {
             <button onClick={onclick} className="nav-link-text font-bold">
-              {loggedIn ? 'Logout' : 'Login'}
+              {user ? 'Logout' : 'Login'}
             </button>
           }
         </div>
