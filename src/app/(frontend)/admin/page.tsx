@@ -82,10 +82,7 @@ const Admin = () => {
 
   return (
     <div>
-      <NavBar
-        onclick={handleLoginButtonClick}
-        user={loggedInUser}
-      />
+      <NavBar onclick={handleLoginButtonClick} user={loggedInUser} />
       <div className="hidden lg:block w-full">
         <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
           {AdminNavElements.map((nav, i) => (
