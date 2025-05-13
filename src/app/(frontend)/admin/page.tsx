@@ -7,7 +7,6 @@ import { UniqueIdentifier } from '@dnd-kit/core'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { mockProjects } from '@/test-config/mocks/Project.mock'
-import { mockClients } from '@/test-config/mocks/User.mock'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
 import { getAllSemesters } from '@/lib/util/adminSemesterUtils'
 import { Semester } from '@/payload-types'
@@ -16,6 +15,8 @@ import MobileAdminView from '@/app/(frontend)/admin/MobileAdminView'
 import { UserCombinedInfo } from '@/types/Collections'
 import { redirect } from 'next/navigation'
 import { UserRole } from '@/types/User'
+import { getAllClients } from '@/lib/util/adminClientUtils'
+import { ProjectDetails } from '@/types/Project'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -28,12 +29,24 @@ const Admin = () => {
   const [created, setCreated] = useState(false)
   const [updated, setUpdated] = useState(false)
   const [deleted, setDeleted] = useState(false)
+  const [clientsData, setClientsData] = useState<
+    { client: UserCombinedInfo; projects: ProjectDetails[] }[]
+  >([])
+
   const fetchSemesters = async () => {
     const res = await getAllSemesters()
     if (res?.data) {
       setSemestersData(res.data)
     }
   }
+
+  const fetchClients = async () => {
+    const res = await getAllClients()
+    if (res?.data) {
+      setClientsData(res.data)
+    }
+  }
+
   const message = created
     ? 'Semester created successfully'
     : updated
@@ -44,6 +57,7 @@ const Admin = () => {
 
   useEffect(() => {
     fetchSemesters()
+    fetchClients()
   }, [])
 
   useEffect(() => {
@@ -176,7 +190,7 @@ const Admin = () => {
                 aria-hidden={activeNav !== 1}
                 tabIndex={activeNav === 1 ? 0 : -1}
               >
-                <ClientsPage clients={mockClients} />
+                <ClientsPage clients={clientsData} />
               </div>
 
               <div

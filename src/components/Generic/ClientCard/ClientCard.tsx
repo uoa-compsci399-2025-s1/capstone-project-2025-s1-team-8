@@ -31,7 +31,7 @@ const ClientCard: React.FC<ClientCardProps> = ({ clientInfo, projects }) => {
             className="text-light-beige font-semibold text-xl cursor-pointer"
             onClick={() => handleModal()}
           >
-            {clientInfo.firstName + ' ' + clientInfo.lastName}
+            {`${clientInfo.firstName}${clientInfo.lastName ? ' ' + clientInfo.lastName : ''}`}
           </p>
           <p className="text-light-beige text-base self-end">{clientInfo.email}</p>
         </div>
@@ -46,7 +46,7 @@ const ClientCard: React.FC<ClientCardProps> = ({ clientInfo, projects }) => {
       <ClientModal
         open={open}
         onClose={() => handleModal()}
-        clientFullName={clientInfo.firstName + ' ' + clientInfo.lastName}
+        clientFullName={`${clientInfo.firstName}${clientInfo.lastName ? ' ' + clientInfo.lastName : ''}`}
         clientEmail={clientInfo.email}
         affiliation={clientInfo.affiliation ?? ''}
         introduction={clientInfo.introduction ?? ''}
