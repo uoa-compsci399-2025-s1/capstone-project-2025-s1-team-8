@@ -93,7 +93,7 @@ export const handleRegister = async (
   })
 
   if (status === 201) {
-    redirect('/login')
+    redirect('/auth/login')
   } else {
     return { error, message, details }
   }
