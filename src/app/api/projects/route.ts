@@ -7,10 +7,12 @@ import { Security } from '@/business-layer/middleware/Security'
 import { MediaSchema, ProjectSchema } from '@/types/Payload'
 import { RequestWithUser } from '@/types/Requests'
 import { UserRole, UserRoleWithoutAdmin } from '@/types/User'
-import { User } from '@/payload-types'
+import { Semester, User } from '@/payload-types'
 import UserService from '@/data-layer/services/UserService'
 import { NotFound } from 'payload'
 import { CommonResponse } from '@/types/response-models/CommonResponse'
+import SemesterService from '@/data-layer/services/SemesterService'
+import { ProjectStatus } from '@/types/Project'
 
 export const CreateProjectClientSchema = z.object({
   firstName: z.string(),
@@ -23,11 +25,12 @@ export const CreateProjectRequestBodySchema = z.object({
   name: z.string(),
   description: z.string(),
   additionalClients: z.array(CreateProjectClientSchema).optional(),
-  attachments: z.array(MediaSchema).max(5).optional(),
+  attachments: z.optional(z.array(MediaSchema).max(5)),
   deadline: z
     .string()
     .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
     .optional(),
+  semesters: z.array(z.string()),
   timestamp: z.string().datetime({ message: 'Invalid date format, should be in ISO 8601 format' }),
   desiredOutput: z.string(),
   specialEquipmentRequirements: z.string(),
@@ -84,6 +87,7 @@ class RouteWrapper {
   @Security('jwt', ['client', 'admin'])
   static async POST(req: RequestWithUser) {
     const projectService = new ProjectService()
+    const semesterService = new SemesterService()
     const userService = new UserService()
 
     try {
@@ -107,13 +111,37 @@ class RouteWrapper {
           }
         }) || [],
       )
+      console.log(clients)
+      const semesters: Semester[] = await Promise.all(
+        body.semesters?.map(async (semesterID) => {
+          try {
+            return await semesterService.getSemester(semesterID)
+          } catch (err) {
+            throw err
+          }
+        }),
+      )
 
-      const data = await projectService.createProject({
+      const createdProject = await projectService.createProject({
         ...body,
         client: req.user.id,
         additionalClients: clients,
       } as CreateProjectData)
-      return NextResponse.json({ data } as CreateProjectResponse, { status: StatusCodes.CREATED })
+
+      await Promise.all(
+        semesters.map(async (semester) => {
+          return await projectService.createSemesterProject({
+            project: createdProject,
+            semester,
+            status: ProjectStatus.Pending,
+            published: false,
+          })
+        }),
+      )
+
+      return NextResponse.json({ data: createdProject } as CreateProjectResponse, {
+        status: StatusCodes.CREATED,
+      })
     } catch (error) {
       if (error instanceof ZodError) {
         return NextResponse.json(

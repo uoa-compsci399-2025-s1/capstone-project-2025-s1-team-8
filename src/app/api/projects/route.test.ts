@@ -3,16 +3,20 @@ import { cookies } from 'next/headers'
 
 import { createMockNextPostRequest, createMockNextRequest } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
-import { projectCreateMock, projectCreateMock2 } from '@/test-config/mocks/Project.mock'
-import { CreateProjectResponse, GET, POST } from './route'
+import { projectCreateMock } from '@/test-config/mocks/Project.mock'
+import { CreateProjectRequestBody, CreateProjectResponse, GET, POST } from './route'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import { clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 import UserService from '@/data-layer/services/UserService'
+import SemesterService from '@/data-layer/services/SemesterService'
+import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
+import { Project } from '@/payload-types'
 
 describe('test /api/projects', async () => {
   const projectService = new ProjectService()
   const userService = new UserService()
+  const semesterService = new SemesterService()
   const cookieStore = await cookies()
 
   describe('GET /api/projects', () => {
@@ -104,8 +108,17 @@ describe('test /api/projects', async () => {
 
     it('should create a project', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-
-      const res = await POST(createMockNextPostRequest('', projectCreateMock))
+      const semester = await semesterService.createSemester(semesterCreateMock)
+      const payload: CreateProjectRequestBody = {
+        ...projectCreateMock,
+        additionalClients: undefined,
+        attachments: undefined,
+        deadline: new Date().toISOString(),
+        desiredTeamSkills: '',
+        availableResources: '',
+        semesters: [semester.id],
+      }
+      const res = await POST(createMockNextPostRequest('', payload))
       const project = (await res.json()).data
 
       expect(res.status).toBe(StatusCodes.CREATED)
@@ -114,11 +127,26 @@ describe('test /api/projects', async () => {
       expect(fetchedProject.client).toStrictEqual(clientMock)
 
       // Project with client ID's instead of client objects
-      const req2 = createMockNextPostRequest('api/projects', projectCreateMock2)
+      const payload2: CreateProjectRequestBody = {
+        ...projectCreateMock,
+        additionalClients: [
+          {
+            firstName: clientMock.firstName,
+            lastName: clientMock.lastName || undefined,
+            email: clientMock.email,
+          },
+        ],
+        attachments: undefined,
+        deadline: new Date().toISOString(),
+        desiredTeamSkills: '',
+        availableResources: '',
+        semesters: [semester.id],
+      }
+      const req2 = createMockNextPostRequest('api/projects', payload2)
       const res2 = await POST(req2)
       expect(res2.status).toBe(StatusCodes.CREATED)
-      const project2 = (await res2.json()).data
-      expect(project2).toEqual(await projectService.getProjectById(project2.id))
+      const project2 = await res2.json()
+      expect(project2.data).toEqual(await projectService.getProjectById(project2.data.id))
     })
 
     it('should create a new client if the additional clients are non-existent', async () => {
@@ -136,16 +164,52 @@ describe('test /api/projects', async () => {
       const res = await POST(
         createMockNextPostRequest('', {
           ...projectCreateMock,
+          semesters: [],
           additionalClients: [additionalClientMock],
         }),
       )
-      const project: CreateProjectResponse = await res.json()
+      const json: CreateProjectResponse = await res.json()
+      expect(res.status).toBe(StatusCodes.CREATED)
       expect([await userService.getUserByEmail(additionalClientMock.email)]).toStrictEqual(
-        project.data?.additionalClients,
+        json.data?.additionalClients,
       )
     })
 
-    it('should fail to create a project', async () => {
+    it('should create corresponding semester projects on project creation', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, clientToken)
+
+      const semester1 = await semesterService.createSemester(semesterCreateMock)
+      const semester2 = await semesterService.createSemester(semesterCreateMock)
+
+      const res = await POST(
+        createMockNextPostRequest('', {
+          ...projectCreateMock,
+          semesters: [semester1.id, semester2.id],
+        }),
+      )
+      expect(res.status).toBe(StatusCodes.CREATED)
+
+      const json: CreateProjectResponse = await res.json()
+      const projectsInSemester1 = await projectService.getAllSemesterProjectsBySemester(
+        semester1.id,
+      )
+      expect(
+        projectsInSemester1.docs.some(
+          (project) => (project.project as Project).id === json.data?.id,
+        ),
+      ).toBeTruthy()
+
+      const projectsInSemester2 = await projectService.getAllSemesterProjectsBySemester(
+        semester1.id,
+      )
+      expect(
+        projectsInSemester2.docs.some(
+          (project) => (project.project as Project).id === json.data?.id,
+        ),
+      ).toBeTruthy()
+    })
+
+    it('should return a 400 if the body is malformed', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const req = createMockNextPostRequest('', {
         ...projectCreateMock,
