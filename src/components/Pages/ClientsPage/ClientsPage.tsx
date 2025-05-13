@@ -3,9 +3,13 @@ import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
 import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/16/solid'
 import { ClientCombinedInfo } from '@/types/Payload'
+import { Project } from '@/payload-types'
 
 interface ClientsPageProps {
-  clients: ClientCombinedInfo[]
+  clients: {
+    client: ClientCombinedInfo
+    projects: Project[]
+  }[]
 }
 
 const ClientsPage: React.FC<ClientsPageProps> = ({ clients }) => {
@@ -32,8 +36,8 @@ const ClientsPage: React.FC<ClientsPageProps> = ({ clients }) => {
       </div>
       <div className="pt-8">
         <ClientGroup
-          clients={clients.filter((client) =>
-            `${client.firstName} ${client.lastName ?? ''}`
+          clients={clients.filter((clientInfo) =>
+            `${clientInfo.client.firstName} ${clientInfo.client.lastName ?? ''}`
               .toLowerCase()
               .includes(searchValue.trim().toLowerCase()),
           )}

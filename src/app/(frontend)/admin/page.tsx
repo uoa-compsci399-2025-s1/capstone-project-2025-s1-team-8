@@ -4,9 +4,21 @@ import AdminService from '@/lib/services/admin'
 
 export default async function AdminPage() {
   const { data } = await AdminService.getAllUsers()
+  // For each client, fetch their projects
+  const clientsWithProjects = await Promise.all(
+    data.map(async (client) => {
+      const projects = await AdminService.getProjectsByUserId(client.id)
+      return {
+        client,
+        projects,
+      }
+    })
+  )
+  console.log(clientsWithProjects)
+
   return (
     <>
-      <Admin ClientData={data} />
+      <Admin ClientData={clientsWithProjects} />
     </>
   )
 }

@@ -10,9 +10,13 @@ import { mockProjects } from '@/mocks/Projects.mock'
 import { mockSemesters } from '@/mocks/Semesters.mock'
 import { ClientCombinedInfo } from '@/types/Payload'
 import SadTeapot from 'src/assets/sad-teapot.svg'
+import { Project } from '@/payload-types'
 
 interface AdminProps {
-  ClientData?: ClientCombinedInfo[]
+  ClientData: {
+    client: ClientCombinedInfo
+    projects: Project[]
+  }[]
 }
 
 const Admin: React.FC<AdminProps> = ({ ClientData }) => {

@@ -12,8 +12,14 @@ export interface ClientDTOPlaceholder {
 }
 
 import { ClientCombinedInfo } from '@/types/Payload'
+import { Project } from '@/payload-types'
 
-const ClientCard: React.FC<ClientCombinedInfo> = (clientInfo) => {
+interface ClientCardProps {
+  client: ClientCombinedInfo
+  projects: Project[]
+}
+
+const ClientCard: React.FC<ClientCardProps> = ({client, projects}) => {
   const [copied, setCopied] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -35,11 +41,11 @@ const ClientCard: React.FC<ClientCombinedInfo> = (clientInfo) => {
             className="text-light-beige font-semibold text-xl cursor-pointer"
             onClick={() => handleModal()}
           >
-            {`${clientInfo.firstName}${clientInfo.lastName ? ' ' + clientInfo.lastName : ''}`}
+            {`${client.firstName}${client.lastName ? ' ' + client.lastName : ''}`}
           </p>
-          <p className="text-light-beige text-base self-end">{clientInfo.email}</p>
+          <p className="text-light-beige text-base self-end">{client.email}</p>
         </div>
-        <button onClick={() => handleCopy(clientInfo.email)}>
+        <button onClick={() => handleCopy(client.email)}>
           {copied ? (
             <FiCheck className="self-center size-5 text-light-beige" />
           ) : (
@@ -50,11 +56,11 @@ const ClientCard: React.FC<ClientCombinedInfo> = (clientInfo) => {
       <ClientModal
         open={open}
         onClose={() => handleModal()}
-        clientFullName={`${clientInfo.firstName}${clientInfo.lastName ? ' ' + clientInfo.lastName : ''}`}
-        clientEmail={clientInfo.email}
-        affiliation={clientInfo.affiliation}
-        introduction={clientInfo.introduction}
-        projects={[]}
+        clientFullName={`${client.firstName}${client.lastName ? ' ' + client.lastName : ''}`}
+        clientEmail={client.email}
+        affiliation={client.affiliation}
+        introduction={client.introduction}
+        projects={projects}
       />
     </>
   )
