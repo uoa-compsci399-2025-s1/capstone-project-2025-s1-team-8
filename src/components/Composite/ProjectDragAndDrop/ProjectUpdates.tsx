@@ -24,7 +24,7 @@ export async function updateProjectOrdersAndStatus({
 
       await AdminProjectService.updateSemesterProject(
         semesterId,
-        project.projectInfo.semesterProjectId,
+        project.projectInfo.semesterProjectId ?? '',
         updatedOrderAndStatus,
       )
     }

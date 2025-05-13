@@ -37,7 +37,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo }) => {
       </div>
       <ProjectModal
         projectInfo={projectInfo}
-        semesters={projectInfo.semesters}
         open={modalOpen}
         onClose={() => toggleModal()}
       />

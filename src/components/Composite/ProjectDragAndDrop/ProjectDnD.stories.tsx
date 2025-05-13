@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react'
 import ProjectDnD from './ProjectDnD'
 import { UniqueIdentifier } from '@dnd-kit/core'
-import { mockProjects } from '@/test-config/mocks/Project.mock'
+import { ProjectDetailsMock, ProjectDetailsMock2 } from '@/test-config/mocks/Project.mock'
+import { ProjectStatus } from '@/types/Project'
 
 const semesterId = 'semester12026'
 const presetContainers = [
@@ -10,12 +11,12 @@ const presetContainers = [
     title: ProjectStatus.Rejected,
     containerColor: 'light' as const,
     currentItems: [
-      { id: 'item-1', projectInfo: mockProjects[0] },
-      { id: 'item-2', projectInfo: mockProjects[1] },
+      { id: 'item-1', projectInfo: ProjectDetailsMock },
+      { id: 'item-2', projectInfo: ProjectDetailsMock2 },
     ],
     originalItems: [
-      { id: 'item-1', projectInfo: mockProjects[0] },
-      { id: 'item-2', projectInfo: mockProjects[1] },
+      { id: 'item-1', projectInfo: ProjectDetailsMock },
+      { id: 'item-2', projectInfo: ProjectDetailsMock2 },
     ],
   },
   {

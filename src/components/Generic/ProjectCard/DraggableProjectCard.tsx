@@ -3,7 +3,6 @@ import React from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { BsThreeDots } from 'react-icons/bs'
-import { Project } from '@/payload-types'
 import { UserCombinedInfo } from '@/types/Collections'
 import { ProjectDetails } from '@/types/Project'
 

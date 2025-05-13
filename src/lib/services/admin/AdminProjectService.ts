@@ -1,4 +1,4 @@
-import { Project, Semester, SemesterProject, User } from '@/payload-types'
+import { Project, Semester, SemesterProject } from '@/payload-types'
 import { UpdateSemesterProjectData } from '@/types/Collections'
 import { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
 import { buildNextRequest } from '@/utils/buildNextRequest'
