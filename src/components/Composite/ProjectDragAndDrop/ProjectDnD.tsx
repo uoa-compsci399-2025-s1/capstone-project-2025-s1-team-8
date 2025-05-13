@@ -13,15 +13,15 @@ import {
   useSensors,
 } from '@dnd-kit/core'
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
-
-// Components
 import ProjectContainer from './ProjectContainer'
 import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { FilterProvider } from '@/contexts/FilterContext'
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { ProjectDetailsType, ProjectStatus } from '@/types/Project'
-import { FiSave } from 'react-icons/fi'
+import { FiSave, FiPrinter } from 'react-icons/fi'
 import Notification from '@/components/Generic/Notification/Notification'
+import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
+import { HiOutlineDocumentDownload } from 'react-icons/hi'
 import { UserRole } from '@/types/User'
 import { UpdateParams } from './ProjectUpdates'
 
@@ -74,6 +74,12 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
   const [showNotification, setShowNotification] = useState<boolean>(false)
 
+  const buttonItems = [
+    { Icon: FiSave, value: 'save', label: 'Save' },
+    { Icon: FiPrinter, value: 'publish', label: 'Publish' },
+    { Icon: HiOutlineDocumentDownload, value: 'downloadcsv', label: 'Download CSV' },
+  ]
+
   useEffect(() => {
     if (hasChanges) {
       setShowNotification(true)
@@ -120,6 +126,16 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
         originalItems: [...container.currentItems],
       })),
     )
+  }
+
+  function handlePublishChanges() {
+    // send changes to the backend
+    console.log('publishing changes')
+  }
+
+  function handleDownloadCsv() {
+    // download csv of all approved projects
+    console.log('downloading csv')
   }
 
   function sortProjects(containerId: UniqueIdentifier, filter: string): void {
@@ -469,13 +485,22 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
             )}
           </DragOverlay>
         </DndContext>
-        <button
-          className={`flex absolute z-40 right-4 bottom-4 gap-4 p-3 rounded-full shadow-lg ${hasChanges ? 'bg-gradient-to-tl from-deeper-blue to-muted-blue cursor-pointer' : 'bg-grey-1 cursor-not-allowed'}`}
-          onClick={handleSaveChanges}
-          disabled={!hasChanges}
-        >
-          <FiSave className="w-6 h-6 text-white"></FiSave>
-        </button>
+        <div className="absolute z-40 right-4 bottom-4">
+          <RadialMenu
+            items={buttonItems}
+            onItemClick={(value) => {
+              if (value === 'save') {
+                handleSaveChanges()
+              }
+              if (value === 'publish') {
+                handlePublishChanges()
+              }
+              if (value === 'downloadcsv') {
+                handleDownloadCsv()
+              }
+            }}
+          />
+        </div>
       </div>
     </div>
   )
