@@ -24,6 +24,6 @@ export const AdditionalLink: Story = {
 
 export const LoggedIn: Story = {
   args: {
-    user: mockClients[0]
+    user: mockClients[0],
   },
 }
