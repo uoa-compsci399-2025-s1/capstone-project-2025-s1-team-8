@@ -23,7 +23,6 @@ const Radio: FC<RadioProps> = ({
   const [customValue, setCustomValue] = useState('')
   const borderErrorStyle = `${error ? 'border-pink-accent hover:outline-dark-pink peer-focus:outline-dark-pink' : 'border-steel-blue hover:outline-deeper-blue peer-focus:outline-deeper-blue'}`
   const dotErrorStyle = `${error ? 'bg-pink-accent' : 'bg-steel-blue'} w-[8px] h-[8px] rounded-full self-center m-auto transition-opacity duration-300`
-  const textErrorStyle = `${error ? 'text-pink-accent' : 'text-dark-blue'}`
   const radioStyle =
     'w-[16px] h-[16px] inline-flex mr-6 border-[1.5px] rounded-full peer-focus:outline hover:outline [&>*]:opacity-0 peer-checked:[&>*]:opacity-100'
 
@@ -50,7 +49,7 @@ const Radio: FC<RadioProps> = ({
           >
             <div className={`${dotErrorStyle}`} />
           </span>
-          <p className={`text-sm ${textErrorStyle}`}>{value}</p>
+          <p className="text-sm">{value}</p>
         </label>
       ))}
       {customInput && (
