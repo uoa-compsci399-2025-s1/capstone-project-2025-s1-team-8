@@ -29,7 +29,9 @@ const Admin = () => {
   const [created, setCreated] = useState(false)
   const [updated, setUpdated] = useState(false)
   const [deleted, setDeleted] = useState(false)
-  const [clientsData, setClientsData] = useState<{ client: UserCombinedInfo; projects: ProjectDetails[]; }[]>([])
+  const [clientsData, setClientsData] = useState<
+    { client: UserCombinedInfo; projects: ProjectDetails[] }[]
+  >([])
 
   const fetchSemesters = async () => {
     const res = await getAllSemesters()
