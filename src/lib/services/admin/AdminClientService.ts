@@ -1,4 +1,3 @@
-import { Project } from '@/payload-types'
 import { GET as GetUsers } from '@/app/api/admin/users/route'
 import { GET as GetUserById } from '@/app/api/admin/users/[id]/route'
 import { PATCH as UpdateUser } from '@/app/api/admin/users/[id]/route'
@@ -11,6 +10,7 @@ import { UpdateUserRequestBody } from '@/app/api/admin/users/[id]/route'
 import { UserCombinedInfo } from '@/types/Collections'
 import { StatusCodes } from 'http-status-codes'
 import { UserRole } from '@/types/User'
+import { ProjectDetails } from '@/types/Project'
 
 const AdminClientService = {
   getAllUsers: async function (
@@ -85,7 +85,7 @@ const AdminClientService = {
     options: { page?: number; limit?: number } = {},
   ): Promise<{
     status: StatusCodes
-    data: Project[]
+    data: ProjectDetails[]
     nextPage?: string
     error?: string
   }> {
