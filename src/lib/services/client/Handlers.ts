@@ -4,12 +4,11 @@ import { redirect } from 'next/navigation'
 import ClientService from '@/lib/services/client/ClientService'
 import { StatusCodes } from 'http-status-codes'
 import { UserCombinedInfo } from '@/types/Collections'
-import { Project, Semester } from '@/payload-types'
+import { ProjectWithSemesters } from '@/types/Project'
 
 export const handleClientPageLoad = async (): Promise<{
   userInfo: UserCombinedInfo
-  projects: Project[]
-  semesters: Semester[][]
+  projects: ProjectWithSemesters[]
 }> => {
   const { userInfo, status } = await ClientService.getClientInfo()
   const clientProjectsRes = await ClientService.getClientProjects()
@@ -22,22 +21,22 @@ export const handleClientPageLoad = async (): Promise<{
     redirect('/not-found')
   }
 
-  const semestersList: Semester[][] = []
   const projects = clientProjectsRes.projects ?? []
+  const projectsWithSemesters: ProjectWithSemesters[] = []
 
   for (let i = 0; i < projects.length; i++) {
     const { semesters, status, error, message } = await ClientService.getSemesterForProject(
       projects[i].id,
     )
     if (status === StatusCodes.OK) {
-      semestersList.push(semesters)
+      projectsWithSemesters.push({ ...projects[i], semesters })
     } else {
-      semestersList.push([])
+      projectsWithSemesters.push({ ...projects[i], semesters: [] })
       console.error(`Error fetching semesters for project ${projects[i].id}: ${error || message}`)
     }
   }
 
-  return { userInfo, projects: clientProjectsRes.projects, semesters: semestersList }
+  return { userInfo, projects: projectsWithSemesters }
 }
 
 export const handleClientProfileUpdate = async (

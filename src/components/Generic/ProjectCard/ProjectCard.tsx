@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import ProjectModal from '@/components/Composite/ProjectModal/ProjectModal'
-import { Project, Semester } from '@/payload-types'
 import { UserCombinedInfo } from '@/types/Collections'
+import { ProjectWithSemesters } from '@/types/Project'
 
 interface ProjectCardProps {
-  projectInfo: Project
-  semesters: Semester[]
+  projectInfo: ProjectWithSemesters
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo, semesters }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo }) => {
   const [modalOpen, setModalOpen] = useState(false)
 
   function toggleModal() {
@@ -38,7 +37,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo, semesters }) => 
       </div>
       <ProjectModal
         projectInfo={projectInfo}
-        semesters={semesters}
+        semesters={projectInfo.semesters}
         open={modalOpen}
         onClose={() => toggleModal()}
       />

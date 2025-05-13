@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
 import ClientModal from './ClientModal'
 import Button from '@/components/Generic/Button/Button'
-import { mockProjects } from '@/test-config/mocks/Project.mock'
+import { projectsWithSemestersMock } from '@/test-config/mocks/Project.mock'
 
 const meta: Meta<typeof ClientModal> = {
   title: 'Composite/ClientModal',
@@ -44,6 +44,6 @@ export const Exemplar: Story = {
     affiliation: 'University of Auckland',
     introduction:
       'Hello! My name is John Doe and I am a lecturer at the University of Auckland. \n\nMy hobbies include snorkelling, fishing, reading, baking, eating, sleeping and taking various methods of transport to my destination!\n\n"John Doe" is a common placeholder name used to represent an unknown or anonymous individual, particularly in legal or informal contexts. It\'s often used as a stand-in when a person\'s real name is not known, needs to be protected, or when a general example is needed. The female equivalent is "Jane Doe".',
-    projects: mockProjects,
+    projects: projectsWithSemestersMock,
   },
 }

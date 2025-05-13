@@ -2,14 +2,14 @@ import ClientModal from '@/components/Composite/ClientModal/ClientModal'
 import React, { useState } from 'react'
 import { FiCopy, FiCheck } from 'react-icons/fi'
 import { UserCombinedInfo } from '@/types/Collections'
-import { Project } from '@/payload-types'
+import { ProjectWithSemesters } from '@/types/Project'
 
 export interface ClientCardProps {
   clientInfo: UserCombinedInfo
-  projects?: Project[]
+  projects?: ProjectWithSemesters[]
 }
 
-const ClientCard: React.FC<ClientCardProps> = ({ clientInfo, projects = [] }) => {
+const ClientCard: React.FC<ClientCardProps> = ({ clientInfo, projects }) => {
   const [copied, setCopied] = useState(false)
   const [open, setOpen] = useState(false)
 

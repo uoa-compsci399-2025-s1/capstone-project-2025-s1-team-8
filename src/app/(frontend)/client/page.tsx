@@ -5,24 +5,21 @@ import ClientDashboard from '@/components/Pages/ClientDashboard/ClientDashboard'
 import { useState, useEffect } from 'react'
 import { handleClientPageLoad } from '@/lib/services/client/Handlers'
 import { UserCombinedInfo } from '@/types/Collections'
-import { Project } from '@/payload-types'
-import { Semester } from '@/payload-types'
 import { handleLoginButtonClick, isLoggedIn } from '@/lib/services/user/Handlers'
 import { handleClientProfileUpdate } from '@/lib/services/client/Handlers'
+import { ProjectWithSemesters } from '@/types/Project'
 
 export default function Client() {
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
   const [user, setUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
-  const [projects, setProjects] = useState<Project[]>([])
+  const [projects, setProjects] = useState<ProjectWithSemesters[]>([])
   const [loggedIn, setLoggedIn] = useState<boolean>(false)
   const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
-  const [semesters, setSemesters] = useState<Semester[][]>([])
 
   useEffect(() => {
     handleClientPageLoad().then((res) => {
       setUser(res.userInfo)
       setProjects(res.projects)
-      setSemesters(res.semesters)
       setIsLoaded(true)
     })
     isLoggedIn().then((res) => {
@@ -45,12 +42,7 @@ export default function Client() {
         />
       </div>
       <div className="items-center justify-center w-full px-8 sm:px-15 lg:px-30 pt-40 pb-20">
-        <ClientDashboard
-          client={user}
-          projects={projects}
-          semesters={semesters}
-          onSave={handleClientProfileUpdate}
-        />
+        <ClientDashboard client={user} projects={projects} onSave={handleClientProfileUpdate} />
       </div>
     </div>
   )

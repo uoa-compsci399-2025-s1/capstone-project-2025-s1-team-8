@@ -1,8 +1,9 @@
 import { CreateProjectData, CreateSemesterProjectData } from '@/types/Collections'
 import { Project, SemesterProject } from '@/payload-types'
 import { ProjectStatus } from '@/types/Project'
-import { semesterMock } from '@/test-config/mocks/Semester.mock'
+import { semesterMock, mockSemesters } from '@/test-config/mocks/Semester.mock'
 import { clientMock } from './Auth.mock'
+import { ProjectWithSemesters } from '@/types/Project'
 
 /*
  * Project mocks
@@ -104,3 +105,27 @@ export const semesterProjectCreateMock2: CreateSemesterProjectData = {
   status: ProjectStatus.Accepted,
   published: false,
 }
+
+/*
+ * ProjectWithSemesters mocks
+  */
+export const projectWithSemestersMock: ProjectWithSemesters = {
+  ...projectMock,
+  semesters: [semesterMock],
+}
+
+export const projectWithSemestersMock2: ProjectWithSemesters = {
+  ...projectMock2,
+  semesters: [mockSemesters[0], mockSemesters[1]],
+}
+
+export const projectWithSemestersMock3: ProjectWithSemesters = {
+  ...projectMock,
+  semesters: mockSemesters,
+}
+
+export const projectsWithSemestersMock: ProjectWithSemesters[] = [
+  projectWithSemestersMock,
+  projectWithSemestersMock2,
+  projectWithSemestersMock3,
+]

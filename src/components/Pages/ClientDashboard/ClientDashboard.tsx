@@ -2,14 +2,13 @@ import CreateProjectCard from '@/components/Composite/CreateProjectCard/CreatePr
 import GradientTextArea from '@/components/Generic/GradientTextArea/GradientTextArea'
 import ClientProfile from '@/components/Composite/ClientProfile/ClientProfile'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
-import { Project, Semester } from '@/payload-types'
 import { UserCombinedInfo } from '@/types/Collections'
 import { StatusCodes } from 'http-status-codes'
+import { ProjectWithSemesters } from '@/types/Project'
 
 interface ClientDashboardProps {
   client: UserCombinedInfo
-  projects: Project[]
-  semesters: Semester[][]
+  projects: ProjectWithSemesters[]
   onSave?: (
     firstName: string,
     lastName: string,
@@ -23,12 +22,7 @@ interface ClientDashboardProps {
   }>
 }
 
-const ClientDashboard: React.FC<ClientDashboardProps> = ({
-  client,
-  projects,
-  semesters,
-  onSave,
-}) => {
+const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects, onSave }) => {
   return (
     <div>
       <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-[auto_1fr] gap-10 pb-12 items-stretch">
@@ -49,7 +43,6 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({
         headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
         heading="My projects"
         projects={projects}
-        semesters={semesters}
       />
     </div>
   )

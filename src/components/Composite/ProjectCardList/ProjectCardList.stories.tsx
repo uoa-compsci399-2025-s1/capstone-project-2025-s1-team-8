@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import ProjectCardList from './ProjectCardList'
-import { mockProjects } from '@/test-config/mocks/Project.mock'
-import { mockSemestersNested } from '@/test-config/mocks/Semester.mock'
+import { projectsWithSemestersMock } from '@/test-config/mocks/Project.mock'
 
 const meta: Meta<typeof ProjectCardList> = {
   title: 'Composite/ProjectCardList',
@@ -10,7 +9,7 @@ const meta: Meta<typeof ProjectCardList> = {
   args: {
     className: '',
     headingClassName: '',
-    projects: mockProjects,
+    projects: projectsWithSemestersMock,
   },
 }
 
@@ -22,8 +21,7 @@ export const AsCard: Story = {
     className: 'bg-muted-blue-op-45 px-15 pt-8 pb-12 rounded-2xl border-deeper-blue border',
     headingClassName: 'text-xl sm:text-2xl py-4 sm:py-6',
     heading: 'My projects',
-    projects: mockProjects,
-    semesters: mockSemestersNested,
+    projects: projectsWithSemestersMock,
   },
 }
 
@@ -33,8 +31,7 @@ export const InModal: Story = {
       'bg-transparent-blue border-t-deeper-blue border-t max-w-full flex flex-col p-15 rounded-b-2xl gap-5',
     headingClassName: 'text-3xl pb-3 tracking-wide',
     heading: 'Projects',
-    projects: mockProjects,
-    semesters: mockSemestersNested,
+    projects: projectsWithSemestersMock,
   },
 }
 
@@ -43,7 +40,6 @@ export const InCard: Story = {
     className: 'bg-muted-blue-op-45 pb-4 sm:pb-6',
     headingClassName: 'text-xl sm:text-2xl py-4 sm:py-6',
     heading: 'Approved projects',
-    projects: mockProjects,
-    semesters: mockSemestersNested,
+    projects: projectsWithSemestersMock,
   },
 }
