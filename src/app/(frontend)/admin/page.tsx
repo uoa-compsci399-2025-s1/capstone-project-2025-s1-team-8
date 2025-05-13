@@ -8,17 +8,20 @@ import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { mockProjects } from '@/test-config/mocks/Project.mock'
 import { mockClients } from '@/test-config/mocks/User.mock'
-import { handleLoginButtonClick, isLoggedIn } from '@/lib/services/user/Handlers'
+import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
 import { getAllSemesters } from '@/lib/util/adminSemesterUtils'
 import { Semester } from '@/payload-types'
 import { FiAlertCircle } from 'react-icons/fi'
 import MobileAdminView from '@/app/(frontend)/admin/MobileAdminView'
+import { UserCombinedInfo } from '@/types/Collections'
+import { redirect } from 'next/navigation'
+import { UserRole } from '@/types/User'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
 
   const [activeNav, setActiveNav] = useState<number | null>(null)
-  const [loggedIn, setLoggedIn] = useState<boolean>(false)
+  const [loggedInUser, setLoggedInUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
   const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
   const [semestersData, setSemestersData] = useState<Semester[]>([])
   const [showNotification, setShowNotification] = useState<boolean>(false)
@@ -57,8 +60,8 @@ const Admin = () => {
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
     setActiveNav(saved !== null ? Number(saved) : 0)
-    isLoggedIn().then((res) => {
-      setLoggedIn(res)
+    getLoggedInUser().then((res) => {
+      setLoggedInUser(res)
       setLoginLoaded(true)
     })
   }, [])
@@ -71,6 +74,9 @@ const Admin = () => {
 
   // Don't render anything until activeNav is ready
   if (activeNav === null || !loginLoaded) return null
+  if (!loggedInUser || loggedInUser.role !== UserRole.Admin) {
+    redirect('/not-found')
+  }
 
   const containers = [
     {
@@ -116,11 +122,7 @@ const Admin = () => {
 
   return (
     <div>
-      <NavBar
-        navElements={[{ href: '/admin', text: 'My Dashboard' }]}
-        onclick={handleLoginButtonClick}
-        loggedIn={loggedIn}
-      />
+      <NavBar onclick={handleLoginButtonClick} user={loggedInUser} />
       <div className="hidden lg:block w-full">
         <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
           <div
