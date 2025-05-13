@@ -6,19 +6,26 @@ import NavBar from '@/components/Generic/NavBar/NavBar'
 import { UniqueIdentifier } from '@dnd-kit/core'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { mockProjects } from '@/mocks/Projects.mock'
-import { mockClients } from '@/mocks/Clients.mock'
-import { mockSemesters } from '@/mocks/Semesters.mock'
+import { mockProjects } from '@/test-config/mocks/Project.mock'
+import { mockClients } from '@/test-config/mocks/User.mock'
+import { mockSemesters } from '@/test-config/mocks/Semester.mock'
 import SadTeapot from 'src/assets/sad-teapot.svg'
+import { handleLoginButtonClick, isLoggedIn } from '@/lib/services/user/Handlers'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
 
   const [activeNav, setActiveNav] = useState<number | null>(null)
+  const [loggedIn, setLoggedIn] = useState<boolean>(false)
+  const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
 
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
     setActiveNav(saved !== null ? Number(saved) : 0)
+    isLoggedIn().then((res) => {
+      setLoggedIn(res)
+      setLoginLoaded(true)
+    })
   }, [])
 
   useEffect(() => {
@@ -28,7 +35,7 @@ const Admin = () => {
   }, [activeNav])
 
   // Don't render anything until activeNav is ready
-  if (activeNav === null) return null
+  if (activeNav === null || !loginLoaded) return null
 
   const containers = [
     {
@@ -74,7 +81,11 @@ const Admin = () => {
 
   return (
     <div>
-      <NavBar navElements={[{ href: '/admin', text: 'My Dashboard' }]} />
+      <NavBar
+        navElements={[{ href: '/admin', text: 'My Dashboard' }]}
+        onclick={handleLoginButtonClick}
+        loggedIn={loggedIn}
+      />
       <div className="hidden lg:block w-full">
         <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
           {AdminNavElements.map((nav, i) => (

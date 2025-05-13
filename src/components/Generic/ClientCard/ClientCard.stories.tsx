@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import ClientCard from './ClientCard'
-import { mockClients } from '@/mocks/Clients.mock'
+import { mockClients } from '@/test-config/mocks/User.mock'
+import { projectDetailsListMock } from '@/test-config/mocks/Project.mock'
 
 const meta: Meta<typeof ClientCard> = {
   component: ClientCard,
@@ -14,6 +15,7 @@ type Story = StoryObj<typeof ClientCard>
 
 export const Default: Story = {
   args: {
-    ...mockClients[0],
+    clientInfo: mockClients[0],
+    projects: projectDetailsListMock,
   },
 }

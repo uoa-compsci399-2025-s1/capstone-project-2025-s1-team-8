@@ -17,11 +17,12 @@ import ProjectContainer from './ProjectContainer'
 import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { FilterProvider } from '@/contexts/FilterContext'
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
-import { PlaceholderProjectDetailsType } from '@/types/Project'
 import { FiSave, FiPrinter } from 'react-icons/fi'
 import Notification from '@/components/Generic/Notification/Notification'
 import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
+
+import { Project, User } from '@/payload-types'
 
 type DNDType = {
   id: UniqueIdentifier
@@ -35,23 +36,21 @@ type DndComponentProps = {
   presetContainers: DNDType[]
 }
 
-const defaultProjectInfo: PlaceholderProjectDetailsType = {
-  projectId: '',
-  projectTitle: '',
-  projectClientDetails: {
-    name: '',
-    email: '',
-  },
-  otherClientDetails: [],
-  projectDescription: '',
+const defaultProjectInfo: Project = {
+  id: '',
+  name: '',
+  client: '',
+  additionalClients: [],
+  description: '',
+  deadline: new Date().toISOString(),
   desiredOutput: '',
+  timestamp: new Date().toISOString(),
+  specialEquipmentRequirements: '',
+  numberOfTeams: '',
   desiredTeamSkills: '',
-  availableResources: '',
-  specialRequirements: false,
-  numberOfTeams: 0,
-  futureConsideration: false,
-  Semesters: [],
-  submittedDate: new Date(),
+  futureConsideration: true,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 }
 
 const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
@@ -131,20 +130,24 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
           case 'submissionDate':
             const sorted = [...container.currentItems]
             if (filter === 'projectName') {
-              sorted.sort((a, b) =>
-                a.projectInfo.projectTitle.localeCompare(b.projectInfo.projectTitle),
-              )
+              sorted.sort((a, b) => a.projectInfo.name.localeCompare(b.projectInfo.name))
             } else if (filter === 'clientName') {
               sorted.sort((a, b) =>
-                a.projectInfo.projectClientDetails.name.localeCompare(
-                  b.projectInfo.projectClientDetails.name,
+                (
+                  (a.projectInfo.client as User).firstName +
+                  ' ' +
+                  (a.projectInfo.client as User).lastName
+                ).localeCompare(
+                  (b.projectInfo.client as User).firstName +
+                    ' ' +
+                    (b.projectInfo.client as User).lastName,
                 ),
               )
             } else if (filter === 'submissionDate') {
               sorted.sort(
                 (a, b) =>
-                  new Date(a.projectInfo.submittedDate).getTime() -
-                  new Date(b.projectInfo.submittedDate).getTime(),
+                  new Date(a.projectInfo.createdAt).getTime() -
+                  new Date(b.projectInfo.createdAt).getTime(),
               )
             }
 
@@ -176,7 +179,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
     }
   }
 
-  const findItemInfo = (id: UniqueIdentifier | undefined): PlaceholderProjectDetailsType => {
+  const findItemInfo = (id: UniqueIdentifier | undefined): Project => {
     if (!id) return defaultProjectInfo
 
     const container = findValueOfItems(id, 'item')

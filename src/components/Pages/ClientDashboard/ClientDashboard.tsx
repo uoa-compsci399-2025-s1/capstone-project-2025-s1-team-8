@@ -2,15 +2,27 @@ import CreateProjectCard from '@/components/Composite/CreateProjectCard/CreatePr
 import GradientTextArea from '@/components/Generic/GradientTextArea/GradientTextArea'
 import ClientProfile from '@/components/Composite/ClientProfile/ClientProfile'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
-import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
-import { PlaceholderProjectDetailsType } from '@/types/Project'
+import { UserCombinedInfo } from '@/types/Collections'
+import { StatusCodes } from 'http-status-codes'
+import { ProjectDetails } from '@/types/Project'
 
 interface ClientDashboardProps {
-  client: ClientDTOPlaceholder
-  projects: PlaceholderProjectDetailsType[]
+  client: UserCombinedInfo
+  projects: ProjectDetails[]
+  onSave?: (
+    firstName: string,
+    lastName: string,
+    affiliation: string,
+    introduction: string,
+  ) => Promise<{
+    updatedUser: UserCombinedInfo
+    status: StatusCodes
+    error?: string
+    details?: string
+  }>
 }
 
-const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects }) => {
+const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects, onSave }) => {
   return (
     <div>
       <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-[auto_1fr] gap-10 pb-12 items-stretch">
@@ -23,7 +35,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects }) =
           />
         </div>
         <div className="lg:col-start-2 lg:row-span-2">
-          <ClientProfile clientInfo={client} />
+          <ClientProfile clientInfo={client} onSave={onSave} />
         </div>
       </div>
       <ProjectCardList

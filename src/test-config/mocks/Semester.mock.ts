@@ -31,3 +31,17 @@ export const semesterCreateMock2: CreateSemesterData = {
   startDate: new Date().toISOString(),
   endDate: new Date().toISOString(),
 }
+
+export const mockSemesters: Semester[] = [
+  semesterMock,
+  { ...semesterMock, name: 'Semester 1 2026' },
+  { ...semesterMock, name: 'Semester 2 2026' },
+]
+
+export const semesterNames: string[] = mockSemesters.map((semester: Semester) => semester.name)
+
+export const mockSemestersNested: Semester[][] = [
+  mockSemesters,
+  [mockSemesters[0]],
+  [mockSemesters[1], mockSemesters[2]],
+]
