@@ -1,12 +1,12 @@
 import React from 'react'
-import { ClientCombinedInfo } from '@/types/Payload'
+import { UserCombinedInfo } from '@/types/Collections'
 import ClientCard from '@/components/Generic/ClientCard/ClientCard'
 import { Project } from '@/payload-types'
 
 export interface ClientGroupProps {
   clients: {
-    client: ClientCombinedInfo
-    projects: Project[]
+    client: UserCombinedInfo
+    projects?: Project[]
   }[]
 }
 

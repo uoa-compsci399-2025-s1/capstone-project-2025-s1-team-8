@@ -8,7 +8,7 @@ import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { typeToFlattenedError } from 'zod'
 import { UpdateUserRequestBody } from '@/app/api/admin/users/[id]/route'
-import { ClientCombinedInfo } from '@/types/Payload'
+import { UserCombinedInfo } from '@/types/Collections'
 import { StatusCodes } from 'http-status-codes'
 import { UserRole } from '@/types/User'
 
@@ -17,7 +17,7 @@ const AdminClientService = {
     options: { limit?: number; cursor?: number; role?: UserRole } = {},
   ): Promise<{
     status: StatusCodes
-    data?: ClientCombinedInfo[]
+    data?: UserCombinedInfo[]
     nextPage?: string
     error?: string
   }> {
@@ -31,7 +31,7 @@ const AdminClientService = {
 
   getUserById: async function (userId: string): Promise<{
     status: StatusCodes
-    data: ClientCombinedInfo
+    data: UserCombinedInfo
     error?: string
   }> {
     'use server'
@@ -49,7 +49,7 @@ const AdminClientService = {
     user: UpdateUserRequestBody,
   ): Promise<{
     status: StatusCodes
-    data: ClientCombinedInfo
+    data: UserCombinedInfo
     error?: string
     details?: typeToFlattenedError<UpdateUserRequestBody>
   }> {

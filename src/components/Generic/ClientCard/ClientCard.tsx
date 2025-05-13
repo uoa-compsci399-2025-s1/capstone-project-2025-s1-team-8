@@ -11,12 +11,12 @@ export interface ClientDTOPlaceholder {
   projects?: PlaceholderProjectDetailsType[]
 }
 
-import { ClientCombinedInfo } from '@/types/Payload'
+import { UserCombinedInfo } from '@/types/Collections'
 import { Project } from '@/payload-types'
 
 interface ClientCardProps {
-  client: ClientCombinedInfo
-  projects: Project[]
+  client: UserCombinedInfo
+  projects?: Project[]
 }
 
 const ClientCard: React.FC<ClientCardProps> = ({client, projects}) => {
@@ -58,8 +58,8 @@ const ClientCard: React.FC<ClientCardProps> = ({client, projects}) => {
         onClose={() => handleModal()}
         clientFullName={`${client.firstName}${client.lastName ? ' ' + client.lastName : ''}`}
         clientEmail={client.email}
-        affiliation={client.affiliation}
-        introduction={client.introduction}
+        affiliation={client.affiliation ?? ''}
+        introduction={client.introduction ?? ''}
         projects={projects}
       />
     </>

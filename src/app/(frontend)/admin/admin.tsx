@@ -8,14 +8,14 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { mockProjects } from '@/mocks/Projects.mock'
 import { mockSemesters } from '@/mocks/Semesters.mock'
-import { ClientCombinedInfo } from '@/types/Payload'
+import { UserCombinedInfo } from '@/types/Collections'
 import SadTeapot from 'src/assets/sad-teapot.svg'
 import { Project } from '@/payload-types'
 
 interface AdminProps {
   ClientData: {
-    client: ClientCombinedInfo
-    projects: Project[]
+    client: UserCombinedInfo
+    projects?: Project[]
   }[]
 }
 
