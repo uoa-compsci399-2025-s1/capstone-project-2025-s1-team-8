@@ -4,6 +4,7 @@ import ClientProfile from '@/components/Composite/ClientProfile/ClientProfile'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import { Project, Semester } from '@/payload-types'
 import { UserCombinedInfo } from '@/types/Collections'
+import { StatusCodes } from 'http-status-codes'
 
 interface ClientDashboardProps {
   client: UserCombinedInfo

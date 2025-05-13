@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import { FiEdit, FiSave } from 'react-icons/fi'
 import { UserCombinedInfo } from '@/types/Collections'
+import { StatusCodes } from 'http-status-codes'
 
 interface ClientProfileProps {
   clientInfo: UserCombinedInfo
@@ -50,14 +51,15 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
       alert('Please enter only first and last name.') //placeholder
       return
     }
-
-    const res = await onSave(firstName, lastName, affiliation, introduction)
-    if (res.error) {
-      setName(previousName)
-      setAffiliation(previousAffiliation)
-      setIntroduction(previousIntroduction)
-      alert('Error updating profile: ' + res.error || res.details) //placeholder
-      return
+    if (onSave) {
+      const res = await onSave(firstName, lastName, affiliation, introduction)
+      if (res.error) {
+        setName(previousName)
+        setAffiliation(previousAffiliation)
+        setIntroduction(previousIntroduction)
+        alert('Error updating profile: ' + res.error || res.details) //placeholder
+        return
+      }
     }
 
     setPreviousName(name)
