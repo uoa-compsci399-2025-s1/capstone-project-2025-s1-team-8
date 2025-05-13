@@ -7,14 +7,13 @@ export default async function AdminPage() {
   // For each client, fetch their projects
   const clientsWithProjects = await Promise.all(
     data.map(async (client) => {
-      const projects = await AdminService.getProjectsByUserId(client.id)
+      const projectsResponse = await AdminService.getProjectsByUserId(client.id)
       return {
         client,
-        projects,
+        projects: projectsResponse.data,
       }
-    })
+    }),
   )
-  console.log(JSON.stringify(clientsWithProjects, null, 2))
 
   return (
     <>

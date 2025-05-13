@@ -50,7 +50,7 @@ const ClientCard: React.FC<ClientCardProps> = ({ clientInfo, projects }) => {
         clientEmail={clientInfo.email}
         affiliation={clientInfo.affiliation ?? ''}
         introduction={clientInfo.introduction ?? ''}
-        projects={[]}
+        projects={projects}
       />
     </>
   )

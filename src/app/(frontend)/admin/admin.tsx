@@ -43,7 +43,7 @@ const Admin: React.FC<AdminProps> = ({ ClientData }) => {
   }, [activeNav])
 
   // Don't render anything until activeNav is ready
-  if (activeNav === null) return null
+  if (activeNav === null || !loginLoaded) return null
 
   const containers = [
     {
