@@ -111,7 +111,7 @@ class RouteWrapper {
           }
         }) || [],
       )
-      console.log(clients)
+
       const semesters: Semester[] = await Promise.all(
         body.semesters?.map(async (semesterID) => {
           try {
