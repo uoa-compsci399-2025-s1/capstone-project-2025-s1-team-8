@@ -1,16 +1,16 @@
 import React from 'react'
-import { ClientDTOPlaceholder } from '@/components/Generic/ClientCard/ClientCard'
 import ClientCard from '@/components/Generic/ClientCard/ClientCard'
+import { UserCombinedInfo } from '@/types/Collections'
 
 export interface ClientGroupProps {
-  clients: ClientDTOPlaceholder[]
+  clients: UserCombinedInfo[]
 }
 
 const ClientGroup: React.FC<ClientGroupProps> = ({ clients }) => {
   return (
     <div className="w-full rounded-2xl overflow-hidden border border-beige divide-beige divide-y-2">
       {clients.map((client, index) => (
-        <ClientCard key={index} {...client} />
+        <ClientCard key={index} clientInfo={client} />
       ))}
     </div>
   )
