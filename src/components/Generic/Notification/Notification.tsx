@@ -11,8 +11,8 @@ interface NotificationProps {
 const Notification: FC<NotificationProps> = memo(
   ({ isVisible = true, title, message, type = 'success' }) => {
     const bgRoot = {
-      success: `${isVisible ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 bg-light-green ring-2 ring-green shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`,
-      warning: `${isVisible ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 bg-light-pink ring-2 ring-pink-soft shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`,
+      success: `${isVisible ? 'opacity-100 visible' : 'opacity-0 hidden'} transition-all duration-500 bg-light-green ring-2 ring-green shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`,
+      warning: `${isVisible ? 'opacity-100 visible' : 'opacity-0 hidden'} transition-all duration-500 bg-light-pink ring-2 ring-pink-soft shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`,
     }
 
     const alertRoot = {
