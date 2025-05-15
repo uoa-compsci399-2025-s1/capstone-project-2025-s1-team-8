@@ -49,11 +49,10 @@ const Admin = () => {
   useEffect(() => {
     fetchSemesters()
     fetchClients()
-  }, [])
+  }, [semestersData, clientsData])
 
   useEffect(() => {
     if (showNotification) {
-      fetchSemesters()
       const timer = setTimeout(() => {
         setShowNotification(false)
       }, 5000)
