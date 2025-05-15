@@ -7,7 +7,7 @@ import {
   handleCreateSemester,
   handleUpdateSemester,
   handleDeleteSemester,
-} from '@/lib/util/adminSemesterUtils'
+} from '@/lib/services/admin/Handlers'
 
 interface SemesterFormProps extends ModalProps {
   semesterId: string

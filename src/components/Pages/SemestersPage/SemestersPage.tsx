@@ -3,7 +3,7 @@ import SemesterCard from '@/components/Composite/SemesterCard/SemesterCard'
 import Button from '@/components/Generic/Button/Button'
 import SemesterForm from '@/components/Composite/SemesterForm/SemesterForm'
 import { Semester } from '@/payload-types'
-import { isCurrentOrUpcoming } from '@/lib/util/adminSemesterUtils'
+import { isCurrentOrUpcoming } from '@/lib/services/admin/Handlers'
 
 interface SemestersPageProps {
   semesters: Semester[]

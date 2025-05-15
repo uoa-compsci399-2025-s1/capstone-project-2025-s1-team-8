@@ -6,7 +6,7 @@ import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardL
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import { Semester } from '@/payload-types'
 import { ProjectDetails } from '@/types/Project'
-import { getAllSemesterProjects, isCurrentOrUpcoming } from '@/lib/util/adminSemesterUtils'
+import { getAllSemesterProjects, isCurrentOrUpcoming } from '@/lib/services/admin/Handlers'
 
 const SemesterCard: React.FC<Semester> = ({ id, name, startDate, endDate, deadline }) => {
   const [isOpen, setIsOpen] = useState(false)
