@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import { FiEdit, FiSave } from 'react-icons/fi'
 import { UserCombinedInfo } from '@/types/Collections'
 import { StatusCodes } from 'http-status-codes'
+import Notification from '@/components/Generic/Notification/Notification'
 
 interface ClientProfileProps {
   clientInfo: UserCombinedInfo
@@ -33,6 +34,23 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
   const [previousIntroduction, setPreviousIntroduction] = useState<string>(
     clientInfo.introduction ?? '',
   )
+  const [showNotification, setShowNotification] = useState<boolean>(false)
+  const [notificationMessage, setNotificationMessage] = useState<string>('')
+
+  useEffect(() => {
+    if (showNotification) {
+      const timer = setTimeout(() => {
+        setShowNotification(false)
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [showNotification])
+
+  const handleShowNotification = (message: string) => {
+    setNotificationMessage(message)
+    setShowNotification(true)
+  }
 
   const handleSave = async () => {
     const names = name.split(' ')
@@ -41,14 +59,14 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
     if (!firstName || !lastName) {
       setName(previousName)
       setIsEditing(false)
-      alert('Please enter a valid first and last name.') //placeholder
+      handleShowNotification('Please enter a valid first and last name.')
       return
     }
 
     if (names.length > 2) {
       setName(previousName)
       setIsEditing(false)
-      alert('Please enter only first and last name.') //placeholder
+      handleShowNotification('Please enter only first and last name.')
       return
     }
     if (onSave) {
@@ -57,7 +75,9 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
         setName(previousName)
         setAffiliation(previousAffiliation)
         setIntroduction(previousIntroduction)
-        alert('Error updating profile: ' + res.error || res.details) //placeholder
+        handleShowNotification(
+          'Error updating profile: ' + ((res.error ?? '') || (res.details ?? '')),
+        )
         return
       }
     }
@@ -69,65 +89,83 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
   }
 
   return (
-    <div className="w-full h-[685px] relative bg-light-beige rounded-2xl ring-1 ring-deeper-blue p-8 pt-10 pb-14 overflow-y-auto">
-      <h2 className="text-dark-blue font-inter text-xl tracking-wide pb-8">My profile</h2>
-
-      {isEditing ? (
-        <FiSave
-          className="w-4 h-4 absolute text-dark-blue hover:text-steel-blue top-11.5 right-10"
-          onClick={handleSave}
+    <div>
+      <div className="fixed top-6 right-6 z-50">
+        <Notification
+          isVisible={showNotification}
+          title={'Issue updating profile'}
+          message={notificationMessage}
+          type={'warning'}
         />
-      ) : (
-        <FiEdit
-          className="w-4 h-4 absolute text-dark-blue hover:text-steel-blue top-11.5 right-10"
-          onClick={() => setIsEditing(true)}
-        />
-      )}
+      </div>
+      <div className="w-full h-[685px] relative bg-light-beige rounded-2xl ring-1 ring-deeper-blue p-8 pt-10 pb-14 overflow-y-auto">
+        <h2 className="text-dark-blue font-inter text-xl tracking-wide pb-8">My profile</h2>
 
-      <div className="grid grid-cols-[max-content_auto] gap-3 pb-8">
-        <Capsule text="Name" variant="muted_blue" className="ring-1 ring-muted-blue col-start-1" />
         {isEditing ? (
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="editable-capsule"
+          <FiSave
+            className="w-4 h-4 absolute text-dark-blue hover:text-steel-blue top-11.5 right-10"
+            onClick={handleSave}
           />
         ) : (
-          <Capsule text={name} variant="beige" className="col-start-2" />
+          <FiEdit
+            className="w-4 h-4 absolute text-dark-blue hover:text-steel-blue top-11.5 right-10"
+            onClick={() => setIsEditing(true)}
+          />
         )}
 
-        <Capsule text="Email" variant="muted_blue" className="ring-1 ring-muted-blue col-start-1" />
-        <Capsule text={clientInfo.email} variant="beige" className="col-start-2" />
-
-        <Capsule
-          text="Affiliation"
-          variant="muted_blue"
-          className="ring-1 ring-muted-blue col-start-1 mr-5"
-        />
-        {affiliation && !isEditing ? (
-          <Capsule text={affiliation} variant="beige" className="col-start-2" />
-        ) : (
-          isEditing && (
+        <div className="grid grid-cols-[max-content_auto] gap-3 pb-8">
+          <Capsule
+            text="Name"
+            variant="muted_blue"
+            className="ring-1 ring-muted-blue col-start-1"
+          />
+          {isEditing ? (
             <input
-              value={affiliation}
-              onChange={(e) => setAffiliation(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="editable-capsule"
             />
-          )
-        )}
-      </div>
-      <div>
-        <Capsule text="Introduction" variant="muted_blue" className="mb-5" />
-        {isEditing ? (
-          <textarea
-            value={introduction}
-            onChange={(e) => setIntroduction(e.target.value)}
-            className="resize-none min-h-[270px] w-full 
-            text-dark-blue whitespace-pre-line text-sm border border-deeper-blue rounded-xl bg-light-beige p-3 focus:outline-deeper-blue"
+          ) : (
+            <Capsule text={name} variant="beige" className="col-start-2" />
+          )}
+
+          <Capsule
+            text="Email"
+            variant="muted_blue"
+            className="ring-1 ring-muted-blue col-start-1"
           />
-        ) : (
-          <p className="text-dark-blue whitespace-pre-line text-sm px-1">{introduction}</p>
-        )}
+          <Capsule text={clientInfo.email} variant="beige" className="col-start-2" />
+
+          <Capsule
+            text="Affiliation"
+            variant="muted_blue"
+            className="ring-1 ring-muted-blue col-start-1 mr-5"
+          />
+          {affiliation && !isEditing ? (
+            <Capsule text={affiliation} variant="beige" className="col-start-2" />
+          ) : (
+            isEditing && (
+              <input
+                value={affiliation}
+                onChange={(e) => setAffiliation(e.target.value)}
+                className="editable-capsule"
+              />
+            )
+          )}
+        </div>
+        <div>
+          <Capsule text="Introduction" variant="muted_blue" className="mb-5" />
+          {isEditing ? (
+            <textarea
+              value={introduction}
+              onChange={(e) => setIntroduction(e.target.value)}
+              className="resize-none min-h-[270px] w-full 
+            text-dark-blue whitespace-pre-line text-sm border border-deeper-blue rounded-xl bg-light-beige p-3 focus:outline-deeper-blue"
+            />
+          ) : (
+            <p className="text-dark-blue whitespace-pre-line text-sm px-1">{introduction}</p>
+          )}
+        </div>
       </div>
     </div>
   )
