@@ -114,6 +114,12 @@
   svg {
     vertical-align: middle;
   }
+
+  .to-scale {
+    transform: scale(0.9);
+    transform-origin: top left;
+    width: 111.11%;
+  }
 }
 
 @layer components {
