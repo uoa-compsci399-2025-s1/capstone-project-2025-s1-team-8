@@ -31,7 +31,7 @@ export default function RegisterPage() {
     <div className="flex flex-col justify-center items-start gap-4">
       <p className="text-xl font-extrabold text-dark-blue pl-2">KIA ORA</p>
       <form onSubmit={submitForm}>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 relative z-[51]">
           <Input
             name="firstName"
             placeholder="First Name"
