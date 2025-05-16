@@ -1,45 +1,74 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import Button from '@/components/Generic/Button/Button'
 import Input from '@/components/Generic/Input/InputField'
 import Textarea from '@/components/Generic/Textarea/Textarea'
 import Radio from '@/components/Generic/Radio/Radio'
 import Checkbox from '@/components/Generic/Checkbox/Checkbox'
-import { semesterNames } from '@/test-config/mocks/Semester.mock'
 import { FiCheck } from 'react-icons/fi'
 import { HiX, HiExclamation } from 'react-icons/hi'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { Project } from '@/payload-types'
+import { Project, Semester } from '@/payload-types'
+import { z } from 'zod'
+import { CreateProjectRequestBodySchema, CreateProjectClientSchema } from '@/app/api/projects/route'
+import { ProjectFormData } from '@/lib/services/form/projectFormService'
 
-interface OtherClientDetails {
-  fullName: string
-  email: string
-}
+import { handleFormPageLoad, handleProjectFormSubmission } from '@/lib/services/form/Handlers'
+import { isLoggedIn } from '@/lib/services/user/Handlers'
 
-interface formProject extends Project {
+
+interface formProject extends z.infer<typeof CreateProjectRequestBodySchema> {
   meetingAttendance: boolean
   futureSemesters: string[]
   finalPresentationAttendance: boolean
   projectSupportAndMaintenance: boolean
 }
 
+interface options {
+  value: string
+  label: string
+}
+
 export default function Form() {
+  const [isLoaded, setIsLoaded] = useState<boolean>(false)
+  const [loggedIn, setLoggedIn] = useState<boolean>(false)
+  const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
+  const [semesters, setSemesters] = useState<Semester[]>([])
+  const [semesterOptions, setSemesterOptions] = useState<options[]>([])
+
+  useEffect(() => {
+    handleFormPageLoad().then((res) => {
+      setSemesters(res.upcomingSemesters)
+      setIsLoaded(true)
+      setSemesterOptions(
+        res.upcomingSemesters.map((semester) => ({
+          value: semester.id,
+          label: `${semester.name} (${semester.startDate} - ${semester.endDate})`,
+        }))
+      )
+    })
+    isLoggedIn().then((res) => {
+      setLoggedIn(res)
+      setLoginLoaded(true)
+    })
+  }, [])
+
   // State to manage the pairs of names and emails of additional clients
-  const [pairs, setPairs] = useState<OtherClientDetails[]>([])
+  const [pairs, setPairs] = useState<z.infer<typeof CreateProjectClientSchema>[]>([])
   const searchParams = useSearchParams()
   const projectName = searchParams.get('projectName') || ''
 
-  const handleChange = (index: number, field: keyof OtherClientDetails, value: string) => {
+  const handleChange = (index: number, field: keyof z.infer<typeof CreateProjectClientSchema>[], value: string) => {
     const updated = [...pairs]
     updated[index][field] = value
     setPairs(updated)
   }
 
   const addPair = () => {
-    setPairs([...pairs, { fullName: '', email: '' }])
+    setPairs([...pairs, { firstName: '', lastName: '', email: '' }])
   }
 
   const deletePair = (index: number) => {
@@ -50,18 +79,47 @@ export default function Form() {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting, isSubmitted },
+    formState: { errors },
   } = useForm<formProject>()
 
   const hasFutureConsideration = watch('futureConsideration', false);
+  // const hasFutureConsideration = watch('futureConsideration') == "Yes" ? true : false;
   const onSubmit: SubmitHandler<formProject> = (data) => {
-    console.log(data)
+
+    data.additionalClients = pairs;
+
+    // Create a FormData object
+    const formDataInstance = new FormData();
+    
+    // Add all form fields to the FormData object
+    Object.entries(data).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach((v) => formDataInstance.append(key, v));
+      } else if (value !== undefined && value !== null) {
+        formDataInstance.append(key, value.toString());
+      }
+    });
+
+    // For additionalClients, you might need to stringify the array
+    if (data.additionalClients && data.additionalClients.length > 0) {
+      formDataInstance.append('additionalClients', JSON.stringify(data.additionalClients));
+    }
+
+    const res = handleProjectFormSubmission(data.futureSemesters[0], formDataInstance);
+
+    if (res?.error) {
+
+    }
+
+    // Object.entries(formData).forEach(([key, value]) => {
+    //   if (Array.isArray(value)) {
+    //     value.forEach((v) => formDataInstance.append(key, v));
+    //   } else {
+    //     formDataInstance.append(key, value as string);
+    //   }
+    // });
+
   }
-
-
-  // const clientName = useWatch({
-  //   control: register(),
-  // })
 
   return (
     <div className="h-dvh w-dvw bg-gradient-to-b from-[#779ea7] to-[#dae6e2] flex flex-col items-center overflow-y-scroll py-[8%] px-[10%] gap-4 p-4">
@@ -208,11 +266,22 @@ export default function Form() {
                 {pairs.map((pair, idx) => (
                   <div key={idx} className="flex gap-5 justify-end mb-5">
                     <div className="w-80 flex flex-col gap-3">
-                      <label className="text-sm">Full Name:</label>
+                      <label className="text-sm">First Name:</label>
                       <Input
-                        id={`OtherClientName${idx}`}
+                        id={`OtherClientFirstName${idx}`}
                         type="text"
-                        onChange={(e) => handleChange(idx, 'fullName', e.target.value)}
+                        value={pair.firstName}
+                        onChange={(e) => handleChange(idx, 'firstName', e.target.value)}
+                        placeholder="Other client's name"
+                      />
+                    </div>
+                    <div className="w-80 flex flex-col gap-3">
+                      <label className="text-sm">Last Name:</label>
+                      <Input
+                        id={`OtherClientLastName${idx}`}
+                        type="text"
+                        value={pair.lastName}
+                        onChange={(e) => handleChange(idx, 'lastName', e.target.value)}
                         placeholder="Other client's name"
                       />
                     </div>
@@ -221,6 +290,7 @@ export default function Form() {
                       <Input
                         id={`OtherClientEmail${idx}`}
                         type="email"
+                        value={pair.email}
                         onChange={(e) => handleChange(idx, 'email', e.target.value)}
                         placeholder="Other client's email"
                       />
@@ -391,11 +461,11 @@ export default function Form() {
                   project to be considered for?
                 </p>
                 <Checkbox 
-                  values={semesterNames} 
+                  options={semesterOptions} 
                   error={!!errors.futureSemesters}
                   errorMessage={errors.futureSemesters?.message}
                   {...register('futureSemesters', {
-                    required: hasFutureConsideration ? 'Future Semesters is required' : false,
+                    required: hasFutureConsideration ? 'Please select at least one semester' : false,
                   })}
                 />
               </li>
@@ -498,8 +568,11 @@ export default function Form() {
                     required={false}
                   />
                   <Checkbox
-                    values={[
-                      'I understand that no resources will be available for support or maintenance after the semester ends, and that neither the University nor the participating students assume any liability for the project outcome.',
+                    options={[
+                      {
+                        label: 'I understand that no resources will be available for support or maintenance after the semester ends, and that neither the University nor the participating students assume any liability for the project outcome.',
+                        value: 'yes'
+                      }
                     ]}
                     error={!!errors.projectSupportAndMaintenance}
                     errorMessage={errors.projectSupportAndMaintenance?.message}

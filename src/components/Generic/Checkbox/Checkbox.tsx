@@ -3,25 +3,31 @@ import { FiCheck } from 'react-icons/fi'
 import { HiExclamation } from 'react-icons/hi'
 
 interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
-  values: string[],
+  options: Array<{
+    label: string
+    value: string
+  }>,
   error?: boolean,
   errorMessage?: string
 }
 
 const Checkbox: FC<CheckboxProps> = ({ 
-  values,
+  options = [],
   error = false,
   errorMessage = 'Please select at least one option',
+  ...props
 }) => {
   const borderErrorStyle = `${error ? 'border-pink-accent hover:outline-dark-pink peer-focus:outline-dark-pink' : 'border-steel-blue hover:outline-deeper-blue peer-focus:outline-deeper-blue'}`
   return (
     <div className={`flex flex-col`}>
-      {values.map((value, index) => (
+      {options.map((option, index) => (
         <label key={index} className="flex mb-3">
           <input
             type="checkbox"
             style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
             className="opacity-0 peer"
+            value={option.value}
+            {...props}
           />
           <span
             className={` ${borderErrorStyle}
@@ -33,7 +39,7 @@ const Checkbox: FC<CheckboxProps> = ({
           >
             <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
           </span>
-          <p className="text-sm text-dark-blue">{value}</p>
+          <p className="text-sm text-dark-blue">{option.label}</p>
         </label>
       ))}
       {error && (
