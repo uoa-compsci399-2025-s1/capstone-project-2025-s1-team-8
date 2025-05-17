@@ -1,12 +1,10 @@
 'use client'
 import ClientsPage from '@/components/Pages/ClientsPage/ClientsPage'
 import SemestersPage from '@/components/Pages/SemestersPage/SemestersPage'
-import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
+import ProjectDnD, { DndComponentProps } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import NavBar from '@/components/Generic/NavBar/NavBar'
-import { UniqueIdentifier } from '@dnd-kit/core'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { mockProjects } from '@/test-config/mocks/Project.mock'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
 import { getAllSemesters } from '@/lib/util/adminSemesterUtils'
 import { Semester } from '@/payload-types'
@@ -17,6 +15,12 @@ import { redirect } from 'next/navigation'
 import { UserRole } from '@/types/User'
 import { getAllClients } from '@/lib/util/adminClientUtils'
 import { ProjectDetails } from '@/types/Project'
+import { getNextSemesterProjects } from '@/lib/util/adminProjectUtils'
+import {
+  handlePublishChanges,
+  updateProjectOrdersAndStatus,
+} from '@/components/Composite/ProjectDragAndDrop/ProjectUpdates'
+import { handleCSVDownload } from '@/lib/services/admin/Handlers'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -32,6 +36,7 @@ const Admin = () => {
   const [clientsData, setClientsData] = useState<
     { client: UserCombinedInfo; projects: ProjectDetails[] }[]
   >([])
+  const [dndContainers, setDndContainers] = useState<DndComponentProps>({} as DndComponentProps)
 
   const fetchSemesters = async () => {
     const res = await getAllSemesters()
@@ -47,6 +52,13 @@ const Admin = () => {
     }
   }
 
+  const fetchDndContainers = async () => {
+    const res = await getNextSemesterProjects()
+    if (res?.data) {
+      setDndContainers(res.data)
+    }
+  }
+
   const message = created
     ? 'Semester created successfully'
     : updated
@@ -58,6 +70,7 @@ const Admin = () => {
   useEffect(() => {
     fetchSemesters()
     fetchClients()
+    fetchDndContainers()
   }, [])
 
   useEffect(() => {
@@ -91,48 +104,6 @@ const Admin = () => {
   if (!loggedInUser || loggedInUser.role !== UserRole.Admin) {
     redirect('/not-found')
   }
-
-  const containers = [
-    {
-      id: 'container-1' as UniqueIdentifier,
-      title: 'Rejected',
-      containerColor: 'light' as const,
-      currentItems: [
-        {
-          id: `item-1`,
-          projectInfo: mockProjects[0],
-        },
-        {
-          id: `item-2`,
-          projectInfo: mockProjects[1],
-        },
-      ],
-      originalItems: [
-        {
-          id: `item-1`,
-          projectInfo: mockProjects[0],
-        },
-        {
-          id: `item-2`,
-          projectInfo: mockProjects[1],
-        },
-      ],
-    },
-    {
-      id: 'container-2' as UniqueIdentifier,
-      title: 'Pending',
-      containerColor: 'medium' as const,
-      currentItems: [],
-      originalItems: [],
-    },
-    {
-      id: 'container-3' as UniqueIdentifier,
-      title: 'Accepted',
-      containerColor: 'dark' as const,
-      currentItems: [],
-      originalItems: [],
-    },
-  ]
 
   return (
     <div>
@@ -182,7 +153,12 @@ const Admin = () => {
                 aria-hidden={activeNav !== 0}
                 tabIndex={activeNav === 0 ? 0 : -1}
               >
-                <ProjectDnD presetContainers={containers} />
+                <ProjectDnD
+                  {...dndContainers}
+                  onSaveChanges={updateProjectOrdersAndStatus}
+                  onPublishChanges={handlePublishChanges}
+                  onDownloadCsv={handleCSVDownload}
+                />
               </div>
 
               <div

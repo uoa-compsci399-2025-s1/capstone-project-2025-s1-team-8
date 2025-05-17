@@ -7,7 +7,7 @@ import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProje
 import { useFilter } from '@/contexts/FilterContext'
 import { UniqueIdentifier } from '@dnd-kit/core'
 import ProjectModal from '../ProjectModal/ProjectModal'
-import { Project } from '@/payload-types'
+import { ProjectDetails } from '@/types/Project'
 
 export interface ProjectContainerType {
   id: UniqueIdentifier
@@ -35,7 +35,7 @@ const ProjectContainer = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState<number | undefined>()
   const { selectedFilter } = useFilter()
-  const [openProject, setOpenProject] = useState<Project | null>(null)
+  const [openProject, setOpenProject] = useState<ProjectDetails | null>(null)
 
   useEffect(() => {
     onChange?.(selectedFilter)
@@ -87,7 +87,7 @@ const ProjectContainer = ({
                   <circle cx="4" cy="12" r="4" />
                 </svg>
               </span>
-              <p className="text-dark-blue text-base font-medium">{containerName}</p>
+              <p className="text-dark-blue text-base font-medium capitalize">{containerName}</p>
             </div>
 
             <div className="bg-beige rounded-full flex justify-center items-center aspect-square min-w-[1.5rem] h-auto px-1.5">
