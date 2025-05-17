@@ -17,7 +17,6 @@ import {
   handleDeleteSemester,
 } from '@/lib/services/admin/Handlers'
 import { Semester } from '@/payload-types'
-import { FiAlertCircle } from 'react-icons/fi'
 import MobileAdminView from '@/app/(frontend)/admin/MobileAdminView'
 import { UserCombinedInfo } from '@/types/Collections'
 import { redirect } from 'next/navigation'
