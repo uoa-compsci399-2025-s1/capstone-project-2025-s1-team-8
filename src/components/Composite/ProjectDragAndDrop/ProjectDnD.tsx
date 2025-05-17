@@ -148,7 +148,9 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   }
 
   async function handleDownloadCsv() {
-    await onDownloadCsv(semesterId)
+    //await onDownloadCsv(semesterId)
+    //check user maybe?
+    window.open(`/api/admin/export/semesters/${semesterId}`, '_blank')
     setSuccessNotification('Download successful!')
 
     setTimeout(() => {

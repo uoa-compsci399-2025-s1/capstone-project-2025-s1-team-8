@@ -16,7 +16,10 @@ import { UserRole } from '@/types/User'
 import { getAllClients } from '@/lib/util/adminClientUtils'
 import { ProjectDetails } from '@/types/Project'
 import { getNextSemesterProjects } from '@/lib/util/adminProjectUtils'
-import { handlePublishChanges, updateProjectOrdersAndStatus } from '@/components/Composite/ProjectDragAndDrop/ProjectUpdates'
+import {
+  handlePublishChanges,
+  updateProjectOrdersAndStatus,
+} from '@/components/Composite/ProjectDragAndDrop/ProjectUpdates'
 import { handleCSVDownload } from '@/lib/services/admin/Handlers'
 
 const Admin = () => {
@@ -150,7 +153,12 @@ const Admin = () => {
                 aria-hidden={activeNav !== 0}
                 tabIndex={activeNav === 0 ? 0 : -1}
               >
-                <ProjectDnD {...dndContainers} onSaveChanges={updateProjectOrdersAndStatus} onPublishChanges={handlePublishChanges} onDownloadCsv={handleCSVDownload} />
+                <ProjectDnD
+                  {...dndContainers}
+                  onSaveChanges={updateProjectOrdersAndStatus}
+                  onPublishChanges={handlePublishChanges}
+                  onDownloadCsv={handleCSVDownload}
+                />
               </div>
 
               <div

@@ -150,9 +150,7 @@ const AdminProjectService = {
     semesterProject: SemesterProject,
   ): Promise<ProjectCardType> {
     const project = semesterProject.project as Project
-    const { data: semesters } = await AdminProjectService.getProjectSemesters(
-      project.id,
-    )
+    const { data: semesters } = await AdminProjectService.getProjectSemesters(project.id)
 
     return {
       id: `item-${project.id}` as UniqueIdentifier,
