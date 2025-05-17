@@ -18,6 +18,11 @@ import { StatusCodes } from 'http-status-codes'
 import { SemesterType } from '@/types/Semester'
 
 const AdminSemesterService = {
+  /**
+  returns all semesters with pagination
+  @param options - pagination options including page and limit
+  @returns - an object containing the status, data, nextPage, and error
+   **/
   getAllPaginatedSemesters: async function (
     options: { page?: number; limit?: number } = {},
   ): Promise<{
@@ -34,6 +39,12 @@ const AdminSemesterService = {
     return { status: response.status, data, nextPage, error }
   },
 
+  /**
+   * returns all Semester Projects for a given semester with pagination
+   * @param semesterId
+   * @param options
+   * @returns - an object containing the status, data, nextPage, and error
+   */
   getAllPaginatedProjectsBySemesterId: async function (
     semesterId: string,
     options: {
@@ -58,6 +69,11 @@ const AdminSemesterService = {
     return { status: response.status, data, nextPage, error }
   },
 
+  /**
+   * creates a semester
+   * @param semester
+   * @returns - an object containing the status, data, and error, details
+   */
   createSemester: async function (semester: CreateSemesterData): Promise<{
     status: StatusCodes
     data?: Semester
@@ -74,6 +90,12 @@ const AdminSemesterService = {
     return { status: response.status, data, error, details }
   },
 
+  /**
+   * updates a semester
+   * @param semesterId
+   * @param semester updates semester data
+   * @returns - an object containing the status, data, and error, details
+   */
   updateSemester: async function (
     semesterId: string,
     semester: UpdateSemesterData,
@@ -96,6 +118,11 @@ const AdminSemesterService = {
     return { status: response.status, data, error, details }
   },
 
+  /**
+   * deletes a semester
+   * @param semesterId
+   * @returns - an object containing the status, data, and error
+   */
   deleteSemester: async function (semesterId: string): Promise<{
     status: StatusCodes
     data?: Semester
@@ -111,6 +138,11 @@ const AdminSemesterService = {
     return { status: response.status, error }
   },
 
+  /**
+   * checks if the semester is current or upcoming
+   * @param semesterId
+   * @returns - a string indicating if the semester is current, upcoming, or empty
+   */
   isCurrentOrUpcoming: async function (semesterId: string) {
     'use server'
     const urlCurrent = buildNextRequestURL('/api/semesters', { timeframe: SemesterType.Current })
@@ -132,6 +164,11 @@ const AdminSemesterService = {
     return ''
   },
 
+  /**
+   * returns all semesters for a given project
+   * @param projectId
+   * @returns - an object containing the status, data, and error
+   */
   getProjectSemesters: async function (projectId: string): Promise<{
     status: StatusCodes
     data?: Semester[]

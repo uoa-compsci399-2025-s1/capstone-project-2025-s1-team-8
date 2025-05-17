@@ -3,11 +3,8 @@ import Modal from '@/components/Generic/Modal/Modal'
 import Button from '@/components/Generic/Button/Button'
 import { ModalProps } from '@/components/Generic/Modal/Modal'
 import Input from '@/components/Generic/Input/InputField'
-import {
-  handleCreateSemester,
-  handleUpdateSemester,
-  handleDeleteSemester,
-} from '@/lib/util/adminSemesterUtils'
+import { typeToFlattenedError } from 'zod'
+import { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 
 interface SemesterFormProps extends ModalProps {
   semesterId: string
@@ -19,6 +16,23 @@ interface SemesterFormProps extends ModalProps {
   onCreated?: () => void
   onUpdated?: () => void
   onDeleted?: () => void
+  handleCreateSemester: (formData: FormData) => Promise<void | {
+    error?: string
+    message?: string
+    details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
+  }>
+  handleUpdateSemester: (
+    formData: FormData,
+    id: string,
+  ) => Promise<void | {
+    error?: string
+    message?: string
+    details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
+  }>
+  handleDeleteSemester: (id: string) => Promise<void | {
+    error?: string
+    message?: string
+  }>
 }
 
 const SemesterForm: React.FC<SemesterFormProps> = ({
@@ -34,6 +48,9 @@ const SemesterForm: React.FC<SemesterFormProps> = ({
   onCreated,
   onUpdated,
   onDeleted,
+  handleCreateSemester,
+  handleUpdateSemester,
+  handleDeleteSemester,
 }) => {
   const [errorState, setErrorState] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
