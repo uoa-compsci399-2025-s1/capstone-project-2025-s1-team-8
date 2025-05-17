@@ -8,7 +8,14 @@ import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { mockProjects } from '@/test-config/mocks/Project.mock'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
-import { getAllSemesters } from '@/lib/services/admin/Handlers'
+import {
+  getAllSemesters,
+  isCurrentOrUpcoming,
+  getAllSemesterProjects,
+  handleCreateSemester,
+  handleUpdateSemester,
+  handleDeleteSemester,
+} from '@/lib/services/admin/Handlers'
 import { Semester } from '@/payload-types'
 import MobileAdminView from '@/app/(frontend)/admin/MobileAdminView'
 import { UserCombinedInfo } from '@/types/Collections'
@@ -201,6 +208,11 @@ const Admin = () => {
                     setShowNotification(true)
                     setNotificationMessage('Semester deleted successfully')
                   }}
+                  checkStatus={isCurrentOrUpcoming}
+                  getAllSemesterProjects={getAllSemesterProjects}
+                  handleCreateSemester={handleCreateSemester}
+                  handleUpdateSemester={handleUpdateSemester}
+                  handleDeleteSemester={handleDeleteSemester}
                 />
               </div>
             </motion.div>
