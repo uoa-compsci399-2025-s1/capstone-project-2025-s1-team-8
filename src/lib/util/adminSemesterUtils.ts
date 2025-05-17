@@ -2,9 +2,9 @@
 
 import { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 import { typeToFlattenedError } from 'zod'
-import AdminSemesterService from '@/lib/services/admin/AdminSemesterService'
 import { Project, Semester } from '@/payload-types'
 import { ProjectDetails } from '@/types/Project'
+import AdminService from '../services/admin'
 
 export const handleCreateSemester = async (
   formData: FormData,
@@ -13,7 +13,7 @@ export const handleCreateSemester = async (
   message?: string
   details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
 }> => {
-  const { status, error, details } = await AdminSemesterService.createSemester({
+  const { status, error, details } = await AdminService.createSemester({
     name: formData.get('semesterName') as string,
     startDate: new Date(formData.get('startDate') as string).toISOString(),
     endDate: new Date(formData.get('endDate') as string).toISOString(),
@@ -40,7 +40,7 @@ export const handleUpdateSemester = async (
   const startDate = formData.get('startDate') as string
   const endDate = formData.get('endDate') as string
 
-  const { status, error, details } = await AdminSemesterService.updateSemester(id, {
+  const { status, error, details } = await AdminService.updateSemester(id, {
     name,
     startDate,
     endDate,
@@ -60,7 +60,7 @@ export const handleDeleteSemester = async (
   message?: string
   error?: string
 }> => {
-  const { status, error } = await AdminSemesterService.deleteSemester(id)
+  const { status, error } = await AdminService.deleteSemester(id)
   if (status === 204) {
     return { message: 'Semester deleted successfully' }
   } else {
@@ -72,7 +72,7 @@ export const getAllSemesters = async (): Promise<void | {
   error?: string
   data?: Semester[]
 }> => {
-  const { status, error, data } = await AdminSemesterService.getAllPaginatedSemesters()
+  const { status, error, data } = await AdminService.getAllPaginatedSemesters()
   if (status === 200) {
     return { data }
   } else {
@@ -86,12 +86,12 @@ export const getAllSemesterProjects = async (
   error?: string
   data?: ProjectDetails[]
 }> => {
-  const { status, error, data } = await AdminSemesterService.getAllPaginatedProjectsBySemesterId(id)
+  const { status, error, data } = await AdminService.getAllPaginatedProjectsBySemesterId(id)
   if (status === 200) {
     const projectPromises =
       data?.map(async (semesterProject) => {
         const project = semesterProject.project as Project
-        const semesters = await AdminSemesterService.getProjectSemesters(project.id)
+        const semesters = await AdminService.getProjectSemesters(project.id)
 
         return {
           ...project,
@@ -108,5 +108,5 @@ export const getAllSemesterProjects = async (
 }
 
 export const isCurrentOrUpcoming = async (id: string): Promise<'current' | 'upcoming' | ''> => {
-  return await AdminSemesterService.isCurrentOrUpcoming(id)
+  return await AdminService.isCurrentOrUpcoming(id)
 }

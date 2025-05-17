@@ -1,5 +1,5 @@
 'use server'
-import AdminProjectService from '@/lib/services/admin/AdminProjectService'
+import AdminService from '@/lib/services/admin/index'
 import { ProjectStatus } from '@/types/Project'
 import { DNDType } from './ProjectDnD'
 
@@ -22,7 +22,7 @@ export async function updateProjectOrdersAndStatus({
         status,
       }
 
-      await AdminProjectService.updateSemesterProject(
+      await AdminService.updateSemesterProject(
         semesterId,
         project.projectInfo.semesterProjectId ?? '',
         updatedOrderAndStatus,
@@ -38,7 +38,7 @@ export async function handlePublishChanges({
   const container = containers[2]
   for (let i = 0; i < container.currentItems.length; i++) {
     const project = container.currentItems[i]
-    await AdminProjectService.updateSemesterProject(
+    await AdminService.updateSemesterProject(
       semesterId,
       project.projectInfo.semesterProjectId ?? '',
       { published: true },
