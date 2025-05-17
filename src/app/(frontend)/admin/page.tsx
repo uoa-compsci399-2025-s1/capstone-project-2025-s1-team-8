@@ -34,29 +34,39 @@ const Admin = () => {
   const [semestersData, setSemestersData] = useState<Semester[]>([])
   const [showNotification, setShowNotification] = useState<boolean>(false)
   const [notificationMessage, setNotificationMessage] = useState('')
-
   const [clientsData, setClientsData] = useState<
     { client: UserCombinedInfo; projects: ProjectDetails[] }[]
   >([])
-
-  const fetchSemesters = async () => {
-    const res = await getAllSemesters()
-    if (res?.data) {
-      setSemestersData(res.data)
-    }
-  }
-
-  const fetchClients = async () => {
-    const res = await getAllClients()
-    if (res?.data) {
-      setClientsData(res.data)
-    }
-  }
+  const [semestersLoaded, setSemestersLoaded] = useState<boolean>(false)
+  const [clientsLoaded, setClientsLoaded] = useState<boolean>(false)
 
   useEffect(() => {
-    fetchSemesters()
-    fetchClients()
-  }, [semestersData, clientsData])
+    if (!semestersLoaded) {
+      const fetchSemesters = async () => {
+        getAllSemesters().then((response) => {
+          if (response) {
+            setSemestersData(response.data ? response.data : [])
+            setSemestersLoaded(true)
+          }
+        })
+      }
+      fetchSemesters()
+    }
+  }, [semestersLoaded])
+
+  useEffect(() => {
+    if (!clientsLoaded) {
+      const fetchClients = async () => {
+        getAllClients().then((response) => {
+          if (response) {
+            setClientsData(response.data ? response.data : [])
+            setClientsLoaded(true)
+          }
+        })
+      }
+      fetchClients()
+    }
+  }, [clientsLoaded])
 
   useEffect(() => {
     if (showNotification) {
