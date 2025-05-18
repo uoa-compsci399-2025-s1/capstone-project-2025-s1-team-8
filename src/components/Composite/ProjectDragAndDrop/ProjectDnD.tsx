@@ -24,7 +24,7 @@ import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
 
 import { User } from '@/payload-types'
-import { UpdateParams } from './ProjectUpdates'
+import { UpdateParams } from '@/lib/util/adminProjectUtils'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -37,9 +37,9 @@ export type DNDType = {
 export type DndComponentProps = {
   presetContainers: DNDType[]
   semesterId: string
-  onSaveChanges: (params: UpdateParams) => Promise<void>
-  onPublishChanges: (params: UpdateParams) => Promise<void>
-  onDownloadCsv: (semesterId: string) => Promise<void>
+  onSaveChanges: (params: UpdateParams) => Promise<void> // required for this component, but not all other places this is referenced
+  onPublishChanges: (params: UpdateParams) => Promise<void> // required for this component, but not all other places this is referenced
+  onDownloadCsv: (semesterId: string) => Promise<void> // required for this component, but not all other places this is referenced
 }
 
 const defaultProjectInfo: ProjectDetails = {
@@ -103,9 +103,18 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
   //TODO: when items are moved around, remove the active filter styles
 
-  const [containerFilters, setContainerFilters] = useState<Record<string, string | undefined>>(() =>
-    Object.fromEntries(containers.map((c) => [c.id, 'originalOrder'])),
-  )
+  // const [containerFilters, setContainerFilters] = useState<Record<string, string | undefined>>(() =>
+  //   Object.fromEntries(containers.map((c) => [c.id, 'originalOrder'])),
+  // )
+  const [containerFilters, setContainerFilters] = useState<Record<string, string | undefined>>({})
+
+useEffect(() => {
+  if (containers) {
+    setContainerFilters(
+      Object.fromEntries(containers.map((c) => [c.id, 'originalOrder']))
+    )
+  }
+}, [containers])
 
   const handleFilterChange = (containerId: UniqueIdentifier, newFilter?: string) => {
     setContainerFilters((prev) => ({
@@ -484,7 +493,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
           onDragMove={handleDragMove}
           onDragEnd={handleDragEnd}
         >
-          {containers.map((container) => (
+          {containers?.map((container) => (
             <FilterProvider
               key={container.id}
               value={{

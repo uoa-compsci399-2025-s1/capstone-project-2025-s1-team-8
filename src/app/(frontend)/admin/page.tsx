@@ -19,7 +19,7 @@ import { getNextSemesterProjects } from '@/lib/util/adminProjectUtils'
 import {
   handlePublishChanges,
   updateProjectOrdersAndStatus,
-} from '@/components/Composite/ProjectDragAndDrop/ProjectUpdates'
+} from '@/lib/util/adminProjectUtils'
 import { handleCSVDownload } from '@/lib/services/admin/Handlers'
 
 const Admin = () => {

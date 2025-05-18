@@ -9,14 +9,9 @@ import { GET as GetProjects } from '@/app/api/semesters/[id]/projects/route'
 import { GET as GetProjectSemesters } from '@/app/api/projects/[id]/semesters/route'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
 import { ProjectStatus } from '@/types/Project'
-import { DndComponentProps } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
+import { DNDType, DndComponentProps } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { UniqueIdentifier } from '@dnd-kit/core'
-import {
-  handlePublishChanges,
-  updateProjectOrdersAndStatus,
-} from '@/components/Composite/ProjectDragAndDrop/ProjectUpdates'
-import { handleCSVDownload } from './Handlers'
 import { StatusCodes } from 'http-status-codes'
 
 const AdminProjectService = {
@@ -57,7 +52,7 @@ const AdminProjectService = {
   },
 
   getNextSemesterProjects: async function (): Promise<{
-    data: DndComponentProps
+    data: {semesterId: string, presetContainers: DNDType[]}
     error?: string
   }> {
     'use server'
@@ -97,9 +92,6 @@ const AdminProjectService = {
             originalItems: approvedProjects,
           },
         ],
-        onSaveChanges: updateProjectOrdersAndStatus,
-        onPublishChanges: handlePublishChanges,
-        onDownloadCsv: handleCSVDownload,
       },
     }
   },
