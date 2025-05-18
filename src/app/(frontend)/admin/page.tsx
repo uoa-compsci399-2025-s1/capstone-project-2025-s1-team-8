@@ -138,7 +138,7 @@ const Admin = () => {
     <div>
       <NavBar onclick={handleLoginButtonClick} user={loggedInUser} />
       <div className="hidden lg:block w-full">
-        <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
+        <div className="mt-28 w-full flex justify-center items-center gap-25 bg-beige pb-4">
           <div
             className={` ${showNotification ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 fixed top-6 right-6 z-50 bg-light-pink ring ring-2 ring-pink-soft shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`}
           >
