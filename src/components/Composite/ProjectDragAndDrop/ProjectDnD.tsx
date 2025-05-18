@@ -431,7 +431,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
         />
       </div>
 
-      <div className="flex gap-7 flex-wrap md:flex-nowrap">
+      <div className="flex gap-7 flex-wrap md:flex-nowrap to-scale">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCorners}
