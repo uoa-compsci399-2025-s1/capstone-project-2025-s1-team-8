@@ -32,7 +32,6 @@ const Admin = () => {
   const [loggedInUser, setLoggedInUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
   const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
   const [semestersData, setSemestersData] = useState<Semester[]>([])
-  const [showNotification, setShowNotification] = useState<boolean>(false)
   const [notificationMessage, setNotificationMessage] = useState('')
   const [clientsData, setClientsData] = useState<
     { client: UserCombinedInfo; projects: ProjectDetails[] }[]
@@ -69,14 +68,14 @@ const Admin = () => {
   }, [clientsLoaded])
 
   useEffect(() => {
-    if (showNotification) {
+    if (notificationMessage !== '') {
       const timer = setTimeout(() => {
-        setShowNotification(false)
+        setNotificationMessage('')
       }, 5000)
 
       return () => clearTimeout(timer)
     }
-  }, [showNotification])
+  }, [notificationMessage])
 
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
@@ -147,7 +146,7 @@ const Admin = () => {
       <div className="hidden lg:block w-full">
         <div className="fixed top-6 right-6 z-50">
           <Notification
-            isVisible={showNotification}
+            isVisible={notificationMessage !== ''}
             title={'Success'}
             message={notificationMessage ?? 'hello world'}
           />
@@ -207,16 +206,16 @@ const Admin = () => {
                 <SemestersPage
                   semesters={semestersData}
                   created={() => {
-                    setShowNotification(true)
                     setNotificationMessage('Semester created successfully')
+                    setSemestersLoaded(false)
                   }}
                   updated={() => {
-                    setShowNotification(true)
                     setNotificationMessage('Semester updated successfully')
+                    setSemestersLoaded(false)
                   }}
                   deleted={() => {
-                    setShowNotification(true)
                     setNotificationMessage('Semester deleted successfully')
+                    setSemestersLoaded(false)
                   }}
                   checkStatus={isCurrentOrUpcoming}
                   getAllSemesterProjects={getAllSemesterProjects}
