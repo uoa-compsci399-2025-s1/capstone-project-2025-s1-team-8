@@ -1,7 +1,10 @@
 import { buildNextRequestURL } from "@/utils/buildNextRequestURL"
 import { buildNextRequest } from "@/utils/buildNextRequest"
 import { GET as GetSemesters } from "@/app/api/semesters/route"
+import {GET as GetProjects} from "@/app/api/semesters/[id]/projects/route"
 import { SemesterType } from "@/types/Semester"
+import { Project, SemesterProject } from "@/payload-types"
+import { ProjectDetails } from "@/types/Project"
 
 export const StudentService = {
     getCurrentSemester: async function (): Promise<string | null> {
@@ -18,5 +21,31 @@ export const StudentService = {
 
     return semester[0].id
   },
+
+  getProjectsForSemester: async function (): Promise<ProjectDetails[]> {
+    const semesterId = await this.getCurrentSemester()
+    if (!semesterId) {
+      console.error('No current semester found')
+      return []
+    }
+    const url = buildNextRequestURL(`/api/semesters/${semesterId}/projects`, {published: "true"})
+    const response = await GetProjects(await buildNextRequest(url, { method: 'GET' }), {
+        params: Promise.resolve({ id: semesterId }),
+    })
+    const { data, error } = await response.json()
+
+    if (error) {
+      console.error('Failed to fetch projects for semester:', error)
+      return []
+    }
+    const projects: ProjectDetails[] = []
+
+    for (const semesterProject of data) {
+        const projectInfo = (semesterProject as SemesterProject).project as Project
+        projects.push({...projectInfo, semesters: []})
+    }
+
+    return data;
+  }
 
 }
