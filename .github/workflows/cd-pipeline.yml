@@ -34,7 +34,6 @@ jobs:
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
     environment:
       name: staging
-      # Note this url will change whenever our IP gets discarded, need to get our domain first.
       url: http://ec2-54-252-161-152.ap-southeast-2.compute.amazonaws.com:3000
     runs-on: ubuntu-latest
     steps:
