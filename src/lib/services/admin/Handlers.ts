@@ -9,9 +9,9 @@ import { ProjectDetails } from '@/types/Project'
 
 /**
  * handles the click event to create semester
+ *
  * @param formData data from SemesterForm
- * @returns {error, message, details} where error is the error message,
- * message is the success message, and details is the details of request body error
+ *
  */
 export const handleCreateSemester = async (
   formData: FormData,
@@ -36,10 +36,10 @@ export const handleCreateSemester = async (
 
 /**
  * handles the click event to update semester
+ *
  * @param formData data from SemesterForm
  * @param id the id of the semester to be updated
- * @returns {error, message, details} where error is the error message,
- * message is the success message, and details is the details of request body error
+ *
  */
 export const handleUpdateSemester = async (
   formData: FormData,
@@ -70,9 +70,9 @@ export const handleUpdateSemester = async (
 
 /**
  * handles the click event to delete a semester
+ *
  * @param id the id of the semester to delete
- * @returns {error, message} where error is the error message,
- * and message is the success message
+ *
  */
 export const handleDeleteSemester = async (
   id: string,
@@ -90,9 +90,9 @@ export const handleDeleteSemester = async (
 
 /**
  * handles the click event to create semester
+ *
  * @param formData data from SemesterForm
- * @returns {error, message, details} where error is the error message,
- * message is the success message, and details is the details of request body error
+ *
  */
 export const getAllSemesters = async (): Promise<void | {
   error?: string
@@ -108,9 +108,9 @@ export const getAllSemesters = async (): Promise<void | {
 
 /**
  * gets all Semester Projects related to a semester
+ *
  * @param id the id of the semester to get projects for
- * @returns {error, data} where error is the error message,
- * data is the array of projects related to the semester
+ *
  */
 export const getAllSemesterProjects = async (
   id: string,
@@ -141,16 +141,17 @@ export const getAllSemesterProjects = async (
 
 /**
  * determines whether a semester is current or upcoming
+ *
  * @param id the id of the semester
- * @returns {'current' | 'upcoming' | ''}
+ *
  */
 export const isCurrentOrUpcoming = async (id: string): Promise<'current' | 'upcoming' | ''> => {
   return await AdminService.isCurrentOrUpcoming(id)
 }
 
 /**
- * gets all Clients
- * @returns { client, projects } array containing clients and their associated projects
+ * handles gets all Clients
+ *
  */
 export const getAllClients = async (): Promise<void | {
   data?: { client: UserCombinedInfo; projects: ProjectDetails[] }[]

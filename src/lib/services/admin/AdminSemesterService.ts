@@ -19,9 +19,10 @@ import { SemesterType } from '@/types/Semester'
 
 const AdminSemesterService = {
   /**
-  returns all semesters with pagination
-  @param options - pagination options including page and limit
-  @returns - an object containing the status, data, nextPage, and error
+   * returns all semesters with pagination
+   *
+   * @param options - pagination options including page and limit
+   * @returns - an object containing the status, data, nextPage, and error
    **/
   getAllPaginatedSemesters: async function (
     options: { page?: number; limit?: number } = {},
@@ -41,6 +42,7 @@ const AdminSemesterService = {
 
   /**
    * returns all Semester Projects for a given semester with pagination
+   *
    * @param semesterId
    * @param options
    * @returns - an object containing the status, data, nextPage, and error
@@ -71,6 +73,7 @@ const AdminSemesterService = {
 
   /**
    * creates a semester
+   *
    * @param semester
    * @returns - an object containing the status, data, and error, details
    */
@@ -92,6 +95,7 @@ const AdminSemesterService = {
 
   /**
    * updates a semester
+   *
    * @param semesterId
    * @param semester updates semester data
    * @returns - an object containing the status, data, and error, details
@@ -120,6 +124,7 @@ const AdminSemesterService = {
 
   /**
    * deletes a semester
+   *
    * @param semesterId
    * @returns - an object containing the status, data, and error
    */
@@ -140,6 +145,7 @@ const AdminSemesterService = {
 
   /**
    * checks if the semester is current or upcoming
+   *
    * @param semesterId
    * @returns - a string indicating if the semester is current, upcoming, or empty
    */
@@ -166,6 +172,7 @@ const AdminSemesterService = {
 
   /**
    * returns all semesters for a given project
+   *
    * @param projectId
    * @returns - an object containing the status, data, and error
    */
