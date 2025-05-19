@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { Semester } from '@/payload-types'
+import type { Semester } from '@/payload-types'
 import { CommonResponse } from './CommonResponse'
 
 export const GetSemesterResponseSchema = CommonResponse.extend({

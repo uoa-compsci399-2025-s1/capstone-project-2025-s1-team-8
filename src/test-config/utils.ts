@@ -1,9 +1,10 @@
 // setup-teardown-hook.js
 import { NextRequest } from 'next/server'
-import { CollectionSlug, getPayload, Payload } from 'payload'
+import type { CollectionSlug, Payload } from 'payload';
+import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { ADMIN_JWT_MOCK, CLIENT_JWT_MOCK, STUDENT_JWT_MOCK } from './mocks/Auth.mock'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
 
 /**
  * Payload object to use in integration tests

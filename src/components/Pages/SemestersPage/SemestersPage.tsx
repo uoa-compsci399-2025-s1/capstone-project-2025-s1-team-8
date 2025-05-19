@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import SemesterCard from '@/components/Composite/SemesterCard/SemesterCard'
 import Button from '@/components/Generic/Button/Button'
 import SemesterForm from '@/components/Composite/SemesterForm/SemesterForm'
-import { Semester } from '@/payload-types'
-import { ProjectDetails } from '@/types/Project'
-import { typeToFlattenedError } from 'zod'
-import { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
+import type { Semester } from '@/payload-types'
+import type { ProjectDetails } from '@/types/Project'
+import type { typeToFlattenedError } from 'zod'
+import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 
 interface SemestersPageProps {
   semesters: Semester[]

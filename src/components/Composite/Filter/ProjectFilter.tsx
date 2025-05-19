@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import FilterInner from '@/components/Generic/Filter/FilterInner'
 import { useFilter } from '@/contexts/FilterContext'
 import { GoChevronDown, GoChevronUp } from 'react-icons/go'
+import type {
+  SortableKeys} from '@/components/Generic/Filter/ProjectFilterAssets';
 import {
-  DefaultDropdownOptions,
-  SortableKeys,
+  DefaultDropdownOptions
 } from '@/components/Generic/Filter/ProjectFilterAssets'
 
 interface ProjectFilterProps {

@@ -1,10 +1,11 @@
 import { z, ZodError } from 'zod'
 import { NotFound } from 'payload'
 import { StatusCodes } from 'http-status-codes'
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest} from 'next/server';
+import { NextResponse } from 'next/server'
 import UserService from '@/data-layer/services/UserService'
 import { UserRole } from '@/types/User'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
 import { Security } from '@/business-layer/middleware/Security'
 
 export const UpdateUserRequestBodySchema = z.object({

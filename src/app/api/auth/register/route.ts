@@ -1,12 +1,13 @@
 import AuthService from '@/business-layer/services/AuthService'
 import UserService from '@/data-layer/services/UserService'
 import AuthDataService from '@/data-layer/services/AuthService'
-import { CreateUserData } from '@/types/Collections'
+import type { CreateUserData } from '@/types/Collections'
 import { UserRoleWithoutAdmin } from '@/types/User'
 import { StatusCodes } from 'http-status-codes'
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest} from 'next/server';
+import { NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
-import { User } from '@/payload-types'
+import type { User } from '@/payload-types'
 
 export const RegisterRequestBodySchema = z.object({
   firstName: z.string(),

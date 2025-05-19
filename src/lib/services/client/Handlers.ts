@@ -3,8 +3,8 @@
 import { redirect } from 'next/navigation'
 import ClientService from '@/lib/services/client/ClientService'
 import { StatusCodes } from 'http-status-codes'
-import { UserCombinedInfo } from '@/types/Collections'
-import { ProjectDetails } from '@/types/Project'
+import type { UserCombinedInfo } from '@/types/Collections'
+import type { ProjectDetails } from '@/types/Project'
 import { UserRole } from '@/types/User'
 
 export const handleClientPageLoad = async (): Promise<{

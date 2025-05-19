@@ -1,14 +1,15 @@
-import { Semester, SemesterProject } from '@/payload-types'
-import { UpdateSemesterProjectData } from '@/types/Collections'
+import type { Semester, SemesterProject } from '@/payload-types'
+import type { UpdateSemesterProjectData } from '@/types/Collections'
 import { buildNextRequest } from '@/utils/buildNextRequest'
-import { typeToFlattenedError } from 'zod'
+import type { typeToFlattenedError } from 'zod'
 import { GET as GetProjectSemesters } from '@/app/api/projects/[id]/semesters/route'
 
+import type {
+  PatchSemesterProjectRequestBody} from '@/app/api/admin/semesters/[id]/projects/[projectId]/route';
 import {
-  PatchSemesterProjectRequestBody,
   PATCH as UpdateSemesterProject,
 } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
-import { StatusCodes } from 'http-status-codes'
+import type { StatusCodes } from 'http-status-codes'
 
 const AdminProjectService = {
   UpdateSemesterProject: async function (

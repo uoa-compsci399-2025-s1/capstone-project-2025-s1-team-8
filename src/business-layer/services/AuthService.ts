@@ -1,9 +1,10 @@
 import bcrypt from 'bcryptjs'
-import jwt, { JwtPayload } from 'jsonwebtoken'
+import type { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken'
 
-import { User } from '@/payload-types'
+import type { User } from '@/payload-types'
 import { SALT_ROUNDS } from '@/types/Auth'
-import { UserRoleWithoutAdmin } from '@/types/User'
+import type { UserRoleWithoutAdmin } from '@/types/User'
 
 export default class AuthService {
   /**

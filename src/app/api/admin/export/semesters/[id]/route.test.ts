@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'

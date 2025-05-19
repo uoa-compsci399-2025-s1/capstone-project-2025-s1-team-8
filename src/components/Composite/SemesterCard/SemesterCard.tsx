@@ -4,8 +4,8 @@ import Capsule from '@/components/Generic/Capsule/Capsule'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import { XMarkIcon } from '@heroicons/react/24/solid'
-import { Semester } from '@/payload-types'
-import { ProjectDetails } from '@/types/Project'
+import type { Semester } from '@/payload-types'
+import type { ProjectDetails } from '@/types/Project'
 
 interface SemesterCardProps extends Semester {
   semester: Semester

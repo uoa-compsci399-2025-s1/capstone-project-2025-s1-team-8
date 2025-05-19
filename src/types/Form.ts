@@ -1,5 +1,5 @@
-import { z } from 'zod'
+import type { z } from 'zod'
 
-import { QuestionResponseSchema } from './Payload'
+import type { QuestionResponseSchema } from './Payload'
 
 export type QuestionResponse = z.infer<typeof QuestionResponseSchema>

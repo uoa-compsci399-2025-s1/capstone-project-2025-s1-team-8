@@ -1,12 +1,14 @@
-import { LoginRequestBodySchema, POST as Login } from '@/app/api/auth/login/route'
+import type { LoginRequestBodySchema} from '@/app/api/auth/login/route';
+import { POST as Login } from '@/app/api/auth/login/route'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { type StatusCodes } from 'http-status-codes'
 import { type typeToFlattenedError } from 'zod'
-import { RegisterRequestBodySchema, POST as Register } from '@/app/api/auth/register/route'
+import type { RegisterRequestBodySchema} from '@/app/api/auth/register/route';
+import { POST as Register } from '@/app/api/auth/register/route'
 import { GET as Logout } from '@/app/api/auth/logout/route'
-import { UserRoleWithoutAdmin } from '@/types/User'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserRoleWithoutAdmin } from '@/types/User'
+import type { UserCombinedInfo } from '@/types/Collections'
 import { GET as GetUserSelfData } from '@/app/api/users/me/route'
 
 const UserService = {

@@ -1,4 +1,4 @@
-import { DropdownOptionType } from './FilterInner'
+import type { DropdownOptionType } from './FilterInner'
 
 export type SortableKeys =
   | 'projectName'

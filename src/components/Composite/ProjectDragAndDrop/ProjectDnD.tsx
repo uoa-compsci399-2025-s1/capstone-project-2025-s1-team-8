@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
-import {
-  DndContext,
+import type {
   DragEndEvent,
   DragMoveEvent,
-  DragOverlay,
   DragStartEvent,
+  UniqueIdentifier} from '@dnd-kit/core';
+import {
+  DndContext,
+  DragOverlay,
   KeyboardSensor,
   PointerSensor,
-  UniqueIdentifier,
   closestCorners,
   useSensor,
   useSensors,
@@ -16,13 +17,13 @@ import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import ProjectContainer from './ProjectContainer'
 import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { FilterProvider } from '@/contexts/FilterContext'
-import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
+import type { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { FiSave, FiPrinter } from 'react-icons/fi'
 import Notification from '@/components/Generic/Notification/Notification'
 import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
 
-import { Project, User } from '@/payload-types'
+import type { Project, User } from '@/payload-types'
 
 type DNDType = {
   id: UniqueIdentifier

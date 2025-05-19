@@ -1,11 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest} from 'next/server';
+import { NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
 import { StatusCodes } from 'http-status-codes'
 import { NotFound } from 'payload'
 import ProjectService from '@/data-layer/services/ProjectService'
 import SemesterService from '@/data-layer/services/SemesterService'
 import { Security } from '@/business-layer/middleware/Security'
-import { SemesterProject } from '@/payload-types'
+import type { SemesterProject } from '@/payload-types'
 import { ProjectSchema, SemesterSchema } from '@/types/Payload'
 import { ProjectStatus } from '@/types/Project'
 

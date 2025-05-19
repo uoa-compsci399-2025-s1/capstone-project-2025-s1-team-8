@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest} from 'next/server';
+import { NextResponse } from 'next/server'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { StatusCodes } from 'http-status-codes'
 import { Security } from '@/business-layer/middleware/Security'

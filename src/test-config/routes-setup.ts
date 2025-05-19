@@ -16,7 +16,7 @@ import {
 } from './mocks/Auth.mock'
 import AuthService from '@/business-layer/services/AuthService'
 import { payload } from '@/data-layer/adapters/Payload'
-import { CollectionSlug } from 'payload'
+import type { CollectionSlug } from 'payload'
 
 let adminToken: string
 let clientToken: string
@@ -32,9 +32,7 @@ beforeEach(async () => {
   })
   // Need to mock the auth service decode for it to decode the correct mocks
   vi.mock('@/business-layer/services/AuthService', async () => {
-    const actual = await vi.importActual<typeof import('@/business-layer/services/AuthService')>(
-      '@/business-layer/services/AuthService',
-    )
+    const actual = await vi.importActual('@/business-layer/services/AuthService')
 
     return {
       default: class {
@@ -65,9 +63,7 @@ beforeEach(async () => {
   })
 
   vi.mock('@/business-layer/security/google', async () => {
-    const actual = await vi.importActual<typeof import('@/business-layer/security/google')>(
-      '@/business-layer/security/google',
-    )
+    const actual = await vi.importActual('@/business-layer/security/google')
     return {
       ...actual,
       googleAuthScopes: SCOPES_ARRAY_MOCK,

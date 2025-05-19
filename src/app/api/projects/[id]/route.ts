@@ -4,10 +4,10 @@ import { NotFound } from 'payload'
 import { z, ZodError } from 'zod'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { Security } from '@/business-layer/middleware/Security'
-import { RequestWithUser } from '@/types/Requests'
+import type { RequestWithUser } from '@/types/Requests'
 import { MediaSchema, UserSchema } from '@/types/Payload'
 import { UserRole } from '@/types/User'
-import { User } from '@/payload-types'
+import type { User } from '@/payload-types'
 
 export const UpdateProjectRequestBody = z.object({
   name: z.string().optional(),

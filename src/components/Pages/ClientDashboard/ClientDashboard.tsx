@@ -2,9 +2,9 @@ import CreateProjectCard from '@/components/Composite/CreateProjectCard/CreatePr
 import GradientTextArea from '@/components/Generic/GradientTextArea/GradientTextArea'
 import ClientProfile from '@/components/Composite/ClientProfile/ClientProfile'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
-import { UserCombinedInfo } from '@/types/Collections'
-import { StatusCodes } from 'http-status-codes'
-import { ProjectDetails } from '@/types/Project'
+import type { UserCombinedInfo } from '@/types/Collections'
+import type { StatusCodes } from 'http-status-codes'
+import type { ProjectDetails } from '@/types/Project'
 
 interface ClientDashboardProps {
   client: UserCombinedInfo

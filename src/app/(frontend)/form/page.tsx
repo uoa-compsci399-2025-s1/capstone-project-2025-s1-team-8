@@ -10,7 +10,7 @@ import { FiCheck } from 'react-icons/fi'
 import { HiX } from 'react-icons/hi'
 import { redirect, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
 import { getLoggedInUser } from '@/lib/services/user/Handlers'
 import { UserRole } from '@/types/User'
 

@@ -4,14 +4,15 @@ import { cookies } from 'next/headers'
 import { createMockNextPostRequest, createMockNextRequest } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
-import { CreateProjectRequestBody, CreateProjectResponse, GET, POST } from './route'
+import type { CreateProjectRequestBody, CreateProjectResponse} from './route';
+import { GET, POST } from './route'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import { clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 import UserService from '@/data-layer/services/UserService'
 import SemesterService from '@/data-layer/services/SemesterService'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
-import { Project } from '@/payload-types'
+import type { Project } from '@/payload-types'
 
 describe('test /api/projects', async () => {
   const projectService = new ProjectService()

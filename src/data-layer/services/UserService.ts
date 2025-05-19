@@ -1,13 +1,14 @@
-import { ClientAdditionalInfo, User } from '@/payload-types'
+import type { ClientAdditionalInfo, User } from '@/payload-types'
 import { payload } from '../adapters/Payload'
-import {
+import type {
   CreateClientAdditionalInfoData,
   CreateUserData,
   UpdateClientAdditionalInfoData,
   UpdateUserData,
 } from '@/types/Collections'
-import { NotFound, PaginatedDocs } from 'payload'
-import { UserRole } from '@/types/User'
+import type { PaginatedDocs } from 'payload';
+import { NotFound } from 'payload'
+import type { UserRole } from '@/types/User'
 
 export default class UserService {
   /**

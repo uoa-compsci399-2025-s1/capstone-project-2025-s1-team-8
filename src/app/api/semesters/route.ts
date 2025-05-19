@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest} from 'next/server';
+import { NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 
 import SemesterService from '@/data-layer/services/SemesterService'

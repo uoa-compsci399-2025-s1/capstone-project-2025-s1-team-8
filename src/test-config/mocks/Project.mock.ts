@@ -1,9 +1,9 @@
-import { CreateProjectData, CreateSemesterProjectData } from '@/types/Collections'
-import { Project, SemesterProject } from '@/payload-types'
+import type { CreateProjectData, CreateSemesterProjectData } from '@/types/Collections'
+import type { Project, SemesterProject } from '@/payload-types'
 import { ProjectStatus } from '@/types/Project'
 import { semesterMock, mockSemesters } from '@/test-config/mocks/Semester.mock'
 import { clientMock } from './Auth.mock'
-import { ProjectDetails } from '@/types/Project'
+import type { ProjectDetails } from '@/types/Project'
 
 /*
  * Project mocks

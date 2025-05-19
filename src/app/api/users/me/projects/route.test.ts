@@ -14,9 +14,7 @@ describe('tests /api/users/me/projects', async () => {
   const cookieStore = await cookies()
 
   vi.mock('@/data-layer/services/ProjectService', async () => {
-    const actual = await vi.importActual<typeof import('@/data-layer/services/ProjectService')>(
-      '@/data-layer/services/ProjectService',
-    )
+    const actual = await vi.importActual('@/data-layer/services/ProjectService')
 
     return {
       default: class extends actual.default {

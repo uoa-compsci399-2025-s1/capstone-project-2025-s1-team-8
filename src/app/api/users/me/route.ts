@@ -1,5 +1,5 @@
 import { Security } from '@/business-layer/middleware/Security'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
 import { NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
 import { MediaSchema } from '@/types/Payload'
@@ -7,7 +7,7 @@ import UserService from '@/data-layer/services/UserService'
 import { UserRole } from '@/types/User'
 import { NotFound } from 'payload'
 import { StatusCodes } from 'http-status-codes'
-import { RequestWithUser } from '@/types/Requests'
+import type { RequestWithUser } from '@/types/Requests'
 
 export const UpdateUserRequestBody = z
   .object({

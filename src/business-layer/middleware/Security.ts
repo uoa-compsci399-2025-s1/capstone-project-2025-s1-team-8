@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest} from 'next/server';
+import { NextResponse } from 'next/server'
 import { payloadAuthentication, UnauthorizedAuthError } from '../security/authentication'
 import { StatusCodes } from 'http-status-codes'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
 
 type RouteHandlerContext = {
   params: Promise<Record<string, string>>
