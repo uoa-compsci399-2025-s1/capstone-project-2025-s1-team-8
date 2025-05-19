@@ -4,7 +4,7 @@ import { UserCombinedInfo } from '@/types/Collections'
 import AdminService from 'src/lib/services/admin/index'
 import { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 import { typeToFlattenedError } from 'zod'
-import { Project } from '@/payload-types'
+import { Project, Semester } from '@/payload-types'
 import { ProjectDetails } from '@/types/Project'
 
 /**
@@ -83,6 +83,23 @@ export const handleDeleteSemester = async (
   const { status, error } = await AdminService.deleteSemester(id)
   if (status === 204) {
     return { message: 'Semester deleted successfully' }
+  } else {
+    return { error }
+  }
+}
+
+/**
+ * Handles fetching all {@link Semester}'s
+ *
+ * @returns All {@link Semester}'s
+ */
+export const handleGetAllSemesters = async (): Promise<void | {
+  error?: string
+  data?: Semester[]
+}> => {
+  const { status, error, data } = await AdminService.getAllPaginatedSemesters()
+  if (status === 200) {
+    return { data }
   } else {
     return { error }
   }

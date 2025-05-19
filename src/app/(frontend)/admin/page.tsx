@@ -14,6 +14,7 @@ import {
   handleCreateSemester,
   handleUpdateSemester,
   handleDeleteSemester,
+  handleGetAllSemesters,
 } from '@/lib/services/admin/Handlers'
 import { Semester } from '@/payload-types'
 import MobileAdminView from '@/app/(frontend)/admin/MobileAdminView'
@@ -23,7 +24,6 @@ import { UserRole } from '@/types/User'
 import { getAllClients } from '@/lib/services/admin/Handlers'
 import { ProjectDetails } from '@/types/Project'
 import Notification from '@/components/Generic/Notification/Notification'
-import AdminService from 'src/lib/services/admin/index'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -42,7 +42,7 @@ const Admin = () => {
   useEffect(() => {
     if (!semestersLoaded) {
       const fetchSemesters = async () => {
-        AdminService.getAllPaginatedSemesters().then((response) => {
+        handleGetAllSemesters().then((response) => {
           if (response) {
             setSemestersData(response.data ? response.data : [])
             setSemestersLoaded(true)
