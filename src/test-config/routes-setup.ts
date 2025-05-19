@@ -35,10 +35,7 @@ beforeEach(async () => {
     const actual = await vi.importActual('@/business-layer/services/AuthService')
 
     return {
-      default: class {
-        private authServiceInstance = new actual.default()
-        generateState = this.authServiceInstance.generateState.bind(this.authServiceInstance)
-        decryptState = this.authServiceInstance.decryptState.bind(this.authServiceInstance)
+      default: class extends actual.default {
         hashPassword = vi.fn().mockImplementation((password) => {
           return Buffer.from(password).toString('base64')
         })
