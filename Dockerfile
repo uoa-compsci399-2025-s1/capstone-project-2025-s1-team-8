@@ -7,7 +7,7 @@ FROM node:22.14.0-slim AS base
 FROM base AS deps
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
-RUN corepack enable pnpm && pnpm install --frozen-lockfile
+RUN corepack enable pnpm && pnpm install --frozen-lockfile --prod
 
 # Stage 2: Build the application
 FROM base AS builder
