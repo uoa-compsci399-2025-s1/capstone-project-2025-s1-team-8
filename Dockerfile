@@ -24,6 +24,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
+# If there is no public, make sure to run: mkdir -p public/.gitkeep
 COPY --from=builder /app/public ./public
 
 EXPOSE 3000
