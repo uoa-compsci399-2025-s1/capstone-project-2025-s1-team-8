@@ -6,7 +6,7 @@ import type {
   UpdateClientAdditionalInfoData,
   UpdateUserData,
 } from '@/types/Collections'
-import type { PaginatedDocs } from 'payload';
+import type { PaginatedDocs } from 'payload'
 import { NotFound } from 'payload'
 import type { UserRole } from '@/types/User'
 

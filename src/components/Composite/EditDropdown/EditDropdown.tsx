@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import type { DropdownOptionType } from '@/components/Generic/Filter/FilterInner';
+import type { DropdownOptionType } from '@/components/Generic/Filter/FilterInner'
 import FilterInner from '@/components/Generic/Filter/FilterInner'
 import { FiEdit } from 'react-icons/fi'
 import { RiDeleteBinLine } from 'react-icons/ri'

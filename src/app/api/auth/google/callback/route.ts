@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import type { NextRequest} from 'next/server';
+import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { redirect } from 'next/navigation'
 
@@ -8,7 +8,7 @@ import { UserRole } from '@/types/User'
 import UserService from '@/data-layer/services/UserService'
 import AuthService from '@/data-layer/services/AuthService'
 import BusinessAuthService from '@/business-layer/services/AuthService'
-import type { UserInfoResponse} from '@/types/Auth';
+import type { UserInfoResponse } from '@/types/Auth'
 import { AUTH_COOKIE_NAME, UserInfoResponseSchema } from '@/types/Auth'
 import type { User } from '@/payload-types'
 

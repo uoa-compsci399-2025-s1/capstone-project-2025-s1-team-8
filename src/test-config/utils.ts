@@ -1,6 +1,6 @@
 // setup-teardown-hook.js
 import { NextRequest } from 'next/server'
-import type { CollectionSlug, Payload } from 'payload';
+import type { CollectionSlug, Payload } from 'payload'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { ADMIN_JWT_MOCK, CLIENT_JWT_MOCK, STUDENT_JWT_MOCK } from './mocks/Auth.mock'

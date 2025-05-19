@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
-import type { NextRequest} from 'next/server';
+import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
 import { NotFound } from 'payload'

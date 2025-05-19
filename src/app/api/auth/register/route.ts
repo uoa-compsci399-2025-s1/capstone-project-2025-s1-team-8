@@ -4,7 +4,7 @@ import AuthDataService from '@/data-layer/services/AuthService'
 import type { CreateUserData } from '@/types/Collections'
 import { UserRoleWithoutAdmin } from '@/types/User'
 import { StatusCodes } from 'http-status-codes'
-import type { NextRequest} from 'next/server';
+import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
 import type { User } from '@/payload-types'

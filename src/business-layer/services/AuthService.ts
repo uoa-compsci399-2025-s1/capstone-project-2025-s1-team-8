@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs'
-import type { JwtPayload } from 'jsonwebtoken';
+import type { JwtPayload } from 'jsonwebtoken'
 import jwt from 'jsonwebtoken'
 
 import type { User } from '@/payload-types'

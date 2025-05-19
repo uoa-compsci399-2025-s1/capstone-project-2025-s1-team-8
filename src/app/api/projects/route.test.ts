@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 import { createMockNextPostRequest, createMockNextRequest } from '@/test-config/utils'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
-import type { CreateProjectRequestBody, CreateProjectResponse} from './route';
+import type { CreateProjectRequestBody, CreateProjectResponse } from './route'
 import { GET, POST } from './route'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'

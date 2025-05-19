@@ -1,4 +1,4 @@
-import type { Payload } from 'payload';
+import type { Payload } from 'payload'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { testPayloadObject } from '@/test-config/utils'

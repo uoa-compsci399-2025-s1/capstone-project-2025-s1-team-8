@@ -1,4 +1,4 @@
-import type { NextRequest} from 'next/server';
+import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { NotFound } from 'payload'
 import { StatusCodes } from 'http-status-codes'

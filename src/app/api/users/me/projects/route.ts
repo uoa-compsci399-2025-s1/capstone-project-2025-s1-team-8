@@ -1,7 +1,7 @@
 import { Security } from '@/business-layer/middleware/Security'
 import ProjectService from '@/data-layer/services/ProjectService'
 import type { UserCombinedInfo } from '@/types/Collections'
-import type { NextRequest} from 'next/server';
+import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 class RouteWrapper {

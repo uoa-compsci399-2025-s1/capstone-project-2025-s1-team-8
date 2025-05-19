@@ -6,7 +6,7 @@ import ProjectService from '@/data-layer/services/ProjectService'
 import SemesterService from '@/data-layer/services/SemesterService'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
-import type { GetProjectSemestersResponse } from './route';
+import type { GetProjectSemestersResponse } from './route'
 import { GET } from './route'
 import { projectCreateMock, semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'

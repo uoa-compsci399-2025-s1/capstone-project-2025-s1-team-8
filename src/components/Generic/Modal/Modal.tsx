@@ -1,4 +1,4 @@
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react'
 import React, { useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { XMarkIcon } from '@heroicons/react/16/solid'

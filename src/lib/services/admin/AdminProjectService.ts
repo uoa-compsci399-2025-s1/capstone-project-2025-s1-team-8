@@ -4,11 +4,8 @@ import { buildNextRequest } from '@/utils/buildNextRequest'
 import type { typeToFlattenedError } from 'zod'
 import { GET as GetProjectSemesters } from '@/app/api/projects/[id]/semesters/route'
 
-import type {
-  PatchSemesterProjectRequestBody} from '@/app/api/admin/semesters/[id]/projects/[projectId]/route';
-import {
-  PATCH as UpdateSemesterProject,
-} from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
+import type { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
+import { PATCH as UpdateSemesterProject } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
 import type { StatusCodes } from 'http-status-codes'
 
 const AdminProjectService = {

@@ -1,4 +1,4 @@
-import type { PaginatedDocs } from 'payload';
+import type { PaginatedDocs } from 'payload'
 import { NotFound } from 'payload'
 
 import type { Project } from '@/payload-types'

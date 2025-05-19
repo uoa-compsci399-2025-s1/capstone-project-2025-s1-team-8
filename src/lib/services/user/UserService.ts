@@ -1,10 +1,10 @@
-import type { LoginRequestBodySchema} from '@/app/api/auth/login/route';
+import type { LoginRequestBodySchema } from '@/app/api/auth/login/route'
 import { POST as Login } from '@/app/api/auth/login/route'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { type StatusCodes } from 'http-status-codes'
 import { type typeToFlattenedError } from 'zod'
-import type { RegisterRequestBodySchema} from '@/app/api/auth/register/route';
+import type { RegisterRequestBodySchema } from '@/app/api/auth/register/route'
 import { POST as Register } from '@/app/api/auth/register/route'
 import { GET as Logout } from '@/app/api/auth/logout/route'
 import type { UserRoleWithoutAdmin } from '@/types/User'

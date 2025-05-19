@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react'
-import type {
-  DragEndEvent,
-  DragMoveEvent,
-  DragStartEvent,
-  UniqueIdentifier} from '@dnd-kit/core';
+import type { DragEndEvent, DragMoveEvent, DragStartEvent, UniqueIdentifier } from '@dnd-kit/core'
 import {
   DndContext,
   DragOverlay,
