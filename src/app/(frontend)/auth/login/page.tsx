@@ -42,7 +42,7 @@ export default function LoginPage() {
     <div className="flex flex-col justify-center items-start gap-4">
       <p className="text-xl font-extrabold text-dark-blue pl-2">WELCOME BACK</p>
       <form onSubmit={onSubmit}>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 relative z-[51]">
           <div>
             <Input
               name="email"

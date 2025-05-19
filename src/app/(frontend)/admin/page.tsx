@@ -9,15 +9,22 @@ import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { mockProjects } from '@/test-config/mocks/Project.mock'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
-import { getAllSemesters } from '@/lib/util/adminSemesterUtils'
+import {
+  isCurrentOrUpcoming,
+  handleGetAllSemesterProjects,
+  handleCreateSemester,
+  handleUpdateSemester,
+  handleDeleteSemester,
+  handleGetAllSemesters,
+} from '@/lib/services/admin/Handlers'
 import { Semester } from '@/payload-types'
-import { FiAlertCircle } from 'react-icons/fi'
 import MobileAdminView from '@/app/(frontend)/admin/MobileAdminView'
 import { UserCombinedInfo } from '@/types/Collections'
 import { redirect } from 'next/navigation'
 import { UserRole } from '@/types/User'
-import { getAllClients } from '@/lib/util/adminClientUtils'
+import { getAllClients } from '@/lib/services/admin/Handlers'
 import { ProjectDetails } from '@/types/Project'
+import Notification from '@/components/Generic/Notification/Notification'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -26,51 +33,50 @@ const Admin = () => {
   const [loggedInUser, setLoggedInUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
   const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
   const [semestersData, setSemestersData] = useState<Semester[]>([])
-  const [showNotification, setShowNotification] = useState<boolean>(false)
-  const [created, setCreated] = useState(false)
-  const [updated, setUpdated] = useState(false)
-  const [deleted, setDeleted] = useState(false)
+  const [notificationMessage, setNotificationMessage] = useState('')
   const [clientsData, setClientsData] = useState<
     { client: UserCombinedInfo; projects: ProjectDetails[] }[]
   >([])
-
-  const fetchSemesters = async () => {
-    const res = await getAllSemesters()
-    if (res?.data) {
-      setSemestersData(res.data)
-    }
-  }
-
-  const fetchClients = async () => {
-    const res = await getAllClients()
-    if (res?.data) {
-      setClientsData(res.data)
-    }
-  }
-
-  const message = created
-    ? 'Semester created successfully'
-    : updated
-      ? 'Semester updated successfully'
-      : deleted
-        ? 'Semester deleted successfully'
-        : ''
+  const [semestersLoaded, setSemestersLoaded] = useState<boolean>(false)
+  const [clientsLoaded, setClientsLoaded] = useState<boolean>(false)
 
   useEffect(() => {
-    fetchSemesters()
-    fetchClients()
-  }, [])
-
-  useEffect(() => {
-    if (showNotification) {
+    if (!semestersLoaded) {
+      const fetchSemesters = async () => {
+        handleGetAllSemesters().then((response) => {
+          if (response) {
+            setSemestersData(response.data ? response.data : [])
+            setSemestersLoaded(true)
+          }
+        })
+      }
       fetchSemesters()
+    }
+  }, [semestersLoaded])
+
+  useEffect(() => {
+    if (!clientsLoaded) {
+      const fetchClients = async () => {
+        getAllClients().then((response) => {
+          if (response) {
+            setClientsData(response.data ? response.data : [])
+            setClientsLoaded(true)
+          }
+        })
+      }
+      fetchClients()
+    }
+  }, [clientsLoaded])
+
+  useEffect(() => {
+    if (notificationMessage !== '') {
       const timer = setTimeout(() => {
-        setShowNotification(false)
+        setNotificationMessage('')
       }, 5000)
 
       return () => clearTimeout(timer)
     }
-  }, [showNotification])
+  }, [notificationMessage])
 
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
@@ -139,15 +145,14 @@ const Admin = () => {
     <div>
       <NavBar onclick={handleLoginButtonClick} user={loggedInUser} />
       <div className="hidden lg:block w-full">
-        <div className="mt-28 w-full flex justify-center items-center gap-25 bg-beige pb-4">
-          <div
-            className={` ${showNotification ? 'opacity-100 visible' : 'opacity-0 invisible'} transition-all duration-500 fixed top-6 right-6 z-50 bg-light-pink ring ring-2 ring-pink-soft shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`}
-          >
-            <div className="flex items-center gap-2">
-              <FiAlertCircle className="text-pink-accent w-5 h-5 flex-shrink-0" />
-              <p className="text-dark-pink font-medium">{message}</p>
-            </div>
-          </div>
+        <div className="fixed top-6 right-6 z-50">
+          <Notification
+            isVisible={notificationMessage !== ''}
+            title={'Success'}
+            message={notificationMessage ?? 'hello world'}
+          />
+        </div>
+        <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
           {AdminNavElements.map((nav, i) => (
             <button
               key={nav}
@@ -202,17 +207,22 @@ const Admin = () => {
                 <SemestersPage
                   semesters={semestersData}
                   created={() => {
-                    setShowNotification(true)
-                    setCreated(true)
+                    setNotificationMessage('Semester created successfully')
+                    setSemestersLoaded(false)
                   }}
                   updated={() => {
-                    setShowNotification(true)
-                    setUpdated(true)
+                    setNotificationMessage('Semester updated successfully')
+                    setSemestersLoaded(false)
                   }}
                   deleted={() => {
-                    setShowNotification(true)
-                    setDeleted(true)
+                    setNotificationMessage('Semester deleted successfully')
+                    setSemestersLoaded(false)
                   }}
+                  checkStatus={isCurrentOrUpcoming}
+                  getAllSemesterProjects={handleGetAllSemesterProjects}
+                  handleCreateSemester={handleCreateSemester}
+                  handleUpdateSemester={handleUpdateSemester}
+                  handleDeleteSemester={handleDeleteSemester}
                 />
               </div>
             </motion.div>
