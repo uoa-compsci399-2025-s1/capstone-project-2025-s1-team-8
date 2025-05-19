@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import SemesterCard from '@/components/Composite/SemesterCard/SemesterCard'
 import Button from '@/components/Generic/Button/Button'

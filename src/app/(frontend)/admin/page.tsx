@@ -1,4 +1,5 @@
 'use client'
+
 import ClientsPage from '@/components/Pages/ClientsPage/ClientsPage'
 import SemestersPage from '@/components/Pages/SemestersPage/SemestersPage'
 import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
