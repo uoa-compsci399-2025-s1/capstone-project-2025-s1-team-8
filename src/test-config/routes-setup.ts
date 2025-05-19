@@ -32,10 +32,12 @@ beforeEach(async () => {
   })
   // Need to mock the auth service decode for it to decode the correct mocks
   vi.mock('@/business-layer/services/AuthService', async () => {
-    const actual = await vi.importActual('@/business-layer/services/AuthService')
+    const actualModule = await vi.importActual('@/business-layer/services/AuthService')
+    // eslint-disable-next-line
+    const actualAuthService = (actualModule as any).default // Access the default export
 
     return {
-      default: class extends actual.default {
+      default: class extends actualAuthService {
         hashPassword = vi.fn().mockImplementation((password) => {
           return Buffer.from(password).toString('base64')
         })
