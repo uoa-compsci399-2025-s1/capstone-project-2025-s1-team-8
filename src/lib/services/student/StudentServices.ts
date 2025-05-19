@@ -7,7 +7,7 @@ import { Project, SemesterProject } from "@/payload-types"
 import { ProjectDetails } from "@/types/Project"
 
 export const StudentService = {
-    getCurrentSemester: async function (): Promise<string | null> {
+    getCurrentSemester: async function (): Promise<{id: string, name: string} | null> {
     const semesterUrl = buildNextRequestURL('/api/semesters', { timeframe: SemesterType.Current })
     const semesterResponse = await GetSemesters(
       await buildNextRequest(semesterUrl, { method: 'GET' }),
@@ -19,15 +19,16 @@ export const StudentService = {
       return null
     }
 
-    return semester[0].id
+    return { id: semester[0].id, name: semester[0].name }
   },
 
-  getProjectsForSemester: async function (): Promise<ProjectDetails[]> {
-    const semesterId = await this.getCurrentSemester()
-    if (!semesterId) {
+  getProjectsForCurrentSemester: async function (): Promise<ProjectDetails[]> {
+    const res = await StudentService.getCurrentSemester()
+    if (!res) {
       console.error('No current semester found')
       return []
     }
+    const semesterId = res.id
     const url = buildNextRequestURL(`/api/semesters/${semesterId}/projects`, {published: "true"})
     const response = await GetProjects(await buildNextRequest(url, { method: 'GET' }), {
         params: Promise.resolve({ id: semesterId }),
