@@ -6,10 +6,10 @@ import { ProjectStatus } from '@/types/Project'
 import { DNDType } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 
 export const getNextSemesterProjects = async (): Promise<void | {
-  data?: DndComponentProps
+  data?: {semesterId: string, presetContainers: DNDType[]}
 }> => {
   const response = await AdminService.getNextSemesterProjects()
-  return { data: response.data } // Assuming response.projects is an array of DndComponentProps[]
+  return { data: response.data }
 }
 
 export interface UpdateParams {
