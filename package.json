@@ -58,9 +58,8 @@
     "react-laag": "^2.0.5",
     "sharp": "0.32.6",
     "tailwindcss": "^4.1.7",
-    "zod": "^3.24.3",
     "typescript": "5.7.3",
-    "vite-tsconfig-paths": "^5.1.4"
+    "zod": "^3.24.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -83,6 +82,7 @@
     "mongodb-memory-server": "^10.1.4",
     "prettier": "^3.4.2",
     "storybook": "^8.6.12",
+    "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.1.1"
   },
   "engines": {
