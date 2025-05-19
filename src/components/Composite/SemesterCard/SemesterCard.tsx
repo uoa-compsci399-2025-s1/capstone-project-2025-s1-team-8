@@ -6,9 +6,16 @@ import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardL
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import { Semester } from '@/payload-types'
 import { ProjectDetails } from '@/types/Project'
-import { getAllSemesterProjects, isCurrentOrUpcoming } from '@/lib/util/adminSemesterUtils'
 
-const SemesterCard: React.FC<Semester> = ({ id, name, startDate, endDate, deadline }) => {
+interface SemesterCardProps extends Semester {
+  semester: Semester
+  semesterProjects: (id: string) => Promise<void | {
+    error?: string
+    data?: ProjectDetails[]
+  }>
+  checkStatus?: (id: string) => Promise<'current' | 'upcoming' | ''>
+}
+const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects, checkStatus }) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
@@ -24,22 +31,22 @@ const SemesterCard: React.FC<Semester> = ({ id, name, startDate, endDate, deadli
   }, [isOpen])
 
   useEffect(() => {
+    const fetchProjects = async () => {
+      const result = await semesterProjects(semester.id)
+      if (result?.data) {
+        setApprovedProjectsList(result.data)
+      }
+    }
     fetchProjects()
-  }, [])
+  }, [semesterProjects, semester.id])
 
   useEffect(() => {
-    fetchCurrentOrUpcoming()
-  }, [])
-
-  const fetchProjects = async () => {
-    const res = await getAllSemesterProjects(id)
-    if (res?.data) {
-      setApprovedProjectsList(res.data)
+    const fetchCurrentOrUpcoming = async () => {
+      if (!checkStatus) return
+      setCurrentOrUpcoming(await checkStatus(semester.id))
     }
-  }
-  const fetchCurrentOrUpcoming = async () => {
-    setCurrentOrUpcoming(await isCurrentOrUpcoming(id))
-  }
+    fetchCurrentOrUpcoming()
+  }, [checkStatus, semester.id])
 
   return (
     <div className="relative w-full flex flex-col gap-4">
@@ -63,7 +70,7 @@ const SemesterCard: React.FC<Semester> = ({ id, name, startDate, endDate, deadli
               : 'text-white'
           } text-base sm:text-lg font-semibold`}
         >
-          {name}
+          {semester.name}
         </p>
 
         {currentOrUpcoming && (
@@ -76,12 +83,12 @@ const SemesterCard: React.FC<Semester> = ({ id, name, startDate, endDate, deadli
 
         <div className="flex flex-wrap sm:flex-nowrap gap-2">
           <Capsule
-            text={new Date(startDate).toLocaleDateString()}
+            text={new Date(semester.startDate).toLocaleDateString()}
             variant="muted_blue"
             className="small-info-tag"
           />
           <Capsule
-            text={new Date(endDate).toLocaleDateString()}
+            text={new Date(semester.endDate).toLocaleDateString()}
             variant="muted_blue"
             className="small-info-tag"
           />
@@ -114,19 +121,19 @@ const SemesterCard: React.FC<Semester> = ({ id, name, startDate, endDate, deadli
           {/* Details Section */}
           <div className="pb-4 sm:pb-6">
             <h2 className="text-2xl sm:text-3xl text-dark-blue font-dm-serif-display py-4">
-              {name}
+              {semester.name}
             </h2>
 
             <div className="grid grid-cols-[auto_1fr] grid-rows-3 gap-3 py-3 text-sm sm:text-base">
               <Capsule text="Starts" variant="muted_blue" className="small-info-tag pb-0.5" />
               <Capsule
-                text={new Date(startDate).toLocaleDateString()}
+                text={new Date(semester.startDate).toLocaleDateString()}
                 variant="beige"
                 className="small-info-tag pb-0.5"
               />
               <Capsule text="Ends" variant="muted_blue" className="small-info-tag pb-0.5" />
               <Capsule
-                text={new Date(endDate).toLocaleDateString()}
+                text={new Date(semester.endDate).toLocaleDateString()}
                 variant="beige"
                 className="small-info-tag pb-0.5"
               />
@@ -136,7 +143,7 @@ const SemesterCard: React.FC<Semester> = ({ id, name, startDate, endDate, deadli
                 className="small-info-tag pb-0.5"
               />
               <Capsule
-                text={new Date(deadline).toLocaleDateString()}
+                text={new Date(semester.deadline).toLocaleDateString()}
                 variant="beige"
                 className="small-info-tag pb-0.5"
               />

@@ -8,6 +8,9 @@ const meta: Meta<typeof SemestersPage> = {
   tags: ['autodocs'],
   args: {
     semesters: mockSemesters,
+    created: () => {},
+    updated: () => {},
+    deleted: () => {},
   },
 }
 
