@@ -38,7 +38,7 @@ export default function Student() {
     !loggedInUser ||
     (loggedInUser.role !== UserRole.Student && loggedInUser.role !== UserRole.Admin)
   ) {
-    redirect('not-found')
+    redirect('/not-found')
   }
 
   return (

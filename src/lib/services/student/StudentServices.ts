@@ -13,10 +13,9 @@ export const StudentService = {
       await buildNextRequest(semesterUrl, { method: 'GET' }),
     )
     const { data: semester, error } = await semesterResponse.json()
-    console.log('Semester:', semester.length)
 
     if (error || !semester?.length) {
-      console.error('Failed to fetch next semester:', error)
+      console.error('Failed to fetch current semester:', error)
       return null
     }
 
