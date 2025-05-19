@@ -21,11 +21,11 @@ interface NavBarProps {
 
 const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, onclick }) => {
   const dashboardLink = user
-    ? user.role === UserRole.Admin
+    ? (user.role === UserRole.Admin
       ? '/admin'
-      : user.role === UserRole.Client
+      : (user.role === UserRole.Client
         ? '/client'
-        : '/'
+        : '/student'))
     : '/'
 
   const [isOpen, setIsOpen] = useState(false)
@@ -74,6 +74,17 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
           </div> */}
           {user && user.role === UserRole.Admin && (
             <div className="relative group p-2">
+              <Link href={'/student'} className="nav-link-text">
+                {'Published Projects'}
+              </Link>
+              <span
+                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/student' ? 'scale-x-100' : ''}`}
+              />
+            </div>
+
+          )}
+          {user && user.role === UserRole.Admin && (
+            <div className="relative group p-2">
               <Link href={'/client'} className="nav-link-text">
                 {'My Client Dashboard'}
               </Link>
@@ -81,6 +92,7 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
                 className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/client' ? 'scale-x-100' : ''}`}
               />
             </div>
+
           )}
           {user && (
             <div className="relative group p-2">
@@ -155,6 +167,17 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
             About
           </Link>
         </div>
+          {user && user.role === UserRole.Admin && (
+            <div className="p-[5%]">
+              <Link href={'/student'} className="nav-link-text">
+                {'Published Projects'}
+              </Link>
+              <span
+                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/student' ? 'scale-x-100' : ''}`}
+              />
+            </div>
+
+          )}
         {user && user.role === UserRole.Admin && (
           <div className="p-[5%]">
             <Link href={'/client'} className="nav-link-text">

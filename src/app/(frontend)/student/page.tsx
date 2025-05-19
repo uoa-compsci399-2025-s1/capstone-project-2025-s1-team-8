@@ -6,7 +6,7 @@ import { ProjectDetails } from '@/types/Project'
 import { useEffect, useState } from 'react'
 import NoProjects from './noProjects'
 import { UserCombinedInfo } from '@/types/Collections'
-import { getLoggedInUser } from '@/lib/services/user/Handlers'
+import { getLoggedInUser, handleLoginButtonClick } from '@/lib/services/user/Handlers'
 import { UserRole } from '@/types/User'
 import { redirect } from 'next/navigation'
 
@@ -40,17 +40,17 @@ export default function Student() {
 
   return (
     <div>
-      <NavBar user={loggedInUser} />
+      <NavBar user={loggedInUser} onclick={handleLoginButtonClick} />
       <div className="pt-30">
-        <div className="px-[10%]">
-        {hasProjects && (<ProjectCardList
+        <div className="px-[5%]">
+        {!hasProjects && (<ProjectCardList
           className="bg-muted-blue-op-45 px-[10%] px-15 pt-8 pb-12 rounded-2xl border-deeper-blue border"
           headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
           heading={semesterName}
           projects={projects}
         />)}
         </div>
-        {!hasProjects && (
+        {hasProjects && (
           <NoProjects/>
         )}
       </div>

@@ -4,7 +4,7 @@ export default function NoProjects() {
     return (
         <div>
             <div
-        className="mx-[10%] p-5 sm:p-6 rounded-2xl w-4/5 h-[calc(100vh-180px)] sm:h-[calc(100vh-200px)] min-w-3xs overflow-y-hidden
+        className="mx-[5%] p-5 sm:p-6 rounded-2xl w-9/10 h-[calc(100vh-180px)] sm:h-[calc(100vh-200px)] min-w-3xs overflow-y-hidden
         flex-1 flex-col flex items-center justify-center
         border border-gray-300
         bg-[linear-gradient(to_right,rgba(255,169,222,0.25),rgba(209,251,255,0.2)),linear-gradient(to_bottom,#fffef9,#d1fbff)]"
