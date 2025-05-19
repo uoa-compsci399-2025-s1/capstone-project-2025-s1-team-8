@@ -57,7 +57,7 @@ jobs:
           run_install: false
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       # Cache the node_modules directory
       - name: Cache node_modules
