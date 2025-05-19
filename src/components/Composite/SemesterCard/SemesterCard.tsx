@@ -42,7 +42,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
       }
     }
     fetchProjects()
-  }, [])
+  }, [getAllSemesterProjects, semester.id])
 
   useEffect(() => {
     const fetchCurrentOrUpcoming = async () => {
@@ -50,7 +50,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
       setCurrentOrUpcoming(await checkStatus(semester.id))
     }
     fetchCurrentOrUpcoming()
-  }, [])
+  }, [checkStatus, semester.id])
 
   return (
     <div className="relative w-full flex flex-col gap-4">
