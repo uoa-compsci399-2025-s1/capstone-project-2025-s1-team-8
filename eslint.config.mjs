@@ -28,6 +28,7 @@ const eslintConfig = [
           caughtErrorsIgnorePattern: '^(_|ignore)',
         },
       ],
+      '@typescript-eslint/consistent-type-imports': 'error',
     },
   },
 ]
