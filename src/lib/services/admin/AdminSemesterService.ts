@@ -149,7 +149,7 @@ const AdminSemesterService = {
    * @param semesterId
    * @returns - a string indicating if the semester is current, upcoming, or empty
    */
-  isCurrentOrUpcoming: async function (semesterId: string) {
+  isCurrentOrUpcoming: async function (semesterId: string): Promise<'current' | 'upcoming' | ''> {
     'use server'
     const urlCurrent = buildNextRequestURL('/api/semesters', { timeframe: SemesterType.Current })
     const responseCurrent = await GetSemesters(

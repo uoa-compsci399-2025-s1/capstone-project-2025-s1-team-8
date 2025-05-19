@@ -4,14 +4,14 @@ import { UserCombinedInfo } from '@/types/Collections'
 import AdminService from 'src/lib/services/admin/index'
 import { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 import { typeToFlattenedError } from 'zod'
-import { Project, Semester } from '@/payload-types'
+import { Project } from '@/payload-types'
 import { ProjectDetails } from '@/types/Project'
 
 /**
- * handles the click event to create semester
+ * Handles the click event to create semester
  *
- * @param formData data from SemesterForm
- *
+ * @param formData The {@link FormData} from the SemesterForm
+ * @returns Error with details or success message
  */
 export const handleCreateSemester = async (
   formData: FormData,
@@ -35,11 +35,11 @@ export const handleCreateSemester = async (
 }
 
 /**
- * handles the click event to update semester
+ * Handles the click event to update semester
  *
- * @param formData data from SemesterForm
- * @param id the id of the semester to be updated
- *
+ * @param formData The {@link FormData} from the SemesterForm
+ * @param id The id of the semester to be updated
+ * @returns Error with details or success message
  */
 export const handleUpdateSemester = async (
   formData: FormData,
@@ -69,10 +69,10 @@ export const handleUpdateSemester = async (
 }
 
 /**
- * handles the click event to delete a semester
+ * Handles the click event to delete a semester
  *
- * @param id the id of the semester to delete
- *
+ * @param id The id of the semester to delete
+ * @returns Error or success message
  */
 export const handleDeleteSemester = async (
   id: string,
@@ -89,30 +89,12 @@ export const handleDeleteSemester = async (
 }
 
 /**
- * handles the click event to create semester
- *
- * @param formData data from SemesterForm
- *
- */
-export const getAllSemesters = async (): Promise<void | {
-  error?: string
-  data?: Semester[]
-}> => {
-  const { status, error, data } = await AdminService.getAllPaginatedSemesters()
-  if (status === 200) {
-    return { data }
-  } else {
-    return { error }
-  }
-}
-
-/**
- * gets all Semester Projects related to a semester
+ * Gets all Semester Projects related to a semester
  *
  * @param id the id of the semester to get projects for
- *
+ * @returns The {@link ProjectDetails}'s related to the semester
  */
-export const getAllSemesterProjects = async (
+export const handleGetAllSemesterProjects = async (
   id: string,
 ): Promise<void | {
   error?: string
@@ -140,18 +122,19 @@ export const getAllSemesterProjects = async (
 }
 
 /**
- * determines whether a semester is current or upcoming
+ * Determines whether a semester is current or upcoming
  *
- * @param id the id of the semester
- *
+ * @param id The id of the semester
+ * @returns A string indicating the status of the semester
  */
 export const isCurrentOrUpcoming = async (id: string): Promise<'current' | 'upcoming' | ''> => {
   return await AdminService.isCurrentOrUpcoming(id)
 }
 
 /**
- * handles gets all Clients
+ * Gets all clients and their projects
  *
+ * @returns All {@link UserCombinedInfo}'s with their projects
  */
 export const getAllClients = async (): Promise<void | {
   data?: { client: UserCombinedInfo; projects: ProjectDetails[] }[]

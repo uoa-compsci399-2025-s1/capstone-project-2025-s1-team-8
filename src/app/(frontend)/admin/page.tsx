@@ -9,9 +9,8 @@ import { motion } from 'framer-motion'
 import { mockProjects } from '@/test-config/mocks/Project.mock'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
 import {
-  getAllSemesters,
   isCurrentOrUpcoming,
-  getAllSemesterProjects,
+  handleGetAllSemesterProjects,
   handleCreateSemester,
   handleUpdateSemester,
   handleDeleteSemester,
@@ -24,6 +23,7 @@ import { UserRole } from '@/types/User'
 import { getAllClients } from '@/lib/services/admin/Handlers'
 import { ProjectDetails } from '@/types/Project'
 import Notification from '@/components/Generic/Notification/Notification'
+import AdminService from 'src/lib/services/admin/index'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -42,7 +42,7 @@ const Admin = () => {
   useEffect(() => {
     if (!semestersLoaded) {
       const fetchSemesters = async () => {
-        getAllSemesters().then((response) => {
+        AdminService.getAllPaginatedSemesters().then((response) => {
           if (response) {
             setSemestersData(response.data ? response.data : [])
             setSemestersLoaded(true)
@@ -218,7 +218,7 @@ const Admin = () => {
                     setSemestersLoaded(false)
                   }}
                   checkStatus={isCurrentOrUpcoming}
-                  getAllSemesterProjects={getAllSemesterProjects}
+                  getAllSemesterProjects={handleGetAllSemesterProjects}
                   handleCreateSemester={handleCreateSemester}
                   handleUpdateSemester={handleUpdateSemester}
                   handleDeleteSemester={handleDeleteSemester}
