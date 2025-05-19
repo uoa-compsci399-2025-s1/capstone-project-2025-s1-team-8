@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -20,7 +20,7 @@ interface NavBarProps {
   onclick?: () => void
 }
 
-const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true, user, onclick }) => {
+const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, onclick }) => {
   const dashboardLink = user
     ? user.role === UserRole.Admin
       ? '/admin'
@@ -156,6 +156,16 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true, user, onclic
             About
           </Link>
         </div>
+        {user && user.role === UserRole.Admin && (
+          <div className="p-[5%]">
+            <Link href={'/client'} className="nav-link-text">
+              {'My Client Dashboard'}
+            </Link>
+            <span
+              className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/client' ? 'scale-x-100' : ''}`}
+            />
+          </div>
+        )}
         <div className="p-[5%]">
           {/* {navElement} */}
           <Link href={dashboardLink} className="nav-link-text">
@@ -172,6 +182,8 @@ const NavBar: React.FC<NavBarProps> = ({ navElements, hasBg = true, user, onclic
       </div>
     </nav>
   )
-}
+})
+
+NavBar.displayName = 'NavBar'
 
 export default NavBar

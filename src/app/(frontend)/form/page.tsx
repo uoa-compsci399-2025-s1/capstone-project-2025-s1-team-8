@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Button from '@/components/Generic/Button/Button'
 import Input from '@/components/Generic/Input/InputField'
 import Textarea from '@/components/Generic/Textarea/Textarea'
@@ -8,8 +8,11 @@ import Checkbox from '@/components/Generic/Checkbox/Checkbox'
 import { semesterNames } from '@/test-config/mocks/Semester.mock'
 import { FiCheck } from 'react-icons/fi'
 import { HiX } from 'react-icons/hi'
-import { useSearchParams } from 'next/navigation'
+import { redirect, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { UserCombinedInfo } from '@/types/Collections'
+import { getLoggedInUser } from '@/lib/services/user/Handlers'
+import { UserRole } from '@/types/User'
 
 interface OtherClientDetails {
   fullName: string
@@ -21,6 +24,24 @@ export default function Form() {
   const [pairs, setPairs] = useState<OtherClientDetails[]>([])
   const searchParams = useSearchParams()
   const projectName = searchParams.get('projectName') || ''
+
+  const [loggedInUser, setLoggedInUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
+  const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
+
+  useEffect(() => {
+    getLoggedInUser().then((res) => {
+      setLoggedInUser(res)
+      setLoginLoaded(true)
+    })
+  })
+
+  if (!loginLoaded) {
+    return null
+  }
+
+  if (loggedInUser.role !== UserRole.Client && loggedInUser.role !== UserRole.Admin) {
+    redirect('/not-found')
+  }
 
   const handleChange = (index: number, field: keyof OtherClientDetails, value: string) => {
     const updated = [...pairs]
