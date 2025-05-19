@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import DraggableProjectCard from './DraggableProjectCard'
 import { ProjectCardType } from './DraggableProjectCard'
-import { mockProjects } from '@/test-config/mocks/Project.mock'
+import { projectMock } from '@/test-config/mocks/Project.mock'
 
 const meta: Meta<typeof DraggableProjectCard> = {
   component: DraggableProjectCard,
@@ -15,7 +15,7 @@ type Story = StoryObj<typeof DraggableProjectCard>
 
 const project: ProjectCardType = {
   id: 'project-1',
-  projectInfo: mockProjects[0],
+  projectInfo: projectMock,
 }
 
 export const Default: Story = {
