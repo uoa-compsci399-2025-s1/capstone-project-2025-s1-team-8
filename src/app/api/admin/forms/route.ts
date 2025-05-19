@@ -1,10 +1,11 @@
 import { z, ZodError } from 'zod'
 import { NotFound } from 'payload'
 import { StatusCodes } from 'http-status-codes'
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 import FormService from '@/data-layer/services/FormService'
 import { Security } from '@/business-layer/middleware/Security'
-import { UpdateFormData } from '@/types/Collections'
+import type { UpdateFormData } from '@/types/Collections'
 
 export const UpdateFormRequestBody = z.object({
   name: z.string().optional(),

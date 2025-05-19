@@ -1,5 +1,5 @@
-import { Form, FormQuestion } from '@/payload-types'
-import {
+import type { Form, FormQuestion } from '@/payload-types'
+import type {
   CreateFormData,
   UpdateFormData,
   UpdateFormQuestionData,

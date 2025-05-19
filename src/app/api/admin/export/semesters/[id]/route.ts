@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 import { NotFound } from 'payload'
 import { StatusCodes } from 'http-status-codes'
 
 import ProjectService from '@/data-layer/services/ProjectService'
-import { Project, Semester, SemesterProject as SemesterProjectType } from '@/payload-types'
+import type { Project, Semester, SemesterProject as SemesterProjectType } from '@/payload-types'
 import { Security } from '@/business-layer/middleware/Security'
 
 class RouteWrapper {

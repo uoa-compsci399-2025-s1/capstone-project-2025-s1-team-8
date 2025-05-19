@@ -1,5 +1,5 @@
 import React from 'react'
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import RadialMenuItem from './RadialMenuItem'
 import { FiPrinter, FiSave } from 'react-icons/fi'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'

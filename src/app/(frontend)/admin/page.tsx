@@ -4,7 +4,7 @@ import ClientsPage from '@/components/Pages/ClientsPage/ClientsPage'
 import SemestersPage from '@/components/Pages/SemestersPage/SemestersPage'
 import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import NavBar from '@/components/Generic/NavBar/NavBar'
-import { UniqueIdentifier } from '@dnd-kit/core'
+import type { UniqueIdentifier } from '@dnd-kit/core'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
@@ -16,13 +16,13 @@ import {
   handleDeleteSemester,
   handleGetAllSemesters,
 } from '@/lib/services/admin/Handlers'
-import { Semester } from '@/payload-types'
+import type { Semester } from '@/payload-types'
 import MobileAdminView from '@/app/(frontend)/admin/MobileAdminView'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
 import { redirect } from 'next/navigation'
 import { UserRole } from '@/types/User'
 import { getAllClients } from '@/lib/services/admin/Handlers'
-import { ProjectDetails } from '@/types/Project'
+import type { ProjectDetails } from '@/types/Project'
 import Notification from '@/components/Generic/Notification/Notification'
 
 const clientBase = {

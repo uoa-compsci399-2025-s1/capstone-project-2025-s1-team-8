@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
-import Modal, { ModalProps } from '@/components/Generic/Modal/Modal'
+import type { ModalProps } from '@/components/Generic/Modal/Modal'
+import Modal from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
-import { ProjectDetails } from '@/types/Project'
+import type { ProjectDetails } from '@/types/Project'
 
 interface ClientModalProps extends ModalProps {
   clientFullName: string

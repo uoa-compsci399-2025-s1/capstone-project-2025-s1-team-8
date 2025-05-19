@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 import * as nextHeaders from 'next/headers'
-import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
+import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
 
 import {
   ADMIN_JWT_MOCK,

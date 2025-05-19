@@ -14,12 +14,12 @@ describe('tests /api/users/me/projects', async () => {
   const cookieStore = await cookies()
 
   vi.mock('@/data-layer/services/ProjectService', async () => {
-    const actual = await vi.importActual<typeof import('@/data-layer/services/ProjectService')>(
-      '@/data-layer/services/ProjectService',
-    )
+    const actualModule = await vi.importActual('@/data-layer/services/ProjectService')
+    // eslint-disable-next-line
+    const actualProjectService = (actualModule as any).default // Access the default export
 
     return {
-      default: class extends actual.default {
+      default: class extends actualProjectService {
         getProjectsByClientId = vi.fn().mockImplementation((userID) => {
           if (userID === adminMock.id) {
             return { docs: [projectCreateMock] }

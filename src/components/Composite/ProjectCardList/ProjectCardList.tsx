@@ -1,6 +1,6 @@
 import React from 'react'
 import ProjectCard from '@/components/Generic/ProjectCard/ProjectCard'
-import { ProjectDetails } from '@/types/Project'
+import type { ProjectDetails } from '@/types/Project'
 
 interface ProjectListProps {
   className?: string

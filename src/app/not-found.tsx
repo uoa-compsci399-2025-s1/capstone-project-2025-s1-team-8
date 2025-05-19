@@ -7,7 +7,7 @@ import React, { useEffect } from 'react'
 import Link from 'next/link'
 import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 import { useState } from 'react'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
 import { getLoggedInUser } from '@/lib/services/user/Handlers'
 
 export default function NotFound() {

@@ -7,7 +7,7 @@ import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import { adminMock, clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 import { clientAdditionalInfoCreateMock } from '@/test-config/mocks/User.mock'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
 import UserService from '@/data-layer/services/UserService'
 
 describe('tests /api/users/me', async () => {

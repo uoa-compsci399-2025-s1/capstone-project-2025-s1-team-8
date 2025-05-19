@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import RadialMenu from './RadialMenu'
 import { FiPrinter, FiSave } from 'react-icons/fi'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'

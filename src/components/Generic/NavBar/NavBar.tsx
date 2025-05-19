@@ -4,8 +4,8 @@ import React, { memo, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { UserCombinedInfo } from '@/types/Collections'
-import { User } from '@/payload-types'
+import type { UserCombinedInfo } from '@/types/Collections'
+import type { User } from '@/payload-types'
 import { UserRole } from '@/types/User'
 
 interface NavLink {
