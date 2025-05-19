@@ -157,11 +157,14 @@ jobs:
           path: node_modules
           key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
+      - name: Run typescript compile
+        run: pnpm tsc --noEmit
+
       - name: Prune developer dependencies
         run: pnpm prune --prod
 
-      - name: Build
-        run: pnpm tsc --noEmit && pnpm build
+      - name: Run Next build
+        run: pnpm build
 
   test:
     needs: [check_changes, setup]
