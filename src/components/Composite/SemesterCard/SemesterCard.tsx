@@ -9,17 +9,13 @@ import { ProjectDetails } from '@/types/Project'
 
 interface SemesterCardProps extends Semester {
   semester: Semester
-  getAllSemesterProjects: (id: string) => Promise<void | {
+  semesterProjects: (id: string) => Promise<void | {
     error?: string
     data?: ProjectDetails[]
   }>
   checkStatus?: (id: string) => Promise<'current' | 'upcoming' | ''>
 }
-const SemesterCard: React.FC<SemesterCardProps> = ({
-  semester,
-  getAllSemesterProjects,
-  checkStatus,
-}) => {
+const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects, checkStatus }) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
@@ -36,13 +32,13 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const result = await getAllSemesterProjects(semester.id)
+      const result = await semesterProjects(semester.id)
       if (result?.data) {
         setApprovedProjectsList(result.data)
       }
     }
     fetchProjects()
-  }, [getAllSemesterProjects, semester.id])
+  }, [semesterProjects, semester.id])
 
   useEffect(() => {
     const fetchCurrentOrUpcoming = async () => {

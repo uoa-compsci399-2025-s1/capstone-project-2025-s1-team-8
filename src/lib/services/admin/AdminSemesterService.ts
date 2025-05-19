@@ -146,8 +146,8 @@ const AdminSemesterService = {
   /**
    * checks if the semester is current or upcoming
    *
-   * @param semesterId
-   * @returns - a string indicating if the semester is current, upcoming, or empty
+   * @param semesterId The ID of the semester to check
+   * @returns a string indicating if the semester is current, upcoming, or empty
    */
   isCurrentOrUpcoming: async function (semesterId: string): Promise<'current' | 'upcoming' | ''> {
     'use server'

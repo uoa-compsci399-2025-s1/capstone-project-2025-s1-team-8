@@ -101,7 +101,7 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
           }
         >
           <SemesterCard
-            getAllSemesterProjects={getAllSemesterProjects}
+            semesterProjects={getAllSemesterProjects}
             checkStatus={checkStatus}
             semester={semester as Semester}
             id={semester.id}
