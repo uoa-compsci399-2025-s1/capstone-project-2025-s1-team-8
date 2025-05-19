@@ -1,9 +1,9 @@
 import SadTeapot from 'src/assets/sad-teapot.svg'
 
 export default function NoProjects() {
-    return (
-        <div>
-            <div
+  return (
+    <div>
+      <div
         className="mx-[5%] p-5 sm:p-6 rounded-2xl w-9/10 h-[calc(100vh-180px)] sm:h-[calc(100vh-200px)] min-w-3xs overflow-y-hidden
         flex-1 flex-col flex items-center justify-center
         border border-gray-300
@@ -15,10 +15,10 @@ export default function NoProjects() {
             {"Projects haven't been published yet"}
           </p>
           <p className="text-center text-xs sm:test-sm md:text-base font-inter text-dark-blue">
-            {"Please check back at a later date!"}
+            {'Please check back at a later date!'}
           </p>
         </div>
       </div>
-        </div>
-    )
+    </div>
+  )
 }
