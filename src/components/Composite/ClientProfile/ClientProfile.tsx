@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import { FiEdit, FiSave } from 'react-icons/fi'
@@ -159,7 +161,7 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
             <textarea
               value={introduction}
               onChange={(e) => setIntroduction(e.target.value)}
-              className="resize-none min-h-[270px] w-full 
+              className="resize-none min-h-[270px] w-full
             text-dark-blue whitespace-pre-line text-sm border border-deeper-blue rounded-xl bg-light-beige p-3 focus:outline-deeper-blue"
             />
           ) : (
