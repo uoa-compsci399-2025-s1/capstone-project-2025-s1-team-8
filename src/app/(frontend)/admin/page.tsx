@@ -17,7 +17,7 @@ import {
   handleGetAllSemesters,
 } from '@/lib/services/admin/Handlers'
 import type { Semester } from '@/payload-types'
-import MobileAdminView from '@/app/(frontend)/admin/MobileAdminView'
+import MobileAdminView from '@/components/Composite/MobileAdminView/MobileAdminView'
 import type { UserCombinedInfo } from '@/types/Collections'
 import { redirect } from 'next/navigation'
 import { UserRole } from '@/types/User'
