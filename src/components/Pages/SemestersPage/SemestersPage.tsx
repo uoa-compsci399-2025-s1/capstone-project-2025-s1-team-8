@@ -73,7 +73,10 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
   }, [semesters, checkStatus])
 
   const scrollToCurrentSemester = () => {
-    currentSemesterRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (currentSemesterRef.current) {
+      currentSemesterRef.current.style.scrollMarginTop = '130px'
+      currentSemesterRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
   }
 
   return (
