@@ -3,8 +3,8 @@ import { buildNextRequest } from '@/utils/buildNextRequest'
 import { GET as GetSemesters } from '@/app/api/semesters/route'
 import { GET as GetProjects } from '@/app/api/semesters/[id]/projects/route'
 import { SemesterType } from '@/types/Semester'
-import { Project, SemesterProject } from '@/payload-types'
-import { ProjectDetails } from '@/types/Project'
+import type { Project, SemesterProject } from '@/payload-types'
+import type { ProjectDetails } from '@/types/Project'
 
 export const StudentService = {
   getCurrentSemester: async function (): Promise<{ id: string; name: string } | null> {

@@ -1,5 +1,5 @@
 'use server'
-import { ProjectDetails } from '@/types/Project'
+import type { ProjectDetails } from '@/types/Project'
 import { StudentService } from '@/lib/services/student/StudentServices'
 
 export const handleStudentPageLoad = async (): Promise<{
