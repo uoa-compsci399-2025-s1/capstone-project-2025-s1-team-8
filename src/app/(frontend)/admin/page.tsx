@@ -2,7 +2,10 @@
 
 import ClientsPage from '@/components/Pages/ClientsPage/ClientsPage'
 import SemestersPage from '@/components/Pages/SemestersPage/SemestersPage'
-import ProjectDnD, { DNDType, SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
+import ProjectDnD, {
+  DNDType,
+  SemesterContainerData,
+} from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
@@ -54,11 +57,7 @@ const mockProjects = [
   { ...projectBase, name: 'Project 3', description: 'Description 3' },
 ]
 import { getNextSemesterProjects } from '@/lib/services/admin/Handlers'
-import {
-  handlePublishChanges,
-  updateProjectOrdersAndStatus,
-} from '@/lib/services/admin/Handlers'
-import { handleCSVDownload } from '@/lib/services/admin/Handlers'
+import { handlePublishChanges, updateProjectOrdersAndStatus } from '@/lib/services/admin/Handlers'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -71,7 +70,9 @@ const Admin = () => {
   const [clientsData, setClientsData] = useState<
     { client: UserCombinedInfo; projects: ProjectDetails[] }[]
   >([])
-  const [projectsData, setProjectsData] = useState<SemesterContainerData>({} as SemesterContainerData)
+  const [projectsData, setProjectsData] = useState<SemesterContainerData>(
+    {} as SemesterContainerData,
+  )
   const [semestersLoaded, setSemestersLoaded] = useState<boolean>(false)
   const [clientsLoaded, setClientsLoaded] = useState<boolean>(false)
   const [projectsLoaded, setProjectsLoaded] = useState<boolean>(false)
@@ -109,7 +110,9 @@ const Admin = () => {
       const fetchProjects = async () => {
         getNextSemesterProjects().then((response) => {
           if (response) {
-            setProjectsData(response.data ? response.data : {semesterId: '', presetContainers: []})
+            setProjectsData(
+              response.data ? response.data : { semesterId: '', presetContainers: [] },
+            )
             setProjectsLoaded(true)
           }
         })
@@ -200,7 +203,6 @@ const Admin = () => {
                   {...projectsData}
                   onSaveChanges={updateProjectOrdersAndStatus}
                   onPublishChanges={handlePublishChanges}
-                  onDownloadCsv={handleCSVDownload}
                 />
               </div>
 

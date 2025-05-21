@@ -26,7 +26,6 @@ import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
 
 import { User } from '@/payload-types'
-// import { UpdateParams } from '@/lib/util/adminProjectUtils'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -42,9 +41,8 @@ export interface SemesterContainerData {
 }
 
 export type DndComponentProps = SemesterContainerData & {
-  onSaveChanges: (params: SemesterContainerData) => Promise<void> // required for this component, but not all other places this is referenced
-  onPublishChanges: (params: SemesterContainerData) => Promise<void> // required for this component, but not all other places this is referenced
-  onDownloadCsv: (semesterId: string) => Promise<void> // required for this component, but not all other places this is referenced
+  onSaveChanges: (params: SemesterContainerData) => Promise<void>
+  onPublishChanges: (params: SemesterContainerData) => Promise<void>
 }
 
 const defaultProjectInfo: ProjectDetails = {
@@ -74,7 +72,6 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   semesterId,
   onSaveChanges,
   onPublishChanges,
-  onDownloadCsv,
 }) => {
   const [containers, setContainers] = useState<DNDType[]>(presetContainers)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
@@ -87,7 +84,6 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     { Icon: FiPrinter, value: 'publish', label: 'Publish' },
     { Icon: HiOutlineDocumentDownload, value: 'downloadcsv', label: 'Download CSV' },
   ]
-  console.log(typeof onDownloadCsv)
   useEffect(() => {
     if (hasChanges) {
       setShowNotification(true)
@@ -108,18 +104,13 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
   //TODO: when items are moved around, remove the active filter styles
 
-  // const [containerFilters, setContainerFilters] = useState<Record<string, string | undefined>>(() =>
-  //   Object.fromEntries(containers.map((c) => [c.id, 'originalOrder'])),
-  // )
   const [containerFilters, setContainerFilters] = useState<Record<string, string | undefined>>({})
 
-useEffect(() => {
-  if (containers) {
-    setContainerFilters(
-      Object.fromEntries(containers.map((c) => [c.id, 'originalOrder']))
-    )
-  }
-}, [containers])
+  useEffect(() => {
+    if (containers) {
+      setContainerFilters(Object.fromEntries(containers.map((c) => [c.id, 'originalOrder'])))
+    }
+  }, [containers])
 
   const handleFilterChange = (containerId: UniqueIdentifier, newFilter?: string) => {
     setContainerFilters((prev) => ({
@@ -161,9 +152,7 @@ useEffect(() => {
     }, 5000)
   }
 
-  async function handleDownloadCsv() {
-    //await onDownloadCsv(semesterId)
-    //check user maybe?
+  function handleDownloadCsv() {
     window.open(`/api/admin/export/semesters/${semesterId}`, '_blank')
     setSuccessNotification('Download successful!')
 
@@ -427,7 +416,6 @@ useEffect(() => {
       }
     }
     // Handling item dropping into Container
-    // TODO: if item is being moved between containers, then update the original order
     if (
       active.id.toString().includes('item') &&
       over?.id.toString().includes('container') &&

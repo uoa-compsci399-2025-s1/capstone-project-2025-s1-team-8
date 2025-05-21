@@ -9,7 +9,10 @@ import { ProjectDetails, ProjectStatus } from '@/types/Project'
 import { redirect } from 'next/navigation'
 import UserService from '../user/UserService'
 import { UserRole } from '@/types/User'
-import { DNDType, SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
+import {
+  DNDType,
+  SemesterContainerData,
+} from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 
 /**
  * Handles the click event to create semester
@@ -187,7 +190,7 @@ export const getNextSemesterProjects = async (): Promise<void | {
 
 /**
  * Handles the saving of changes to project order and status
- * 
+ *
  * @param presetContainers The list of {@link DNDType} containers from the Project Drag and Drop
  * @param semesterId The id of the upcoming semester
  * @returns Error or success message
@@ -198,7 +201,8 @@ export async function updateProjectOrdersAndStatus({
 }: SemesterContainerData): Promise<void> {
   for (const container of presetContainers) {
     const status = container.title as ProjectStatus
-    const shouldSetUnpublished = status === ProjectStatus.Rejected || status === ProjectStatus.Pending
+    const shouldSetUnpublished =
+      status === ProjectStatus.Rejected || status === ProjectStatus.Pending
 
     for (let i = 0; i < container.currentItems.length; i++) {
       const project = container.currentItems[i]
@@ -219,7 +223,7 @@ export async function updateProjectOrdersAndStatus({
 
 /**
  * Handles the publishing of approved projects
- * 
+ *
  * @param presetContainers The list of {@link DNDType} containers from the Project Drag and Drop
  * @param semesterId The id of the upcoming semester
  * @returns Error or success message
@@ -237,18 +241,5 @@ export async function handlePublishChanges({
       { published: true },
     )
   }
-  await updateProjectOrdersAndStatus({presetContainers, semesterId})
-}
-
-/**
- * Redirects to link to download CSV file of all projects for upcoming semester
- *
- */
-
-export async function handleCSVDownload(semesterId: string) {
-  const res = await UserService.getUserSelfData()
-  if (!res.user || res.user.role !== UserRole.Admin) {
-    return
-  }
-  redirect(`/api/admin/export/semesters/${semesterId}`)
+  await updateProjectOrdersAndStatus({ presetContainers, semesterId })
 }
