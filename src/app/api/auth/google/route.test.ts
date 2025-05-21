@@ -7,7 +7,7 @@ import { GET } from './route'
 import { redirect } from 'next/navigation'
 import { oauth2Client } from '@/business-layer/security/google'
 import * as nextHeaders from 'next/headers'
-import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
+import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
 import { createMockNextRequest } from '@/test-config/utils'
 import { StatusCodes } from 'http-status-codes'
 

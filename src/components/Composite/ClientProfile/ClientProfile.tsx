@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import { FiEdit, FiSave } from 'react-icons/fi'
-import { UserCombinedInfo } from '@/types/Collections'
-import { StatusCodes } from 'http-status-codes'
+import type { UserCombinedInfo } from '@/types/Collections'
+import type { StatusCodes } from 'http-status-codes'
 import Notification from '@/components/Generic/Notification/Notification'
 
 interface ClientProfileProps {

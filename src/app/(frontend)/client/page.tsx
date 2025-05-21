@@ -4,10 +4,10 @@ import NavBar from '@/components/Generic/NavBar/NavBar'
 import ClientDashboard from '@/components/Pages/ClientDashboard/ClientDashboard'
 import { useState, useEffect } from 'react'
 import { handleClientPageLoad } from '@/lib/services/client/Handlers'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
 import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 import { handleClientProfileUpdate } from '@/lib/services/client/Handlers'
-import { ProjectDetails } from '@/types/Project'
+import type { ProjectDetails } from '@/types/Project'
 
 export default function Client() {
   const [isLoaded, setIsLoaded] = useState<boolean>(false)

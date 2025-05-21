@@ -7,7 +7,7 @@ import Link from 'next/link'
 import EncapsulateText from 'src/assets/encapsulate-text.svg'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
 import { useEffect, useState } from 'react'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
 
 const Homepage: React.FC = () => {
   const [loggedInUser, setLoggedInUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)

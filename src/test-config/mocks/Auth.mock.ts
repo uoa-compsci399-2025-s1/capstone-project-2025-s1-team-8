@@ -1,6 +1,6 @@
-import { Authentication, User } from '@/payload-types'
-import { UserInfoResponse } from '@/types/Auth'
-import { CreateAuthenticationData } from '@/types/Collections'
+import type { Authentication, User } from '@/payload-types'
+import type { UserInfoResponse } from '@/types/Auth'
+import type { CreateAuthenticationData } from '@/types/Collections'
 import { UserRole, UserRoleWithoutAdmin } from '@/types/User'
 
 export const CODE_MOCK = 'coolcode'

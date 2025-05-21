@@ -72,7 +72,7 @@ jobs:
             docker-compose down
 
             echo "Removing old images"
-            docker image prune
+            docker system prune -f
 
             echo "Rebuilding and starting containers"
             docker-compose up -d --build

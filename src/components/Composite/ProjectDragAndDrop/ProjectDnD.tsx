@@ -1,15 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import type { DragEndEvent, DragMoveEvent, DragStartEvent, UniqueIdentifier } from '@dnd-kit/core'
 import {
   DndContext,
-  DragEndEvent,
-  DragMoveEvent,
   DragOverlay,
-  DragStartEvent,
   KeyboardSensor,
   PointerSensor,
-  UniqueIdentifier,
   closestCorners,
   useSensor,
   useSensors,

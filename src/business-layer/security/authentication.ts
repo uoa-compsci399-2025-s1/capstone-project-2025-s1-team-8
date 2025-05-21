@@ -1,7 +1,7 @@
 import { cookies, headers } from 'next/headers'
 
 import AuthService from '../services/AuthService'
-import { JWTResponse } from '@/types/Middleware'
+import type { JWTResponse } from '@/types/Middleware'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 
 export class UnauthorizedAuthError extends Error {

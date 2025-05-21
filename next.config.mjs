@@ -11,14 +11,16 @@ const nextConfig = {
     return config
   },
 
-  // Experimental Turbopack configuration for handling SVG files.
-  // Turbopack is still in experimental stages, so this configuration is included
-  // alongside the Webpack rule to provide a fallback and ensure compatibility.
-  turbopack: {
-    rules: {
-      '*.svg': {
-        loaders: ['@svgr/webpack'],
-        as: '*.js',
+  experimental: {
+    // Experimental turbo configuration for handling SVG files.
+    // Turbopack is still in experimental stages, so this configuration is included
+    // alongside the Webpack rule to provide a fallback and ensure compatibility.
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
       },
     },
   },

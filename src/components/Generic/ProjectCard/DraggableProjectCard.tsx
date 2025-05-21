@@ -1,10 +1,10 @@
-import { UniqueIdentifier } from '@dnd-kit/core'
+import type { UniqueIdentifier } from '@dnd-kit/core'
 import React from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { BsThreeDots } from 'react-icons/bs'
-import { UserCombinedInfo } from '@/types/Collections'
-import { ProjectDetails } from '@/types/Project'
+import type { UserCombinedInfo } from '@/types/Collections'
+import type { ProjectDetails } from '@/types/Project'
 
 export interface ProjectCardType {
   id: UniqueIdentifier

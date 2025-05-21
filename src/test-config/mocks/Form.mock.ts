@@ -1,7 +1,7 @@
-import { CreateFormData } from '@/types/Collections'
-import { QuestionResponse } from '@/types/Form'
-import { FormQuestion } from '@/payload-types'
-import { CreateFormQuestionData, UpdateFormQuestionData } from '@/types/Collections'
+import type { CreateFormData } from '@/types/Collections'
+import type { QuestionResponse } from '@/types/Form'
+import type { FormQuestion } from '@/payload-types'
+import type { CreateFormQuestionData, UpdateFormQuestionData } from '@/types/Collections'
 
 /*
  * The FormQuestion mocks

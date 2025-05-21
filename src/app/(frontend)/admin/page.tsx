@@ -18,13 +18,13 @@ import {
   handleDeleteSemester,
   handleGetAllSemesters,
 } from '@/lib/services/admin/Handlers'
-import { Semester } from '@/payload-types'
+import type { Semester } from '@/payload-types'
 import MobileAdminView from '@/app/(frontend)/admin/MobileAdminView'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
 import { redirect } from 'next/navigation'
 import { UserRole } from '@/types/User'
 import { getAllClients } from '@/lib/services/admin/Handlers'
-import { ProjectDetails } from '@/types/Project'
+import type { ProjectDetails } from '@/types/Project'
 import Notification from '@/components/Generic/Notification/Notification'
 
 const clientBase = {

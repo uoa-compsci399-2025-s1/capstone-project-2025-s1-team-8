@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 
 import { paramsToPromise } from '@/test-config/utils'

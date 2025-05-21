@@ -1,8 +1,8 @@
-import { Project, Semester, SemesterProject } from '@/payload-types'
-import { UpdateSemesterProjectData } from '@/types/Collections'
-import { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
+import type { Project, Semester, SemesterProject } from '@/payload-types'
+import type { UpdateSemesterProjectData } from '@/types/Collections'
+import type { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
 import { buildNextRequest } from '@/utils/buildNextRequest'
-import { typeToFlattenedError } from 'zod'
+import type { typeToFlattenedError } from 'zod'
 import { PATCH as UpdateSemesterProject } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
 import { GET as GetSemesters } from '@/app/api/semesters/route'
 import { GET as GetProjects } from '@/app/api/semesters/[id]/projects/route'
@@ -12,7 +12,7 @@ import { ProjectStatus } from '@/types/Project'
 import { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { UniqueIdentifier } from '@dnd-kit/core'
-import { StatusCodes } from 'http-status-codes'
+import type { StatusCodes } from 'http-status-codes'
 
 const AdminProjectService = {
   updateSemesterProject: async function (

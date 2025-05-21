@@ -4,9 +4,9 @@ import { StatusCodes } from 'http-status-codes'
 import ProjectService from '@/data-layer/services/ProjectService'
 import { NotFound } from 'payload'
 import SemesterService from '@/data-layer/services/SemesterService'
-import { SemesterProject } from '@/payload-types'
+import type { SemesterProject } from '@/payload-types'
 import { Security } from '@/business-layer/middleware/Security'
-import { RequestWithUser } from '@/types/Requests'
+import type { RequestWithUser } from '@/types/Requests'
 import { UserRole } from '@/types/User'
 
 class RouteWrapper {
