@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/16/solid'

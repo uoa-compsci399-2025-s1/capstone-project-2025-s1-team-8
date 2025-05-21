@@ -9,6 +9,7 @@ import { oauth2Client } from '@/business-layer/security/google'
 import * as nextHeaders from 'next/headers'
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
 import { createMockNextRequest } from '@/test-config/utils'
+import { StatusCodes } from 'http-status-codes'
 
 vi.mock('@/business-layer/security/google', () => ({
   oauth2Client: {
@@ -67,5 +68,15 @@ describe('Google Auth tests', async () => {
       }),
     )
     expect(redirect).toHaveBeenCalledWith(REDIRECT_URI_MOCK)
+  })
+
+  it('should use a default role if no role was provided', async () => {
+    await GET(createMockNextRequest('api/auth/google'))
+    expect(redirect).toHaveBeenCalled()
+  })
+
+  it('should throw a 400 if the role is invalid', async () => {
+    const res = await GET(createMockNextRequest('api/auth/google?role=lol'))
+    expect(res.status).toBe(StatusCodes.BAD_REQUEST)
   })
 })

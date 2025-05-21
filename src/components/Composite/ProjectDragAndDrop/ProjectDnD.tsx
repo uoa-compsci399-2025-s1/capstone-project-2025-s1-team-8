@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from 'react'
 import {
   DndContext,
@@ -24,7 +26,7 @@ import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
 
 import { User } from '@/payload-types'
-import { UpdateParams } from '@/lib/util/adminProjectUtils'
+// import { UpdateParams } from '@/lib/util/adminProjectUtils'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -34,11 +36,14 @@ export type DNDType = {
   originalItems: ProjectCardType[]
 }
 
-export type DndComponentProps = {
+export interface SemesterContainerData {
   presetContainers: DNDType[]
   semesterId: string
-  onSaveChanges: (params: UpdateParams) => Promise<void> // required for this component, but not all other places this is referenced
-  onPublishChanges: (params: UpdateParams) => Promise<void> // required for this component, but not all other places this is referenced
+}
+
+export type DndComponentProps = SemesterContainerData & {
+  onSaveChanges: (params: SemesterContainerData) => Promise<void> // required for this component, but not all other places this is referenced
+  onPublishChanges: (params: SemesterContainerData) => Promise<void> // required for this component, but not all other places this is referenced
   onDownloadCsv: (semesterId: string) => Promise<void> // required for this component, but not all other places this is referenced
 }
 
@@ -136,7 +141,7 @@ useEffect(() => {
       setSuccessNotification(null)
     }, 5000)
     //TODO: have some error handling in case changes aren't saved
-    await onSaveChanges({ containers, semesterId })
+    await onSaveChanges({ presetContainers: containers, semesterId })
 
     setContainers((prev) =>
       prev.map((container) => ({
@@ -148,7 +153,7 @@ useEffect(() => {
 
   async function handlePublishChanges() {
     // send changes to the backend
-    await onPublishChanges({ containers, semesterId })
+    await onPublishChanges({ presetContainers: containers, semesterId })
     setSuccessNotification('The approved projects have been published!')
 
     setTimeout(() => {
@@ -485,7 +490,7 @@ useEffect(() => {
         />
       </div>
 
-      <div className="flex gap-7 flex-wrap md:flex-nowrap">
+      <div className="flex gap-7 flex-wrap md:flex-nowrap to-scale">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCorners}
