@@ -1,5 +1,5 @@
 import React from 'react'
-import './(frontend)/globals.css'
+import '@/app/(frontend)/globals.css'
 
 export const metadata = {
   description: 'Connecting Computer Science Students with Innovative Projects',

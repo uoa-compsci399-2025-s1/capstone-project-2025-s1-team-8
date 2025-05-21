@@ -1,5 +1,6 @@
 'use client'
-import React, { FC, ReactNode, useState, type InputHTMLAttributes } from 'react'
+import type { FC, ReactNode, InputHTMLAttributes } from 'react'
+import React, { useState } from 'react'
 import { HiExclamation } from 'react-icons/hi'
 import { LuEyeOff, LuEye } from 'react-icons/lu'
 

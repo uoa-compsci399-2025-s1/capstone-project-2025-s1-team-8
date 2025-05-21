@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers'
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 import { redirect } from 'next/navigation'
 
 import { googleAuthScopes, oauth2Client } from '@/business-layer/security/google'
@@ -7,8 +8,9 @@ import { UserRole } from '@/types/User'
 import UserService from '@/data-layer/services/UserService'
 import AuthService from '@/data-layer/services/AuthService'
 import BusinessAuthService from '@/business-layer/services/AuthService'
-import { AUTH_COOKIE_NAME, UserInfoResponse, UserInfoResponseSchema } from '@/types/Auth'
-import { User } from '@/payload-types'
+import type { UserInfoResponse } from '@/types/Auth'
+import { AUTH_COOKIE_NAME, UserInfoResponseSchema } from '@/types/Auth'
+import type { User } from '@/payload-types'
 
 export const GET = async (req: NextRequest) => {
   const params = req.nextUrl.searchParams

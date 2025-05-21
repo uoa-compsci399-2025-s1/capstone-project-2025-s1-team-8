@@ -1,29 +1,117 @@
 'use client'
+
 import ClientsPage from '@/components/Pages/ClientsPage/ClientsPage'
 import SemestersPage from '@/components/Pages/SemestersPage/SemestersPage'
 import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import NavBar from '@/components/Generic/NavBar/NavBar'
-import { UniqueIdentifier } from '@dnd-kit/core'
-import { useEffect, useState } from 'react'
+import type { UniqueIdentifier } from '@dnd-kit/core'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { mockProjects } from '@/test-config/mocks/Project.mock'
-import { mockClients } from '@/test-config/mocks/User.mock'
-import { mockSemesters } from '@/test-config/mocks/Semester.mock'
-import SadTeapot from 'src/assets/sad-teapot.svg'
-import { handleLoginButtonClick, isLoggedIn } from '@/lib/services/user/Handlers'
+import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
+import {
+  isCurrentOrUpcoming,
+  handleGetAllSemesterProjects,
+  handleCreateSemester,
+  handleUpdateSemester,
+  handleDeleteSemester,
+  handleGetAllSemesters,
+} from '@/lib/services/admin/Handlers'
+import type { Semester } from '@/payload-types'
+import MobileAdminView from '@/app/(frontend)/admin/MobileAdminView'
+import type { UserCombinedInfo } from '@/types/Collections'
+import { redirect } from 'next/navigation'
+import { UserRole } from '@/types/User'
+import { getAllClients } from '@/lib/services/admin/Handlers'
+import type { ProjectDetails } from '@/types/Project'
+import Notification from '@/components/Generic/Notification/Notification'
+
+const clientBase = {
+  id: '67ff38a56a35e1b6cf43a682',
+  updatedAt: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
+  role: UserRole.Client,
+  firstName: 'Client',
+  lastName: '1',
+  email: 'client123@gmail.com',
+}
+const projectBase = {
+  id: '67ff38a56a35e1b6cf43a681',
+  name: 'Project 1',
+  description: 'Description 1',
+  client: clientBase,
+  deadline: new Date().toISOString(),
+  timestamp: new Date().toISOString(),
+  desiredOutput: 'cool project',
+  specialEquipmentRequirements: 'computer',
+  numberOfTeams: '5',
+  availableResources: 'nothing',
+  futureConsideration: false,
+  updatedAt: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
+}
+const mockProjects = [
+  projectBase,
+  { ...projectBase, name: 'Project 2', description: 'Description 3' },
+  { ...projectBase, name: 'Project 3', description: 'Description 3' },
+]
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
 
   const [activeNav, setActiveNav] = useState<number | null>(null)
-  const [loggedIn, setLoggedIn] = useState<boolean>(false)
+  const [loggedInUser, setLoggedInUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
   const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
+  const [semestersData, setSemestersData] = useState<Semester[]>([])
+  const [notificationMessage, setNotificationMessage] = useState('')
+  const [clientsData, setClientsData] = useState<
+    { client: UserCombinedInfo; projects: ProjectDetails[] }[]
+  >([])
+  const [semestersLoaded, setSemestersLoaded] = useState<boolean>(false)
+  const [clientsLoaded, setClientsLoaded] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (!semestersLoaded) {
+      const fetchSemesters = async () => {
+        handleGetAllSemesters().then((response) => {
+          if (response) {
+            setSemestersData(response.data ? response.data : [])
+            setSemestersLoaded(true)
+          }
+        })
+      }
+      fetchSemesters()
+    }
+  }, [semestersLoaded])
+
+  useEffect(() => {
+    if (!clientsLoaded) {
+      const fetchClients = async () => {
+        getAllClients().then((response) => {
+          if (response) {
+            setClientsData(response.data ? response.data : [])
+            setClientsLoaded(true)
+          }
+        })
+      }
+      fetchClients()
+    }
+  }, [clientsLoaded])
+
+  useEffect(() => {
+    if (notificationMessage !== '') {
+      const timer = setTimeout(() => {
+        setNotificationMessage('')
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+  }, [notificationMessage])
 
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
     setActiveNav(saved !== null ? Number(saved) : 0)
-    isLoggedIn().then((res) => {
-      setLoggedIn(res)
+    getLoggedInUser().then((res) => {
+      setLoggedInUser(res)
       setLoginLoaded(true)
     })
   }, [])
@@ -36,6 +124,9 @@ const Admin = () => {
 
   // Don't render anything until activeNav is ready
   if (activeNav === null || !loginLoaded) return null
+  if (!loggedInUser || loggedInUser.role !== UserRole.Admin) {
+    redirect('/not-found')
+  }
 
   const containers = [
     {
@@ -81,12 +172,15 @@ const Admin = () => {
 
   return (
     <div>
-      <NavBar
-        navElements={[{ href: '/admin', text: 'My Dashboard' }]}
-        onclick={handleLoginButtonClick}
-        loggedIn={loggedIn}
-      />
+      <NavBar onclick={handleLoginButtonClick} user={loggedInUser} />
       <div className="hidden lg:block w-full">
+        <div className="fixed top-6 right-6 z-50">
+          <Notification
+            isVisible={notificationMessage !== ''}
+            title={'Success'}
+            message={notificationMessage ?? 'hello world'}
+          />
+        </div>
         <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
           {AdminNavElements.map((nav, i) => (
             <button
@@ -131,7 +225,7 @@ const Admin = () => {
                 aria-hidden={activeNav !== 1}
                 tabIndex={activeNav === 1 ? 0 : -1}
               >
-                <ClientsPage clients={mockClients} />
+                <ClientsPage clients={clientsData} />
               </div>
 
               <div
@@ -139,7 +233,26 @@ const Admin = () => {
                 aria-hidden={activeNav !== 2}
                 tabIndex={activeNav === 2 ? 0 : -1}
               >
-                <SemestersPage semesters={mockSemesters} />
+                <SemestersPage
+                  semesters={semestersData}
+                  created={() => {
+                    setNotificationMessage('Semester created successfully')
+                    setSemestersLoaded(false)
+                  }}
+                  updated={() => {
+                    setNotificationMessage('Semester updated successfully')
+                    setSemestersLoaded(false)
+                  }}
+                  deleted={() => {
+                    setNotificationMessage('Semester deleted successfully')
+                    setSemestersLoaded(false)
+                  }}
+                  checkStatus={isCurrentOrUpcoming}
+                  getAllSemesterProjects={handleGetAllSemesterProjects}
+                  handleCreateSemester={handleCreateSemester}
+                  handleUpdateSemester={handleUpdateSemester}
+                  handleDeleteSemester={handleDeleteSemester}
+                />
               </div>
             </motion.div>
           </div>
@@ -147,24 +260,7 @@ const Admin = () => {
       </div>
 
       {/* mobile view */}
-      <div className="lg:hidden pt-30">
-        <div
-          className="mx-[10%] p-5 sm:p-6 rounded-2xl w-4/5 h-[calc(100vh-180px)] sm:h-[calc(100vh-200px)] min-w-3xs overflow-y-hidden
-        flex-1 flex-col flex items-center justify-center
-        border border-gray-300
-        bg-[linear-gradient(to_right,rgba(255,169,222,0.25),rgba(209,251,255,0.2)),linear-gradient(to_bottom,#fffef9,#d1fbff)]"
-        >
-          <SadTeapot className="mt-3 mb-3" />
-          <div className="space-y-6 pb-10 px-6 sm:px-8">
-            <p className="text-2xl sm:text-3xl md:text-4xl font-dm-serif-display text-dark-blue">
-              Please switch to a desktop device
-            </p>
-            <p className="text-xs sm:test-sm md:text-base font-inter text-dark-blue">
-              The current device is not supported for the admin dashboard.{' '}
-            </p>
-          </div>
-        </div>
-      </div>
+      <MobileAdminView />
     </div>
   )
 }

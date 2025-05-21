@@ -1,4 +1,5 @@
-import React, { FC, type TextareaHTMLAttributes } from 'react'
+import type { FC, TextareaHTMLAttributes } from 'react'
+import React from 'react'
 import { HiExclamation } from 'react-icons/hi'
 
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {

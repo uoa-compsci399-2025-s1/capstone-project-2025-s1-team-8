@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react'
-import { SortableKeys } from '@/components/Generic/Filter/ProjectFilterAssets'
+import type { SortableKeys } from '@/components/Generic/Filter/ProjectFilterAssets'
 
 type FilterContextType = {
   selectedFilter: string | undefined

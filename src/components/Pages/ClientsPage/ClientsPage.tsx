@@ -1,10 +1,16 @@
+'use client'
+
 import { useState } from 'react'
 import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/16/solid'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
+import type { ProjectDetails } from '@/types/Project'
 
 interface ClientsPageProps {
-  clients: UserCombinedInfo[]
+  clients: {
+    client: UserCombinedInfo
+    projects?: ProjectDetails[]
+  }[]
 }
 
 const ClientsPage: React.FC<ClientsPageProps> = ({ clients }) => {
@@ -31,8 +37,8 @@ const ClientsPage: React.FC<ClientsPageProps> = ({ clients }) => {
       </div>
       <div className="pt-8">
         <ClientGroup
-          clients={clients.filter((client) =>
-            (client.firstName + ' ' + client.lastName)
+          clients={clients.filter((clientInfo) =>
+            `${clientInfo.client.firstName} ${clientInfo.client.lastName ?? ''}`
               .toLowerCase()
               .includes(searchValue.trim().toLowerCase()),
           )}

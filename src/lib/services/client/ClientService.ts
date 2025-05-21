@@ -1,15 +1,15 @@
 import { GET as GetClientInfo } from '@/app/api/users/me/route'
 import { GET as GetClientProjects } from '@/app/api/users/me/projects/route'
 import { PATCH as UpdateClientDetails } from '@/app/api/users/me/route'
-import {
+import type {
   UpdateClientAdditionalInfoData,
   UpdateUserData,
   UserCombinedInfo,
 } from '@/types/Collections'
-import { Project, Semester } from '@/payload-types'
+import type { Project, Semester } from '@/payload-types'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
-import { StatusCodes } from 'http-status-codes'
+import type { StatusCodes } from 'http-status-codes'
 import { GET as GetSemesters } from '@/app/api/projects/[id]/semesters/route'
 
 const ClientService = {

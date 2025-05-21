@@ -9,15 +9,24 @@ import Radio from '@/components/Generic/Radio/Radio'
 import Checkbox from '@/components/Generic/Checkbox/Checkbox'
 import { FiCheck } from 'react-icons/fi'
 import { HiX, HiExclamation } from 'react-icons/hi'
-import { useSearchParams } from 'next/navigation'
+import { redirect, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import type { UserCombinedInfo } from '@/types/Collections'
+import { getLoggedInUser } from '@/lib/services/user/Handlers'
+import { UserRole } from '@/types/User'
+
+interface OtherClientDetails {
+  fullName: string
+  email: string
+}
+
 import { Project, Semester } from '@/payload-types'
 import { z } from 'zod'
 import { CreateProjectRequestBodySchema, CreateProjectClientSchema } from '@/app/api/projects/route'
 import { ProjectFormData } from '@/lib/services/form/projectFormService'
 
 import { handleFormPageLoad, handleProjectFormSubmission } from '@/lib/services/form/Handlers'
-import { isLoggedIn } from '@/lib/services/user/Handlers'
+// import { isLoggedIn } from '@/lib/services/user/Handlers'
 
 
 interface formProject extends z.infer<typeof CreateProjectRequestBodySchema> {
@@ -34,8 +43,8 @@ interface options {
 
 export default function Form() {
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
-  const [loggedIn, setLoggedIn] = useState<boolean>(false)
   const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
+  const [loggedInUser, setLoggedInUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
   const [semesters, setSemesters] = useState<Semester[]>([])
   const [semesterOptions, setSemesterOptions] = useState<options[]>([])
 
@@ -50,11 +59,19 @@ export default function Form() {
         }))
       )
     })
-    isLoggedIn().then((res) => {
-      setLoggedIn(res)
+    getLoggedInUser().then((res) => {
+      setLoggedInUser(res)
       setLoginLoaded(true)
     })
   }, [])
+
+  if (!loginLoaded) {
+    return null
+  }
+
+  if (loggedInUser.role !== UserRole.Client && loggedInUser.role !== UserRole.Admin) {
+    redirect('/not-found')
+  }
 
   // State to manage the pairs of names and emails of additional clients
   const [pairs, setPairs] = useState<z.infer<typeof CreateProjectClientSchema>[]>([])

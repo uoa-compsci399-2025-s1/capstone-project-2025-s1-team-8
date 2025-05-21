@@ -1,4 +1,5 @@
-import React, { FC, useState, type InputHTMLAttributes } from 'react'
+import type { FC, InputHTMLAttributes } from 'react'
+import React, { useState } from 'react'
 import Input from '../Input/InputField'
 import { HiExclamation } from 'react-icons/hi'
 

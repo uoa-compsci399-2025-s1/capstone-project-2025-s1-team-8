@@ -1,11 +1,12 @@
-import { NotFound, PaginatedDocs } from 'payload'
+import type { PaginatedDocs } from 'payload'
+import { NotFound } from 'payload'
 
-import { Project } from '@/payload-types'
-import { CreateProjectData, UpdateProjectData } from '@/types/Collections'
+import type { Project } from '@/payload-types'
+import type { CreateProjectData, UpdateProjectData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
-import { CreateSemesterProjectData, UpdateSemesterProjectData } from '@/types/Collections'
-import { SemesterProject } from '@/payload-types'
-import { ProjectStatus } from '@/types/Project'
+import type { CreateSemesterProjectData, UpdateSemesterProjectData } from '@/types/Collections'
+import type { SemesterProject } from '@/payload-types'
+import type { ProjectStatus } from '@/types/Project'
 import UserService from './UserService'
 
 export default class ProjectService {

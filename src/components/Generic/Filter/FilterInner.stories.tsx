@@ -1,5 +1,5 @@
 import React from 'react'
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import FilterInner from './FilterInner'
 import { EnvelopeIcon } from '@heroicons/react/16/solid' // Example icon from lucide-react or any icon lib you use
 

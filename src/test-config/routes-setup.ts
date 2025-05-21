@@ -16,13 +16,14 @@ import {
 } from './mocks/Auth.mock'
 import AuthService from '@/business-layer/services/AuthService'
 import { payload } from '@/data-layer/adapters/Payload'
-import { CollectionSlug } from 'payload'
+import type { CollectionSlug } from 'payload'
 
 let adminToken: string
 let clientToken: string
 let studentToken: string
 
 let cookies: Record<string, string> = {}
+let headers: Record<string, string> = {}
 
 beforeEach(async () => {
   vi.stubGlobal('crypto', {
@@ -31,15 +32,12 @@ beforeEach(async () => {
   })
   // Need to mock the auth service decode for it to decode the correct mocks
   vi.mock('@/business-layer/services/AuthService', async () => {
-    const actual = await vi.importActual<typeof import('@/business-layer/services/AuthService')>(
-      '@/business-layer/services/AuthService',
-    )
+    const actualModule = await vi.importActual('@/business-layer/services/AuthService')
+    // eslint-disable-next-line
+    const actualAuthService = (actualModule as any).default // Access the default export
 
     return {
-      default: class {
-        private authServiceInstance = new actual.default()
-        generateState = this.authServiceInstance.generateState.bind(this.authServiceInstance)
-        decryptState = this.authServiceInstance.decryptState.bind(this.authServiceInstance)
+      default: class extends actualAuthService {
         hashPassword = vi.fn().mockImplementation((password) => {
           return Buffer.from(password).toString('base64')
         })
@@ -64,9 +62,7 @@ beforeEach(async () => {
   })
 
   vi.mock('@/business-layer/security/google', async () => {
-    const actual = await vi.importActual<typeof import('@/business-layer/security/google')>(
-      '@/business-layer/security/google',
-    )
+    const actual = await vi.importActual('@/business-layer/security/google')
     return {
       ...actual,
       googleAuthScopes: SCOPES_ARRAY_MOCK,
@@ -86,6 +82,11 @@ beforeEach(async () => {
       }),
       delete: vi.fn().mockImplementation((key: string) => {
         delete cookies[key]
+      }),
+    })),
+    headers: vi.fn(() => ({
+      get: vi.fn().mockImplementation((key: string): string => {
+        return headers[key]
       }),
     })),
   }))
@@ -114,6 +115,7 @@ afterEach(async () => {
     await clearCollection(payload, slug as CollectionSlug)
   }
   cookies = {}
+  headers = {}
 })
 
 export { adminToken, clientToken, studentToken }
