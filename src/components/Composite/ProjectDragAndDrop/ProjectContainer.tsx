@@ -71,7 +71,7 @@ const ProjectContainer = ({
         containerRef.current = el
       }}
       style={style}
-      className={`relative w-full h-[80dvh] bg-muted-blue-op-45 ring-1 ring-muted-blue rounded-2xl flex flex-col gap-y-4 ${isDragging ? 'opacity-50' : ''} overflow-auto transition-all duration-300 ease-in-out shadow-inner`}
+      className={`relative w-full h-[72dvh] bg-muted-blue-op-45 ring-1 ring-muted-blue rounded-2xl flex flex-col gap-y-4 ${isDragging ? 'opacity-50' : ''} overflow-auto transition-all duration-300 ease-in-out shadow-inner`}
     >
       <div className="sticky top-0 w-full flex flex-col gap-3 items-center z-40 bg-muted-blue-op-45 px-[20px] pt-[25px]">
         <div className="flex items-center w-full justify-between">
