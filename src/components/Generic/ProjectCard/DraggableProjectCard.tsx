@@ -39,13 +39,17 @@ const DraggableProjectCard = ({ id, projectInfo, onClick }: ProjectCardType) => 
       <button {...listeners} className={`text-left cursor-grab`}>
         <div className="absolute inset-0 bg-gradient-to-t from-bright-blue to-light-beige opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out z-0 rounded-2xl" />
         <div className="relative z-10">
-          <p className="text-dark-blue text-[16px] leading-none font-semibold pt-1 pb-1.5">{projectInfo.name}</p>
+          <p className="text-dark-blue text-[16px] leading-none font-semibold pt-1 pb-1.5">
+            {projectInfo.name}
+          </p>
           <p className="text-dark-blue text-xs pb-0.5">
             {(projectInfo.client as UserCombinedInfo).firstName +
               ' ' +
               (projectInfo.client as UserCombinedInfo).lastName}
           </p>
-          <p className="text-grey-1 p-0 pt-2 pb-1 text-[12px] leading-none">{truncatedDescription}</p>
+          <p className="text-grey-1 p-0 pt-2 pb-1 text-[12px] leading-none">
+            {truncatedDescription}
+          </p>
         </div>
       </button>
 
