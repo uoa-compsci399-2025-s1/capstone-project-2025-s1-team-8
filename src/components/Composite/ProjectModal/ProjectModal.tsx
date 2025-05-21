@@ -5,8 +5,8 @@ import type { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'
 import Button from '@/components/Generic/Button/Button'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
-import { UserCombinedInfo } from '@/types/Collections'
-import { ProjectDetails } from '@/types/Project'
+import type { UserCombinedInfo } from '@/types/Collections'
+import type { ProjectDetails } from '@/types/Project'
 
 interface ProjectModalProps extends ModalProps {
   projectInfo: ProjectDetails

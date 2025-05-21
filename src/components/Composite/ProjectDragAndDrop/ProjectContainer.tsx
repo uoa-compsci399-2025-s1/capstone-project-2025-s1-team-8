@@ -7,7 +7,7 @@ import type { ProjectCardType } from '@/components/Generic/ProjectCard/Draggable
 import { useFilter } from '@/contexts/FilterContext'
 import type { UniqueIdentifier } from '@dnd-kit/core'
 import ProjectModal from '../ProjectModal/ProjectModal'
-import { ProjectDetails } from '@/types/Project'
+import type { ProjectDetails } from '@/types/Project'
 
 export interface ProjectContainerType {
   id: UniqueIdentifier

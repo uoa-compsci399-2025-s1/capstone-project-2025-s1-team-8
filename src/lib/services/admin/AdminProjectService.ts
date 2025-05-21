@@ -9,9 +9,9 @@ import { GET as GetProjects } from '@/app/api/semesters/[id]/projects/route'
 import { GET as GetProjectSemesters } from '@/app/api/projects/[id]/semesters/route'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
 import { ProjectStatus } from '@/types/Project'
-import { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
-import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
-import { UniqueIdentifier } from '@dnd-kit/core'
+import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
+import type { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
+import type { UniqueIdentifier } from '@dnd-kit/core'
 import type { StatusCodes } from 'http-status-codes'
 
 const AdminProjectService = {

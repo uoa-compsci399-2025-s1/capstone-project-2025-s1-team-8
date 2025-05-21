@@ -3,8 +3,7 @@
 import ClientsPage from '@/components/Pages/ClientsPage/ClientsPage'
 import SemestersPage from '@/components/Pages/SemestersPage/SemestersPage'
 import ProjectDnD, {
-  DNDType,
-  SemesterContainerData,
+  type SemesterContainerData,
 } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import React, { useEffect, useState } from 'react'
@@ -27,35 +26,6 @@ import { getAllClients } from '@/lib/services/admin/Handlers'
 import type { ProjectDetails } from '@/types/Project'
 import Notification from '@/components/Generic/Notification/Notification'
 
-const clientBase = {
-  id: '67ff38a56a35e1b6cf43a682',
-  updatedAt: new Date().toISOString(),
-  createdAt: new Date().toISOString(),
-  role: UserRole.Client,
-  firstName: 'Client',
-  lastName: '1',
-  email: 'client123@gmail.com',
-}
-const projectBase = {
-  id: '67ff38a56a35e1b6cf43a681',
-  name: 'Project 1',
-  description: 'Description 1',
-  client: clientBase,
-  deadline: new Date().toISOString(),
-  timestamp: new Date().toISOString(),
-  desiredOutput: 'cool project',
-  specialEquipmentRequirements: 'computer',
-  numberOfTeams: '5',
-  availableResources: 'nothing',
-  futureConsideration: false,
-  updatedAt: new Date().toISOString(),
-  createdAt: new Date().toISOString(),
-}
-const mockProjects = [
-  projectBase,
-  { ...projectBase, name: 'Project 2', description: 'Description 3' },
-  { ...projectBase, name: 'Project 3', description: 'Description 3' },
-]
 import { getNextSemesterProjects } from '@/lib/services/admin/Handlers'
 import { handlePublishChanges, updateProjectOrdersAndStatus } from '@/lib/services/admin/Handlers'
 

@@ -5,14 +5,8 @@ import AdminService from 'src/lib/services/admin/index'
 import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 import type { typeToFlattenedError } from 'zod'
 import type { Project, Semester } from '@/payload-types'
-import type { ProjectDetails, ProjectStatus } from '@/types/Project'
-import { redirect } from 'next/navigation'
-import UserService from '../user/UserService'
-import { UserRole } from '@/types/User'
-import {
-  DNDType,
-  SemesterContainerData,
-} from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
+import { type ProjectDetails, ProjectStatus } from '@/types/Project'
+import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 
 /**
  * Handles the click event to create semester

@@ -15,14 +15,13 @@ import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import ProjectContainer from './ProjectContainer'
 import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { FilterProvider } from '@/contexts/FilterContext'
-import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
-import { ProjectDetails, ProjectStatus } from '@/types/Project'
+import type { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
+import type { ProjectDetails, ProjectStatus } from '@/types/Project'
 import { FiSave, FiPrinter } from 'react-icons/fi'
 import Notification from '@/components/Generic/Notification/Notification'
 import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
-
-import { User } from '@/payload-types'
+import type { User } from '@/payload-types'
 
 export type DNDType = {
   id: UniqueIdentifier
