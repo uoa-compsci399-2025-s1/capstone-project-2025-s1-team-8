@@ -1,7 +1,7 @@
 import React from 'react'
 import ClientCard from '@/components/Generic/ClientCard/ClientCard'
-import { UserCombinedInfo } from '@/types/Collections'
-import { ProjectDetails } from '@/types/Project'
+import type { UserCombinedInfo } from '@/types/Collections'
+import type { ProjectDetails } from '@/types/Project'
 
 export interface ClientGroupProps {
   clients: {

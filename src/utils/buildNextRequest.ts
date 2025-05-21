@@ -1,5 +1,5 @@
 'use server'
-import { RequestWithUser } from '@/types/Requests'
+import type { RequestWithUser } from '@/types/Requests'
 import { NextRequest } from 'next/server'
 
 interface BuildRequestOptions {

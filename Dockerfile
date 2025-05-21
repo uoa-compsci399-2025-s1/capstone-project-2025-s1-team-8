@@ -7,7 +7,7 @@ FROM node:22.14.0-slim AS base
 FROM base AS deps
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
-RUN corepack enable pnpm && pnpm install --frozen-lockfile --production
+RUN corepack enable pnpm && pnpm install --frozen-lockfile --prod
 
 # Stage 2: Build the application
 FROM base AS builder
@@ -22,7 +22,8 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
-RUN if [ -d "/app/public" ]; then cp -r /app/public ./public; fi # Copy public folder if it exists
+# If there is no public, make sure to run: mkdir -p public/.gitkeep
+COPY --from=builder /app/public ./public
 
 EXPOSE 3000
 CMD ["node", "server.js"]

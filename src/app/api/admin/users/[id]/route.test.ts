@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 import { createMockNextPatchRequest, paramsToPromise } from '@/test-config/utils'
 import UserService from '@/data-layer/services/UserService'
@@ -10,11 +10,11 @@ import {
   clientCreateMock,
 } from '@/test-config/mocks/User.mock'
 import { GET, PATCH, DELETE } from '@/app/api/admin/users/[id]/route'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
 import { cookies } from 'next/headers'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
-import { User } from '@/payload-types'
+import type { User } from '@/payload-types'
 
 describe('test /api/admin/users/[id]', async () => {
   const userService = new UserService()

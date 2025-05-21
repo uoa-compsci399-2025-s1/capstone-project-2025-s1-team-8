@@ -1,14 +1,14 @@
 'use server'
 
 import { redirect } from 'next/navigation'
-import { typeToFlattenedError } from 'zod'
+import type { typeToFlattenedError } from 'zod'
 
-import { LoginRequestBodySchema } from '@/app/api/auth/login/route'
+import type { LoginRequestBodySchema } from '@/app/api/auth/login/route'
 import UserService from './UserService'
-import { RegisterRequestBodySchema } from '@/app/api/auth/register/route'
+import type { RegisterRequestBodySchema } from '@/app/api/auth/register/route'
 import { UserRoleWithoutAdmin } from '@/types/User'
 import { isValidEmail, isValidPassword } from '@/lib/util/util'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
 
 /**
  * This function handles the form submission for user login.

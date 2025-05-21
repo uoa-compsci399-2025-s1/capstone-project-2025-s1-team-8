@@ -1,7 +1,8 @@
 import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 
 import { googleAuthScopes, oauth2Client } from '@/business-layer/security/google'
 import { UserRoleWithoutAdmin } from '@/types/User'

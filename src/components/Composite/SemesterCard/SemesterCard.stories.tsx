@@ -1,7 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import SemesterCard from './SemesterCard'
 import { mockSemesters } from '@/test-config/mocks/Semester.mock'
-import { Semester } from '@/payload-types'
+import type { Semester } from '@/payload-types'
 
 const mockProps: Semester = mockSemesters[0]
 

@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import Modal from '@/components/Generic/Modal/Modal'
 import Capsule from '@/components/Generic/Capsule/Capsule'
-import { ModalProps } from '@/components/Generic/Modal/Modal'
+import type { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'
 import Button from '@/components/Generic/Button/Button'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
-import { Project, Semester } from '@/payload-types'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { Project, Semester } from '@/payload-types'
+import type { UserCombinedInfo } from '@/types/Collections'
 
 interface ProjectModalProps extends ModalProps {
   projectInfo: Project

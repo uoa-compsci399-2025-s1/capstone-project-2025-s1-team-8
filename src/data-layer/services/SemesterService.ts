@@ -1,7 +1,7 @@
-import { CreateSemesterData, UpdateSemesterData } from '@/types/Collections'
+import type { CreateSemesterData, UpdateSemesterData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
-import { Semester } from '@/payload-types'
-import { PaginatedDocs, Sort, Where } from 'payload'
+import type { Semester } from '@/payload-types'
+import type { PaginatedDocs, Sort, Where } from 'payload'
 import { SemesterType } from '@/types/Semester'
 
 export default class SemesterService {
