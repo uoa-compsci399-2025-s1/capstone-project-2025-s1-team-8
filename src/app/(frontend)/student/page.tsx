@@ -4,7 +4,7 @@ import NavBar from '@/components/Generic/NavBar/NavBar'
 import { handleStudentPageLoad } from '@/lib/services/student/Handlers'
 import { ProjectDetails } from '@/types/Project'
 import { useEffect, useState } from 'react'
-import NoProjects from '@/app/(frontend)/student/noProjects'
+import { TeapotCard } from '@/components/Generic/TeapotCard/TeapotCard'
 import { UserCombinedInfo } from '@/types/Collections'
 import { getLoggedInUser, handleLoginButtonClick } from '@/lib/services/user/Handlers'
 import { UserRole } from '@/types/User'
@@ -55,7 +55,7 @@ export default function Student() {
             />
           )}
         </div>
-        {!hasProjects && <NoProjects />}
+        {!hasProjects && <TeapotCard title="Projects haven't been published yet" description='Please check back at a later date!' type="margin-5" center = {true}/>}
       </div>
     </div>
   )
