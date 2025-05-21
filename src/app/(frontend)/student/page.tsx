@@ -55,7 +55,14 @@ export default function Student() {
             />
           )}
         </div>
-        {!hasProjects && <TeapotCard title="Projects haven't been published yet" description='Please check back at a later date!' type="margin-5" center = {true}/>}
+        {!hasProjects && (
+          <TeapotCard
+            title="Projects haven't been published yet"
+            description="Please check back at a later date!"
+            type="margin-5"
+            center={true}
+          />
+        )}
       </div>
     </div>
   )

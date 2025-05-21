@@ -36,7 +36,7 @@ export const Admin: Story = {
     )
   },
   args: {
-    title: "Please Switch to a Desktop Device",
+    title: 'Please Switch to a Desktop Device',
     description: 'This page is not available on mobile devices.',
     type: 'margin-5',
     center: true,

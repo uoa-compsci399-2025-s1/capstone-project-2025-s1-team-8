@@ -17,7 +17,7 @@ import {
   handleGetAllSemesters,
 } from '@/lib/services/admin/Handlers'
 import type { Semester } from '@/payload-types'
-import MobileAdminView from '@/app/(frontend)/admin/MobileAdminView'
+import { TeapotCard } from '@/components/Generic/TeapotCard/TeapotCard'
 import type { UserCombinedInfo } from '@/types/Collections'
 import { redirect } from 'next/navigation'
 import { UserRole } from '@/types/User'
@@ -260,7 +260,13 @@ const Admin = () => {
       </div>
 
       {/* mobile view */}
-      <MobileAdminView />
+      <div className="lg:hidden pt-30">
+            <TeapotCard
+              title={'Please switch to a desktop device'}
+              description=" The current device is not supported for the admin dashboard."
+              type="margin-10"
+            />
+          </div>
     </div>
   )
 }
