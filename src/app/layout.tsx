@@ -6,8 +6,8 @@ export const metadata = {
   title: 'Encapsulate',
   icons: {
     icon: [
-      { url: '/dark-logo.png', media: '(prefers-color-scheme: light)' },
       { url: '/light-logo.png', media: '(prefers-color-scheme: dark)' },
+      { url: '/dark-logo.png', media: '(prefers-color-scheme: light)' },
     ],
   },
 }
