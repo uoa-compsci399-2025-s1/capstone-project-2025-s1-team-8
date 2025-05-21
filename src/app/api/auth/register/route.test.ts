@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 
-import { POST, RegisterRequestBody } from './route'
+import type { RegisterRequestBody } from './route'
+import { POST } from './route'
 import { createMockNextPostRequest } from '@/test-config/utils'
 import { UserRole, UserRoleWithoutAdmin } from '@/types/User'
 import UserService from '@/data-layer/services/UserService'

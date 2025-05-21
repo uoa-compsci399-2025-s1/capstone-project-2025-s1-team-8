@@ -1,6 +1,6 @@
-import { CreateClientAdditionalInfoData, CreateUserData } from '@/types/Collections'
+import type { CreateClientAdditionalInfoData, CreateUserData } from '@/types/Collections'
 import { UserRole } from '@/types/User'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
 
 export const adminCreateMock: CreateUserData = {
   role: UserRole.Admin,

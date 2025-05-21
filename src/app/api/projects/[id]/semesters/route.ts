@@ -4,9 +4,9 @@ import { NotFound } from 'payload'
 import { z } from 'zod'
 
 import ProjectService from '@/data-layer/services/ProjectService'
-import { Semester, SemesterProject, User } from '@/payload-types'
+import type { Semester, SemesterProject, User } from '@/payload-types'
 import { Security } from '@/business-layer/middleware/Security'
-import { RequestWithUser } from '@/types/Requests'
+import type { RequestWithUser } from '@/types/Requests'
 import { UserRole } from '@/types/User'
 import { CommonResponse } from '@/types/response-models/CommonResponse'
 

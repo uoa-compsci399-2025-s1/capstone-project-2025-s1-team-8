@@ -1,12 +1,12 @@
 'use client'
+
 import ClientsPage from '@/components/Pages/ClientsPage/ClientsPage'
 import SemestersPage from '@/components/Pages/SemestersPage/SemestersPage'
 import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import NavBar from '@/components/Generic/NavBar/NavBar'
-import { UniqueIdentifier } from '@dnd-kit/core'
+import type { UniqueIdentifier } from '@dnd-kit/core'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { mockProjects } from '@/test-config/mocks/Project.mock'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
 import {
   isCurrentOrUpcoming,
@@ -16,14 +16,44 @@ import {
   handleDeleteSemester,
   handleGetAllSemesters,
 } from '@/lib/services/admin/Handlers'
-import { Semester } from '@/payload-types'
+import type { Semester } from '@/payload-types'
 import MobileAdminView from '@/app/(frontend)/admin/MobileAdminView'
-import { UserCombinedInfo } from '@/types/Collections'
+import type { UserCombinedInfo } from '@/types/Collections'
 import { redirect } from 'next/navigation'
 import { UserRole } from '@/types/User'
 import { getAllClients } from '@/lib/services/admin/Handlers'
-import { ProjectDetails } from '@/types/Project'
+import type { ProjectDetails } from '@/types/Project'
 import Notification from '@/components/Generic/Notification/Notification'
+
+const clientBase = {
+  id: '67ff38a56a35e1b6cf43a682',
+  updatedAt: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
+  role: UserRole.Client,
+  firstName: 'Client',
+  lastName: '1',
+  email: 'client123@gmail.com',
+}
+const projectBase = {
+  id: '67ff38a56a35e1b6cf43a681',
+  name: 'Project 1',
+  description: 'Description 1',
+  client: clientBase,
+  deadline: new Date().toISOString(),
+  timestamp: new Date().toISOString(),
+  desiredOutput: 'cool project',
+  specialEquipmentRequirements: 'computer',
+  numberOfTeams: '5',
+  availableResources: 'nothing',
+  futureConsideration: false,
+  updatedAt: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
+}
+const mockProjects = [
+  projectBase,
+  { ...projectBase, name: 'Project 2', description: 'Description 3' },
+  { ...projectBase, name: 'Project 3', description: 'Description 3' },
+]
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']

@@ -1,5 +1,5 @@
-import { Semester } from '@/payload-types'
-import { CreateSemesterData } from '@/types/Collections'
+import type { Semester } from '@/payload-types'
+import type { CreateSemesterData } from '@/types/Collections'
 
 /*
  * Semester mocks

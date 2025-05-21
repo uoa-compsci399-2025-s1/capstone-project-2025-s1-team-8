@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import Modal from '@/components/Generic/Modal/Modal'
 import Button from '@/components/Generic/Button/Button'
-import { ModalProps } from '@/components/Generic/Modal/Modal'
+import type { ModalProps } from '@/components/Generic/Modal/Modal'
 import Input from '@/components/Generic/Input/InputField'
-import { typeToFlattenedError } from 'zod'
-import { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
+import type { typeToFlattenedError } from 'zod'
+import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 
 interface SemesterFormProps extends ModalProps {
   semesterId: string

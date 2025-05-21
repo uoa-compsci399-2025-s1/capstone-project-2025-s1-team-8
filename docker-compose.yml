@@ -2,19 +2,13 @@ version: '3'
 
 services:
   payload:
-    image: node:22.14.0-slim
+    container_name: payload
     ports:
       - '3000:3000'
-    volumes:
-      - .:/home/node/app
-      - node_modules:/home/node/app/node_modules
-    working_dir: /home/node/app/
-    command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
-    depends_on:
-      - mongo
-      # - postgres
-    env_file:
-      - .env
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
 
   # Ensure your DATABASE_URI uses 'mongo' as the hostname ie. mongodb://mongo/my-db-name
   mongo:

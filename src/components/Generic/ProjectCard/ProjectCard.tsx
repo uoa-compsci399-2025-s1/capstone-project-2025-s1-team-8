@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ProjectModal from '@/components/Composite/ProjectModal/ProjectModal'
-import { UserCombinedInfo } from '@/types/Collections'
-import { ProjectDetails } from '@/types/Project'
+import type { UserCombinedInfo } from '@/types/Collections'
+import type { ProjectDetails } from '@/types/Project'
 
 interface ProjectCardProps {
   projectInfo: ProjectDetails

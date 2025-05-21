@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { Project } from '@/payload-types'
+import type { Project } from '@/payload-types'
 import { CommonResponse } from './CommonResponse'
 
 export const GetUserResponseSchema = CommonResponse.extend({

@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import type { NextRequest } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 

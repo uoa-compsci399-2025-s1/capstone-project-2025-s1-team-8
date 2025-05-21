@@ -1,20 +1,19 @@
-import { Semester, SemesterProject } from '@/payload-types'
+import type { Semester, SemesterProject } from '@/payload-types'
 import { GET as GetSemesters } from '@/app/api/semesters/route'
 import { GET as GetProjects } from '@/app/api/semesters/[id]/projects/route'
-import { POST as CreateSemester, CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
-import {
-  PATCH as UpdateSemester,
-  UpdateSemesterRequestBody,
-} from '@/app/api/admin/semesters/[id]/route'
+import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
+import { POST as CreateSemester } from '@/app/api/admin/semesters/route'
+import type { UpdateSemesterRequestBody } from '@/app/api/admin/semesters/[id]/route'
+import { PATCH as UpdateSemester } from '@/app/api/admin/semesters/[id]/route'
 import { DELETE as DeleteSemester } from '@/app/api/admin/semesters/[id]/route'
 import { GET as GetSemesterProjects } from '@/app/api/projects/[id]/semesters/route'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
 import { buildNextRequest } from '@/utils/buildNextRequest'
-import { CreateSemesterData } from '@/types/Collections'
-import { UpdateSemesterData } from '@/types/Collections'
-import { ProjectStatus } from '@/types/Project'
-import { typeToFlattenedError } from 'zod'
-import { StatusCodes } from 'http-status-codes'
+import type { CreateSemesterData } from '@/types/Collections'
+import type { UpdateSemesterData } from '@/types/Collections'
+import type { ProjectStatus } from '@/types/Project'
+import type { typeToFlattenedError } from 'zod'
+import type { StatusCodes } from 'http-status-codes'
 import { SemesterType } from '@/types/Semester'
 
 const AdminSemesterService = {

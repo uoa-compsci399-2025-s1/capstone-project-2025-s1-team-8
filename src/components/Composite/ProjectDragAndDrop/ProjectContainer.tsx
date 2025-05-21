@@ -3,11 +3,11 @@ import { useSortable, SortableContext } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import ProjectFilter from '@/components/Composite/Filter/ProjectFilter'
 import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProjectCard'
-import { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
+import type { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { useFilter } from '@/contexts/FilterContext'
-import { UniqueIdentifier } from '@dnd-kit/core'
+import type { UniqueIdentifier } from '@dnd-kit/core'
 import ProjectModal from '../ProjectModal/ProjectModal'
-import { Project } from '@/payload-types'
+import type { Project } from '@/payload-types'
 
 export interface ProjectContainerType {
   id: UniqueIdentifier

@@ -5,7 +5,7 @@ import { useLayer } from 'react-laag'
 import { FaPlus } from 'react-icons/fa'
 import RadialMenuItem from '../../Generic/RadialMenuItems/RadialMenuItem'
 import { AnimatePresence } from 'framer-motion'
-import { IconType } from 'react-icons'
+import type { IconType } from 'react-icons'
 
 interface RadialMenuProps {
   items: {
