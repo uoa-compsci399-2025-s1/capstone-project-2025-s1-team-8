@@ -52,7 +52,7 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
   const [semesterStatuses, setSemesterStatuses] = useState<
     Record<string, 'current' | 'upcoming' | ''>
   >({})
-  const currentSemesterRef = useRef<HTMLDivElement>(null)
+  const upcomingSemesterRef = useRef<HTMLDivElement>(null)
 
   function toggleModal() {
     setModalOpen(!modalOpen)
@@ -73,10 +73,7 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
   }, [semesters, checkStatus])
 
   const scrollToCurrentSemester = () => {
-    if (currentSemesterRef.current) {
-      currentSemesterRef.current.style.scrollMarginTop = '130px'
-      currentSemesterRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
+    upcomingSemesterRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
@@ -102,7 +99,7 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
         <div
           key={semester.id || semester.name}
           ref={
-            semester.id && semesterStatuses[semester.id] === 'current' ? currentSemesterRef : null
+            semester.id && semesterStatuses[semester.id] === 'upcoming' ? upcomingSemesterRef : null
           }
         >
           <SemesterCard
