@@ -1,4 +1,5 @@
 import { type JSX, Suspense } from 'react'
+
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import ClientDashboard from '@/components/Pages/ClientDashboard/ClientDashboard'
 import ClientService from '@/lib/services/client/ClientService'

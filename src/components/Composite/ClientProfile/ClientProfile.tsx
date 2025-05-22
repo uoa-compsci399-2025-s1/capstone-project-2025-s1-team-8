@@ -88,7 +88,10 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
           title={'Issue updating profile'}
           message={notificationMessage}
           type={'warning'}
-          onClose={() => setNotificationMessage('')}
+          onClose={() => {
+            setNotificationMessage('')
+            setShowNotification(false)
+          }}
         />
       </div>
       <div className="w-full h-[685px] relative bg-light-beige rounded-2xl ring-1 ring-deeper-blue p-8 pt-10 pb-14 overflow-y-auto">

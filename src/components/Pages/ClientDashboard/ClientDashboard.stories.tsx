@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+
 import ClientDashboard from './ClientDashboard'
 import { mockClients } from '@/test-config/mocks/User.mock'
 import { projectDetailsListMock } from '@/test-config/mocks/Project.mock'

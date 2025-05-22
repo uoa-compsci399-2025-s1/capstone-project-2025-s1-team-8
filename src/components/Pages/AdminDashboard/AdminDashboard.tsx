@@ -1,11 +1,12 @@
 'use client'
+import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+
 import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import type { Semester } from '@/payload-types'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
-
-import { motion } from 'framer-motion'
 import {
   isCurrentOrUpcoming,
   handleGetAllSemesterProjects,
@@ -20,7 +21,6 @@ import MobileAdminView from '@/components/Composite/MobileAdminView/MobileAdminV
 import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
 import Notification from '@/components/Generic/Notification/Notification'
-import { useEffect, useState } from 'react'
 
 type AdminDashboardProps = {
   clients: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
@@ -67,6 +67,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             isVisible={notificationMessage !== ''}
             title={'Success'}
             message={notificationMessage}
+            onClose={() => setNotificationMessage('')}
           />
         </div>
 

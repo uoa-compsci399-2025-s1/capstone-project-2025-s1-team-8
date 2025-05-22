@@ -1,4 +1,5 @@
 import type { JSX } from 'react'
+
 import {
   getAllClients,
   handleGetAllSemesters,
@@ -8,7 +9,6 @@ import ClientService from '@/lib/services/client/ClientService'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { Semester } from '@/payload-types'
 import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
-
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import AdminDashboard from './AdminDashboard'
 import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
