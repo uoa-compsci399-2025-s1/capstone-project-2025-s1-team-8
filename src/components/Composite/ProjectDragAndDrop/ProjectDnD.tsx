@@ -22,6 +22,7 @@ import Notification from '@/components/Generic/Notification/Notification'
 import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
 import type { User } from '@/payload-types'
+import useUnsavedChangesWarning from './UnsavedChangesHandler'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -97,6 +98,8 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
       return () => clearTimeout(timer)
     }
   }, [showNotification])
+
+  useUnsavedChangesWarning(hasChanges)
 
   //TODO: when items are moved around, remove the active filter styles
 
