@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { mockClients } from '@/test-config/mocks/User.mock'
 import MobileAdminView from './MobileAdminView'
 
 const meta: Meta<typeof MobileAdminView> = {
@@ -13,7 +12,10 @@ export default meta
 type Story = StoryObj<typeof MobileAdminView>
 
 export const Default: Story = {
-  args: {
-    clientInfo: mockClients[0],
-  },
+  render: () => (
+    <div>
+      Shrink viewport to mobile size to see the mobile view.
+      <MobileAdminView />
+    </div>
+  ),
 }
