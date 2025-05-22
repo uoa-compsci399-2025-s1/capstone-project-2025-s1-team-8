@@ -116,13 +116,13 @@ const Homepage: React.FC = () => {
         <h1 className="font-silkscreen text-deeper-blue text-5xl font-normal mb-0">
           MEET THE TEAM
         </h1>
-        <div className="flex flex-row gap-20 pb-12 items-center">
+        <div className="flex flex-col gap-5 md:flex-row md:gap-15 lg:gap-20 pb-12 items-center">
           <p className="text-steel-blue text-lg/6 pb-3 pt-10">
             <i>{`Status 418 `}</i>
             {`presents to you... Encapsulate! Encapsulate was completed as a COMPSCI399 Capstone project itself, and streamlines the interactions between the School of Computer science and potential clients. A smoother, more professional process means a better experience for everyone — we’re helping to create a stronger, more dynamic capstone experience fitting for the (amazing) students coming out of it.`}
           </p>
           <div>
-            <Teapot className="w-53 h-53" />
+            <Teapot className="w-40 h-40 md:w-46 md:h-46 lg:w-53 lg:h-53" />
           </div>
         </div>
         <div className="flex flex-col gap-3">
