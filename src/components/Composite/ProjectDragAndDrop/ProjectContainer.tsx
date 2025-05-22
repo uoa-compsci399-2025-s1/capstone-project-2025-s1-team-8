@@ -87,7 +87,9 @@ const ProjectContainer = ({
                   <circle cx="4" cy="12" r="4" />
                 </svg>
               </span>
-              <p className="text-dark-blue text-[16px] leading-none font-medium capitalize">{containerName}</p>
+              <p className="text-dark-blue text-[16px] leading-none font-medium capitalize">
+                {containerName}
+              </p>
             </div>
 
             <div className="bg-beige rounded-full flex justify-center items-center aspect-square min-w-[1.3rem] h-[1.3rem]">
