@@ -4,11 +4,21 @@ import NavBar from '@/components/Generic/NavBar/NavBar'
 import Button from '@/components/Generic/Button/Button'
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import EncapsulateText from 'src/assets/encapsulate-text.svg'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
 import { useEffect, useState } from 'react'
 import type { UserCombinedInfo } from '@/types/Collections'
 import Teapot from '@/assets/error.svg'
+import FormImage from '@/assets/form.png'
+import ProjectsImage from '@/assets/project-list.png'
+import EricPhoto from '@/assets/profiles/eric.jpg'
+import JooHuiPhoto from '@/assets/profiles/joohui.jpg'
+import BethanyPhoto from '@/assets/profiles/bethany.jpg'
+import DennisPhoto from '@/assets/profiles/dennis.jpg'
+import SheenaPhoto from '@/assets/profiles/sheena.jpg'
+import JefferyPhoto from '@/assets/profiles/jeffery.jpg'
+import Introduction from '@/components/Generic/PersonIntroduction/Introduction'
 
 const Homepage: React.FC = () => {
   const [loggedInUser, setLoggedInUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
@@ -57,9 +67,9 @@ const Homepage: React.FC = () => {
       </div>
 
       {/* Encapsulate for... */}
-      <div className="w-full bg-beige px-[8%] py-25 flex flex-col">
-        <div>
-          <div>
+      <div className="w-full bg-beige px-[8%] py-25 flex flex-col gap-20">
+        <div className="flex flex-row justify-between gap-20">
+          <div className="w-[45%]">
             <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-17">
               Encapsulate
               <br />
@@ -73,18 +83,28 @@ const Homepage: React.FC = () => {
             </p>
           </div>
           {/* Image */}
+          <div className="rounded-xl w-[47%] mb-1 overflow-hidden h-min self-center">
+            <Image src={FormImage} alt="Project proposal form" className="object-scale-down" />
+          </div>
         </div>
         <div>
-          <div>
+          <div className="flex flex-row gap-20 justify-between">
             {/* Image */}
-            <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-17">
-              Encapsulate
-              <br />
-              for students
-            </h1>
-            <p className="text-lg/6 text-steel-blue">
-              {`Students are able to browse approved projects and their descriptions for the upcoming semester. This means that students can pre-emptively consider which projects align the best with their interests, and use this knowledge to make the most of their capstone experience.`}
-            </p>
+            <Image
+              src={ProjectsImage}
+              alt="Projects list"
+              className="rounded-xl w-[44%] h-auto object-scale-down"
+            />
+            <div className="w-[47%] mt-3 pb-12">
+              <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-17">
+                Encapsulate
+                <br />
+                for students
+              </h1>
+              <p className="text-lg/6 text-steel-blue">
+                {`Students are able to browse approved projects and their descriptions for the upcoming semester. This means that students can pre-emptively consider which projects align the best with their interests, and use this knowledge to make the most of their capstone experience.`}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -102,37 +122,37 @@ const Homepage: React.FC = () => {
             <Teapot className="w-53 h-53" />
           </div>
         </div>
-        <div className="text-xl text-steel-blue">
-          <div>
-            <p>
-              <b>Eric Zheng : </b>Facilitator
-            </p>
-          </div>
-          <div>
-            <p>
-              <b>JooHui Lee : </b>UI/UX Lead
-            </p>
-          </div>
-          <div>
-            <p>
-              <b>Bethany Yates : </b>Frontend Lead
-            </p>
-          </div>
-          <div>
-            <p>
-              <b>Dennis Hu : </b>Backend Lead
-            </p>
-          </div>
-          <div>
-            <p>
-              <b>Sheena Lin : </b>DevOps Lead
-            </p>
-          </div>
-          <div>
-            <p>
-              <b>Jeffery Ji : </b>Documentation Lead
-            </p>
-          </div>
+        <div className="flex flex-col gap-3">
+          <Introduction 
+            name="Eric Zheng"
+            role="Facilitator"
+            image={EricPhoto}
+          />
+          <Introduction 
+            name="JooHui Lee"
+            role="UI/UX Lead"
+            image={JooHuiPhoto}
+          />
+          <Introduction 
+            name="Bethany Yates"
+            role="Frontend Lead"
+            image={BethanyPhoto}
+          />
+          <Introduction 
+            name="Dennis Hu"
+            role="Backend Lead"
+            image={DennisPhoto}
+          />
+          <Introduction 
+            name="Sheena Lin"
+            role="DevOps Lead"
+            image={SheenaPhoto}
+          />
+          <Introduction 
+            name="Jeffery Ji"
+            role="Documentation Lead"
+            image={JefferyPhoto}
+          />
         </div>
       </div>
     </div>
