@@ -159,14 +159,16 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
               </>
             ))}
 
-            <Button
-              onClick={() => handleCopyAll(projectClient, otherClientDetails)}
-              className="col-start-5 row-start-1"
-              variant="muted_blue"
-              size="sm"
-            >
-              {copiedAll ? <FiCheck className="self-center size-4" /> : <p>Copy All Emails</p>}
-            </Button>
+            {otherClientDetails.length > 0 && (
+              <Button
+                onClick={() => handleCopyAll(projectClient, otherClientDetails)}
+                className="col-start-5 row-start-1"
+                variant="muted_blue"
+                size="sm"
+              >
+                {copiedAll ? <FiCheck className="self-center size-4" /> : <p>Copy All Emails</p>}
+              </Button>
+            )}
           </div>
         </div>
         <Capsule variant="light_beige" text="Desired team skills" />
