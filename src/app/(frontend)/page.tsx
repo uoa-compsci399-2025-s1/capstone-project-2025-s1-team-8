@@ -9,7 +9,7 @@ import EncapsulateText from 'src/assets/encapsulate-text.svg'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
 import { useEffect, useState } from 'react'
 import type { UserCombinedInfo } from '@/types/Collections'
-import { LuMousePointer2, LuPointer } from 'react-icons/lu'
+// import { LuMousePointer2 } from 'react-icons/lu'
 import Teapot from '@/assets/error.svg'
 import FormImage from '@/assets/form.png'
 import ProjectsImage from '@/assets/project-list.png'
@@ -52,10 +52,10 @@ const Homepage: React.FC = () => {
       {/* About COMPSCI399 */}
       <div className="min-h-dvh w-full bg-deeper-blue px-[8%] py-25 flex flex-col justify-center">
         <div>
-          <h1 className="font-silkscreen text-light-beige text-5xl font-normal pb-5">
+          <h1 className="font-silkscreen text-light-beige text-3xl sm:text-4xl md:text-5xl font-normal pb-5">
             ABOUT COMPSCI399
           </h1>
-          <p className="text-light-beige text-lg/6 pb-15">
+          <p className="text-light-beige text-sm/4 sm:text-base/5 lg:text-lg/6 pb-15">
             {`COMPSCI399 Capstone is the culmination of the Computer Science degree for students at the University of Auckland. It is a compulsory course that students must undertake in order to graduate, and serves as a showcase of the knowledge and skills a student has acquired throughout their studies. Capstone courses are generally seen to have three main aims: integrating the knowledge and skills gained in the programme, reflecting on prior learning, and transitioning into the workplace. Using this as a starting point, this Computer Science capstone is seen as an opportunity to integrate the knowledge gained in the entire degree programme through problem-based learning. Students will be allocated into small teams who will then work together to solve a substantial problem. The teams will design, develop, and produce an artefact to solve the problem and present their work.`}
             <br />
             <br />
@@ -68,56 +68,56 @@ const Homepage: React.FC = () => {
       </div>
 
       {/* Encapsulate for... */}
-      <div className="w-full bg-beige px-[8%] py-25 flex flex-col gap-20">
-        <div className="flex flex-row relative justify-between gap-20">
-          <div className="w-[45%]">
-            <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-17">
+      <div className="w-full bg-beige px-[8%] py-25 flex flex-col gap-10 lg:gap-20">
+        <div className="flex flex-col lg:flex-row relative justify-between gap-10 lg:gap-20">
+          <div className="w-full lg:w-[45%]">
+            <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-10 sm:leading-12 lg:leading-17">
               Encapsulate
               <br />
               for clients
             </h1>
-            <p className="text-lg/6 text-steel-blue">
+            <p className="text-sm/4 sm:text-base/5 lg:text-lg/6 text-steel-blue">
               {`Hello! My name is John Doe and I am a lecturer at the University of Auckland. My hobbies include snorkelling, fishing, reading, baking, eating, sleeping and taking various methods of transport to my destination! FIRE`}
               <br />
               <br />
               {`"John Doe" is a common placeholder name used to represent an unknown or anonymous individual, particularly in legal or informal contexts. It's often used as a stand-in when a person's real name is not known, needs to be protected, or when a general example is needed. The female equivalent is "Jane Doe". `}
             </p>
           </div>
-          {/* Image */}
-          <div className="rounded-xl w-[47%] mb-1 overflow-hidden h-min self-center mt-10">
+          <div className="rounded-xl w-4/5 lg:w-[47%] mb-1 overflow-hidden h-min self-end lg:self-center mt-10">
             <Image src={FormImage} alt="Project proposal form" className="object-scale-down" />
           </div>
-          <LuMousePointer2 className="absolute text-[#FFA9DE6B] size-13 bottom-6 right-10 z-10" />
+          {/* <LuMousePointer2 className="absolute text-[#FFA9DE6B] size-13 bottom-6 right-10 z-10" /> */}
         </div>
+
         <div>
-          <div className="flex flex-row relative gap-20 justify-between">
-            {/* Image */}
+          <div className="flex flex-col lg:flex-row relative gap-10 lg:gap-20 justify-between">
             <Image
               src={ProjectsImage}
               alt="Projects list"
-              className="rounded-xl w-[44%] h-auto object-scale-down"
+              className="rounded-xl w-4/5 lg:w-[44%] h-auto object-scale-down"
             />
-            <LuMousePointer2 className="absolute text-[#FFA9DE6B] size-13 bottom-21 left-90 z-10" />
-            <div className="w-[47%] mt-3 pb-12">
-              <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-17">
+            {/* <LuMousePointer2 className="absolute text-[#FFA9DE6B] size-13 bottom-21 left-90 z-10" /> */}
+            <div className="w-full lg:w-[47%] mt-3 pb-12">
+              <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-10 sm:leading-12 lg:leading-17">
                 Encapsulate
                 <br />
                 for students
               </h1>
-              <p className="text-lg/6 text-steel-blue">
+              <p className="text-sm/4 sm:text-base/5 lg:text-lg/6 text-steel-blue">
                 {`Students are able to browse approved projects and their descriptions for the upcoming semester. This means that students can pre-emptively consider which projects align the best with their interests, and use this knowledge to make the most of their capstone experience.`}
               </p>
             </div>
           </div>
         </div>
       </div>
+
       {/* Meet the team */}
       <div className="bg-gradient-to-br from-[#fcdbe699] via-[#f4f1f2] to-[#dffaf1] px-[8%] py-25">
-        <h1 className="font-silkscreen text-deeper-blue text-5xl font-normal mb-0">
+        <h1 className="font-silkscreen text-deeper-blue text-3xl sm:text-4xl md:text-5xl font-normal mb-0">
           MEET THE TEAM
         </h1>
         <div className="flex flex-col gap-5 md:flex-row md:gap-15 lg:gap-20 pb-12 items-center">
-          <p className="text-steel-blue text-lg/6 pb-3 pt-10">
+          <p className="text-steel-blue text-sm/4 sm:text-base/5 lg:text-lg/6 pb-3 pt-10">
             <i>{`Status 418 `}</i>
             {`presents to you... Encapsulate! Encapsulate was completed as a COMPSCI399 Capstone project itself, and streamlines the interactions between the School of Computer science and potential clients. A smoother, more professional process means a better experience for everyone — we’re helping to create a stronger, more dynamic capstone experience fitting for the (amazing) students coming out of it.`}
           </p>

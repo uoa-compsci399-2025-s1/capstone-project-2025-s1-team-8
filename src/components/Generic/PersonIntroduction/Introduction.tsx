@@ -1,5 +1,6 @@
-import { FC } from 'react'
-import Image, { StaticImageData } from 'next/image'
+import type { FC } from 'react'
+import Image from 'next/image'
+import type { StaticImageData } from 'next/image'
 
 interface IntroductionProps {
   name: string
