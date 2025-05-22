@@ -2,7 +2,7 @@ import type { Semester, Project } from '@/payload-types'
 
 export enum ProjectStatus {
   Pending = 'pending',
-  Accepted = 'accepted',
+  Approved = 'approved',
   Rejected = 'rejected',
 }
 
