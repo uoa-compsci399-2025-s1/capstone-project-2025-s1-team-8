@@ -3,7 +3,7 @@ import { buildNextRequest } from '@/utils/buildNextRequest'
 import { GET as GetSemesters } from '@/app/api/semesters/route'
 import { GET as GetProjects } from '@/app/api/semesters/[id]/projects/route'
 import { SemesterType } from '@/types/Semester'
-import type { Project, SemesterProject } from '@/payload-types'
+import type { Project, Semester, SemesterProject } from '@/payload-types'
 import type { ProjectDetails } from '@/types/Project'
 
 export const StudentService = {
@@ -43,10 +43,16 @@ export const StudentService = {
 
     for (const semesterProject of data) {
       const projectInfo = (semesterProject as SemesterProject).project as Project
-      projects.push({ ...projectInfo, semesters: [], number: semesterProject.number })
+      projects.push({
+        ...projectInfo,
+        semesters: [(semesterProject as SemesterProject).semester as Semester],
+        number: semesterProject.number,
+      })
     }
 
-    projects.sort((a, b) => a.number && b.number ? a.number - b.number: a.name.localeCompare(b.name))
+    projects.sort((a, b) =>
+      a.number && b.number ? a.number - b.number : a.name.localeCompare(b.name),
+    )
 
     return projects
   },
