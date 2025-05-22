@@ -14,6 +14,7 @@ import {
   handleDeleteSemester,
   handlePublishChanges,
   updateProjectOrdersAndStatus,
+  handleGetAllSemesters,
 } from '@/lib/services/admin/Handlers'
 import MobileAdminView from '@/components/Composite/MobileAdminView/MobileAdminView'
 import SemestersPage from '../SemestersPage/SemestersPage'
@@ -27,11 +28,16 @@ type AdminDashboardProps = {
   projects: SemesterContainerData
 }
 
-const AdminDashboard: React.FC<AdminDashboardProps> = ({ clients, semesters, projects }) => {
+const AdminDashboard: React.FC<AdminDashboardProps> = ({
+  clients,
+  semesters: initialSemesters,
+  projects,
+}) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
 
   const [activeNav, setActiveNav] = useState<number | null>(null)
   const [notificationMessage, setNotificationMessage] = useState('')
+  const [semesters, setSemesters] = useState<Semester[]>(initialSemesters)
 
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
@@ -43,6 +49,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ clients, semesters, pro
       localStorage.setItem('adminNav', String(activeNav))
     }
   }, [activeNav])
+
+  const refreshSemesters = async () => {
+    const res = await handleGetAllSemesters()
+    if (res?.data) {
+      setSemesters(res.data)
+    }
+  }
 
   if (activeNav === null) return null // Wait for nav to be loaded
 
@@ -115,9 +128,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ clients, semesters, pro
               >
                 <SemestersPage
                   semesters={semesters}
-                  created={() => setNotificationMessage('Semester created successfully')}
-                  updated={() => setNotificationMessage('Semester updated successfully')}
-                  deleted={() => setNotificationMessage('Semester deleted successfully')}
+                  created={async () => {
+                    await refreshSemesters()
+                    setNotificationMessage('Semester created successfully')
+                  }}
+                  updated={async () => {
+                    await refreshSemesters()
+                    setNotificationMessage('Semester updated successfully')
+                  }}
+                  deleted={async () => {
+                    await refreshSemesters()
+                    setNotificationMessage('Semester deleted successfully')
+                  }}
                   checkStatus={isCurrentOrUpcoming}
                   getAllSemesterProjects={handleGetAllSemesterProjects}
                   handleCreateSemester={handleCreateSemester}
