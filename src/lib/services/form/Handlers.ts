@@ -1,13 +1,11 @@
 'use server'
 
 // import { redirect } from 'next/navigation'
-import ProjectFormService, { ProjectFormData } from './projectFormService'
+import ProjectFormService from './projectFormService'
 import { StatusCodes } from 'http-status-codes'
-import { Semester } from '@/payload-types'
 import { SemesterType } from '@/types/Semester'
-import { z } from 'zod'
-import { CreateProjectRequestBodySchema, CreateProjectClientSchema } from '@/app/api/projects/route'
-import { CreateProjectData } from '@/types/Collections'
+import type { Semester } from '@/payload-types'
+import type { CreateProjectRequestBody } from '@/app/api/projects/route'
 
 /**
  * Handles loading upcoming semesters for the form submission page
@@ -31,8 +29,7 @@ export const handleFormPageLoad = async (): Promise<{
 }
 
 export async function handleProjectFormSubmission(
-  semesterId: string,
-  formData: FormData
+  formData: CreateProjectRequestBody,
 ): Promise<{
   success: boolean,
   error?: string,
@@ -40,62 +37,61 @@ export async function handleProjectFormSubmission(
 }> {
   try {
     // Extract form data
-    const otherClients = formData.get('OtherClientDetails') as string
-    const projectTitle = formData.get('ProjectTitle') as string
-    const projectDescription = formData.get('ProjectDescription') as string
-    const desiredOutput = formData.get('DesiredOutput') as string
-    const specialEquipmentRequirements = formData.get('SpecialEquipmentRequirements') as string
-    const numberOfTeams = formData.get('NumberOfTeams') as string
-    const desiredTeamSkills = formData.get('DesiredTeamSkills') as string
-    const availableResources = formData.get('AvailableResources') as string
-    const futureConsideration = formData.get('FutureConsideration') as string
-    
-    // Get all selected future semesters
-    const futureSemestersEntries = Array.from(formData.entries())
-      .filter(([key]) => key.startsWith('FutureSemesters'))
-      .map(([_, value]) => value as string)
-    
-    // Convert checkboxes to booleans
-    const meetingAttendance = formData.has('MeetingAttendance')
-    const finalPresentationAttendance = formData.has('FinalPresentationAttendance')
-    const projectSupportAndMaintenance = formData.has('ProjectSupportAndMaintenance')
+    // const name = formData.get('name') as string
+    // const description = formData.get('description') as string
+    // const desiredOutput = formData.get('desiredOutput') as string
+    // const specialEquipmentRequirements = formData.get('specialEquipmentRequirements') as string
+    // const numberOfTeams = formData.get('numberOfTeams') as string
+    // const desiredTeamSkills = formData.get('desiredTeamSkills') as string
+    // const availableResources = formData.get('availableResources') as string
+    // const futureConsideration = formData.get('futureConsideration') === 'Yes'
+    // const timestamp = formData.get('timestamp') as string || new Date().toISOString()
+
+    // Parsing semester data
+    // const semestersData = formData.get('semesters') as string
+    // const semesters = semestersData ? semestersData.split(',').map(s => s.trim()) : []
+
+    // Extract additional clients if provided
+    // const additionalClientsData = formData.get('additionalClients') as string
+    // let additionalClients = undefined
+    // if (additionalClientsData) {
+    //   try {
+    //     additionalClients = JSON.parse(additionalClientsData) as CreateProjectClient[]
+    //   } catch (error) {
+    //     console.error('Error parsing additional clients:', error)
+    //   }
+    // }
 
     // Validate required fields
-    if (!projectTitle) return { success: false, error: 'Project title is required' }
-    if (!projectDescription) return { success: false, error: 'Project description is required' }
-    if (!desiredOutput) return { success: false, error: 'Desired output is required' }
-    if (!specialEquipmentRequirements) return { success: false, error: 'Special equipment requirements is required' }
-    if (!numberOfTeams) return { success: false, error: 'Number of teams is required' }
-    if (!futureConsideration) return { success: false, error: 'Future consideration is required' }
-    if (!meetingAttendance) return { success: false, error: 'Meeting attendance confirmation is required' }
-    if (!finalPresentationAttendance) return { success: false, error: 'Final presentation attendance confirmation is required' }
-    if (!projectSupportAndMaintenance) return { success: false, error: 'Project support and maintenance confirmation is required' }
+    if (!formData.name) return { success: false, error: 'Project name is required' }
+    if (!formData.description) return { success: false, error: 'Project description is required' }
+    if (!formData.desiredOutput) return { success: false, error: 'Desired output is required' }
+    if (!formData.specialEquipmentRequirements) return { success: false, error: 'Special equipment requirements is required' }
+    if (!formData.numberOfTeams) return { success: false, error: 'Number of teams is required' }
+    if (formData.futureConsideration && formData.semesters.length == 0) return { success: false, error: 'At least one semester must be selected' }
 
     // Create the project form data object
-    const projectFormData: ProjectFormData = {
-      otherClients,
-      projectTitle,
-      projectDescription,
-      desiredOutput,
-      specialEquipmentRequirements,
-      numberOfTeams,
-      desiredTeamSkills,
-      availableResources,
-      futureConsideration,
-      futureSemesters: futureSemestersEntries,
-      meetingAttendance,
-      finalPresentationAttendance,
-      projectSupportAndMaintenance
-    }
+    // const projectFormData: CreateProjectRequestBody = {
+    //   additionalClients,
+    //   name,
+    //   description,
+    //   desiredOutput,
+    //   specialEquipmentRequirements,
+    //   numberOfTeams,
+    //   desiredTeamSkills,
+    //   availableResources,
+    //   futureConsideration,
+    //   timestamp,
+    //   semesters
+    // }
 
     // Submit the form data
     const { status, error, message } = await ProjectFormService.submitProjectForm(
-      semesterId,
-      projectFormData
+      formData
     )
 
     if (status === StatusCodes.CREATED || status === StatusCodes.OK) {
-      return { success: true, message: 'Project proposal submitted successfully' }
+      return { success: true, message }
     } else {
       return { success: false, error: error || 'Failed to submit project proposal' }
     }

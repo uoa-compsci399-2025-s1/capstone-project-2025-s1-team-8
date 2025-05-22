@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
+import type { SubmitHandler } from 'react-hook-form'
 import Button from '@/components/Generic/Button/Button'
 import Input from '@/components/Generic/Input/InputField'
 import Textarea from '@/components/Generic/Textarea/Textarea'
@@ -14,24 +15,12 @@ import Link from 'next/link'
 import type { UserCombinedInfo } from '@/types/Collections'
 import { getLoggedInUser } from '@/lib/services/user/Handlers'
 import { UserRole } from '@/types/User'
-
-interface OtherClientDetails {
-  fullName: string
-  email: string
-}
-
-import { Project, Semester } from '@/payload-types'
-import { z } from 'zod'
-import { CreateProjectRequestBodySchema, CreateProjectClientSchema } from '@/app/api/projects/route'
-import { ProjectFormData } from '@/lib/services/form/projectFormService'
-
+import type { CreateProjectRequestBody, CreateProjectClient } from '@/app/api/projects/route'
 import { handleFormPageLoad, handleProjectFormSubmission } from '@/lib/services/form/Handlers'
-// import { isLoggedIn } from '@/lib/services/user/Handlers'
 
 
-interface formProject extends z.infer<typeof CreateProjectRequestBodySchema> {
+interface formProject extends CreateProjectRequestBody {
   meetingAttendance: boolean
-  futureSemesters: string[]
   finalPresentationAttendance: boolean
   projectSupportAndMaintenance: boolean
 }
@@ -42,16 +31,38 @@ interface options {
 }
 
 export default function Form() {
-  const [isLoaded, setIsLoaded] = useState<boolean>(false)
   const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
   const [loggedInUser, setLoggedInUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
-  const [semesters, setSemesters] = useState<Semester[]>([])
   const [semesterOptions, setSemesterOptions] = useState<options[]>([])
+  const [otherClientDetails, setOtherClientDetails] = useState<CreateProjectClient[]>([])
+
+  // State to manage the pairs of names and emails of additional clients
+  const searchParams = useSearchParams()
+  const projectName = searchParams.get('projectName') || ''
+
+  const handleChange = (index: number, field: keyof CreateProjectClient, value: string) => {
+    const updated = [...otherClientDetails]
+    updated[index][field] = value
+    setOtherClientDetails(updated)
+  }
+
+  const addPair = () => {
+    setOtherClientDetails([...otherClientDetails, { firstName: '', lastName: '', email: '' }])
+  }
+
+  const deletePair = (index: number) => {
+    setOtherClientDetails(otherClientDetails.filter((_, i) => i !== index))
+  }
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<formProject>()
 
   useEffect(() => {
     handleFormPageLoad().then((res) => {
-      setSemesters(res.upcomingSemesters)
-      setIsLoaded(true)
       setSemesterOptions(
         res.upcomingSemesters.map((semester) => ({
           value: semester.id,
@@ -73,60 +84,27 @@ export default function Form() {
     redirect('/not-found')
   }
 
-  // State to manage the pairs of names and emails of additional clients
-  const [pairs, setPairs] = useState<z.infer<typeof CreateProjectClientSchema>[]>([])
-  const searchParams = useSearchParams()
-  const projectName = searchParams.get('projectName') || ''
+  const hasFutureConsideration = String(watch('futureConsideration')) === "Yes";
+  const onSubmit: SubmitHandler<formProject> = async (data) => {
+    console.log(data)
+    data.additionalClients = otherClientDetails;
+    data.futureConsideration = hasFutureConsideration;
+    data.timestamp = new Date().toISOString();
 
-  const handleChange = (index: number, field: keyof z.infer<typeof CreateProjectClientSchema>[], value: string) => {
-    const updated = [...pairs]
-    updated[index][field] = value
-    setPairs(updated)
-  }
+    const res = await handleProjectFormSubmission(data as CreateProjectRequestBody);
 
-  const addPair = () => {
-    setPairs([...pairs, { firstName: '', lastName: '', email: '' }])
-  }
-
-  const deletePair = (index: number) => {
-    setPairs(pairs.filter((_, i) => i !== index))
-  }
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<formProject>()
-
-  const hasFutureConsideration = watch('futureConsideration', false);
-  // const hasFutureConsideration = watch('futureConsideration') == "Yes" ? true : false;
-  const onSubmit: SubmitHandler<formProject> = (data) => {
-
-    data.additionalClients = pairs;
-
-    // Create a FormData object
-    const formDataInstance = new FormData();
-    
-    // Add all form fields to the FormData object
-    Object.entries(data).forEach(([key, value]) => {
-      if (Array.isArray(value)) {
-        value.forEach((v) => formDataInstance.append(key, v));
-      } else if (value !== undefined && value !== null) {
-        formDataInstance.append(key, value.toString());
-      }
-    });
-
-    // For additionalClients, you might need to stringify the array
-    if (data.additionalClients && data.additionalClients.length > 0) {
-      formDataInstance.append('additionalClients', JSON.stringify(data.additionalClients));
+    // Handle the response as needed
+    // For example, you can check for errors or success messages
+    if (res?.success) {
+      console.log('Form submitted successfully:', res?.message)
+    } else {
+      console.error('Error submitting form:', res?.error)
+      // Handle error case
     }
 
-    const res = handleProjectFormSubmission(data.futureSemesters[0], formDataInstance);
+    // if (res?.error) {
 
-    if (res?.error) {
-
-    }
+    // }
 
     // Object.entries(formData).forEach(([key, value]) => {
     //   if (Array.isArray(value)) {
@@ -280,7 +258,7 @@ export default function Form() {
                     + Add Client
                   </Button>
                 </div>
-                {pairs.map((pair, idx) => (
+                {otherClientDetails.map((pair, idx) => (
                   <div key={idx} className="flex gap-5 justify-end mb-5">
                     <div className="w-80 flex flex-col gap-3">
                       <label className="text-sm">First Name:</label>
@@ -479,9 +457,9 @@ export default function Form() {
                 </p>
                 <Checkbox 
                   options={semesterOptions} 
-                  error={!!errors.futureSemesters}
-                  errorMessage={errors.futureSemesters?.message}
-                  {...register('futureSemesters', {
+                  error={!!errors.semesters}
+                  errorMessage={errors.semesters?.message}
+                  {...register('semesters', {
                     required: hasFutureConsideration ? 'Please select at least one semester' : false,
                   })}
                 />

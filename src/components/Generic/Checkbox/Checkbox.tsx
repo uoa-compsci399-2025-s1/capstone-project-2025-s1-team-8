@@ -1,4 +1,5 @@
-import React, { FC, type InputHTMLAttributes } from 'react'
+import type { FC, InputHTMLAttributes } from 'react'
+import React from 'react'
 import { FiCheck } from 'react-icons/fi'
 import { HiExclamation } from 'react-icons/hi'
 

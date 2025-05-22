@@ -1,28 +1,11 @@
-import { StatusCodes } from 'http-status-codes'
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
-import { POST as CreateProject } from '@/app/api/semesters/[id]/projects/route'
 import { GET as GetSemesters } from '@/app/api/semesters/route'
-import { Semester } from '@/payload-types'
-import { SemesterType } from '@/types/Semester'
-
-export interface ProjectFormData {
-  clientName: string
-  clientEmail: string
-  otherClients?: { firstName: string; lastName: string ; email: string }[]
-  projectTitle: string
-  projectDescription: string
-  desiredOutput: string
-  specialEquipmentRequirements: string
-  numberOfTeams: string
-  desiredTeamSkills?: string
-  availableResources?: string
-  futureConsideration: string
-  futureSemesters?: string[]
-  meetingAttendance: boolean
-  finalPresentationAttendance: boolean
-  projectSupportAndMaintenance: boolean
-}
+import { POST as CreateProject } from '@/app/api/projects/route'
+import type { StatusCodes } from 'http-status-codes'
+import type { Semester } from '@/payload-types'
+import type { SemesterType } from '@/types/Semester'
+import type {CreateProjectRequestBody } from '@/app/api/projects/route'
 
 const ProjectFormService = {
   /**
@@ -53,20 +36,19 @@ const ProjectFormService = {
    * @returns A response object with status and error information
    */
   submitProjectForm: async function(
-    semesterId: string,
-    formData: ProjectFormData,
+    formData: CreateProjectRequestBody,
   ): Promise<{
     status: StatusCodes
     error?: string
     message?: string
   }> {
     'use server'
+    const url = buildNextRequestURL(`/api/projects`, {})
     const response = await CreateProject(
-      await buildNextRequest(`/api/semesters/${semesterId}/projects`, {
+      await buildNextRequest(url, {
         method: 'POST',
-        body: JSON.stringify(formData),
+        body: formData
       }),
-      { params: Promise.resolve({ id: semesterId }) }
     )
     const { error, message } = { ...(await response.json()) }
 
