@@ -2,9 +2,10 @@
 
 import ClientsPage from '@/components/Pages/ClientsPage/ClientsPage'
 import SemestersPage from '@/components/Pages/SemestersPage/SemestersPage'
-import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
+import ProjectDnD, {
+  type SemesterContainerData,
+} from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import NavBar from '@/components/Generic/NavBar/NavBar'
-import type { UniqueIdentifier } from '@dnd-kit/core'
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
@@ -25,35 +26,8 @@ import { getAllClients } from '@/lib/services/admin/Handlers'
 import type { ProjectDetails } from '@/types/Project'
 import Notification from '@/components/Generic/Notification/Notification'
 
-const clientBase = {
-  id: '67ff38a56a35e1b6cf43a682',
-  updatedAt: new Date().toISOString(),
-  createdAt: new Date().toISOString(),
-  role: UserRole.Client,
-  firstName: 'Client',
-  lastName: '1',
-  email: 'client123@gmail.com',
-}
-const projectBase = {
-  id: '67ff38a56a35e1b6cf43a681',
-  name: 'Project 1',
-  description: 'Description 1',
-  client: clientBase,
-  deadline: new Date().toISOString(),
-  timestamp: new Date().toISOString(),
-  desiredOutput: 'cool project',
-  specialEquipmentRequirements: 'computer',
-  numberOfTeams: '5',
-  availableResources: 'nothing',
-  futureConsideration: false,
-  updatedAt: new Date().toISOString(),
-  createdAt: new Date().toISOString(),
-}
-const mockProjects = [
-  projectBase,
-  { ...projectBase, name: 'Project 2', description: 'Description 3' },
-  { ...projectBase, name: 'Project 3', description: 'Description 3' },
-]
+import { getNextSemesterProjects } from '@/lib/services/admin/Handlers'
+import { handlePublishChanges, updateProjectOrdersAndStatus } from '@/lib/services/admin/Handlers'
 
 const Admin = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -66,8 +40,12 @@ const Admin = () => {
   const [clientsData, setClientsData] = useState<
     { client: UserCombinedInfo; projects: ProjectDetails[] }[]
   >([])
+  const [projectsData, setProjectsData] = useState<SemesterContainerData>(
+    {} as SemesterContainerData,
+  )
   const [semestersLoaded, setSemestersLoaded] = useState<boolean>(false)
   const [clientsLoaded, setClientsLoaded] = useState<boolean>(false)
+  const [projectsLoaded, setProjectsLoaded] = useState<boolean>(false)
 
   useEffect(() => {
     if (!semestersLoaded) {
@@ -96,6 +74,22 @@ const Admin = () => {
       fetchClients()
     }
   }, [clientsLoaded])
+
+  useEffect(() => {
+    if (!projectsLoaded) {
+      const fetchProjects = async () => {
+        getNextSemesterProjects().then((response) => {
+          if (response) {
+            setProjectsData(
+              response.data ? response.data : { semesterId: '', presetContainers: [] },
+            )
+            setProjectsLoaded(true)
+          }
+        })
+      }
+      fetchProjects()
+    }
+  }, [projectsLoaded])
 
   useEffect(() => {
     if (notificationMessage !== '') {
@@ -127,48 +121,6 @@ const Admin = () => {
   if (!loggedInUser || loggedInUser.role !== UserRole.Admin) {
     redirect('/not-found')
   }
-
-  const containers = [
-    {
-      id: 'container-1' as UniqueIdentifier,
-      title: 'Rejected',
-      containerColor: 'light' as const,
-      currentItems: [
-        {
-          id: `item-1`,
-          projectInfo: mockProjects[0],
-        },
-        {
-          id: `item-2`,
-          projectInfo: mockProjects[1],
-        },
-      ],
-      originalItems: [
-        {
-          id: `item-1`,
-          projectInfo: mockProjects[0],
-        },
-        {
-          id: `item-2`,
-          projectInfo: mockProjects[1],
-        },
-      ],
-    },
-    {
-      id: 'container-2' as UniqueIdentifier,
-      title: 'Pending',
-      containerColor: 'medium' as const,
-      currentItems: [],
-      originalItems: [],
-    },
-    {
-      id: 'container-3' as UniqueIdentifier,
-      title: 'Accepted',
-      containerColor: 'dark' as const,
-      currentItems: [],
-      originalItems: [],
-    },
-  ]
 
   return (
     <div>
@@ -217,7 +169,11 @@ const Admin = () => {
                 aria-hidden={activeNav !== 0}
                 tabIndex={activeNav === 0 ? 0 : -1}
               >
-                <ProjectDnD presetContainers={containers} />
+                <ProjectDnD
+                  {...projectsData}
+                  onSaveChanges={updateProjectOrdersAndStatus}
+                  onPublishChanges={handlePublishChanges}
+                />
               </div>
 
               <div

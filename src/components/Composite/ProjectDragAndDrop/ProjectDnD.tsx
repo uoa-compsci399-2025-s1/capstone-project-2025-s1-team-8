@@ -16,54 +16,70 @@ import ProjectContainer from './ProjectContainer'
 import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import { FilterProvider } from '@/contexts/FilterContext'
 import type { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
+import type { ProjectDetails, ProjectStatus } from '@/types/Project'
 import { FiSave, FiPrinter } from 'react-icons/fi'
 import Notification from '@/components/Generic/Notification/Notification'
 import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
+import type { User } from '@/payload-types'
 
-import type { Project, User } from '@/payload-types'
-
-type DNDType = {
+export type DNDType = {
   id: UniqueIdentifier
-  title: string
+  title: ProjectStatus
   containerColor: 'light' | 'medium' | 'dark'
   currentItems: ProjectCardType[]
   originalItems: ProjectCardType[]
 }
 
-type DndComponentProps = {
+export interface SemesterContainerData {
   presetContainers: DNDType[]
+  semesterId: string
 }
 
-const defaultProjectInfo: Project = {
+export type DndComponentProps = SemesterContainerData & {
+  onSaveChanges: (params: SemesterContainerData) => Promise<void>
+  onPublishChanges: (params: SemesterContainerData) => Promise<void>
+}
+
+const defaultProjectInfo: ProjectDetails = {
   id: '',
   name: '',
-  client: '',
-  additionalClients: [],
   description: '',
-  deadline: new Date().toISOString(),
+  client: '',
+  additionalClients: null,
+  attachments: null,
+  deadline: null,
+  timestamp: '',
   desiredOutput: '',
-  timestamp: new Date().toISOString(),
   specialEquipmentRequirements: '',
   numberOfTeams: '',
-  desiredTeamSkills: '',
-  futureConsideration: true,
-  createdAt: new Date().toISOString(),
+  desiredTeamSkills: null,
+  availableResources: null,
+  futureConsideration: false,
+  questionResponses: null,
   updatedAt: new Date().toISOString(),
+  createdAt: new Date().toISOString(),
+  semesters: [],
+  semesterProjectId: undefined,
 }
 
-const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
-  const [containers, setContainers] = useState<DNDType[]>(presetContainers.presetContainers)
+const ProjectDnD: React.FC<DndComponentProps> = ({
+  presetContainers,
+  semesterId,
+  onSaveChanges,
+  onPublishChanges,
+}) => {
+  const [containers, setContainers] = useState<DNDType[]>(presetContainers)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
   const [showNotification, setShowNotification] = useState<boolean>(false)
+  const [successNotification, setSuccessNotification] = useState<string | null>(null)
 
   const buttonItems = [
     { Icon: FiSave, value: 'save', label: 'Save' },
     { Icon: FiPrinter, value: 'publish', label: 'Publish' },
     { Icon: HiOutlineDocumentDownload, value: 'downloadcsv', label: 'Download CSV' },
   ]
-
   useEffect(() => {
     if (hasChanges) {
       setShowNotification(true)
@@ -82,13 +98,15 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
     }
   }, [showNotification])
 
-  //TODO: onlick of save changes button, send all container originalItems (and their order) to the backend.
-  //TODO: make wrapper container fetch the current ordering of items from the backend and display as the presetContainers
   //TODO: when items are moved around, remove the active filter styles
 
-  const [containerFilters, setContainerFilters] = useState<Record<string, string | undefined>>(() =>
-    Object.fromEntries(containers.map((c) => [c.id, 'originalOrder'])),
-  )
+  const [containerFilters, setContainerFilters] = useState<Record<string, string | undefined>>({})
+
+  useEffect(() => {
+    if (containers) {
+      setContainerFilters(Object.fromEntries(containers.map((c) => [c.id, 'originalOrder'])))
+    }
+  }, [containers])
 
   const handleFilterChange = (containerId: UniqueIdentifier, newFilter?: string) => {
     setContainerFilters((prev) => ({
@@ -101,21 +119,42 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
     }
   }
 
-  function handleSaveChanges() {
+  async function handleSaveChanges() {
     setHasChanges(false)
     setShowNotification(false)
-    // send changes to the backend
-    console.log('saving changes')
+    setSuccessNotification('Your changes have been saved successfully!')
+
+    setTimeout(() => {
+      setSuccessNotification(null)
+    }, 5000)
+    //TODO: have some error handling in case changes aren't saved
+    await onSaveChanges({ presetContainers: containers, semesterId })
+
+    setContainers((prev) =>
+      prev.map((container) => ({
+        ...container,
+        originalItems: [...container.currentItems],
+      })),
+    )
   }
 
-  function handlePublishChanges() {
+  async function handlePublishChanges() {
     // send changes to the backend
-    console.log('publishing changes')
+    await onPublishChanges({ presetContainers: containers, semesterId })
+    setSuccessNotification('The approved projects have been published!')
+
+    setTimeout(() => {
+      setSuccessNotification(null)
+    }, 5000)
   }
 
   function handleDownloadCsv() {
-    // download csv of all approved projects
-    console.log('downloading csv')
+    window.open(`/api/admin/export/semesters/${semesterId}`, '_blank')
+    setSuccessNotification('Download successful!')
+
+    setTimeout(() => {
+      setSuccessNotification(null)
+    }, 5000)
   }
 
   function sortProjects(containerId: UniqueIdentifier, filter: string): void {
@@ -178,7 +217,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
     }
   }
 
-  const findItemInfo = (id: UniqueIdentifier | undefined): Project => {
+  const findItemInfo = (id: UniqueIdentifier | undefined): ProjectDetails => {
     if (!id) return defaultProjectInfo
 
     const container = findValueOfItems(id, 'item')
@@ -373,7 +412,6 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
       }
     }
     // Handling item dropping into Container
-    // TODO: if item is being moved between containers, then update the original order
     if (
       active.id.toString().includes('item') &&
       over?.id.toString().includes('container') &&
@@ -428,6 +466,12 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
           message={"You've made changes to the project order. Don't forget to save!"}
           type={'warning'}
         />
+        <Notification
+          isVisible={successNotification != null}
+          title={'Success'}
+          message={successNotification ?? ''}
+          type={'success'}
+        />
       </div>
 
       <div className="flex gap-7 flex-wrap md:flex-nowrap to-scale">
@@ -438,7 +482,7 @@ const ProjectDnD: React.FC<DndComponentProps> = (presetContainers) => {
           onDragMove={handleDragMove}
           onDragEnd={handleDragEnd}
         >
-          {containers.map((container) => (
+          {containers?.map((container) => (
             <FilterProvider
               key={container.id}
               value={{
