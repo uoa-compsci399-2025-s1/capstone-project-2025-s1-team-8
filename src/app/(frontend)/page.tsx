@@ -8,6 +8,7 @@ import EncapsulateText from 'src/assets/encapsulate-text.svg'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
 import { useEffect, useState } from 'react'
 import type { UserCombinedInfo } from '@/types/Collections'
+import Teapot from '@/assets/error.svg'
 
 const Homepage: React.FC = () => {
   const [loggedInUser, setLoggedInUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
@@ -22,16 +23,117 @@ const Homepage: React.FC = () => {
     return null
   }
   return (
-    <div className="h-dvh flex flex-col items-center space-y-8">
-      <NavBar onclick={handleLoginButtonClick} user={loggedInUser} />
-      <div className="flex flex-1 flex-col justify-center items-center space-y-8 p-10">
-        <EncapsulateText
-          className="w-[300px] lg:w-[700px] md:w-[600px] sm:w-[500px] transition-all duration-300 ease-in-out
+    <div>
+      {/* Landing */}
+      <div className="h-dvh flex flex-col items-center space-y-8">
+        <NavBar onclick={handleLoginButtonClick} user={loggedInUser} />
+        <div className="flex flex-1 flex-col justify-center items-center space-y-8 p-10">
+          <EncapsulateText
+            className="w-[300px] lg:w-[700px] md:w-[600px] sm:w-[500px] transition-all duration-300 ease-in-out
         mb-10 mt-9"
-        />
-        <Button variant="outline" size="md">
-          <Link href="/auth/login">Submit your proposal</Link>
-        </Button>
+          />
+          <Button variant="outline" size="md">
+            <Link href="/auth/login">Submit your proposal</Link>
+          </Button>
+        </div>
+      </div>
+
+      {/* About COMPSCI399 */}
+      <div className="min-h-dvh w-full bg-deeper-blue px-[8%] py-25 flex flex-col justify-center">
+        <div>
+          <h1 className="font-silkscreen text-light-beige text-5xl font-normal pb-5">
+            ABOUT COMPSCI399
+          </h1>
+          <p className="text-light-beige text-lg/6 pb-15">
+            {`COMPSCI399 Capstone is the culmination of the Computer Science degree for students at the University of Auckland. It is a compulsory course that students must undertake in order to graduate, and serves as a showcase of the knowledge and skills a student has acquired throughout their studies. Capstone courses are generally seen to have three main aims: integrating the knowledge and skills gained in the programme, reflecting on prior learning, and transitioning into the workplace. Using this as a starting point, this Computer Science capstone is seen as an opportunity to integrate the knowledge gained in the entire degree programme through problem-based learning. Students will be allocated into small teams who will then work together to solve a substantial problem. The teams will design, develop, and produce an artefact to solve the problem and present their work.`}
+            <br />
+            <br />
+            {`This capstone course is designed to permit the student to exhibit problem-solving, critical thinking and communication skills, and the ability to use relevant technology; all skills developed throughout the programme. This enables them to become ‘business ready’ for their eventual engagement with companies in their future employment.`}
+          </p>
+          <Button variant="light" size="sm">
+            <Link href={'https://www.capitalise.space/'}>See previous projects</Link>
+          </Button>
+        </div>
+      </div>
+
+      {/* Encapsulate for... */}
+      <div className="w-full bg-beige px-[8%] py-25 flex flex-col">
+        <div>
+          <div>
+            <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-17">
+              Encapsulate
+              <br />
+              for clients
+            </h1>
+            <p className="text-lg/6 text-steel-blue">
+              {`Hello! My name is John Doe and I am a lecturer at the University of Auckland. My hobbies include snorkelling, fishing, reading, baking, eating, sleeping and taking various methods of transport to my destination! FIRE`}
+              <br />
+              <br />
+              {`"John Doe" is a common placeholder name used to represent an unknown or anonymous individual, particularly in legal or informal contexts. It's often used as a stand-in when a person's real name is not known, needs to be protected, or when a general example is needed. The female equivalent is "Jane Doe". `}
+            </p>
+          </div>
+          {/* Image */}
+        </div>
+        <div>
+          <div>
+            {/* Image */}
+            <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-17">
+              Encapsulate
+              <br />
+              for students
+            </h1>
+            <p className="text-lg/6 text-steel-blue">
+              {`Students are able to browse approved projects and their descriptions for the upcoming semester. This means that students can pre-emptively consider which projects align the best with their interests, and use this knowledge to make the most of their capstone experience.`}
+            </p>
+          </div>
+        </div>
+      </div>
+      {/* Meet the team */}
+      <div className="bg-[linear-gradient(to_right,rgba(255,169,222,0.2),rgba(209,251,255,0.2)),linear-gradient(to_bottom,#fffef9,#D1FBFF)] px-[8%] py-25">
+        <h1 className="font-silkscreen text-deeper-blue text-5xl font-normal mb-0">
+          MEET THE TEAM
+        </h1>
+        <div className="flex flex-row gap-20 pb-12 items-center">
+          <p className="text-steel-blue text-lg/6 pb-3 pt-10">
+            <i>{`Status 418 `}</i>
+            {`presents to you... Encapsulate! Encapsulate was completed as a COMPSCI399 Capstone project itself, and streamlines the interactions between the School of Computer science and potential clients. A smoother, more professional process means a better experience for everyone — we’re helping to create a stronger, more dynamic capstone experience fitting for the (amazing) students coming out of it.`}
+          </p>
+          <div>
+            <Teapot className="w-53 h-53" />
+          </div>
+        </div>
+        <div className="text-xl text-steel-blue">
+          <div>
+            <p>
+              <b>Eric Zheng : </b>Facilitator
+            </p>
+          </div>
+          <div>
+            <p>
+              <b>JooHui Lee : </b>UI/UX Lead
+            </p>
+          </div>
+          <div>
+            <p>
+              <b>Bethany Yates : </b>Frontend Lead
+            </p>
+          </div>
+          <div>
+            <p>
+              <b>Dennis Hu : </b>Backend Lead
+            </p>
+          </div>
+          <div>
+            <p>
+              <b>Sheena Lin : </b>DevOps Lead
+            </p>
+          </div>
+          <div>
+            <p>
+              <b>Jeffery Ji : </b>Documentation Lead
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   )
