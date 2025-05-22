@@ -44,15 +44,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ clients, semesters, pro
     }
   }, [activeNav])
 
-  useEffect(() => {
-    if (notificationMessage !== '') {
-      const timer = setTimeout(() => {
-        setNotificationMessage('')
-      }, 5000)
-      return () => clearTimeout(timer)
-    }
-  }, [notificationMessage])
-
   if (activeNav === null) return null // Wait for nav to be loaded
 
   return (
