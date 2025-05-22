@@ -7,7 +7,7 @@ import type { ProjectCardType } from '@/components/Generic/ProjectCard/Draggable
 import { useFilter } from '@/contexts/FilterContext'
 import type { UniqueIdentifier } from '@dnd-kit/core'
 import ProjectModal from '../ProjectModal/ProjectModal'
-import type { Project } from '@/payload-types'
+import type { ProjectDetails } from '@/types/Project'
 
 export interface ProjectContainerType {
   id: UniqueIdentifier
@@ -35,7 +35,7 @@ const ProjectContainer = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState<number | undefined>()
   const { selectedFilter } = useFilter()
-  const [openProject, setOpenProject] = useState<Project | null>(null)
+  const [openProject, setOpenProject] = useState<ProjectDetails | null>(null)
 
   useEffect(() => {
     onChange?.(selectedFilter)
@@ -71,9 +71,9 @@ const ProjectContainer = ({
         containerRef.current = el
       }}
       style={style}
-      className={`relative w-full h-[80dvh] bg-muted-blue-op-45 ring-1 ring-muted-blue rounded-2xl flex flex-col gap-y-4 ${isDragging ? 'opacity-50' : ''} overflow-auto transition-all duration-300 ease-in-out shadow-inner`}
+      className={`relative w-full h-[72dvh] bg-muted-blue-op-45 ring-1 ring-muted-blue rounded-2xl flex flex-col gap-y-4 ${isDragging ? 'opacity-50' : ''} overflow-auto transition-all duration-300 ease-in-out shadow-inner`}
     >
-      <div className="sticky top-0 w-full flex flex-col gap-4 items-center z-40 bg-muted-blue-op-45 px-5 pt-6">
+      <div className="sticky top-0 w-full flex flex-col gap-3 items-center z-40 bg-muted-blue-op-45 px-[20px] pt-[25px]">
         <div className="flex items-center w-full justify-between">
           <div className="flex items-center gap-3.5 ml-[-8px]">
             <div className="flex items-center">
@@ -87,11 +87,13 @@ const ProjectContainer = ({
                   <circle cx="4" cy="12" r="4" />
                 </svg>
               </span>
-              <p className="text-dark-blue text-base font-medium">{containerName}</p>
+              <p className="text-dark-blue text-[16px] leading-none font-medium capitalize">
+                {containerName}
+              </p>
             </div>
 
-            <div className="bg-beige rounded-full flex justify-center items-center aspect-square min-w-[1.5rem] h-auto px-1.5">
-              <p className="text-xs font-medium text-grey-1">{projects.length}</p>
+            <div className="bg-beige rounded-full flex justify-center items-center aspect-square min-w-[1.3rem] h-[1.3rem]">
+              <p className="text-[12px] font-medium text-grey-1">{projects.length}</p>
             </div>
           </div>
 
@@ -100,9 +102,9 @@ const ProjectContainer = ({
         <div className={`w-full h-1 ${dividerColor} rounded-lg`}></div>
       </div>
 
-      <div ref={contentRef} className="flex items-center justify-between mx-5 mb-4">
+      <div ref={contentRef} className="flex items-center justify-between mx-[20px] mb-4">
         <SortableContext items={projects.map((i) => i.id)}>
-          <div className="flex items-start flex-col gap-y-4 w-full">
+          <div className="flex items-start flex-col gap-y-[15px] w-full">
             {projects.map((i) => (
               <DraggableProjectCard
                 key={i.id}

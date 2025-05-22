@@ -5,7 +5,8 @@ import AdminService from 'src/lib/services/admin/index'
 import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 import type { typeToFlattenedError } from 'zod'
 import type { Project, Semester } from '@/payload-types'
-import type { ProjectDetails } from '@/types/Project'
+import { type ProjectDetails, ProjectStatus } from '@/types/Project'
+import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 
 /**
  * Handles the click event to create semester
@@ -167,4 +168,72 @@ export const getAllClients = async (): Promise<void | {
     }),
   )
   return { data: clientsWithProjects }
+}
+
+/**
+ * Handles fetching all projects for the upcoming (next) semester
+ *
+ * @returns {@link SemesterContainerData} containing the id of the upcoming semester and all the related projects separated by status (rejected, pending, approved)
+ */
+export const getNextSemesterProjects = async (): Promise<void | {
+  data?: SemesterContainerData
+}> => {
+  const response = await AdminService.getNextSemesterProjects()
+  return { data: response.data }
+}
+
+/**
+ * Handles the saving of changes to project order and status
+ *
+ * @param presetContainers The list of {@link DNDType} containers from the Project Drag and Drop
+ * @param semesterId The id of the upcoming semester
+ * @returns Error or success message
+ */
+export async function updateProjectOrdersAndStatus({
+  presetContainers,
+  semesterId,
+}: SemesterContainerData): Promise<void> {
+  for (const container of presetContainers) {
+    const status = container.title as ProjectStatus
+    const shouldSetUnpublished =
+      status === ProjectStatus.Rejected || status === ProjectStatus.Pending
+
+    for (let i = 0; i < container.currentItems.length; i++) {
+      const project = container.currentItems[i]
+      const updatedOrderAndStatus = {
+        number: container.currentItems.length - i,
+        status,
+        ...(shouldSetUnpublished && { published: false }),
+      }
+
+      await AdminService.updateSemesterProject(
+        semesterId,
+        project.projectInfo.semesterProjectId ?? '',
+        updatedOrderAndStatus,
+      )
+    }
+  }
+}
+
+/**
+ * Handles the publishing of approved projects
+ *
+ * @param presetContainers The list of {@link DNDType} containers from the Project Drag and Drop
+ * @param semesterId The id of the upcoming semester
+ * @returns Error or success message
+ */
+export async function handlePublishChanges({
+  presetContainers,
+  semesterId,
+}: SemesterContainerData): Promise<void> {
+  const container = presetContainers[2]
+  for (let i = 0; i < container.currentItems.length; i++) {
+    const project = container.currentItems[i]
+    await AdminService.updateSemesterProject(
+      semesterId,
+      project.projectInfo.semesterProjectId ?? '',
+      { published: true },
+    )
+  }
+  await updateProjectOrdersAndStatus({ presetContainers, semesterId })
 }
