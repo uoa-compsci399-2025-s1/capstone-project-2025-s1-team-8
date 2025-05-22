@@ -1,4 +1,4 @@
-import { Suspense, type FC } from 'react'
+import { type JSX, Suspense } from 'react'
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import ClientDashboard from '@/components/Pages/ClientDashboard/ClientDashboard'
 import ClientService from '@/lib/services/client/ClientService'
@@ -7,7 +7,7 @@ import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
 
-const ProtectedClientView: FC = async () => {
+const ProtectedClientView = async (): Promise<JSX.Element> => {
   const clientInfo = await ClientService.getClientInfo()
   const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
   const projects: ProjectDetails[] = (await handleClientPageLoad()).projects
