@@ -5,10 +5,7 @@ export const metadata = {
   description: 'Connecting Computer Science Students with Innovative Projects',
   title: 'Encapsulate',
   icons: {
-    icon: [
-      { url: '/light-logo.png', media: '(prefers-color-scheme: dark)' },
-      { url: '/dark-logo.png', media: '(prefers-color-scheme: light)' },
-    ],
+    icon: [{ url: '/favicon.png' }],
   },
 }
 
