@@ -52,6 +52,7 @@ export default function Student() {
               headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
               heading={semesterName}
               projects={projects}
+              type="student"
             />
           )}
         </div>

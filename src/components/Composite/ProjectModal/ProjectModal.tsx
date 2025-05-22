@@ -11,6 +11,7 @@ import type { UserCombinedInfo } from '@/types/Collections'
 interface ProjectModalProps extends ModalProps {
   projectInfo: Project
   semesters?: Semester[]
+  type?: 'student' | 'admin'
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({
@@ -19,6 +20,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   className = '',
   projectInfo,
   semesters,
+  type = 'admin',
 }) => {
   if (!semesters) semesters = []
   const [copied, setCopied] = useState(false)
@@ -59,13 +61,15 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     <Modal open={open} onClose={onClose} className={className + ' min-h-fit w-[75%] top-5'}>
       <div className="relative max-w-full flex flex-col p-15 pt-19 rounded-t-2xl gap-5 pointer-events-none">
         {/* edit button */}
-        <button
-          className="absolute top-10 right-20 text-dark-blue hover:text-steel-blue cursor-pointer"
-          style={{ pointerEvents: 'initial' }}
-          aria-label="Edit"
-        >
-          <EditDropdown containerWidth={200} />
-        </button>
+        {type === 'admin' && (
+          <button
+            className="absolute top-10 right-20 text-dark-blue hover:text-steel-blue cursor-pointer"
+            style={{ pointerEvents: 'initial' }}
+            aria-label="Edit"
+          >
+            <EditDropdown containerWidth={200} />
+          </button>
+        )}
 
         {/* title */}
         <h1 className="text-4xl font-normal m-0 text-dark-blue font-dm-serif-display">

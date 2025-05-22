@@ -5,9 +5,10 @@ import type { ProjectDetails } from '@/types/Project'
 
 interface ProjectCardProps {
   projectInfo: ProjectDetails
+  type?: 'student' | 'admin'
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo, type = 'admin' }) => {
   const [modalOpen, setModalOpen] = useState(false)
 
   function toggleModal() {
@@ -35,7 +36,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo }) => {
           </div>
         </div>
       </div>
-      <ProjectModal projectInfo={projectInfo} open={modalOpen} onClose={() => toggleModal()} />
+      <ProjectModal
+        projectInfo={projectInfo}
+        open={modalOpen}
+        onClose={() => toggleModal()}
+        type={type}
+      />
     </div>
   )
 }
