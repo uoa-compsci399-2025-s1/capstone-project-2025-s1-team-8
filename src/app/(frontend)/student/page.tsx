@@ -44,7 +44,7 @@ export default function Student() {
   return (
     <div>
       <NavBar user={loggedInUser} onclick={handleLoginButtonClick} />
-      <div className="pt-40 pb-20">
+      <div className="pt-35 pb-20">
         <div className="items-center justify-center w-full px-8 sm:px-15 lg:px-30">
           {hasProjects && (
             <ProjectCardList

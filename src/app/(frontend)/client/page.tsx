@@ -31,7 +31,7 @@ export default function Client() {
       <div>
         <NavBar user={user} onclick={handleLoginButtonClick} />
       </div>
-      <div className="items-center justify-center w-full px-8 sm:px-15 lg:px-30 pt-40 pb-20">
+      <div className="items-center justify-center w-full px-8 sm:px-15 lg:px-30 pt-35 pb-20">
         <ClientDashboard client={user} projects={projects} onSave={handleClientProfileUpdate} />
       </div>
     </div>
