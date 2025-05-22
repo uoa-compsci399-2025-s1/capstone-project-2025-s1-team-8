@@ -43,8 +43,10 @@ export const StudentService = {
 
     for (const semesterProject of data) {
       const projectInfo = (semesterProject as SemesterProject).project as Project
-      projects.push({ ...projectInfo, semesters: [] })
+      projects.push({ ...projectInfo, semesters: [], number: semesterProject.number })
     }
+
+    projects.sort((a, b) => a.number && b.number ? a.number - b.number: a.name.localeCompare(b.name))
 
     return projects
   },
