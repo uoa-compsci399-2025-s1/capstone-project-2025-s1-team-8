@@ -146,7 +146,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3 pb-3`}
           >
             {otherClientDetails.map((clientDetails) => (
-              <>
+              <div key={clientDetails.email}>
                 <h2 className="col-start-1 text-lg font-normal text-dark-blue font-inter alternate">
                   {clientDetails.firstName + ' ' + clientDetails.lastName}
                 </h2>
@@ -156,7 +156,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 <h2 className="col-start-3 text-lg font-normal text-deeper-blue font-inter email">
                   {clientDetails.email}
                 </h2>
-              </>
+              </div>
             ))}
 
             {otherClientDetails.length > 0 && (
