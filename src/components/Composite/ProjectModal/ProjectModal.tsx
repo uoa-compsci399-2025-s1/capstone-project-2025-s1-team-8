@@ -171,14 +171,22 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             )}
           </div>
         </div>
-        <Capsule variant="light_beige" text="Desired team skills" />
-        <p className="text-sm text-dark-blue font-inter text-left mb-3">
-          {projectInfo.desiredTeamSkills}
-        </p>
-        <Capsule variant="light_beige" text="Available resources" />
-        <p className="text-sm text-dark-blue font-inter text-left">
-          {projectInfo.availableResources}
-        </p>
+        {projectInfo.desiredTeamSkills && projectInfo.desiredTeamSkills != '' && (
+          <>
+            <Capsule variant="light_beige" text="Desired team skills" />
+            <p className="text-sm text-dark-blue font-inter text-left mb-3">
+              {projectInfo.desiredTeamSkills}
+            </p>
+          </>
+        )}
+        {projectInfo.availableResources && (
+          <>
+            <Capsule variant="light_beige" text="Available resources" />
+            <p className="text-sm text-dark-blue font-inter text-left">
+              {projectInfo.availableResources}
+            </p>
+          </>
+        )}
       </div>
     </Modal>
   )
