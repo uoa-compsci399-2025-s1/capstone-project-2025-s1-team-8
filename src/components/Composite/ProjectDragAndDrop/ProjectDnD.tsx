@@ -474,7 +474,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
         />
       </div>
 
-      <div className="flex gap-7 flex-wrap md:flex-nowrap to-scale">
+      <div className="flex gap-6 flex-wrap md:flex-nowrap">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCorners}
