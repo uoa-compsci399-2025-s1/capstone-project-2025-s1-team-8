@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import { FiEdit, FiSave } from 'react-icons/fi'
 import type { UserCombinedInfo } from '@/types/Collections'
@@ -38,16 +38,6 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
   )
   const [showNotification, setShowNotification] = useState<boolean>(false)
   const [notificationMessage, setNotificationMessage] = useState<string>('')
-
-  useEffect(() => {
-    if (showNotification) {
-      const timer = setTimeout(() => {
-        setShowNotification(false)
-      }, 5000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [showNotification])
 
   const handleShowNotification = (message: string) => {
     setNotificationMessage(message)
@@ -98,6 +88,7 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
           title={'Issue updating profile'}
           message={notificationMessage}
           type={'warning'}
+          onClose={() => setNotificationMessage('')}
         />
       </div>
       <div className="w-full h-[685px] relative bg-light-beige rounded-2xl ring-1 ring-deeper-blue p-8 pt-10 pb-14 overflow-y-auto">

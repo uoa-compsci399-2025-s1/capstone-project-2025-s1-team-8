@@ -1,0 +1,146 @@
+'use client'
+import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
+import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
+import type { Semester } from '@/payload-types'
+import type { UserCombinedInfo } from '@/types/Collections'
+import type { ProjectDetails } from '@/types/Project'
+
+import { motion } from 'framer-motion'
+import {
+  isCurrentOrUpcoming,
+  handleGetAllSemesterProjects,
+  handleCreateSemester,
+  handleUpdateSemester,
+  handleDeleteSemester,
+  handlePublishChanges,
+  updateProjectOrdersAndStatus,
+} from '@/lib/services/admin/Handlers'
+import MobileAdminView from '@/components/Composite/MobileAdminView/MobileAdminView'
+import SemestersPage from '../SemestersPage/SemestersPage'
+import ClientsPage from '../ClientsPage/ClientsPage'
+import Notification from '@/components/Generic/Notification/Notification'
+import { useEffect, useState } from 'react'
+
+type AdminDashboardProps = {
+  clients: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
+  semesters: Semester[]
+  projects: SemesterContainerData
+}
+
+const AdminDashboard: React.FC<AdminDashboardProps> = ({ clients, semesters, projects }) => {
+  const AdminNavElements = ['Projects', 'Clients', 'Semesters']
+
+  const [activeNav, setActiveNav] = useState<number | null>(null)
+  const [notificationMessage, setNotificationMessage] = useState('')
+
+  useEffect(() => {
+    const saved = localStorage.getItem('adminNav')
+    setActiveNav(saved !== null ? Number(saved) : 0)
+  }, [])
+
+  useEffect(() => {
+    if (activeNav !== null) {
+      localStorage.setItem('adminNav', String(activeNav))
+    }
+  }, [activeNav])
+
+  useEffect(() => {
+    if (notificationMessage !== '') {
+      const timer = setTimeout(() => {
+        setNotificationMessage('')
+      }, 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [notificationMessage])
+
+  if (activeNav === null) return null // Wait for nav to be loaded
+
+  return (
+    <>
+      <div className="hidden lg:block w-full">
+        <div className="fixed top-6 right-6 z-50">
+          <Notification
+            isVisible={notificationMessage !== ''}
+            title={'Success'}
+            message={notificationMessage}
+          />
+        </div>
+
+        <div className="mt-25 w-full flex justify-center items-center gap-25 bg-beige pb-7">
+          {AdminNavElements.map((nav, i) => (
+            <button
+              key={nav}
+              onClick={() => setActiveNav(i)}
+              className="relative group p-2 nav-link-text"
+            >
+              <p>{nav}</p>
+              <span
+                className={`
+                    nav-link-text-underline
+                    scale-x-0 group-hover:scale-x-100
+                    ${activeNav === i ? 'scale-x-100' : ''}
+                  `}
+              />
+            </button>
+          ))}
+        </div>
+
+        <div className="py-4 relative min-h-[300px]">
+          <div className="flex flex-col overflow-hidden w-full">
+            <motion.div
+              className="flex flex-1 min-h-0 [direction:ltr]"
+              transition={{
+                tension: 190,
+                friction: 200,
+                mass: 0.4,
+              }}
+              initial={false}
+              animate={{ x: activeNav * -100 + '%' }}
+            >
+              <div
+                className="admin-dash-carousel-item"
+                aria-hidden={activeNav !== 0}
+                tabIndex={activeNav === 0 ? 0 : -1}
+              >
+                <ProjectDnD
+                  {...projects}
+                  onSaveChanges={updateProjectOrdersAndStatus}
+                  onPublishChanges={handlePublishChanges}
+                />
+              </div>
+
+              <div
+                className="admin-dash-carousel-item"
+                aria-hidden={activeNav !== 1}
+                tabIndex={activeNav === 1 ? 0 : -1}
+              >
+                <ClientsPage clients={clients} />
+              </div>
+
+              <div
+                className="admin-dash-carousel-item"
+                aria-hidden={activeNav !== 2}
+                tabIndex={activeNav === 2 ? 0 : -1}
+              >
+                <SemestersPage
+                  semesters={semesters}
+                  created={() => setNotificationMessage('Semester created successfully')}
+                  updated={() => setNotificationMessage('Semester updated successfully')}
+                  deleted={() => setNotificationMessage('Semester deleted successfully')}
+                  checkStatus={isCurrentOrUpcoming}
+                  getAllSemesterProjects={handleGetAllSemesterProjects}
+                  handleCreateSemester={handleCreateSemester}
+                  handleUpdateSemester={handleUpdateSemester}
+                  handleDeleteSemester={handleDeleteSemester}
+                />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        <MobileAdminView />
+      </div>
+    </>
+  )
+}
+export default AdminDashboard
