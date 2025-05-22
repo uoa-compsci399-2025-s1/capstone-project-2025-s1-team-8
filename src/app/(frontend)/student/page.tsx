@@ -44,11 +44,11 @@ export default function Student() {
   return (
     <div>
       <NavBar user={loggedInUser} onclick={handleLoginButtonClick} />
-      <div className="pt-30">
-        <div className="px-[5%]">
+      <div className="pt-30 pb-20">
+        <div className="items-center justify-center w-full px-8 sm:px-15 lg:px-30">
           {hasProjects && (
             <ProjectCardList
-              className="bg-muted-blue-op-45 px-[5%] px-15 pt-8 pb-12 rounded-2xl border-deeper-blue border"
+              className="bg-muted-blue-op-45 px-7 md:px-15 pt-8 pb-12 rounded-2xl border-deeper-blue border"
               headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
               heading={semesterName}
               projects={projects}
@@ -60,7 +60,7 @@ export default function Student() {
           <TeapotCard
             title="Projects haven't been published yet"
             description="Please check back at a later date!"
-            type="margin-5"
+            type="margin-10"
             center={true}
           />
         )}
