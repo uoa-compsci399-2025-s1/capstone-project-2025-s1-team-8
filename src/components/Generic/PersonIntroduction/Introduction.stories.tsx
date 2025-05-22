@@ -23,6 +23,6 @@ export const Default: Story = {
   args: {
     name: 'Eric Zheng',
     role: 'Facilitator',
-    image: EricPhoto
+    image: EricPhoto,
   },
 }

@@ -9,6 +9,7 @@ import EncapsulateText from 'src/assets/encapsulate-text.svg'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
 import { useEffect, useState } from 'react'
 import type { UserCombinedInfo } from '@/types/Collections'
+import { LuMousePointer2, LuPointer } from 'react-icons/lu'
 import Teapot from '@/assets/error.svg'
 import FormImage from '@/assets/form.png'
 import ProjectsImage from '@/assets/project-list.png'
@@ -68,7 +69,7 @@ const Homepage: React.FC = () => {
 
       {/* Encapsulate for... */}
       <div className="w-full bg-beige px-[8%] py-25 flex flex-col gap-20">
-        <div className="flex flex-row justify-between gap-20">
+        <div className="flex flex-row relative justify-between gap-20">
           <div className="w-[45%]">
             <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-17">
               Encapsulate
@@ -83,18 +84,20 @@ const Homepage: React.FC = () => {
             </p>
           </div>
           {/* Image */}
-          <div className="rounded-xl w-[47%] mb-1 overflow-hidden h-min self-center">
+          <div className="rounded-xl w-[47%] mb-1 overflow-hidden h-min self-center mt-10">
             <Image src={FormImage} alt="Project proposal form" className="object-scale-down" />
           </div>
+          <LuMousePointer2 className="absolute text-[#FFA9DE6B] size-13 bottom-6 right-10 z-10" />
         </div>
         <div>
-          <div className="flex flex-row gap-20 justify-between">
+          <div className="flex flex-row relative gap-20 justify-between">
             {/* Image */}
             <Image
               src={ProjectsImage}
               alt="Projects list"
               className="rounded-xl w-[44%] h-auto object-scale-down"
             />
+            <LuMousePointer2 className="absolute text-[#FFA9DE6B] size-13 bottom-21 left-90 z-10" />
             <div className="w-[47%] mt-3 pb-12">
               <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-17">
                 Encapsulate
@@ -109,7 +112,7 @@ const Homepage: React.FC = () => {
         </div>
       </div>
       {/* Meet the team */}
-      <div className="bg-[linear-gradient(to_right,rgba(255,169,222,0.2),rgba(209,251,255,0.2)),linear-gradient(to_bottom,#fffef9,#D1FBFF)] px-[8%] py-25">
+      <div className="bg-gradient-to-br from-[#fcdbe699] via-[#f4f1f2] to-[#dffaf1] px-[8%] py-25">
         <h1 className="font-silkscreen text-deeper-blue text-5xl font-normal mb-0">
           MEET THE TEAM
         </h1>
@@ -123,36 +126,12 @@ const Homepage: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <Introduction 
-            name="Eric Zheng"
-            role="Facilitator"
-            image={EricPhoto}
-          />
-          <Introduction 
-            name="JooHui Lee"
-            role="UI/UX Lead"
-            image={JooHuiPhoto}
-          />
-          <Introduction 
-            name="Bethany Yates"
-            role="Frontend Lead"
-            image={BethanyPhoto}
-          />
-          <Introduction 
-            name="Dennis Hu"
-            role="Backend Lead"
-            image={DennisPhoto}
-          />
-          <Introduction 
-            name="Sheena Lin"
-            role="DevOps Lead"
-            image={SheenaPhoto}
-          />
-          <Introduction 
-            name="Jeffery Ji"
-            role="Documentation Lead"
-            image={JefferyPhoto}
-          />
+          <Introduction name="Eric Zheng" role="Facilitator" image={EricPhoto} />
+          <Introduction name="JooHui Lee" role="UI/UX Lead" image={JooHuiPhoto} />
+          <Introduction name="Bethany Yates" role="Frontend Lead" image={BethanyPhoto} />
+          <Introduction name="Dennis Hu" role="Backend Lead" image={DennisPhoto} />
+          <Introduction name="Sheena Lin" role="DevOps Lead" image={SheenaPhoto} />
+          <Introduction name="Jeffery Ji" role="Documentation Lead" image={JefferyPhoto} />
         </div>
       </div>
     </div>
