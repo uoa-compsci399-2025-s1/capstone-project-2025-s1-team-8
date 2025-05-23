@@ -9,7 +9,6 @@ import EncapsulateText from 'src/assets/encapsulate-text.svg'
 import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
 import { useEffect, useState } from 'react'
 import type { UserCombinedInfo } from '@/types/Collections'
-// import { LuMousePointer2 } from 'react-icons/lu'
 import Teapot from '@/assets/error.svg'
 import FormImage from '@/assets/form.png'
 import ProjectsImage from '@/assets/project-list.png'
@@ -86,7 +85,6 @@ const Homepage: React.FC = () => {
           <div className="rounded-xl w-4/5 lg:w-[47%] mb-1 overflow-hidden h-min self-end lg:self-center mt-10">
             <Image src={FormImage} alt="Project proposal form" className="object-scale-down" />
           </div>
-          {/* <LuMousePointer2 className="absolute text-[#FFA9DE6B] size-13 bottom-6 right-10 z-10" /> */}
         </div>
 
         <div>
@@ -96,7 +94,6 @@ const Homepage: React.FC = () => {
               alt="Projects list"
               className="rounded-xl w-4/5 lg:w-[44%] h-auto object-scale-down"
             />
-            {/* <LuMousePointer2 className="absolute text-[#FFA9DE6B] size-13 bottom-21 left-90 z-10" /> */}
             <div className="w-full lg:w-[47%] mt-3 pb-12">
               <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-10 sm:leading-12 lg:leading-17">
                 Encapsulate
