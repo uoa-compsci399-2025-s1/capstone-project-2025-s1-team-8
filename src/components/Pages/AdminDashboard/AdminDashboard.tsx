@@ -151,9 +151,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             </motion.div>
           </div>
         </div>
-
-        <MobileAdminView />
       </div>
+      <MobileAdminView />
     </>
   )
 }
