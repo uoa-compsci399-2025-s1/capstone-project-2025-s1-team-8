@@ -53,6 +53,11 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
     Record<string, 'current' | 'upcoming' | ''>
   >({})
   const upcomingSemesterRef = useRef<HTMLDivElement>(null)
+  const [editingSemesterId, setEditingSemesterId] = useState<string | null>(null)
+
+  const callSemesterForm = (semesterId: string) => {
+    setEditingSemesterId(semesterId)
+  }
 
   function toggleModal() {
     setModalOpen(!modalOpen)
@@ -113,25 +118,52 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
             endDate={semester.endDate}
             updatedAt={semester.updatedAt}
             createdAt={semester.createdAt}
+            onEdit={callSemesterForm}
           />
         </div>
       ))}
+
       <SemesterForm
-        open={modalOpen}
-        semesterId="-1"
-        onClose={() => toggleModal()}
+        edit={editingSemesterId !== null}
+        open={modalOpen || editingSemesterId !== null}
+        semesterId={editingSemesterId || '-1'}
+        onClose={() => {
+          if (modalOpen) toggleModal()
+          setEditingSemesterId(null)
+        }}
         onCreated={() => {
           created?.()
+          setEditingSemesterId(null)
         }}
         onUpdated={() => {
           updated?.()
+          setEditingSemesterId(null)
         }}
         onDeleted={() => {
           deleted?.()
+          setEditingSemesterId(null)
         }}
         handleCreateSemester={handleCreateSemester}
         handleUpdateSemester={handleUpdateSemester}
         handleDeleteSemester={handleDeleteSemester}
+        semesterName={
+          editingSemesterId ? semesters.find((s) => s.id === editingSemesterId)?.name : ''
+        }
+        startDate={
+          editingSemesterId
+            ? new Date(semesters.find((s) => s.id === editingSemesterId)?.startDate || '')
+            : null
+        }
+        endDate={
+          editingSemesterId
+            ? new Date(semesters.find((s) => s.id === editingSemesterId)?.endDate || '')
+            : null
+        }
+        submissionDeadline={
+          editingSemesterId
+            ? new Date(semesters.find((s) => s.id === editingSemesterId)?.deadline || '')
+            : null
+        }
       />
     </div>
   )

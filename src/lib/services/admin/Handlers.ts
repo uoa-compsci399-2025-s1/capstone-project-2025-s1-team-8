@@ -50,16 +50,11 @@ export const handleUpdateSemester = async (
   message?: string
   details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
 }> => {
-  const name = formData.get('semesterName') as string
-  const deadline = formData.get('submissionDeadline') as string
-  const startDate = formData.get('startDate') as string
-  const endDate = formData.get('endDate') as string
-
   const { status, error, details } = await AdminService.updateSemester(id, {
-    name,
-    startDate,
-    endDate,
-    deadline,
+    name: formData.get('semesterName') as string,
+    startDate: new Date(formData.get('startDate') as string).toISOString(),
+    endDate: new Date(formData.get('endDate') as string).toISOString(),
+    deadline: new Date(formData.get('submissionDeadline') as string).toISOString(),
   })
 
   if (status === 200) {

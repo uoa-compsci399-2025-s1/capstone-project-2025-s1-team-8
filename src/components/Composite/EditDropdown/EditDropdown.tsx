@@ -7,7 +7,7 @@ import { FiEdit } from 'react-icons/fi'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import { BsThreeDots } from 'react-icons/bs'
 
-interface ProjectFilterProps {
+interface EditDropdownProps {
   className?: string
   containerWidth?: number
   onEdit?: (e: React.MouseEvent<HTMLDivElement>) => void
@@ -29,7 +29,7 @@ const EditDropdownOptions: DropdownOptionType[] = [
   },
 ]
 
-const ProjectFilter: React.FC<ProjectFilterProps> = ({
+const EditDropdown: React.FC<EditDropdownProps> = ({
   className,
   containerWidth,
   onEdit,
@@ -91,4 +91,4 @@ const ProjectFilter: React.FC<ProjectFilterProps> = ({
   )
 }
 
-export default ProjectFilter
+export default EditDropdown

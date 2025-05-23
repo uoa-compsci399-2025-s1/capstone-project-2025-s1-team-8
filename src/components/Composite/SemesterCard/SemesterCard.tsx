@@ -14,8 +14,14 @@ interface SemesterCardProps extends Semester {
     data?: ProjectDetails[]
   }>
   checkStatus?: (id: string) => Promise<'current' | 'upcoming' | ''>
+  onEdit?: (id: string) => void
 }
-const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects, checkStatus }) => {
+const SemesterCard: React.FC<SemesterCardProps> = ({
+  semester,
+  semesterProjects,
+  checkStatus,
+  onEdit,
+}) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
@@ -115,7 +121,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects,
             className="absolute top-8.25 right-19 text-steel-blue hover:text-deep-teal cursor-pointer"
             aria-label="Edit"
           >
-            <EditDropdown containerWidth={200} />
+            <EditDropdown containerWidth={200} onEdit={() => onEdit?.(semester.id)} />
           </button>
 
           {/* Details Section */}
