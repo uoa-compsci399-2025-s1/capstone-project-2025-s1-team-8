@@ -1,17 +1,19 @@
+'use server'
 import { cookies, headers } from 'next/headers'
 
 import AuthService from '../services/AuthService'
 import type { JWTResponse } from '@/types/Middleware'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
+import { UnauthorizedAuthError } from './errors'
 
-export class UnauthorizedAuthError extends Error {
-  constructor(message: string) {
-    super(message)
-    Object.setPrototypeOf(this, UnauthorizedAuthError.prototype)
-  }
-}
-
-export async function payloadAuthentication(securityName: string, scopes?: string[]) {
+/**
+ * The payloadAuthentication function is used to authenticate a user based on the provided security name and scopes.
+ *
+ * @param securityName The security name, only JWT is supported
+ * @param scopes The scopes to check for, if not provided, no scope check is performed
+ * @returns A promise that resolves to the user object if the authentication is successful, otherwise rejects with an error
+ */
+export async function payloadAuthentication(securityName: 'jwt', scopes?: string[]) {
   if (securityName === 'jwt') {
     const cookieStore = await cookies()
     const headersList = await headers()
@@ -45,5 +47,7 @@ export async function payloadAuthentication(securityName: string, scopes?: strin
         return reject(new UnauthorizedAuthError(String(error)))
       }
     })
+  } else {
+    throw new Error('Unsupported security name')
   }
 }

@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect, useRef } from 'react'
 import type { DropdownOptionType } from '@/components/Generic/Filter/FilterInner'
 import FilterInner from '@/components/Generic/Filter/FilterInner'

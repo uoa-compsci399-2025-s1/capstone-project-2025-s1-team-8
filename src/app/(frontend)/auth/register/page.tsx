@@ -11,7 +11,6 @@ import { useState } from 'react'
 import { BsFillPersonFill } from 'react-icons/bs'
 
 export default function RegisterPage() {
-  // comment
   const [errorState, setErrorState] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [role, setRole] = useState('')

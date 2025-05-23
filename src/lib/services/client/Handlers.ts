@@ -5,20 +5,13 @@ import ClientService from '@/lib/services/client/ClientService'
 import { StatusCodes } from 'http-status-codes'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
-import { UserRole } from '@/types/User'
 
 export const handleClientPageLoad = async (): Promise<{
-  userInfo: UserCombinedInfo
   projects: ProjectDetails[]
 }> => {
-  const { userInfo, status } = await ClientService.getClientInfo()
   const clientProjectsRes = await ClientService.getClientProjects()
 
-  if (
-    status !== StatusCodes.OK ||
-    clientProjectsRes.status !== StatusCodes.OK ||
-    (userInfo.role !== UserRole.Client && userInfo.role !== UserRole.Admin)
-  ) {
+  if (clientProjectsRes.status !== StatusCodes.OK) {
     redirect('/not-found')
   }
 
@@ -37,7 +30,7 @@ export const handleClientPageLoad = async (): Promise<{
     }
   }
 
-  return { userInfo, projects: projectsWithSemesters }
+  return { projects: projectsWithSemesters }
 }
 
 export const handleClientProfileUpdate = async (
