@@ -1,4 +1,6 @@
-import type { FC } from 'react'
+'use client'
+
+import { useEffect, type FC } from 'react'
 import { memo } from 'react'
 import { FiAlertCircle } from 'react-icons/fi'
 
@@ -7,10 +9,22 @@ interface NotificationProps {
   title: string
   message: string
   type?: 'success' | 'warning'
+  duration?: number
+  onClose?: () => void
 }
 
 const Notification: FC<NotificationProps> = memo(
-  ({ isVisible = true, title, message, type = 'success' }) => {
+  ({ isVisible = true, title, message, type = 'success', duration = 5000, onClose }) => {
+    useEffect(() => {
+      if (!isVisible || !onClose) return
+
+      const timer = setTimeout(() => {
+        onClose()
+      }, duration)
+
+      return () => clearTimeout(timer)
+    }, [isVisible, onClose, duration])
+
     const visibleCSS = isVisible ? 'opacity-100 visible' : 'opacity-0 hidden'
     const bgRoot = {
       success: `${visibleCSS} transition-all duration-500 bg-light-green ring-2 ring-green shadow-md rounded-lg px-6 py-4 max-w-md flex flex-col`,

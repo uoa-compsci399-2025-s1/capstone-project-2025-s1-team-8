@@ -1,6 +1,7 @@
-import SadTeapot from 'src/assets/sad-teapot.svg'
+import type { FC } from 'react'
+import SadTeapot from '@/components/Assets/SadTeapot/SadTeapot'
 
-export default function MobileAdminView() {
+const MobileAdminView: FC = () => {
   return (
     <div className="lg:hidden pt-30">
       <div
@@ -14,7 +15,7 @@ export default function MobileAdminView() {
           <p className="text-2xl sm:text-3xl md:text-4xl font-dm-serif-display text-dark-blue">
             Please switch to a desktop device
           </p>
-          <p className="text-xs sm:test-sm md:text-base font-inter text-dark-blue">
+          <p className="text-xs sm:text-sm md:text-base font-inter text-dark-blue">
             The current device is not supported for the admin dashboard.{' '}
           </p>
         </div>
@@ -22,3 +23,4 @@ export default function MobileAdminView() {
     </div>
   )
 }
+export default MobileAdminView

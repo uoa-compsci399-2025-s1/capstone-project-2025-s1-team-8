@@ -23,7 +23,7 @@ const ClientService = {
     status: StatusCodes
   }> {
     'use server'
-    const url = await buildNextRequestURL('/api/users/me', {})
+    const url = buildNextRequestURL('/api/users/me', {})
     const response = await GetClientInfo(await buildNextRequest(url, { method: 'GET' }))
     const userInfo = await response.json()
     return { userInfo: userInfo.data, status: response.status }
@@ -39,7 +39,7 @@ const ClientService = {
     status: StatusCodes
   }> {
     'use server'
-    const url = await buildNextRequestURL('api/users/me/projects', {})
+    const url = buildNextRequestURL('api/users/me/projects', {})
     const response = await GetClientProjects(await buildNextRequest(url, { method: 'GET' }))
     const projects = await response.json()
     return { projects: projects.data, status: response.status }
@@ -59,7 +59,7 @@ const ClientService = {
     details?: string
   }> {
     'use server'
-    const url = await buildNextRequestURL('/api/users/me', {})
+    const url = buildNextRequestURL('/api/users/me', {})
     const response = await UpdateClientDetails(
       await buildNextRequest(url, { method: 'PATCH', body: updatedClient }),
     )
@@ -79,7 +79,7 @@ const ClientService = {
     message?: string
   }> {
     'use server'
-    const url = await buildNextRequestURL(`/api/projects/${projectId}/semesters`, {})
+    const url = buildNextRequestURL(`/api/projects/${projectId}/semesters`, {})
     const response = await GetSemesters(await buildNextRequest(url, { method: 'GET' }), {
       params: Promise.resolve({ id: projectId }),
     })
