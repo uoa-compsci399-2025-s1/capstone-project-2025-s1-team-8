@@ -53,6 +53,9 @@ export default buildConfig({
   plugins: [
     // storage-adapter-placeholder
   ],
+  graphQL: {
+    disable: true,
+  },
   routes: {
     admin: '/payload/admin',
     api: '/payload/api',
