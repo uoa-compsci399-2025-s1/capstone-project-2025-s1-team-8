@@ -216,13 +216,12 @@ const Admin = () => {
       </div>
 
       {/* mobile view */}
-      <div className="lg:hidden pt-30">
-        <TeapotCard
-          title={'Please switch to a desktop device'}
-          description=" The current device is not supported for the admin dashboard."
-          type="margin-10"
-        />
-      </div>
+      <TeapotCard
+        title={'Please switch to a desktop device'}
+        description=" The current device is not supported for the admin dashboard."
+        type="margin-10"
+        className="lg:hidden pt-30"
+      />
     </div>
   )
 }

@@ -6,6 +6,7 @@ interface TeapotCardProps {
   description: string
   type?: 'margin-5' | 'margin-10'
   center?: boolean
+  className?: string
 }
 
 export const TeapotCard: React.FC<TeapotCardProps> = ({
@@ -13,6 +14,7 @@ export const TeapotCard: React.FC<TeapotCardProps> = ({
   description,
   type = 'margin-5',
   center = false,
+  className = '',
 }) => {
   const rootStyle = {
     'margin-5':
@@ -22,7 +24,7 @@ export const TeapotCard: React.FC<TeapotCardProps> = ({
   }
 
   return (
-    <div>
+    <div className={className}>
       <div className={`${rootStyle[type]}`}>
         <SadTeapot className="mt-3 mb-3" />
         <div className="space-y-6 pb-10 px-6 sm:px-8">
