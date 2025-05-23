@@ -32,7 +32,7 @@ export default function RegisterPage() {
   const isPlaceholder = role === ''
 
   return (
-    <div className="flex flex-col justify-center items-start gap-4">
+    <div className="flex flex-col justify-center items-start gap-4 pt-20 lg:pt-0">
       <p className="text-xl font-extrabold text-dark-blue pl-2">KIA ORA</p>
       <form onSubmit={submitForm}>
         <div className="flex flex-col gap-4 relative z-[51]">
@@ -41,7 +41,7 @@ export default function RegisterPage() {
               defaultValue=""
               onChange={(e) => setRole(e.target.value)}
               required
-              className={`appearance-none ring-muted-blue ring-1 focus:ring-3 w-full pl-11 focus:outline-hidden rounded-lg px-4 py-2.5 text-sm bg-muted-blue-op-45 ${isPlaceholder ? 'text-deeper-blue' : 'text-steel-blue'}`}
+              className={`appearance-none ring-muted-blue ring-1 focus:ring-3 w-full pl-11 focus:outline-hidden rounded-lg px-4 py-2.5 text-sm ${isPlaceholder ? 'text-deeper-blue bg-white' : 'text-steel-blue bg-muted-blue-op-45'}`}
             >
               <option value="" disabled selected className="text-muted-blue">
                 Role
