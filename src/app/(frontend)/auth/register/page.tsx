@@ -111,7 +111,7 @@ export default function RegisterPage() {
               startIcon={<FcGoogle className="h-full" />}
             >
               <p className="text-xs text-center pt-0.5">
-                Sign Up as a <b>Client</b> with Google
+                Sign Up as a <b>Client</b>
               </p>
             </Button>
           </Link>
@@ -123,7 +123,7 @@ export default function RegisterPage() {
               startIcon={<FcGoogle className="h-full" />}
             >
               <p className="text-xs text-center pt-0.5">
-                Sign Up as a <b>Student</b> with Google
+                Sign Up as a <b>Student</b>
               </p>
             </Button>
           </Link>
