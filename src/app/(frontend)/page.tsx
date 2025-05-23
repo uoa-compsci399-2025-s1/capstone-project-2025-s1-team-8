@@ -112,12 +112,42 @@ const Homepage: React.FC = async () => {
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <Introduction name="Eric Zheng" role="Facilitator" image={EricPhoto} />
-          <Introduction name="JooHui Lee" role="UI/UX Lead" image={JooHuiPhoto} />
-          <Introduction name="Bethany Yates" role="Frontend Lead" image={BethanyPhoto} />
-          <Introduction name="Dennis Hu" role="Backend Lead" image={DennisPhoto} />
-          <Introduction name="Sheena Lin" role="DevOps Lead" image={SheenaPhoto} />
-          <Introduction name="Jeffery Ji" role="Documentation Lead" image={JefferyPhoto} />
+          <Introduction
+            name="Eric Zheng"
+            role="Facilitator"
+            image={EricPhoto}
+            link="https://www.linkedin.com/in/eric-zheng-nz/"
+          />
+          <Introduction
+            name="JooHui Lee"
+            role="UI/UX Lead"
+            image={JooHuiPhoto}
+            link="https://www.linkedin.com/in/joohui-lee"
+          />
+          <Introduction
+            name="Bethany Yates"
+            role="Frontend Lead"
+            image={BethanyPhoto}
+            link="https://www.linkedin.com/in/bethany-yates-9907651a9/"
+          />
+          <Introduction
+            name="Dennis Hu"
+            role="Backend Lead"
+            image={DennisPhoto}
+            link="https://www.linkedin.com/in/dennishu811/"
+          />
+          <Introduction
+            name="Sheena Lin"
+            role="DevOps Lead"
+            image={SheenaPhoto}
+            link="https://www.linkedin.com/in/enshean/"
+          />
+          <Introduction
+            name="Jeffery Ji"
+            role="Documentation Lead"
+            image={JefferyPhoto}
+            link="https://www.linkedin.com/in/jefferyji/"
+          />
         </div>
       </div>
     </div>
