@@ -42,7 +42,7 @@
     "autoprefixer": "^10.4.21",
     "bcryptjs": "^3.0.2",
     "cross-env": "^7.0.3",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.5.0",
     "framer-motion": "^12.9.1",
     "googleapis": "^148.0.0",
     "graphql": "^16.8.1",
