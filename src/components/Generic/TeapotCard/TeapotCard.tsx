@@ -1,5 +1,5 @@
 import React from 'react'
-import SadTeapot from 'src/assets/sad-teapot.svg'
+import SadTeapot from '@/components/Assets/SadTeapot/SadTeapot'
 
 interface TeapotCardProps {
   title: string
