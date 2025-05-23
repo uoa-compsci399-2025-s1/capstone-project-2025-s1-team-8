@@ -1,14 +1,12 @@
-'use client'
-
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import Button from '@/components/Generic/Button/Button'
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import EncapsulateText from 'src/assets/encapsulate-text.svg'
-import { handleLoginButtonClick, getLoggedInUser } from '@/lib/services/user/Handlers'
-import { useEffect, useState } from 'react'
+import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 import type { UserCombinedInfo } from '@/types/Collections'
+import ClientService from '@/lib/services/client/ClientService'
 import Teapot from '@/assets/error.svg'
 import FormImage from '@/assets/form.png'
 import ProjectsImage from '@/assets/project-list.png'
@@ -20,23 +18,14 @@ import SheenaPhoto from '@/assets/profiles/sheena.jpeg'
 import JefferyPhoto from '@/assets/profiles/jeffery.jpeg'
 import Introduction from '@/components/Generic/PersonIntroduction/Introduction'
 
-const Homepage: React.FC = () => {
-  const [loggedInUser, setLoggedInUser] = useState<UserCombinedInfo>({} as UserCombinedInfo)
-  const [loginLoaded, setLoginLoaded] = useState<boolean>(false)
-  useEffect(() => {
-    getLoggedInUser().then((res) => {
-      setLoggedInUser(res)
-      setLoginLoaded(true)
-    })
-  }, [])
-  if (!loginLoaded) {
-    return null
-  }
+const Homepage: React.FC = async () => {
+  const clientInfo = await ClientService.getClientInfo()
+  const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
   return (
     <div>
       {/* Landing */}
       <div className="h-dvh flex flex-col items-center space-y-8">
-        <NavBar onclick={handleLoginButtonClick} user={loggedInUser} />
+        <NavBar onclick={handleLoginButtonClick} user={user} />
         <div className="flex flex-1 flex-col justify-center items-center space-y-8 p-10">
           <EncapsulateText
             className="w-[300px] lg:w-[700px] md:w-[600px] sm:w-[500px] transition-all duration-300 ease-in-out

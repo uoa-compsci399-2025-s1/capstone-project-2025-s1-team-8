@@ -1,8 +1,8 @@
 'use client'
-
 import { useState } from 'react'
-import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/16/solid'
+
+import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
 
