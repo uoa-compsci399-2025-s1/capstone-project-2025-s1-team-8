@@ -39,6 +39,7 @@ export default function RegisterPage() {
           <div className="relative inline-block w-full">
             <select
               defaultValue=""
+              name="role"
               onChange={(e) => setRole(e.target.value)}
               required
               className={`appearance-none ring-muted-blue ring-1 focus:ring-3 w-full pl-11 focus:outline-hidden rounded-lg px-4 py-2.5 text-sm ${isPlaceholder ? 'text-deeper-blue bg-white' : 'text-steel-blue bg-muted-blue-op-45'}`}

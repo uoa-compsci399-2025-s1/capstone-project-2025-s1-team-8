@@ -77,7 +77,7 @@ export const handleRegister = async (
   const lastName = formData.get('lastName') as string
   const email = formData.get('email') as string
   const password = formData.get('password') as string
-  const role = UserRoleWithoutAdmin.Client
+  const role = formData.get('role') as UserRoleWithoutAdmin
 
   if (!isValidEmail(email)) return { error: 'Invalid email address' }
   if (!isValidPassword(password).isValid) {
