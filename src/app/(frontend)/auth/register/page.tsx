@@ -110,7 +110,9 @@ export default function RegisterPage() {
               variant="outline"
               startIcon={<FcGoogle className="h-full" />}
             >
-              <p className="text-xs text-center pt-0.5">Sign Up as a <b>Client</b> with Google</p>
+              <p className="text-xs text-center pt-0.5">
+                Sign Up as a <b>Client</b> with Google
+              </p>
             </Button>
           </Link>
           <Link href="/api/auth/google?role=student">
@@ -120,7 +122,9 @@ export default function RegisterPage() {
               variant="outline"
               startIcon={<FcGoogle className="h-full" />}
             >
-              <p className="text-xs text-center pt-0.5">Sign Up as a <b>Student</b> with Google</p>
+              <p className="text-xs text-center pt-0.5">
+                Sign Up as a <b>Student</b> with Google
+              </p>
             </Button>
           </Link>
         </div>

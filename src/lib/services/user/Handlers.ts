@@ -6,7 +6,7 @@ import type { typeToFlattenedError } from 'zod'
 import type { LoginRequestBodySchema } from '@/app/api/auth/login/route'
 import UserService from './UserService'
 import type { RegisterRequestBodySchema } from '@/app/api/auth/register/route'
-import { UserRoleWithoutAdmin } from '@/types/User'
+import type { UserRoleWithoutAdmin } from '@/types/User'
 import { isValidEmail, isValidPassword } from '@/lib/util/util'
 import type { UserCombinedInfo } from '@/types/Collections'
 
