@@ -102,15 +102,25 @@ export default function RegisterPage() {
             <div className="border-t border-steel-blue flex-grow"></div>
           </div>
         </div>
-        <div className="w-full">
-          <Link href="/api/auth/google">
+        <div className="w-full flex flex-col gap-3">
+          <Link href="/api/auth/google?role=client">
             <Button
               className="bg-white w-full"
               size="md"
               variant="outline"
               startIcon={<FcGoogle className="h-full" />}
             >
-              <p className="text-xs text-center pt-0.5">Sign Up with Google</p>
+              <p className="text-xs text-center pt-0.5">Sign Up as a <b>Client</b> with Google</p>
+            </Button>
+          </Link>
+          <Link href="/api/auth/google?role=student">
+            <Button
+              className="bg-white w-full"
+              size="md"
+              variant="outline"
+              startIcon={<FcGoogle className="h-full" />}
+            >
+              <p className="text-xs text-center pt-0.5">Sign Up as a <b>Student</b> with Google</p>
             </Button>
           </Link>
         </div>
