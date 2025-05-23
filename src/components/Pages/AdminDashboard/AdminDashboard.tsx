@@ -17,10 +17,10 @@ import {
   updateProjectOrdersAndStatus,
   handleGetAllSemesters,
 } from '@/lib/services/admin/Handlers'
-import MobileAdminView from '@/components/Composite/MobileAdminView/MobileAdminView'
 import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
 import Notification from '@/components/Generic/Notification/Notification'
+import { TeapotCard } from '@/components/Generic/TeapotCard/TeapotCard'
 
 type AdminDashboardProps = {
   clients: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
@@ -152,7 +152,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </div>
         </div>
       </div>
-      <MobileAdminView />
+      <TeapotCard
+        title={'Please switch to a desktop device'}
+        description=" The current device is not supported for the admin dashboard."
+        type="margin-10"
+        className="lg:hidden pt-30"
+      />
     </>
   )
 }
