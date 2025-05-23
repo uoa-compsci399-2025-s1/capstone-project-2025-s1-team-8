@@ -60,8 +60,12 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     : []
 
   return (
-    <Modal open={open} onClose={onClose} className={className + ' min-h-fit w-[75%] top-5'}>
-      <div className="relative max-w-full flex flex-col p-15 pt-19 rounded-t-2xl gap-5 pointer-events-none">
+    <Modal
+      open={open}
+      onClose={onClose}
+      className={className + ' min-h-fit w-[95%] md:w-[75%] top-5'}
+    >
+      <div className="relative max-w-full flex flex-col p-15 pt-19 rounded-t-2xl gap-5 pointer-events-none break-all">
         {/* edit button */}
         {type === 'admin' && (
           <button
@@ -79,25 +83,29 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         </h1>
 
         {/* client details */}
-        <div className="flex flex-row gap-3">
+        <div className="flex flex-col md:flex-row gap-3">
           <h2 className="flex text-lg font-normal text-steel-blue font-inter">
             {projectClient.firstName + ' ' + projectClient.lastName}
           </h2>
-          <h2 className="flex text-lg font-normal text-deeper-blue font-inter">|</h2>
-          <h2 className="flex text-lg font-normal text-deeper-blue font-inter">
-            {projectClient.email}
-          </h2>
-          <button
-            className="flex"
-            style={{ pointerEvents: 'initial' }}
-            onClick={() => handleCopy(projectClient.email)}
-          >
-            {copied ? (
-              <FiCheck className="self-center size-5.5 text-dark-blue" />
-            ) : (
-              <FiCopy className="self-center size-5.5 text-steel-blue hover:text-dark-blue cursor-pointer" />
-            )}
-          </button>
+          {type === 'admin' && (
+            <>
+              <h2 className="flex text-lg font-normal text-deeper-blue font-inter">|</h2>
+              <h2 className="flex text-lg font-normal text-deeper-blue font-inter">
+                {projectClient.email}
+              </h2>
+              <button
+                className="flex"
+                style={{ pointerEvents: 'initial' }}
+                onClick={() => handleCopy(projectClient.email)}
+              >
+                {copied ? (
+                  <FiCheck className="self-center size-5.5 text-dark-blue" />
+                ) : (
+                  <FiCopy className="self-center size-5.5 text-steel-blue hover:text-dark-blue cursor-pointer" />
+                )}
+              </button>
+            </>
+          )}
         </div>
 
         {/* project description*/}
@@ -112,33 +120,41 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         </p>
 
         {/* capsules for information */}
-        <div className="grid grid-cols-[max-content_auto_max-content_max-content] grid-flow-row gap-2.5">
+        <div className="grid grid-cols-1 lg:grid-cols-[max-content_auto_max-content_max-content] grid-flow-row gap-2.5">
           <Capsule className="col-start-1 mr-2" variant="muted_blue" text="Special requirements" />
           <Capsule
-            className="col-start-2"
+            className="col-start-1 col-span-2 lg:col-start-2 lg:col-span-1 mr-2"
             variant="beige"
             text={projectInfo.specialEquipmentRequirements}
           />
 
-          <Capsule className="col-start-3 mr-2" variant="muted_blue" text="Submitted" />
           <Capsule
-            className="col-start-4 mr-2"
+            className="col-start-1 lg:col-start-3 mr-2"
+            variant="muted_blue"
+            text="Submitted"
+          />
+          <Capsule
+            className="col-start-1 lg:col-start-4 mr-2"
             variant="gradient"
             text={convertDatetoddmmYYYY(new Date(projectInfo.createdAt))}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Number of teams" />
-          <Capsule className="col-start-2" variant="beige" text={projectInfo.numberOfTeams} />
+          <Capsule
+            className="col-start-1 lg:col-start-2"
+            variant="beige"
+            text={projectInfo.numberOfTeams}
+          />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Future consideration" />
           <Capsule
-            className="col-start-2"
+            className="col-start-1 lg:col-start-2"
             variant="beige"
             text={projectInfo.futureConsideration ? 'Yes' : 'No'}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />
-          <div className="col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
+          <div className="col-start-1 lg:col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
             {semesters.map((semester) => (
               <Capsule variant="beige" text={semester.name} key={semester.name} />
             ))}
@@ -156,12 +172,16 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 <h2 className="col-start-1 text-lg font-normal text-dark-blue font-inter alternate">
                   {clientDetails.firstName + ' ' + clientDetails.lastName}
                 </h2>
-                <h2 className="col-start-2 text-lg font-normal text-deeper-blue font-inter email">
-                  |
-                </h2>
-                <h2 className="col-start-3 text-lg font-normal text-deeper-blue font-inter email">
-                  {clientDetails.email}
-                </h2>
+                {type === 'admin' && (
+                  <>
+                    <h2 className="col-start-2 text-lg font-normal text-deeper-blue font-inter email">
+                      |
+                    </h2>
+                    <h2 className="col-start-3 text-lg font-normal text-deeper-blue font-inter email">
+                      {clientDetails.email}
+                    </h2>
+                  </>
+                )}
               </React.Fragment>
             ))}
 
