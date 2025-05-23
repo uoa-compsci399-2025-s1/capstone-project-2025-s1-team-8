@@ -22,6 +22,30 @@ const useUnsavedChangesWarning = (hasChanges: boolean) => {
       window.removeEventListener('beforeunload', handleBeforeUnload)
     }
   }, [hasChanges, handleBeforeUnload])
+
+  useEffect(() => {
+    if (hasChanges) {
+      // Add a dummy history entry to trigger a popstate event when user hits back/forward
+      window.history.pushState(null, '', window.location.href)
+
+      const handlePopstate = (event: PopStateEvent) => {
+        if (hasChanges) {
+          const confirmation = window.confirm(
+            'You have unsaved changes. Are you sure you want to leave?',
+          )
+          if (!confirmation) {
+            // Re-push the current state to prevent the navigation
+            window.history.pushState(null, '', window.location.href)
+          }
+        }
+      }
+
+      window.addEventListener('popstate', handlePopstate)
+      return () => {
+        window.removeEventListener('popstate', handlePopstate)
+      }
+    }
+  }, [hasChanges])
 }
 
 export default useUnsavedChangesWarning
