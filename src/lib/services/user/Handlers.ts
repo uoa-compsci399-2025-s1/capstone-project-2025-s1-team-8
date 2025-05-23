@@ -6,7 +6,7 @@ import type { typeToFlattenedError } from 'zod'
 import type { LoginRequestBodySchema } from '@/app/api/auth/login/route'
 import UserService from './UserService'
 import type { RegisterRequestBodySchema } from '@/app/api/auth/register/route'
-import { UserRoleWithoutAdmin } from '@/types/User'
+import type { UserRoleWithoutAdmin } from '@/types/User'
 import { isValidEmail, isValidPassword } from '@/lib/util/util'
 import type { UserCombinedInfo } from '@/types/Collections'
 
@@ -77,7 +77,7 @@ export const handleRegister = async (
   const lastName = formData.get('lastName') as string
   const email = formData.get('email') as string
   const password = formData.get('password') as string
-  const role = UserRoleWithoutAdmin.Client
+  const role = formData.get('role') as UserRoleWithoutAdmin
 
   if (!isValidEmail(email)) return { error: 'Invalid email address' }
   if (!isValidPassword(password).isValid) {

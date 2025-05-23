@@ -461,16 +461,18 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     <div className="mx-auto w-full relative">
       <div className="fixed top-6 right-6 z-50">
         <Notification
-          isVisible={showNotification}
           title={'Unsaved Changes'}
           message={"You've made changes to the project order. Don't forget to save!"}
           type={'warning'}
+          isVisible={showNotification}
+          onClose={() => setShowNotification(false)}
         />
         <Notification
           isVisible={successNotification != null}
           title={'Success'}
           message={successNotification ?? ''}
           type={'success'}
+          onClose={() => setShowNotification(false)}
         />
       </div>
 

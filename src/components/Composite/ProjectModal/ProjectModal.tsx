@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 import Modal from '@/components/Generic/Modal/Modal'
 import Capsule from '@/components/Generic/Capsule/Capsule'

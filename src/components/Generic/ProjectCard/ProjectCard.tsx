@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 import ProjectModal from '@/components/Composite/ProjectModal/ProjectModal'
 import type { UserCombinedInfo } from '@/types/Collections'
