@@ -28,7 +28,7 @@ const useUnsavedChangesWarning = (hasChanges: boolean) => {
       // Add a dummy history entry to trigger a popstate event when user hits back/forward
       window.history.pushState(null, '', window.location.href)
 
-      const handlePopstate = (event: PopStateEvent) => {
+      const handlePopstate = (_: PopStateEvent) => {
         if (hasChanges) {
           const confirmation = window.confirm(
             'You have unsaved changes. Are you sure you want to leave?',
