@@ -43,7 +43,7 @@ export default function RegisterPage() {
               required
               className={`appearance-none ring-muted-blue ring-1 focus:ring-3 w-full pl-11 focus:outline-hidden rounded-lg px-4 py-2.5 text-sm ${isPlaceholder ? 'text-deeper-blue bg-white' : 'text-steel-blue bg-muted-blue-op-45'}`}
             >
-              <option value="" disabled selected className="text-muted-blue">
+              <option value="" disabled className="text-muted-blue">
                 Role
               </option>
               <option value="client">Client</option>
