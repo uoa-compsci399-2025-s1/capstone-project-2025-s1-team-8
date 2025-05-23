@@ -6,7 +6,6 @@ import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardL
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import type { Semester } from '@/payload-types'
 import type { ProjectDetails } from '@/types/Project'
-
 interface SemesterCardProps extends Semester {
   semester: Semester
   handleGetAllSemesterProjects: (semesterId: string) => Promise<void | {
