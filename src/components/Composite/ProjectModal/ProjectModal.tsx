@@ -121,7 +121,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
         {/* capsules for information */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[max-content_auto_max-content_max-content] grid-flow-row gap-2.5">
-          <Capsule className="col-start-1 col-span-2 lg:col-span-1 mr-2" variant="muted_blue" text="Special requirements" />
+          <Capsule
+            className="col-start-1 col-span-2 lg:col-span-1 mr-2"
+            variant="muted_blue"
+            text="Special requirements"
+          />
           <Capsule
             className="col-start-1 md:col-span-2 lg:col-start-2 lg:col-span-1 mr-2 break-normal"
             variant="beige"
@@ -168,8 +172,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3 pb-3`}
           >
             {otherClientDetails.length > 0 && (
-              <Capsule variant="light_beige" text="Other Clients" className={"mb-3"} />
-              )}
+              <Capsule variant="light_beige" text="Other Clients" className={'mb-3'} />
+            )}
             {otherClientDetails.map((clientDetails) => (
               <React.Fragment key={clientDetails.email}>
                 <h2 className="col-start-1 text-lg font-normal text-dark-blue font-inter alternate">
@@ -188,7 +192,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
               </React.Fragment>
             ))}
 
-            {otherClientDetails.length > 0 && type === "admin" && (
+            {otherClientDetails.length > 0 && type === 'admin' && (
               <Button
                 onClick={() => handleCopyAll(projectClient, otherClientDetails)}
                 className="col-start-5 row-start-1"

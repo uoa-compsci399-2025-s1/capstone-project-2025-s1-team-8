@@ -29,8 +29,8 @@ export const projectMock: Project = {
       ...clientMock,
       firstName: 'Additional',
       lastName: 'Client',
-    }
-  ]
+    },
+  ],
 }
 
 export const projectMock2: Project = {
