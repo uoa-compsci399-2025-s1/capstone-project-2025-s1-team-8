@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import React from 'react'
-import '@/app/(frontend)/globals.css'
+import '@/app/globals.css'
 
 export const metadata: Metadata = {
   description: 'Connecting Computer Science Students with Innovative Projects',
@@ -35,8 +35,13 @@ export const metadata: Metadata = {
       url: 'https://www.linkedin.com/in/jefferyji/',
     },
   ],
-  icons: {
-    icon: [{ url: '/favicon.png' }],
+  icons: '/favicon.png',
+  openGraph: {
+    title: 'Encapsulate',
+    description: 'Connecting Computer Science Students with Innovative Projects',
+    siteName: 'Encapsulate',
+    images: `${process.env.NEXT_PUBLIC_URL}/favicon.png`,
+    type: 'website',
   },
 }
 
