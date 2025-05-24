@@ -23,6 +23,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo, type = 'admin' }
       : projectInfo.description
 
   const client = projectInfo.client as UserCombinedInfo
+  const semesters = projectInfo.semesters ?? []
 
   return (
     <div>
@@ -43,6 +44,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo, type = 'admin' }
         open={modalOpen}
         onClose={() => toggleModal()}
         type={type}
+        semesters={semesters}
       />
     </div>
   )

@@ -109,21 +109,21 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         </div>
 
         {/* project description*/}
-        <p className="text-sm text-dark-blue font-inter text-left pb-3">
+        <p className="text-sm text-dark-blue font-inter text-left pb-3 break-normal">
           {projectInfo.description}
         </p>
 
         {/* desired output */}
         <Capsule variant="muted_blue" text="Desired output" />
-        <p className="text-sm text-dark-blue font-inter text-left mb-7">
+        <p className="text-sm text-dark-blue font-inter text-left mb-7 break-normal">
           {projectInfo.desiredOutput}
         </p>
 
         {/* capsules for information */}
-        <div className="grid grid-cols-1 lg:grid-cols-[max-content_auto_max-content_max-content] grid-flow-row gap-2.5">
-          <Capsule className="col-start-1 mr-2" variant="muted_blue" text="Special requirements" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[max-content_auto_max-content_max-content] grid-flow-row gap-2.5">
+          <Capsule className="col-start-1 col-span-2 lg:col-span-1 mr-2" variant="muted_blue" text="Special requirements" />
           <Capsule
-            className="col-start-1 col-span-2 lg:col-start-2 lg:col-span-1 mr-2"
+            className="col-start-1 md:col-span-2 lg:col-start-2 lg:col-span-1 mr-2 break-normal"
             variant="beige"
             text={projectInfo.specialEquipmentRequirements}
           />
@@ -134,27 +134,27 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             text="Submitted"
           />
           <Capsule
-            className="col-start-1 lg:col-start-4 mr-2"
+            className="col-start-1 md:col-start-2 lg:col-start-4 mr-2"
             variant="gradient"
             text={convertDatetoddmmYYYY(new Date(projectInfo.createdAt))}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Number of teams" />
           <Capsule
-            className="col-start-1 lg:col-start-2"
+            className="col-start-1 md:col-start-2"
             variant="beige"
             text={projectInfo.numberOfTeams}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Future consideration" />
           <Capsule
-            className="col-start-1 lg:col-start-2"
+            className="col-start-1 md:col-start-2"
             variant="beige"
             text={projectInfo.futureConsideration ? 'Yes' : 'No'}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />
-          <div className="col-start-1 lg:col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
+          <div className="col-start-1 md:col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
             {semesters.map((semester) => (
               <Capsule variant="beige" text={semester.name} key={semester.name} />
             ))}
@@ -174,7 +174,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 </h2>
                 {type === 'admin' && (
                   <>
-                    <h2 className="col-start-2 text-lg font-normal text-deeper-blue font-inter email">
+                    <h2 className="col-start-2 text-lg font-normal text-deeper-blue font-inter email break-all">
                       |
                     </h2>
                     <h2 className="col-start-3 text-lg font-normal text-deeper-blue font-inter email">
@@ -185,7 +185,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
               </React.Fragment>
             ))}
 
-            {otherClientDetails.length > 0 && (
+            {otherClientDetails.length > 0 && type === "admin" && (
               <Button
                 onClick={() => handleCopyAll(projectClient, otherClientDetails)}
                 className="col-start-5 row-start-1"
@@ -200,7 +200,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         {projectInfo.desiredTeamSkills && projectInfo.desiredTeamSkills != '' && (
           <>
             <Capsule variant="light_beige" text="Desired team skills" />
-            <p className="text-sm text-dark-blue font-inter text-left mb-3">
+            <p className="text-sm text-dark-blue font-inter text-left mb-3 break-normal">
               {projectInfo.desiredTeamSkills}
             </p>
           </>
@@ -208,7 +208,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         {projectInfo.availableResources && (
           <>
             <Capsule variant="light_beige" text="Available resources" />
-            <p className="text-sm text-dark-blue font-inter text-left">
+            <p className="text-sm text-dark-blue font-inter text-left break-normal">
               {projectInfo.availableResources}
             </p>
           </>
