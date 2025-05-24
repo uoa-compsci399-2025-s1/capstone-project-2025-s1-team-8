@@ -10,9 +10,9 @@ import AuthService from '@/business-layer/services/AuthService'
 
 export const GET = async (req: NextRequest) => {
   const params = req.nextUrl.searchParams
-  const role = (params.get('role') || UserRoleWithoutAdmin.Client) as UserRoleWithoutAdmin
+  const role = (params.get('role') || '') as UserRoleWithoutAdmin
 
-  if (!Object.values(UserRoleWithoutAdmin).includes(role)) {
+  if (role.length && !Object.values(UserRoleWithoutAdmin).includes(role)) {
     return NextResponse.json({ error: 'Invalid role' }, { status: StatusCodes.BAD_REQUEST })
   }
   const authService = new AuthService()

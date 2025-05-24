@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { NotFound } from 'payload'
-import { StatusCodes } from 'http-status-codes'
+import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 
 import ProjectService from '@/data-layer/services/ProjectService'
 import type { Project, Semester, SemesterProject as SemesterProjectType } from '@/payload-types'
@@ -77,7 +77,7 @@ class RouteWrapper {
         return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
       console.log(error)
       return NextResponse.json(
-        { error: 'Internal server error' },
+        { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
