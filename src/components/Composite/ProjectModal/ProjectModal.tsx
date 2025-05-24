@@ -65,7 +65,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
       onClose={onClose}
       className={className + ' min-h-fit w-[95%] md:w-[75%] top-5'}
     >
-      <div className="relative max-w-full flex flex-col p-5 md:p-15 pt-19 rounded-t-2xl gap-5 pointer-events-none break-all">
+      <div className="relative max-w-full flex flex-col p-5 md:p-15 pt-19 pb-10 rounded-t-2xl gap-5 pointer-events-none wrap-break-word">
         {/* edit button */}
         {type === 'admin' && (
           <button
@@ -109,13 +109,13 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         </div>
 
         {/* project description*/}
-        <p className="text-sm text-dark-blue font-inter text-left pb-3 break-normal">
+        <p className="text-sm text-dark-blue font-inter text-left pb-3">
           {projectInfo.description}
         </p>
 
         {/* desired output */}
         <Capsule variant="muted_blue" text="Desired output" />
-        <p className="text-sm text-dark-blue font-inter text-left mb-7 break-normal">
+        <p className="text-sm text-dark-blue font-inter text-left mb-7">
           {projectInfo.desiredOutput}
         </p>
 
@@ -127,7 +127,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             text="Special requirements"
           />
           <Capsule
-            className="col-start-1 md:col-span-2 lg:col-start-2 lg:col-span-1 mr-2 break-normal"
+            className="col-start-1 md:col-span-2 lg:col-start-2 lg:col-span-1 mr-2 mb-5 md:mb-0"
             variant="beige"
             text={projectInfo.specialEquipmentRequirements}
           />
@@ -138,21 +138,21 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             text="Submitted"
           />
           <Capsule
-            className="col-start-1 md:col-start-2 lg:col-start-4 mr-2"
+            className="col-start-1 md:col-start-2 lg:col-start-4 mr-2 mb-5 md:mb-0"
             variant="gradient"
             text={convertDatetoddmmYYYY(new Date(projectInfo.createdAt))}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Number of teams" />
           <Capsule
-            className="col-start-1 md:col-start-2"
+            className="col-start-1 md:col-start-2 mb-5 md:mb-0"
             variant="beige"
             text={projectInfo.numberOfTeams}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Future consideration" />
           <Capsule
-            className="col-start-1 md:col-start-2"
+            className="col-start-1 md:col-start-2 mb-5 md:mb-0"
             variant="beige"
             text={projectInfo.futureConsideration ? 'Yes' : 'No'}
           />
@@ -207,7 +207,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         {projectInfo.desiredTeamSkills && projectInfo.desiredTeamSkills != '' && (
           <>
             <Capsule variant="light_beige" text="Desired team skills" />
-            <p className="text-sm text-dark-blue font-inter text-left mb-3 break-normal">
+            <p className="text-sm text-dark-blue font-inter text-left mb-3">
               {projectInfo.desiredTeamSkills}
             </p>
           </>
@@ -215,7 +215,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         {projectInfo.availableResources && (
           <>
             <Capsule variant="light_beige" text="Available resources" />
-            <p className="text-sm text-dark-blue font-inter text-left break-normal">
+            <p className="text-sm text-dark-blue font-inter text-left">
               {projectInfo.availableResources}
             </p>
           </>
