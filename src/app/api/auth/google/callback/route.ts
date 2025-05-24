@@ -29,7 +29,6 @@ export const GET = async (req: NextRequest) => {
   }
   cookieStore.delete('state')
   const role = businessAuthService.decryptState(state)
-  console.log(role)
 
   const code = params.get('code')
   if (!code) return NextResponse.json({ error: 'No code provided' }, { status: 400 })
