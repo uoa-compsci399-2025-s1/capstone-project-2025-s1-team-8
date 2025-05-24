@@ -41,7 +41,7 @@ export function Security(securityName: 'jwt', scopes?: ('admin' | 'student' | 'c
         }
         console.error(err)
         return NextResponse.json(
-          { error: 'Internal Server Error' },
+          { error: 'Internal server error' },
           { status: StatusCodes.INTERNAL_SERVER_ERROR },
         )
       }
