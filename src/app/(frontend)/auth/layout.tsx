@@ -1,8 +1,12 @@
-'use client'
-
+import type { Metadata } from 'next'
 import Button from '@/components/Generic/Button/Button'
 import Link from 'next/link'
 import Image from 'next/image'
+
+export const metadata: Metadata = {
+  title: 'Login & Register',
+  description: 'Create an account or log in to Encapsulate',
+}
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
