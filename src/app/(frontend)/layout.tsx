@@ -1,9 +1,10 @@
+import type { Metadata } from 'next'
 import React from 'react'
 import './globals.css'
 
-export const metadata = {
+export const metadata: Metadata = {
   description: 'Connecting Computer Science Students with Innovative Projects',
-  title: 'Encapsulate',
+  title: 'Home',
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
