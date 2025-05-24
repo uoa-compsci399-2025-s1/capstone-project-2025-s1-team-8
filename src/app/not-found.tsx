@@ -29,7 +29,7 @@ export default function NotFound() {
       <NavBar hasBg={false} onclick={handleLoginButtonClick} user={loggedInUser} />
       <div className="flex flex-1 flex-col justify-center items-center space-y-8 p-10">
         <div className="flex flex-col sm:flex-row items-end my-10 mx-4 sm:mx-10 md:mx-25">
-          <Error />
+          <Error className="w-[192px] h-[192px]" />
           <p className="text-deeper-blue text-5xl sm:text-[5.25rem] font-silkscreen sm:pb-8 sm:pl-5">
             ERROR
           </p>
