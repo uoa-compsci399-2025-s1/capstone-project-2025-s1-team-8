@@ -1,6 +1,6 @@
 import { z, ZodError } from 'zod'
 import { NotFound } from 'payload'
-import { StatusCodes } from 'http-status-codes'
+import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import UserService from '@/data-layer/services/UserService'
@@ -50,7 +50,7 @@ class RouteWrapper {
         return NextResponse.json({ error: 'User not found' }, { status: StatusCodes.NOT_FOUND })
       }
       return NextResponse.json(
-        { error: 'Internal server error' },
+        { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
@@ -111,7 +111,7 @@ class RouteWrapper {
       }
       console.error(error)
       return NextResponse.json(
-        { error: 'Internal server error' },
+        { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
@@ -136,7 +136,7 @@ class RouteWrapper {
       } else {
         console.error(error)
         return NextResponse.json(
-          { error: 'Internal server error' },
+          { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
           { status: StatusCodes.INTERNAL_SERVER_ERROR },
         )
       }

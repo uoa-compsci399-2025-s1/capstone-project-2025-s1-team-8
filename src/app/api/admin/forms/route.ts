@@ -1,6 +1,6 @@
 import { z, ZodError } from 'zod'
 import { NotFound } from 'payload'
-import { StatusCodes } from 'http-status-codes'
+import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import FormService from '@/data-layer/services/FormService'
@@ -37,7 +37,7 @@ class RouteWrapper {
       }
       console.error(error)
       return NextResponse.json(
-        { error: 'Internal server error' },
+        { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }

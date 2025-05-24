@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import { StatusCodes } from 'http-status-codes'
+import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 
 import { payloadAuthentication } from '../security/authentication'
 import type { UserCombinedInfo } from '@/types/Collections'
@@ -41,7 +41,7 @@ export function Security(securityName: 'jwt', scopes?: ('admin' | 'student' | 'c
         }
         console.error(err)
         return NextResponse.json(
-          { error: 'Internal server error' },
+          { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
           { status: StatusCodes.INTERNAL_SERVER_ERROR },
         )
       }

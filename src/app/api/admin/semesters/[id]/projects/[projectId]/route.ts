@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
-import { StatusCodes } from 'http-status-codes'
+import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 import { NotFound } from 'payload'
 import ProjectService from '@/data-layer/services/ProjectService'
 import SemesterService from '@/data-layer/services/SemesterService'
@@ -72,7 +72,7 @@ class RouteWrapper {
       }
       console.error('Error updating project:', error)
       return NextResponse.json(
-        { error: 'Internal server error' },
+        { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
@@ -123,7 +123,7 @@ class RouteWrapper {
       }
       console.error(error)
       return NextResponse.json(
-        { error: 'Internal server error' },
+        { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }

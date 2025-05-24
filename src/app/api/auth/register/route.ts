@@ -3,7 +3,7 @@ import UserService from '@/data-layer/services/UserService'
 import AuthDataService from '@/data-layer/services/AuthService'
 import type { CreateUserData } from '@/types/Collections'
 import { UserRoleWithoutAdmin } from '@/types/User'
-import { StatusCodes } from 'http-status-codes'
+import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
@@ -65,7 +65,7 @@ export const POST = async (req: NextRequest) => {
     }
     console.error('Error', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
       { status: StatusCodes.INTERNAL_SERVER_ERROR },
     )
   }

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { StatusCodes } from 'http-status-codes'
+import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 import { NotFound } from 'payload'
 import { z, ZodError } from 'zod'
 import ProjectService from '@/data-layer/services/ProjectService'
@@ -69,7 +69,7 @@ class RouteWrapper {
         return NextResponse.json({ error: 'Project not found' }, { status: StatusCodes.NOT_FOUND })
       }
       return NextResponse.json(
-        { error: 'Internal server error' },
+        { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
@@ -108,7 +108,7 @@ class RouteWrapper {
       }
       console.error(error)
       return NextResponse.json(
-        { error: 'Internal server error' },
+        { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
@@ -142,7 +142,7 @@ class RouteWrapper {
       }
       console.error(error)
       return NextResponse.json(
-        { error: 'Internal server error' },
+        { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
