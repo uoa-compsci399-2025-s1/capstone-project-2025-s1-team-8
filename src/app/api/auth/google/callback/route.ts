@@ -28,6 +28,7 @@ export const GET = async (req: NextRequest) => {
     )
   }
   cookieStore.delete('state')
+  const role = businessAuthService.decryptState(state)
 
   const code = params.get('code')
   if (!code) return NextResponse.json({ error: 'No code provided' }, { status: 400 })
@@ -73,11 +74,14 @@ export const GET = async (req: NextRequest) => {
       })
     }
   } catch {
+    if (!role) {
+      return redirect('/auth/register')
+    }
     user = await userService.createUser({
       email,
       firstName,
       lastName,
-      role: businessAuthService.decryptState(state),
+      role,
     })
   }
 
