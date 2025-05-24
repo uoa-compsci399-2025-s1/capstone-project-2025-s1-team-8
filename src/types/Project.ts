@@ -9,4 +9,5 @@ export enum ProjectStatus {
 export type ProjectDetails = Project & {
   semesters: Semester[]
   semesterProjectId?: string
+  number?: number
 }

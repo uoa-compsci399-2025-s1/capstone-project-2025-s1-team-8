@@ -40,5 +40,33 @@ export const Exemplar: Story = {
     open: false,
     className: '',
     projectInfo: ProjectDetailsMock,
+    type: 'admin',
+  },
+}
+
+export const Student: Story = {
+  render: function RenderProjectModal(args) {
+    const [{ open }, updateArgs] = useArgs()
+
+    function onChange() {
+      updateArgs({ open: !open })
+    }
+
+    return (
+      <div>
+        <Button onClick={() => onChange()} variant="dark" size="md">
+          Open modal
+        </Button>
+        <ProjectModal {...args} open={open} onClose={() => onChange()}>
+          <p className="text-black">This is a default modal.</p>
+        </ProjectModal>
+      </div>
+    )
+  },
+  args: {
+    open: false,
+    className: '',
+    projectInfo: ProjectDetailsMock,
+    type: 'student',
   },
 }

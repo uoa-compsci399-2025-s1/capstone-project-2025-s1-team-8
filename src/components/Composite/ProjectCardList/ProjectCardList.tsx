@@ -7,6 +7,7 @@ interface ProjectListProps {
   headingClassName?: string
   heading: string
   projects: ProjectDetails[]
+  type?: 'student' | 'admin'
 }
 
 const ProjectCardList: React.FC<ProjectListProps> = ({
@@ -14,6 +15,7 @@ const ProjectCardList: React.FC<ProjectListProps> = ({
   headingClassName,
   heading,
   projects,
+  type = 'admin',
 }) => {
   return (
     <div className={`relative w-full ${className}`}>
@@ -21,7 +23,7 @@ const ProjectCardList: React.FC<ProjectListProps> = ({
 
       <div className="flex flex-col gap-4 overflow-x-visible overflow-y-auto max-h-[490px] p-[1px] pt-0.5 pb-3">
         {projects.map((project, index) => (
-          <ProjectCard key={index} projectInfo={project} />
+          <ProjectCard key={index} projectInfo={project} type={type} />
         ))}
       </div>
     </div>
