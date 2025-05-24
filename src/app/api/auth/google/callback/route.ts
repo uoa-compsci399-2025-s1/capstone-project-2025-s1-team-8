@@ -74,9 +74,8 @@ export const GET = async (req: NextRequest) => {
       })
     }
   } catch {
-    if (!role) {
-      return redirect('/auth/register')
-    }
+    // Redirects to register if the user attempts to login with a Google account that is not registered
+    if (!role) return redirect('/auth/register')
     user = await userService.createUser({
       email,
       firstName,
