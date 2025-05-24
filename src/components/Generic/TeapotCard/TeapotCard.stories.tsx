@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { TeapotCard } from './TeapotCard'
 
-const meta: Meta<typeof Notification> = {
+const meta: Meta<typeof TeapotCard> = {
   title: 'Generic/TeapotCard',
   component: TeapotCard,
   tags: ['autodocs'],
