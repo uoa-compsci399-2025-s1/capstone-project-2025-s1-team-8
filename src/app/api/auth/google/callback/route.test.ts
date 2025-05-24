@@ -99,7 +99,7 @@ describe('GET /api/auth/google/callback', async () => {
     expect(user.role).toBe(UserRoleWithoutAdmin.Client)
   })
 
-  it('should create a new auth and student student document with the google user response data', async () => {
+  it('should create a new auth and student document with the google user response data', async () => {
     const req = createMockNextRequest(
       `/api/auth/google/callback?code=${CODE_MOCK}&state=${STUDENT_STATE_MOCK}&scope=${SCOPES_MOCK}`,
     )
@@ -137,7 +137,7 @@ describe('GET /api/auth/google/callback', async () => {
     })
   })
 
-  it('should redirect to register route if no no role is provided and no user exists', async () => {
+  it('should redirect to register route if no role is provided and no user exists', async () => {
     const req = createMockNextRequest(
       `/api/auth/google/callback?code=${CODE_MOCK}&state=${ROLELESS_STATE_MOCK}&scope=${SCOPES_MOCK}`,
     )
