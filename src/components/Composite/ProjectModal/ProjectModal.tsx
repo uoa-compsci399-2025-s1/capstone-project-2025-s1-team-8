@@ -166,7 +166,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         </div>
       </div>
 
-      <div className="relative bg-transparent-blue max-w-full flex flex-col px-15 pt-12 py-19 rounded-b-2xl gap-5">
+      <div className="relative bg-transparent-blue max-w-full flex flex-col px-5 md:px-15 pt-12 py-19 rounded-b-2xl gap-5">
         <div className="flex flex-col">
           <div
             className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3 pb-3`}
