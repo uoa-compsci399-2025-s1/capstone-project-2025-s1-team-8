@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { StatusCodes } from 'http-status-codes'
+import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 import { z, ZodError } from 'zod'
 import { NotFound } from 'payload'
 
@@ -148,7 +148,7 @@ class RouterWrapper {
       }
       console.error('Error', error)
       return NextResponse.json(
-        { error: 'Internal server error' },
+        { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
