@@ -44,7 +44,7 @@ export async function payloadAuthentication(securityName: 'jwt', scopes?: string
       throw new UnauthorizedAuthError('No scope')
     } catch (error) {
       if (!(error instanceof UnauthorizedAuthError)) console.error(error)
-      throw new UnauthorizedAuthError(String(error))
+      throw error
     }
   } else {
     throw new Error('Unsupported security name')
