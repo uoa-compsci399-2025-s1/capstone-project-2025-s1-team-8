@@ -160,7 +160,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />
           <div className="col-start-1 md:col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
             {semesters.map((semester) => (
-              <Capsule variant="beige" text={semester.name} key={semester.name} />
+              <Capsule variant="beige" text={semester.name} key={semester.id} />
             ))}
           </div>
         </div>
