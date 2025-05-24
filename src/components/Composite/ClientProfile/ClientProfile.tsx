@@ -24,9 +24,9 @@ interface ClientProfileProps {
 
 const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false)
-  const [name, setName] = useState<string>(clientInfo.firstName + ' ' + clientInfo.lastName)
+  const [name, setName] = useState<string>(clientInfo.firstName + ' ' + (clientInfo.lastName ?? ''))
   const [previousName, setPreviousName] = useState<string>(
-    clientInfo.firstName + ' ' + clientInfo.lastName,
+    clientInfo.firstName + ' ' + (clientInfo.lastName ?? ''),
   )
   const [affiliation, setAffiliation] = useState<string>(clientInfo.affiliation ?? '')
   const [previousAffiliation, setPreviousAffiliation] = useState<string>(
