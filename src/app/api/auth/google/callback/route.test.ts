@@ -1,7 +1,6 @@
-import type { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies'
 import { StatusCodes } from 'http-status-codes'
-import * as nextHeaders from 'next/headers'
 import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
 
 import {
   CODE_MOCK,
@@ -9,18 +8,25 @@ import {
   JWT_MOCK,
   SCOPES_MOCK,
   CLIENT_STATE_MOCK,
+  ROLELESS_STATE_MOCK,
+  STUDENT_STATE_MOCK,
 } from '@/test-config/mocks/Auth.mock'
 import { createMockNextRequest } from '@/test-config/utils'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import AuthService from '@/data-layer/services/AuthService'
 import { GET as callback } from '@/app/api/auth/google/callback/route'
 import UserService from '@/data-layer/services/UserService'
+import { UserRoleWithoutAdmin } from '@/types/User'
 
-const mockSet = vi.fn()
+const mockCookies: Record<string, string> = {}
+const mockSet = vi.fn((key, value, _extra) => {
+  mockCookies[key] = value
+})
 
-describe('GET /api/auth/google/callback', () => {
+describe('GET /api/auth/google/callback', async () => {
   const authDataService = new AuthService()
   const userService = new UserService()
+  const cookieStore = await cookies()
 
   beforeAll(() => {
     vi.stubGlobal('fetch', (url: string) =>
@@ -35,25 +41,17 @@ describe('GET /api/auth/google/callback', () => {
 
     vi.mock('next/headers', () => ({
       cookies: () => ({
-        get: (key: string) => ({ value: key === 'state' ? CLIENT_STATE_MOCK : undefined }),
+        get: (key: string) => ({ value: mockCookies[key] }),
         set: mockSet,
-        delete: vi.fn(),
+        delete: (key: string) => {
+          delete mockCookies[key]
+        },
       }),
     }))
 
     vi.mock('next/navigation', () => ({
       redirect: vi.fn(),
     }))
-
-    const mockCookieStore = {
-      get: (key: string) => ({ value: key === 'state' ? CLIENT_STATE_MOCK : undefined }),
-      set: mockSet,
-      delete: vi.fn(),
-    }
-
-    vi.spyOn(nextHeaders, 'cookies').mockResolvedValue(
-      mockCookieStore as unknown as ReadonlyRequestCookies,
-    )
   })
 
   afterEach(() => vi.restoreAllMocks())
@@ -62,7 +60,7 @@ describe('GET /api/auth/google/callback', () => {
     const req = createMockNextRequest(
       `/api/auth/google/callback?code=${CODE_MOCK}&state=${CLIENT_STATE_MOCK}&scope=${SCOPES_MOCK}`,
     )
-    req.cookies.set('state', CLIENT_STATE_MOCK)
+    cookieStore.set('state', CLIENT_STATE_MOCK)
 
     await callback(req)
 
@@ -78,30 +76,45 @@ describe('GET /api/auth/google/callback', () => {
     const req = createMockNextRequest(
       `/api/auth/google/callback?code=${CODE_MOCK}&state=${CLIENT_STATE_MOCK}&scope=${SCOPES_MOCK}`,
     )
-    req.cookies.set('state', CLIENT_STATE_MOCK)
+    cookieStore.set('state', CLIENT_STATE_MOCK)
 
     await callback(req)
     expect(redirect).toHaveBeenCalledWith('/client')
   })
 
-  it('should create a new auth and user document with the google user response data', async () => {
+  it('should create a new auth and client user document with the google user response data', async () => {
     const req = createMockNextRequest(
       `/api/auth/google/callback?code=${CODE_MOCK}&state=${CLIENT_STATE_MOCK}&scope=${SCOPES_MOCK}`,
     )
-    req.cookies.set('state', CLIENT_STATE_MOCK)
+    cookieStore.set('state', CLIENT_STATE_MOCK)
 
     await callback(req)
     const auth = await authDataService.getAuthByEmail(googleUserResponseMock.email)
     expect(auth.email).toBe(googleUserResponseMock.email)
     const user = await userService.getUserByEmail(googleUserResponseMock.email)
     expect(user.email).toBe(googleUserResponseMock.email)
+    expect(user.role).toBe(UserRoleWithoutAdmin.Client)
+  })
+
+  it('should create a new auth and student student document with the google user response data', async () => {
+    const req = createMockNextRequest(
+      `/api/auth/google/callback?code=${CODE_MOCK}&state=${STUDENT_STATE_MOCK}&scope=${SCOPES_MOCK}`,
+    )
+    cookieStore.set('state', STUDENT_STATE_MOCK)
+
+    await callback(req)
+    const auth = await authDataService.getAuthByEmail(googleUserResponseMock.email)
+    expect(auth.email).toBe(googleUserResponseMock.email)
+    const user = await userService.getUserByEmail(googleUserResponseMock.email)
+    expect(user.email).toBe(googleUserResponseMock.email)
+    expect(user.role).toBe(UserRoleWithoutAdmin.Student)
   })
 
   it('should modify an existing user with the google user response data', async () => {
     const req = createMockNextRequest(
       `/api/auth/google/callback?code=${CODE_MOCK}&state=${CLIENT_STATE_MOCK}&scope=${SCOPES_MOCK}`,
     )
-    req.cookies.set('state', CLIENT_STATE_MOCK)
+    cookieStore.set('state', CLIENT_STATE_MOCK)
 
     const createdUser = await userService.createUser({
       firstName: 'lol',
@@ -121,11 +134,21 @@ describe('GET /api/auth/google/callback', () => {
     })
   })
 
+  it('should redirect to register route if no no role is provided and no user exists', async () => {
+    const req = createMockNextRequest(
+      `/api/auth/google/callback?code=${CODE_MOCK}&state=${ROLELESS_STATE_MOCK}&scope=${SCOPES_MOCK}`,
+    )
+    cookieStore.set('state', ROLELESS_STATE_MOCK)
+
+    await callback(req)
+    expect(redirect).toHaveBeenCalledWith('/auth/register')
+  })
+
   it('returns 400 if state does not match', async () => {
     const req = createMockNextRequest(
       `/api/auth/google/callback?code=${CODE_MOCK}&state=wrong_state&scope=${SCOPES_MOCK}`,
     )
-    req.cookies.set('state', CLIENT_STATE_MOCK)
+    cookieStore.set('state', CLIENT_STATE_MOCK)
 
     const response = await callback(req)
     const json = await response.json()
@@ -138,7 +161,7 @@ describe('GET /api/auth/google/callback', () => {
     const req = createMockNextRequest(
       `/api/auth/google/callback?state=${CLIENT_STATE_MOCK}&scope=${SCOPES_MOCK}`,
     )
-    req.cookies.set('state', CLIENT_STATE_MOCK)
+    cookieStore.set('state', CLIENT_STATE_MOCK)
 
     const response = await callback(req)
     const json = await response.json()
