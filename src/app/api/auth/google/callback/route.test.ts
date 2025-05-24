@@ -18,7 +18,7 @@ import { GET as callback } from '@/app/api/auth/google/callback/route'
 import UserService from '@/data-layer/services/UserService'
 import { UserRoleWithoutAdmin } from '@/types/User'
 
-const mockCookies: Record<string, string> = {}
+let mockCookies: Record<string, string> = {}
 const mockSet = vi.fn((key, value, _extra) => {
   mockCookies[key] = value
 })
@@ -54,7 +54,10 @@ describe('GET /api/auth/google/callback', async () => {
     }))
   })
 
-  afterEach(() => vi.restoreAllMocks())
+  afterEach(() => {
+    vi.restoreAllMocks()
+    mockCookies = {}
+  })
 
   it('should set jwt to cookie', async () => {
     const req = createMockNextRequest(
