@@ -10,6 +10,8 @@ import ClientService from '@/lib/services/client/ClientService'
 
 export const metadata: Metadata = {
   title: 'Home',
+  description:
+    'Welcome to Encapsulate - A place to connect Computer Science students with innovative projects',
 }
 
 export default async function HomePage() {
