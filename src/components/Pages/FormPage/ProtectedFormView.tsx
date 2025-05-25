@@ -1,45 +1,128 @@
 'use client'
 
+import React, { useState, useEffect } from 'react'
 import type { FC } from 'react'
-import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import type { SubmitHandler } from 'react-hook-form'
 import Button from '@/components/Generic/Button/Button'
 import Input from '@/components/Generic/Input/InputField'
 import Textarea from '@/components/Generic/Textarea/Textarea'
 import Radio from '@/components/Generic/Radio/Radio'
 import Checkbox from '@/components/Generic/Checkbox/Checkbox'
-import { semesterNames } from '@/test-config/mocks/Semester.mock'
 import { FiCheck } from 'react-icons/fi'
-import { HiX } from 'react-icons/hi'
-import { useSearchParams } from 'next/navigation'
+import { HiX, HiExclamation } from 'react-icons/hi'
+import { redirect, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import type { CreateProjectRequestBody, CreateProjectClient } from '@/app/api/projects/route'
+import { handleFormPageLoad, handleProjectFormSubmission } from '@/lib/services/form/Handlers'
+import Notification from '@/components/Generic/Notification/Notification'
 
-interface OtherClientDetails {
-  fullName: string
-  email: string
+interface formProject extends CreateProjectRequestBody {
+  meetingAttendance: boolean
+  finalPresentationAttendance: boolean
+  projectSupportAndMaintenance: boolean
+}
+
+interface semesterOptions {
+  value: string
+  label: string
+}
+
+const returnCalendarDateFromISOString = (isoString: string): string => {
+  const date = new Date(isoString)
+  return date.toLocaleDateString('en-NZ', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
 }
 
 const ProtectedFormView: FC = () => {
+  const [showNotification, setShowNotification] = useState<boolean>(false)
+
+  // id / semester name pairs for the upcoming semesters
+  const [upcomingSemesterOptions, setUpcomingSemesterOptions] = useState<semesterOptions[]>([])
+  const [nextSemesterOption, setNextSemesterOption] = useState<semesterOptions>();
+
+  // State to manage the additional client details
+  const [otherClientDetails, setOtherClientDetails] = useState<CreateProjectClient[]>([])
+
   // State to manage the pairs of names and emails of additional clients
-  const [pairs, setPairs] = useState<OtherClientDetails[]>([])
   const searchParams = useSearchParams()
   const projectName = searchParams.get('projectName') || ''
 
-  const handleChange = (index: number, field: keyof OtherClientDetails, value: string) => {
-    const updated = [...pairs]
+  const handleChange = (index: number, field: keyof CreateProjectClient, value: string) => {
+    const updated = [...otherClientDetails]
     updated[index][field] = value
-    setPairs(updated)
+    setOtherClientDetails(updated)
   }
 
   const addPair = () => {
-    setPairs([...pairs, { fullName: '', email: '' }])
+    setOtherClientDetails([...otherClientDetails, { firstName: '', lastName: '', email: '' }])
   }
 
   const deletePair = (index: number) => {
-    setPairs(pairs.filter((_, i) => i !== index))
+    setOtherClientDetails(otherClientDetails.filter((_, i) => i !== index))
+  }
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<formProject>()
+
+  useEffect(() => {
+    handleFormPageLoad().then((res) => {
+      setUpcomingSemesterOptions(
+        res.upcomingSemesters.map((semester) => ({
+          value: semester.id,
+          label: `${semester.name} (${returnCalendarDateFromISOString(semester.startDate)} - ${returnCalendarDateFromISOString(semester.endDate)})`,
+        }))
+      )
+      // the next semester is the last one in the list
+      setNextSemesterOption(res.upcomingSemesters.length > 0 ? {
+        value: res.upcomingSemesters[res.upcomingSemesters.length - 1].id,
+        label: `${res.upcomingSemesters[res.upcomingSemesters.length - 1].name} (${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].startDate)} - ${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].endDate)})`
+        } : undefined);
+    })
+  }, [])
+
+  const hasFutureConsideration = String(watch('futureConsideration')) === "Yes";
+  const onSubmit: SubmitHandler<formProject> = async (data) => {
+    console.log(data)
+    if (nextSemesterOption) {
+      data.semesters.push(nextSemesterOption?.value); // Add the next semester to the list of semesters
+    }
+    data.additionalClients = otherClientDetails;
+    data.futureConsideration = hasFutureConsideration;
+    data.timestamp = new Date().toISOString();
+
+    const res = await handleProjectFormSubmission(data as CreateProjectRequestBody);
+
+    // Handle the response as needed
+    // For example, you can check for errors or success messages
+    if (res?.success) {
+      redirect('/client')
+    } else {
+      console.error('Error submitting form:', res?.error)
+      setShowNotification(true)
+    }
   }
 
   return (
     <div className="h-dvh w-dvw bg-gradient-to-b from-[#779ea7] to-[#dae6e2] flex flex-col items-center overflow-y-scroll py-[8%] px-[10%] gap-4 p-4">
+      <div className="fixed top-6 right-6 z-50">
+        <Notification
+          isVisible={showNotification}
+          title={'Issue submitting form'}
+          message={'Please check the form for errors and try again.'}
+          type={'warning'}
+          onClose={() => {
+            setShowNotification(false)
+          }}
+        />
+      </div>
       <div className="relative bg-light-beige max-w-full flex flex-col rounded-2xl my-auto border border-deeper-blue">
         <div className="relative flex flex-col p-18 pt-20 rounded-t-2xl gap-6">
           <Link href="/client">
@@ -155,38 +238,10 @@ const ProtectedFormView: FC = () => {
           <p className="text-dark-blue font-inter pb-6">
             <span className="text-pink-accent">*</span> Required
           </p>
-          <form className="flex flex-col gap-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <ol
               className="flex flex-col gap-10 list-decimal list-outside text-dark-blue font-inter text-lg whitespace-pre-wrap ml-5"
-              type="1"
             >
-              <li>
-                <label htmlFor="ClientName">
-                  Main client&apos;s (applicant&apos;s) name{' '}
-                  <span className="text-pink-accent">*</span>
-                </label>
-                <p className="form-question-subheading">Please provide your name.</p>
-                <Input
-                  id="ClientName"
-                  name="ClientName"
-                  type="text"
-                  placeholder="Enter the main client's name"
-                  required={true}
-                />
-              </li>
-              <li>
-                <label htmlFor="ClientEmail">
-                  Main client&apos;s (applicant&apos;s) email{' '}
-                  <span className="text-pink-accent">*</span>
-                </label>
-                <p className="form-question-subheading">Please provide your email.</p>
-                <Input
-                  id="ClientEmail"
-                  name="ClientEmail"
-                  type="text"
-                  placeholder="Enter the main client's email"
-                />
-              </li>
               <li>
                 <div className="flex justify-between items-center">
                   <div>
@@ -208,14 +263,25 @@ const ProtectedFormView: FC = () => {
                     + Add Client
                   </Button>
                 </div>
-                {pairs.map((pair, idx) => (
+                {otherClientDetails.map((pair, idx) => (
                   <div key={idx} className="flex gap-5 justify-end mb-5">
                     <div className="w-80 flex flex-col gap-3">
-                      <label className="text-sm">Full Name:</label>
+                      <label className="text-sm">First Name:</label>
                       <Input
-                        id={`OtherClientName${idx}`}
+                        id={`OtherClientFirstName${idx}`}
                         type="text"
-                        onChange={(e) => handleChange(idx, 'fullName', e.target.value)}
+                        value={pair.firstName}
+                        onChange={(e) => handleChange(idx, 'firstName', e.target.value)}
+                        placeholder="Other client's name"
+                      />
+                    </div>
+                    <div className="w-80 flex flex-col gap-3">
+                      <label className="text-sm">Last Name:</label>
+                      <Input
+                        id={`OtherClientLastName${idx}`}
+                        type="text"
+                        value={pair.lastName}
+                        onChange={(e) => handleChange(idx, 'lastName', e.target.value)}
                         placeholder="Other client's name"
                       />
                     </div>
@@ -224,6 +290,7 @@ const ProtectedFormView: FC = () => {
                       <Input
                         id={`OtherClientEmail${idx}`}
                         type="email"
+                        value={pair.email}
                         onChange={(e) => handleChange(idx, 'email', e.target.value)}
                         placeholder="Other client's email"
                       />
@@ -249,10 +316,12 @@ const ProtectedFormView: FC = () => {
                 </p>
                 <Input
                   id="ProjectTitle"
-                  name="ProjectTitle"
                   type="text"
                   placeholder="Enter the project title"
                   defaultValue={projectName}
+                  error={!!errors.name}
+                  errorMessage={errors.name?.message}
+                  {...register('name', { required: 'Project Title is required' })}
                 />
               </li>
               <li>
@@ -263,10 +332,12 @@ const ProtectedFormView: FC = () => {
                   Please provide a short description (3-10 sentences) of the project.
                 </p>
                 <Textarea
-                  id="ProjectDescription"
-                  name="ProjectDescription"
+                  id="Description"
                   placeholder="Enter the project description"
                   className="h-25"
+                  error={!!errors.description}
+                  errorMessage={errors.description?.message}
+                  {...register('description', { required: 'Project Description is required' })}
                 />
               </li>
               <li>
@@ -279,9 +350,11 @@ const ProtectedFormView: FC = () => {
                 </p>
                 <Textarea
                   id="DesiredOutput"
-                  name="DesiredOutput"
                   placeholder="Enter the desired output"
                   className="h-25"
+                  error={!!errors.desiredOutput}
+                  errorMessage={errors.desiredOutput?.message}
+                  {...register('desiredOutput', { required: 'Desired Output is required' })}
                 />
               </li>
               <li>
@@ -293,7 +366,16 @@ const ProtectedFormView: FC = () => {
                   yes, please specify the required equipment. Note: We can only accept a limited
                   number of projects with special equipment needs.
                 </p>
-                <Radio name="SpecialEquipmentRequirements" values={['No']} customInput={true} />
+                <Radio
+                  values={['No']}
+                  customInput={true}
+                  error={!!errors.specialEquipmentRequirements}
+                  errorMessage={errors.specialEquipmentRequirements?.message}
+                  {...register('specialEquipmentRequirements', {
+                    required: 'Please Select One Option',
+                    validate: (value) => value !== "" || 'Input Field must not be empty'
+                  })}
+                />
               </li>
               <li>
                 <label htmlFor="SpecialEquipmentRequirements">
@@ -302,7 +384,7 @@ const ProtectedFormView: FC = () => {
                 <p className="form-question-subheading">
                   Would you be open to the idea of <b>multiple teams working on your project</b>? If
                   yes, please specify the maximum number of teams you would be happy to work
-                  with. To make it easier for you, all team meetings will be combined into the same
+                  with. To make it easier for you, all team meetings will be combined into the same
                   time slot, ensuring you won&apos;t need to allocate more meeting time than you
                   would with one team.
                   <br />
@@ -317,9 +399,14 @@ const ProtectedFormView: FC = () => {
                   expectations.
                 </p>
                 <Radio
-                  name="NumberOfTeams"
                   values={['No, only 1 team', 'Yes, up to 4 teams']}
                   customInput={true}
+                  error={!!errors.numberOfTeams}
+                  errorMessage={errors.numberOfTeams?.message}
+                  {...register('numberOfTeams', {
+                    required: 'Number of Teams is required',
+                    validate: (value) => value !== "" || 'Number of Teams is required'
+                  })}
                 />
               </li>
               <li>
@@ -331,9 +418,9 @@ const ProtectedFormView: FC = () => {
                 </p>
                 <Textarea
                   id="DesiredTeamSkills"
-                  name="DesiredTeamSkills"
                   placeholder="Enter any desired team skills"
                   className="h-25"
+                  {...register('desiredTeamSkills')}
                 />
               </li>
               <li>
@@ -344,9 +431,9 @@ const ProtectedFormView: FC = () => {
                 </p>
                 <Textarea
                   id="AvailableResources"
-                  name="AvailableResources"
                   placeholder="Enter any available resources"
                   className="h-25"
+                  {...register('availableResources')}
                 />
               </li>
               <li>
@@ -354,10 +441,18 @@ const ProtectedFormView: FC = () => {
                   Future consideration <span className="text-pink-accent">*</span>
                 </label>
                 <p className="form-question-subheading">
-                  If your project is not selected by students in the upcoming semester, would you
+                  If your project is not selected by students in the upcoming semester<b>{(nextSemesterOption) ? " (" + nextSemesterOption.label + ")" : ""}</b>, would you
                   like it to be considered for following semesters?
                 </p>
-                <Radio name="FutureConsideration" values={['Yes', 'No']} required={true} />
+                <Radio
+                  values={['Yes', 'No']}
+                  required={false}
+                  error={!!errors.futureConsideration}
+                  errorMessage={errors.futureConsideration?.message}
+                  {...register('futureConsideration', {
+                    required: 'Future Consideration is required',
+                  })}
+                />
               </li>
               <li>
                 <label htmlFor="FutureSemesters">Future Semesters</label>
@@ -365,7 +460,14 @@ const ProtectedFormView: FC = () => {
                   If you replied yes to the question above, what semesters would you like your
                   project to be considered for?
                 </p>
-                <Checkbox name="FutureSemesters" values={semesterNames} />
+                <Checkbox 
+                  options={upcomingSemesterOptions.slice(0, -2)} 
+                  error={!!errors.semesters}
+                  errorMessage={errors.semesters?.message}
+                  {...register('semesters', {
+                    required: hasFutureConsideration ? 'Please select at least one semester' : false,
+                  })}
+                />
               </li>
               <li>
                 <label htmlFor="MeetingAttendance">
@@ -379,23 +481,21 @@ const ProtectedFormView: FC = () => {
                 </p>
                 <label className="flex mb-3">
                   <input
-                    name="MeetingAttendance"
                     type="checkbox"
-                    style={{
-                      appearance: 'none',
-                      WebkitAppearance: 'none',
-                      MozAppearance: 'none',
-                    }}
+                    style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
                     className="opacity-0 peer"
-                    required={true}
+                    {...register('meetingAttendance', {
+                      required: 'Meeting Attendance is required',
+                    })}
                   />
                   <span
-                    className="w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] border-steel-blue rounded-sm
-                      peer-checked:bg-steel-blue
-                      [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
-                      peer-focus:outline peer-focus:outline-deeper-blue
-                      hover:outline hover:outline-deeper-blue
-                      transition-colors duration-150"
+                    className={`${!!errors.finalPresentationAttendance ? 'border-pink-accent hover:outline-dark-pink peer-focus:outline-dark-pink' : 'border-steel-blue hover:outline-deeper-blue peer-focus:outline-deeper-blue'}
+                        w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] rounded-sm
+                        peer-checked:bg-steel-blue 
+                        [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
+                        hover:outline 
+                        peer-focus:outline 
+                        transition-colors duration-150`}
                   >
                     <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
                   </span>
@@ -404,6 +504,12 @@ const ProtectedFormView: FC = () => {
                     scheduled 2-3 weeks apart.
                   </p>
                 </label>
+                {!!errors.meetingAttendance && (
+                  <div className="flex items-center gap-2 text-xs text-pink-accent min-h-[1.25rem] mt-2">
+                    <HiExclamation className="w-3 h-3" />
+                    <p>{errors.meetingAttendance?.message}</p>
+                  </div>
+                )}
               </li>
               <li>
                 <label htmlFor="FinalPresentationAttendance">
@@ -416,23 +522,21 @@ const ProtectedFormView: FC = () => {
                 </p>
                 <label className="flex mb-3">
                   <input
-                    name="FinalPresentationAttendance"
                     type="checkbox"
-                    style={{
-                      appearance: 'none',
-                      WebkitAppearance: 'none',
-                      MozAppearance: 'none',
-                    }}
+                    style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
                     className="opacity-0 peer"
-                    required={true}
+                    {...register('finalPresentationAttendance', {
+                      required: 'Final Presentation Attendance is required',
+                    })}
                   />
                   <span
-                    className="w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] border-steel-blue rounded-sm
-                      peer-checked:bg-steel-blue
-                      [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
-                      hover:outline hover:outline-deeper-blue
-                      peer-focus:outline peer-focus:outline-deeper-blue
-                      transition-colors duration-150"
+                    className={`${!!errors.finalPresentationAttendance ? 'border-pink-accent hover:outline-dark-pink peer-focus:outline-dark-pink' : 'border-steel-blue hover:outline-deeper-blue peer-focus:outline-deeper-blue'}
+                        w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] rounded-sm
+                        peer-checked:bg-steel-blue 
+                        [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
+                        hover:outline 
+                        peer-focus:outline 
+                        transition-colors duration-150`}
                   >
                     <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
                   </span>
@@ -440,6 +544,12 @@ const ProtectedFormView: FC = () => {
                     I confirm that I will be able to attend final presentation <b>in-person</b>.
                   </p>
                 </label>
+                {!!errors.finalPresentationAttendance && (
+                  <div className="flex items-center gap-2 text-xs text-pink-accent min-h-[1.25rem] mt-2">
+                    <HiExclamation className="w-3 h-3" />
+                    <p>{errors.finalPresentationAttendance?.message}</p>
+                  </div>
+                )}
               </li>
               <li>
                 <label htmlFor="ProjectSupportAndMaintenance">
@@ -453,19 +563,22 @@ const ProtectedFormView: FC = () => {
                   <input
                     name="ProjectSupportAndMaintenance"
                     type="checkbox"
-                    style={{
-                      appearance: 'none',
-                      WebkitAppearance: 'none',
-                      MozAppearance: 'none',
-                    }}
+                    style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
                     className="opacity-0 peer"
-                    required={true}
+                    required={false}
                   />
                   <Checkbox
-                    name="ProjectSupport"
-                    values={[
-                      'I understand that no resources will be available for support or maintenance after the semester ends, and that neither the University nor the participating students assume any liability for the project outcome.',
+                    options={[
+                      {
+                        label: 'I understand that no resources will be available for support or maintenance after the semester ends, and that neither the University nor the participating students assume any liability for the project outcome.',
+                        value: 'yes'
+                      }
                     ]}
+                    error={!!errors.projectSupportAndMaintenance}
+                    errorMessage={errors.projectSupportAndMaintenance?.message}
+                    {...register('projectSupportAndMaintenance', {
+                      required: 'Project Support and Maintenance is required',
+                    })}
                   />
                 </label>
               </li>

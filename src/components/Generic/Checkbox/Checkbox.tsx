@@ -40,7 +40,7 @@ const Checkbox: FC<CheckboxProps> = ({
           >
             <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
           </span>
-          <p className="text-sm text-dark-blue">{option.label}</p>
+          <p className="w-[100%] text-sm text-dark-blue">{option.label}</p>
         </label>
       ))}
       {error && (

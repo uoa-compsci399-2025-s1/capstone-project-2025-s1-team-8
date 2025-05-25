@@ -1,6 +1,5 @@
 'use server'
 
-// import { redirect } from 'next/navigation'
 import ProjectFormService from './projectFormService'
 import { StatusCodes } from 'http-status-codes'
 import { SemesterType } from '@/types/Semester'
@@ -36,32 +35,6 @@ export async function handleProjectFormSubmission(
   message?: string
 }> {
   try {
-    // Extract form data
-    // const name = formData.get('name') as string
-    // const description = formData.get('description') as string
-    // const desiredOutput = formData.get('desiredOutput') as string
-    // const specialEquipmentRequirements = formData.get('specialEquipmentRequirements') as string
-    // const numberOfTeams = formData.get('numberOfTeams') as string
-    // const desiredTeamSkills = formData.get('desiredTeamSkills') as string
-    // const availableResources = formData.get('availableResources') as string
-    // const futureConsideration = formData.get('futureConsideration') === 'Yes'
-    // const timestamp = formData.get('timestamp') as string || new Date().toISOString()
-
-    // Parsing semester data
-    // const semestersData = formData.get('semesters') as string
-    // const semesters = semestersData ? semestersData.split(',').map(s => s.trim()) : []
-
-    // Extract additional clients if provided
-    // const additionalClientsData = formData.get('additionalClients') as string
-    // let additionalClients = undefined
-    // if (additionalClientsData) {
-    //   try {
-    //     additionalClients = JSON.parse(additionalClientsData) as CreateProjectClient[]
-    //   } catch (error) {
-    //     console.error('Error parsing additional clients:', error)
-    //   }
-    // }
-
     // Validate required fields
     if (!formData.name) return { success: false, error: 'Project name is required' }
     if (!formData.description) return { success: false, error: 'Project description is required' }
@@ -69,21 +42,6 @@ export async function handleProjectFormSubmission(
     if (!formData.specialEquipmentRequirements) return { success: false, error: 'Special equipment requirements is required' }
     if (!formData.numberOfTeams) return { success: false, error: 'Number of teams is required' }
     if (formData.futureConsideration && formData.semesters.length == 0) return { success: false, error: 'At least one semester must be selected' }
-
-    // Create the project form data object
-    // const projectFormData: CreateProjectRequestBody = {
-    //   additionalClients,
-    //   name,
-    //   description,
-    //   desiredOutput,
-    //   specialEquipmentRequirements,
-    //   numberOfTeams,
-    //   desiredTeamSkills,
-    //   availableResources,
-    //   futureConsideration,
-    //   timestamp,
-    //   semesters
-    // }
 
     // Submit the form data
     const { status, error, message } = await ProjectFormService.submitProjectForm(
