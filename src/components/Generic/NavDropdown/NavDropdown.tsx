@@ -35,7 +35,7 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
       </Menu>
 
       {/* Desktop: dropdown menu */}
-      <Menu as="div" className="relative inline-block text-left">
+      <Menu as="div" className="hidden sm:relative sm:inline-block text-left">
         <div>
           <MenuButton className="inline-flex items-center gap-1 focus:outline-none nav-link-text">
             {buttonText}
