@@ -36,18 +36,17 @@ type AdminDashboardProps = {
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({
-  clients,
+  clients: initialClients,
   semesters: initialSemesters,
   projects: initialProjects,
   totalNumPages = 0,
   semesterStatusList = {},
 }) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
-
   const [activeNav, setActiveNav] = useState<number | null>(null)
   const [notificationMessage, setNotificationMessage] = useState('')
   const [semesters, setSemesters] = useState<Semester[]>(initialSemesters)
-  const [clientsData, setClientsData] = useState(clients)
+  const [clientsData, setClientsData] = useState(initialClients)
   const [projects, setProjects] = useState<SemesterContainerData>(initialProjects)
   const [semesterStatuses, setSemesterStatuses] =
     useState<Record<string, 'current' | 'upcoming' | ''>>(semesterStatusList)
@@ -59,7 +58,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       string,
       { data: { client: UserCombinedInfo; projects: ProjectDetails[] }[]; totalPages: number }
     >
-  >({ _1: { data: clients, totalPages: totalNumPages } })
+  >({ _1: { data: initialClients, totalPages: totalNumPages } })
   const itemsPerPage = 10
 
   const getClientsCache = async (pageNum: number, query: string) => {
