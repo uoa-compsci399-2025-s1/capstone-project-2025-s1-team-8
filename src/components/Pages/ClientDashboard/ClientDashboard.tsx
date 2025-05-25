@@ -1,9 +1,10 @@
+import type { StatusCodes } from 'http-status-codes'
+
 import CreateProjectCard from '@/components/Composite/CreateProjectCard/CreateProjectCard'
 import GradientTextArea from '@/components/Generic/GradientTextArea/GradientTextArea'
 import ClientProfile from '@/components/Composite/ClientProfile/ClientProfile'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import type { UserCombinedInfo } from '@/types/Collections'
-import type { StatusCodes } from 'http-status-codes'
 import type { ProjectDetails } from '@/types/Project'
 
 interface ClientDashboardProps {

@@ -160,10 +160,10 @@ const AdminSemesterService = {
     const responseNext = await GetSemesters(await buildNextRequest(urlNext, { method: 'GET' }))
     const dataNext = await responseNext.json()
 
-    if (dataCurrent.data[0]?.id === semesterId) {
+    if (dataCurrent.data && dataCurrent.data[0].id === semesterId) {
       return 'current'
     }
-    if (dataNext.data[0]?.id === semesterId) {
+    if (dataNext.data && dataNext.data[0].id === semesterId) {
       return 'upcoming'
     }
     return ''

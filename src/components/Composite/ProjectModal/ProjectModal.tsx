@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 import Modal from '@/components/Generic/Modal/Modal'
 import Capsule from '@/components/Generic/Capsule/Capsule'
@@ -5,12 +7,11 @@ import type { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'
 import Button from '@/components/Generic/Button/Button'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
-import type { Project, Semester } from '@/payload-types'
 import type { UserCombinedInfo } from '@/types/Collections'
+import type { ProjectDetails } from '@/types/Project'
 
 interface ProjectModalProps extends ModalProps {
-  projectInfo: Project
-  semesters?: Semester[]
+  projectInfo: ProjectDetails
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({
@@ -18,9 +19,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   onClose,
   className = '',
   projectInfo,
-  semesters,
 }) => {
-  if (!semesters) semesters = []
+  if (!projectInfo.semesters) projectInfo.semesters = []
   const [copied, setCopied] = useState(false)
   const [copiedAll, setCopiedAll] = useState(false)
 
@@ -133,50 +133,60 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
           <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />
           <div className="col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
-            {semesters.map((semester) => (
-              <Capsule variant="beige" text={semester.name} key={semester.name} />
+            {projectInfo.semesters.map((semester) => (
+              <Capsule variant="beige" text={semester.name} key={semester.id} />
             ))}
           </div>
         </div>
       </div>
 
       <div className="relative bg-transparent-blue max-w-full flex flex-col px-15 pt-12 py-19 rounded-b-2xl gap-5">
-        <div className="flex flex-col">
-          <div
-            className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3 pb-3`}
-          >
-            {otherClientDetails.map((clientDetails) => (
-              <>
-                <h2 className="col-start-1 text-lg font-normal text-dark-blue font-inter alternate">
-                  {clientDetails.firstName + ' ' + clientDetails.lastName}
-                </h2>
-                <h2 className="col-start-2 text-lg font-normal text-deeper-blue font-inter email">
-                  |
-                </h2>
-                <h2 className="col-start-3 text-lg font-normal text-deeper-blue font-inter email">
-                  {clientDetails.email}
-                </h2>
-              </>
-            ))}
-
-            <Button
-              onClick={() => handleCopyAll(projectClient, otherClientDetails)}
-              className="col-start-5 row-start-1"
-              variant="muted_blue"
-              size="sm"
+        {otherClientDetails && otherClientDetails.length > 0 && (
+          <div className="flex flex-col">
+            <div
+              className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3 pb-3`}
             >
-              {copiedAll ? <FiCheck className="self-center size-4" /> : <p>Copy All Emails</p>}
-            </Button>
+              {otherClientDetails.map((clientDetails) => (
+                <>
+                  <h2 className="col-start-1 text-lg font-normal text-dark-blue font-inter alternate">
+                    {clientDetails.firstName + ' ' + clientDetails.lastName}
+                  </h2>
+                  <h2 className="col-start-2 text-lg font-normal text-deeper-blue font-inter email">
+                    |
+                  </h2>
+                  <h2 className="col-start-3 text-lg font-normal text-deeper-blue font-inter email">
+                    {clientDetails.email}
+                  </h2>
+                </>
+              ))}
+
+              <Button
+                onClick={() => handleCopyAll(projectClient, otherClientDetails)}
+                className="col-start-5 row-start-1"
+                variant="muted_blue"
+                size="sm"
+              >
+                {copiedAll ? <FiCheck className="self-center size-4" /> : <p>Copy All Emails</p>}
+              </Button>
+            </div>
           </div>
-        </div>
-        <Capsule variant="light_beige" text="Desired team skills" />
-        <p className="text-sm text-dark-blue font-inter text-left mb-3">
-          {projectInfo.desiredTeamSkills}
-        </p>
-        <Capsule variant="light_beige" text="Available resources" />
-        <p className="text-sm text-dark-blue font-inter text-left">
-          {projectInfo.availableResources}
-        </p>
+        )}
+        {projectInfo.desiredTeamSkills && projectInfo.desiredTeamSkills != '' && (
+          <>
+            <Capsule variant="light_beige" text="Desired team skills" />
+            <p className="text-sm text-dark-blue font-inter text-left mb-3">
+              {projectInfo.desiredTeamSkills}
+            </p>
+          </>
+        )}
+        {projectInfo.availableResources && (
+          <>
+            <Capsule variant="light_beige" text="Available resources" />
+            <p className="text-sm text-dark-blue font-inter text-left">
+              {projectInfo.availableResources}
+            </p>
+          </>
+        )}
       </div>
     </Modal>
   )

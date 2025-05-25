@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 import ProjectModal from '@/components/Composite/ProjectModal/ProjectModal'
 import type { UserCombinedInfo } from '@/types/Collections'
@@ -35,12 +37,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo }) => {
           </div>
         </div>
       </div>
-      <ProjectModal
-        projectInfo={projectInfo}
-        semesters={projectInfo.semesters}
-        open={modalOpen}
-        onClose={() => toggleModal()}
-      />
+      <ProjectModal projectInfo={projectInfo} open={modalOpen} onClose={() => toggleModal()} />
     </div>
   )
 }

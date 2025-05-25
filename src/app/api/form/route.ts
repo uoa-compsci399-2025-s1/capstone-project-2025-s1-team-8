@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 import FormService from '@/data-layer/services/FormService'
 import { Security } from '@/business-layer/middleware/Security'
 import { NotFound } from 'payload'
-import { StatusCodes } from 'http-status-codes'
+import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 
 class RouteWrapper {
   /**
@@ -26,7 +26,7 @@ class RouteWrapper {
       }
       console.log(error)
       return NextResponse.json(
-        { error: 'Internal server error' },
+        { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }
