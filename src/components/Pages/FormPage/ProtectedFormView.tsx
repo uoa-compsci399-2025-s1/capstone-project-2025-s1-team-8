@@ -90,7 +90,6 @@ const ProtectedFormView: FC = () => {
 
   const hasFutureConsideration = String(watch('futureConsideration')) === 'Yes'
   const onSubmit: SubmitHandler<formProject> = async (data) => {
-    console.log(data)
     if (nextSemesterOption) {
       data.semesters.push(nextSemesterOption?.value) // Add the next semester to the list of semesters
     }
