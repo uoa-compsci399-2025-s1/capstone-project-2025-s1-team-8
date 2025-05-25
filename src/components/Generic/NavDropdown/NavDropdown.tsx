@@ -13,10 +13,10 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-<MenuButton className="inline-flex items-center gap-1 focus:outline-none nav-link-text">
-  {buttonText}
-  <IoChevronDown aria-hidden="true" className="size-4 text-current" />
-</MenuButton>
+        <MenuButton className="inline-flex items-center gap-1 focus:outline-none nav-link-text">
+          {buttonText}
+          <IoChevronDown aria-hidden="true" className="size-4 text-current" />
+        </MenuButton>
       </div>
 
       <MenuItems

@@ -96,9 +96,8 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
                   { href: '/client', text: 'Client Dashboard' },
                   { href: '/student', text: 'Student Dashboard' },
                 ]}
-                buttonText='My Dashboards'
-              >
-              </NavDropdown>
+                buttonText="My Dashboards"
+              ></NavDropdown>
               <span
                 className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/admin' ? 'scale-x-100' : ''}`}
               />
@@ -183,9 +182,8 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
                 { href: '/client', text: 'Client Dashboard' },
                 { href: '/student', text: 'Student Dashboard' },
               ]}
-              buttonText='My Dashboards'
-            >
-            </NavDropdown>
+              buttonText="My Dashboards"
+            ></NavDropdown>
             <span
               className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/admin' ? 'scale-x-100' : ''}`}
             />
