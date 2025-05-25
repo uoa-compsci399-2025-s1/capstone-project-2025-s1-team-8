@@ -7,8 +7,9 @@ import { usePathname } from 'next/navigation'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { User } from '@/payload-types'
 import { UserRole } from '@/types/User'
+import NavDropdown from '../NavDropdown/NavDropdown'
 
-interface NavLink {
+export interface NavLink {
   href: string
   text: string
 }
@@ -67,31 +68,39 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
             </div>
           ))}
           {/* TODO: add link to About page */}
-          {/* <div className="relative group p-2">
-            <Link href="/" className="nav-link-text">
-              About
-            </Link>
-            <span className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/' ? 'scale-x-100' : ''}`} />
-          </div> */}
-          {user && user.role === UserRole.Admin && (
+          {
             <div className="relative group p-2">
-              <Link href={'/client'} className="nav-link-text">
-                {'My Client Dashboard'}
+              <Link href="/about" className="nav-link-text">
+                About
+              </Link>
+              <span
+                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/about' ? 'scale-x-100' : ''}`}
+              />
+            </div>
+          }
+          {user && user.role !== UserRole.Admin && (
+            <div className="relative group p-2">
+              <Link href={dashboardLink} className="nav-link-text">
+                {'My Dashboard'}
               </Link>
               <span
                 className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/client' ? 'scale-x-100' : ''}`}
               />
             </div>
           )}
-          {user && (
+          {user && user.role === UserRole.Admin && (
             <div className="relative group p-2">
-              <Link href={dashboardLink} className="nav-link-text">
-                {user.role === UserRole.Admin || user.role == UserRole.Client
-                  ? 'My DashBoard'
-                  : 'Published Projects'}
-              </Link>
+              <NavDropdown
+                items={[
+                  { href: '/admin', text: 'Admin Dashboard' },
+                  { href: '/client', text: 'Client Dashboard' },
+                  { href: '/student', text: 'Student Dashboard' },
+                ]}
+                buttonText='My Dashboards'
+              >
+              </NavDropdown>
               <span
-                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === dashboardLink ? 'scale-x-100' : ''}`}
+                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/admin' ? 'scale-x-100' : ''}`}
               />
             </div>
           )}
@@ -152,26 +161,36 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
           </div>
         ))}
         <div className="p-[5%]">
-          <Link href="/" className="nav-link-text">
+          <Link href="/about" className="nav-link-text">
             About
           </Link>
         </div>
-        {user && user.role === UserRole.Admin && (
+        {user && user.role !== UserRole.Admin && (
           <div className="p-[5%]">
-            <Link href={'/client'} className="nav-link-text">
-              {'My Client Dashboard'}
+            <Link href={dashboardLink} className="nav-link-text">
+              {'My Dashboard'}
             </Link>
             <span
               className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/client' ? 'scale-x-100' : ''}`}
             />
           </div>
         )}
-        <div className="p-[5%]">
-          {/* {navElement} */}
-          <Link href={dashboardLink} className="nav-link-text">
-            {user ? 'My Dashboard' : 'Published Projects'}
-          </Link>
-        </div>
+        {user && user.role === UserRole.Admin && (
+          <div className="p-[5%]">
+            <NavDropdown
+              items={[
+                { href: '/admin', text: 'Admin Dashboard' },
+                { href: '/client', text: 'Client Dashboard' },
+                { href: '/student', text: 'Student Dashboard' },
+              ]}
+              buttonText='My Dashboards'
+            >
+            </NavDropdown>
+            <span
+              className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/admin' ? 'scale-x-100' : ''}`}
+            />
+          </div>
+        )}
         <div className="p-[5%]">
           {
             <button onClick={onclick} className="nav-link-text font-bold">
