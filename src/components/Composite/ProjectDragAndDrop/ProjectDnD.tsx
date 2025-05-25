@@ -22,6 +22,8 @@ import Notification from '@/components/Generic/Notification/Notification'
 import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
 import type { User } from '@/payload-types'
+import { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
+import { typeToFlattenedError } from 'zod'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -37,9 +39,22 @@ export interface SemesterContainerData {
 }
 
 export type DndComponentProps = SemesterContainerData & {
-  onSaveChanges: (params: SemesterContainerData) => Promise<void>
-  onPublishChanges: (params: SemesterContainerData) => Promise<void>
+  onSaveChanges: (params: SemesterContainerData) => Promise<void | {
+    error?: string
+    message?: string
+    details?: typeToFlattenedError<typeof PatchSemesterProjectRequestBody>
+  }>
+  onPublishChanges: (params: SemesterContainerData) => Promise<void | {
+    error?: string
+    message?: string
+  }>
 }
+
+type Notification = {
+  title: string
+  message: string
+  type: 'success' | 'warning'
+} | null
 
 const defaultProjectInfo: ProjectDetails = {
   id: '',
@@ -72,31 +87,41 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   const [containers, setContainers] = useState<DNDType[]>(presetContainers)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
-  const [showNotification, setShowNotification] = useState<boolean>(false)
-  const [successNotification, setSuccessNotification] = useState<string | null>(null)
+  // const [showNotification, setShowNotification] = useState<boolean>(false)
+  // const [successNotification, setSuccessNotification] = useState<string | null>(null)
+  const [notification, setNotification] = useState<Notification>(null)
 
   const buttonItems = [
     { Icon: FiSave, value: 'save', label: 'Save' },
     { Icon: FiPrinter, value: 'publish', label: 'Publish' },
     { Icon: HiOutlineDocumentDownload, value: 'downloadcsv', label: 'Download CSV' },
   ]
+  let timeoutId: ReturnType<typeof setTimeout> | null = null
+
+  const showNotification = (title: string, message: string, type: 'success' | 'warning') => {
+    if (timeoutId) {
+      clearTimeout(timeoutId)
+    }
+
+    // Show the new notification
+    setNotification({ title, message, type })
+
+    // Set a new timeout
+    timeoutId = setTimeout(() => {
+      setNotification(null)
+      timeoutId = null // Reset the ID
+    }, 6000)
+  }
+
   useEffect(() => {
     if (hasChanges) {
-      setShowNotification(true)
-    } else {
-      setShowNotification(false)
+      showNotification(
+        'Unsaved changes',
+        "You\'ve made changes to the project order. Don\'t forget to save!",
+        'warning',
+      )
     }
   }, [hasChanges])
-
-  useEffect(() => {
-    if (showNotification) {
-      const timer = setTimeout(() => {
-        setShowNotification(false)
-      }, 5000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [showNotification])
 
   //TODO: when items are moved around, remove the active filter styles
 
@@ -121,14 +146,17 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
   async function handleSaveChanges() {
     setHasChanges(false)
-    setShowNotification(false)
-    setSuccessNotification('Your changes have been saved successfully!')
 
-    setTimeout(() => {
-      setSuccessNotification(null)
-    }, 5000)
-    //TODO: have some error handling in case changes aren't saved
-    await onSaveChanges({ presetContainers: containers, semesterId })
+    const savedChangesMessage = await onSaveChanges({ presetContainers: containers, semesterId })
+    if (savedChangesMessage && 'error' in savedChangesMessage) {
+      showNotification(
+        'Error',
+        'There was an error saving your changes. Please try again.',
+        'warning',
+      )
+    } else {
+      showNotification('Success', 'Your changes have been saved successfully!', 'success')
+    }
 
     setContainers((prev) =>
       prev.map((container) => ({
@@ -139,22 +167,25 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   }
 
   async function handlePublishChanges() {
-    // send changes to the backend
-    await onPublishChanges({ presetContainers: containers, semesterId })
-    setSuccessNotification('The approved projects have been published!')
-
-    setTimeout(() => {
-      setSuccessNotification(null)
-    }, 5000)
+    const publishMessage = await onPublishChanges({ presetContainers: containers, semesterId })
+    if (publishMessage && 'error' in publishMessage) {
+      showNotification(
+        'Error',
+        'There was an error publishing the approved projects. Please try again.',
+        'warning',
+      )
+    } else {
+      showNotification(
+        'Success',
+        'The approved projects have been successfully published!',
+        'success',
+      )
+    }
   }
 
   function handleDownloadCsv() {
     window.open(`/api/admin/export/semesters/${semesterId}`, '_blank')
-    setSuccessNotification('Download successful!')
-
-    setTimeout(() => {
-      setSuccessNotification(null)
-    }, 5000)
+    showNotification('Success', 'You have successfully downloaded the list of projects', 'success')
   }
 
   function sortProjects(containerId: UniqueIdentifier, filter: string): void {
@@ -461,18 +492,11 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     <div className="mx-auto w-full relative">
       <div className="fixed top-6 right-6 z-50">
         <Notification
-          title={'Unsaved Changes'}
-          message={"You've made changes to the project order. Don't forget to save!"}
-          type={'warning'}
-          isVisible={showNotification}
-          onClose={() => setShowNotification(false)}
-        />
-        <Notification
-          isVisible={successNotification != null}
-          title={'Success'}
-          message={successNotification ?? ''}
-          type={'success'}
-          onClose={() => setShowNotification(false)}
+          isVisible={notification != null}
+          title={notification?.title ?? ''}
+          message={notification?.message ?? ''}
+          type={notification?.type}
+          onClose={() => setNotification(null)}
         />
       </div>
 
