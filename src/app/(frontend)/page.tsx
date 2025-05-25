@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const clientInfo = await ClientService.getClientInfo()
   const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
-  const proposalLink = (user.role === (UserRole.Client || UserRole.Admin)) ? '/form' : '/auth/login'
+  const proposalLink = user.role === (UserRole.Client || UserRole.Admin) ? '/form' : '/auth/login'
   return (
     <div className="h-dvh flex flex-col items-center space-y-8">
       <NavBar onclick={handleLoginButtonClick} user={user} />
