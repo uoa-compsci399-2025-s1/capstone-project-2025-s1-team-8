@@ -9,6 +9,8 @@ import Button from '@/components/Generic/Button/Button'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 import type { Project, Semester } from '@/payload-types'
 import type { UserCombinedInfo } from '@/types/Collections'
+import type { ProjectDetails } from '@/types/Project'
+import { useRouter } from 'next/navigation'
 
 interface ProjectModalProps extends ModalProps {
   projectInfo: Project
@@ -59,6 +61,15 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     ? (projectInfo.additionalClients as UserCombinedInfo[])
     : []
 
+  const router = useRouter()
+
+  const callForm = () => {
+    const queryParams = new URLSearchParams({
+      projectId: projectInfo.id,
+    }).toString()
+    router.push(`/form?${queryParams}`)
+  }
+
   return (
     <Modal
       open={open}
@@ -73,7 +84,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             style={{ pointerEvents: 'initial' }}
             aria-label="Edit"
           >
-            <EditDropdown containerWidth={200} />
+            <EditDropdown containerWidth={200} onEdit={callForm} />
           </button>
         )}
 

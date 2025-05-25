@@ -2,30 +2,98 @@ import React, { useState } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import type { ModalProps } from '@/components/Generic/Modal/Modal'
 import Modal from '@/components/Generic/Modal/Modal'
-import { FiCheck, FiCopy } from 'react-icons/fi'
+import { FiCheck, FiCopy, FiSave } from 'react-icons/fi'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 import type { ProjectDetails } from '@/types/Project'
+import Notification from '@/components/Generic/Notification/Notification'
+import type { UserCombinedInfo } from '@/types/Collections'
 
 interface ClientModalProps extends ModalProps {
-  clientFullName: string
+  clientInfo: UserCombinedInfo
   clientEmail: string
-  affiliation?: string
-  introduction?: string
   projects?: ProjectDetails[]
+  onSave?: (
+    clientId: string,
+    firstName: string,
+    lastName: string,
+    affiliation: string,
+    introduction: string,
+  ) => Promise<{
+    data?: UserCombinedInfo
+    error?: string
+    message?: string
+    details?: string
+  }>
+  onUpdated?: () => void
+  onDeleted?: () => void
 }
 
 const ClientModal: React.FC<ClientModalProps> = ({
   open,
   onClose,
   className = '',
-  clientFullName,
+  clientInfo,
   clientEmail,
-  affiliation,
-  introduction,
+  // i need intro and affil here
   projects,
+  onSave,
+  onUpdated,
+  // onDeleted,
 }) => {
   const [copied, setCopied] = useState(false)
+  const [isEditing, setIsEditing] = useState<boolean>(false)
+  const [name, setName] = useState<string>(clientInfo.firstName + ' ' + clientInfo.lastName)
+  const [previousName, setPreviousName] = useState<string>(
+    clientInfo.firstName + ' ' + clientInfo.lastName,
+  )
+  const [affiliation, setAffiliation] = useState<string>(clientInfo.affiliation ?? '')
+  const [previousAffiliation, setPreviousAffiliation] = useState<string>(
+    clientInfo.affiliation ?? '',
+  )
+  const [introduction, setIntroduction] = useState<string>(clientInfo.introduction ?? '')
+  const [previousIntroduction, setPreviousIntroduction] = useState<string>(
+    clientInfo.introduction ?? '',
+  )
+  const [showNotification, setShowNotification] = useState<boolean>(false)
+  const [notificationMessage, setNotificationMessage] = useState<string>('')
+
+  const handleShowNotification = (message: string) => {
+    setNotificationMessage(message)
+    setShowNotification(true)
+  }
+
+  const handleSave = async () => {
+    const names = name.split(' ')
+    const firstName = names[0]
+    const lastName = names[1]
+    if (!firstName || !lastName) {
+      handleShowNotification('Please enter a valid first and last name.')
+      return
+    }
+
+    if (names.length > 2) {
+      handleShowNotification('Please enter only first and last name.')
+      return
+    }
+    if (onSave) {
+      const res = await onSave(clientInfo.id, firstName, lastName, affiliation, introduction)
+      if (res.error) {
+        setName(previousName)
+        setAffiliation(previousAffiliation)
+        setIntroduction(previousIntroduction)
+        handleShowNotification(
+          'Error updating profile: ' + ((res.error ?? '') || (res.details ?? '')),
+        )
+        return
+      }
+    }
+    setPreviousName(name)
+    setPreviousAffiliation(affiliation)
+    setPreviousIntroduction(introduction)
+    setIsEditing(false)
+    onUpdated?.()
+  }
 
   const handleCopy = (email: string) => {
     navigator.clipboard.writeText(email)
@@ -35,18 +103,51 @@ const ClientModal: React.FC<ClientModalProps> = ({
 
   return (
     <Modal open={open} onClose={onClose} className={className + ' min-h-fit w-[75%] top-5'}>
+      <div className="fixed top-6 right-6 z-50">
+        <Notification
+          isVisible={showNotification}
+          title={'Issue updating profile'}
+          message={notificationMessage}
+          type={'warning'}
+          onClose={() => {
+            setNotificationMessage('')
+            setShowNotification(false)
+          }}
+        />
+      </div>
       <div className="relative max-w-full flex flex-col p-15 py-19 rounded-t-2xl gap-5 pointer-events-none">
         <button
           className="absolute top-8 right-16 sm:top-10 sm:right-20 text-dark-blue hover:text-steel-blue cursor-pointer"
           aria-label="Edit"
           style={{ pointerEvents: 'initial' }}
         >
-          <EditDropdown containerWidth={200} />
+          {isEditing ? (
+            <FiSave
+              className="w-5 h-5 text-dark-blue hover:text-steel-blue top-11.5 right-10"
+              onClick={handleSave}
+            />
+          ) : (
+            <EditDropdown
+              containerWidth={200}
+              onEdit={() => {
+                setIsEditing(true)
+              }}
+            />
+          )}
         </button>
         <div className="flex flex-row gap-5">
-          <h1 className="text-4xl font-normal m-0 text-dark-blue font-dm-serif-display">
-            {clientFullName}
-          </h1>
+          {isEditing ? (
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="editable-capsule"
+              style={{ pointerEvents: 'initial' }}
+            />
+          ) : (
+            <h1 className="text-4xl font-normal m-0 text-dark-blue font-dm-serif-display">
+              {name}
+            </h1>
+          )}
           <h2 className="text-lg font-normal text-steel-blue font-inter self-end pb-0.5">
             {clientEmail}
           </h2>
@@ -62,18 +163,32 @@ const ClientModal: React.FC<ClientModalProps> = ({
             )}
           </button>
         </div>
-        {affiliation && (
+        {/* @TODO still be able to edit affil and intro if they are NULL*/}
+        {affiliation && !isEditing ? (
           <div className="flex flex-row gap-3 items-center mb-6">
             <Capsule variant="muted_blue" text="Affiliation" />
             <Capsule variant="beige" text={affiliation} />
           </div>
+        ) : (
+          affiliation &&
+          isEditing && (
+            <input
+              value={affiliation}
+              onChange={(e) => setAffiliation(e.target.value)}
+              className="editable-capsule"
+            />
+          )
         )}
-
-        {introduction && (
+        {introduction && !isEditing ? (
           <>
             <Capsule variant="muted_blue" text="Introduction" />
             <p className="text-dark-blue font-inter text-sm whitespace-pre-wrap">{introduction}</p>
           </>
+        ) : (
+          introduction &&
+          isEditing && (
+            <p className="text-dark-blue whitespace-pre-line text-sm px-1">{introduction}</p>
+          )
         )}
       </div>
       {projects && (

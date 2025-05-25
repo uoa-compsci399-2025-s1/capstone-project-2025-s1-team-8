@@ -7,9 +7,29 @@ import type { ProjectDetails } from '@/types/Project'
 export interface ClientCardProps {
   clientInfo: UserCombinedInfo
   projects?: ProjectDetails[]
+  onSave?: (
+    clientId: string,
+    firstName: string,
+    lastName: string,
+    affiliation: string,
+    introduction: string,
+  ) => Promise<{
+    data?: UserCombinedInfo
+    error?: string
+    message?: string
+    details?: string
+  }>
+  updated: () => void
+  deleted: () => void
 }
 
-const ClientCard: React.FC<ClientCardProps> = ({ clientInfo, projects }) => {
+const ClientCard: React.FC<ClientCardProps> = ({
+  clientInfo,
+  projects,
+  onSave,
+  updated,
+  deleted,
+}) => {
   const [copied, setCopied] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -46,11 +66,16 @@ const ClientCard: React.FC<ClientCardProps> = ({ clientInfo, projects }) => {
       <ClientModal
         open={open}
         onClose={() => handleModal()}
-        clientFullName={`${clientInfo.firstName}${clientInfo.lastName ? ' ' + clientInfo.lastName : ''}`}
         clientEmail={clientInfo.email}
-        affiliation={clientInfo.affiliation ?? ''}
-        introduction={clientInfo.introduction ?? ''}
+        clientInfo={clientInfo}
         projects={projects}
+        onSave={onSave}
+        onUpdated={() => {
+          updated?.()
+        }}
+        onDeleted={() => {
+          deleted?.()
+        }}
       />
     </>
   )

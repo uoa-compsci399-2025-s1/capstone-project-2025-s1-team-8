@@ -152,17 +152,17 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
         startDate={
           editingSemesterId
             ? new Date(semesters.find((s) => s.id === editingSemesterId)?.startDate || '')
-            : null
+            : undefined
         }
         endDate={
           editingSemesterId
             ? new Date(semesters.find((s) => s.id === editingSemesterId)?.endDate || '')
-            : null
+            : undefined
         }
         submissionDeadline={
           editingSemesterId
             ? new Date(semesters.find((s) => s.id === editingSemesterId)?.deadline || '')
-            : null
+            : undefined
         }
       />
     </div>

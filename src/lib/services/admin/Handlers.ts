@@ -7,7 +7,7 @@ import type { typeToFlattenedError } from 'zod'
 import type { Project, Semester } from '@/payload-types'
 import { type ProjectDetails, ProjectStatus } from '@/types/Project'
 import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
-
+import type { UpdateUserRequestBody } from '@/app/api/admin/users/[id]/route'
 /**
  * Handles the click event to create semester
  *
@@ -231,4 +231,26 @@ export async function handlePublishChanges({
     )
   }
   await updateProjectOrdersAndStatus({ presetContainers, semesterId })
+}
+
+export async function handleUpdateClient(
+  clientId: string,
+  firstName: string,
+  lastName: string,
+  affiliation: string,
+  introduction: string,
+): Promise<{
+  data?: UserCombinedInfo
+  error?: string
+  message?: string
+  details?: string
+}> {
+  const updatedClient: UpdateUserRequestBody = {
+    firstName,
+    lastName,
+    affiliation,
+    introduction,
+  }
+  const response = await AdminService.updateUser(clientId, updatedClient)
+  return { data: response.data }
 }
