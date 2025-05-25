@@ -20,7 +20,7 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ children, items, title }) => 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
-      <DropdownMenuContent className="bg-none text-dark-blue shadow-md shadow-muted-blue rounded-lg w-48">
+      <DropdownMenuContent className="bg-transparent text-dark-blue shadow-md shadow-muted-blue rounded-lg w-48">
         {title && (
           <React.Fragment>
             <DropdownMenuLabel className="text-dark-blue font-semibold">{title}</DropdownMenuLabel>
