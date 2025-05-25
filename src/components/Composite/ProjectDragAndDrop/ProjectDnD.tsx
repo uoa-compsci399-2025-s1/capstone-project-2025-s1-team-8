@@ -87,8 +87,6 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   const [containers, setContainers] = useState<DNDType[]>(presetContainers)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
-  // const [showNotification, setShowNotification] = useState<boolean>(false)
-  // const [successNotification, setSuccessNotification] = useState<string | null>(null)
   const [notification, setNotification] = useState<Notification>(null)
 
   const buttonItems = [
