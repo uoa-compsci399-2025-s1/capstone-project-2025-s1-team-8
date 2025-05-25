@@ -5,7 +5,7 @@ import { POST as CreateProject } from '@/app/api/projects/route'
 import type { StatusCodes } from 'http-status-codes'
 import type { Semester } from '@/payload-types'
 import type { SemesterType } from '@/types/Semester'
-import type {CreateProjectRequestBody } from '@/app/api/projects/route'
+import type { CreateProjectRequestBody } from '@/app/api/projects/route'
 
 const ProjectFormService = {
   /**
@@ -13,9 +13,11 @@ const ProjectFormService = {
    * @param options Options for pagination and filtering
    * @returns A list of upcoming semesters with status information
    */
-  getUpcomingSemesters: async function(
-    options: { page?: number; limit?: number; timeframe?: SemesterType }
-  ): Promise<{
+  getUpcomingSemesters: async function (options: {
+    page?: number
+    limit?: number
+    timeframe?: SemesterType
+  }): Promise<{
     status: StatusCodes
     data?: Semester[]
     nextPage?: string
@@ -28,16 +30,14 @@ const ProjectFormService = {
 
     return { status: response.status, data, nextPage, error }
   },
-  
+
   /**
    * Submits the project form data
    * @param formData The form data to be submitted
    * @param semesterId The ID of the semester
    * @returns A response object with status and error information
    */
-  submitProjectForm: async function(
-    formData: CreateProjectRequestBody,
-  ): Promise<{
+  submitProjectForm: async function (formData: CreateProjectRequestBody): Promise<{
     status: StatusCodes
     error?: string
     message?: string
@@ -47,13 +47,13 @@ const ProjectFormService = {
     const response = await CreateProject(
       await buildNextRequest(url, {
         method: 'POST',
-        body: formData
+        body: formData,
       }),
     )
     const { error, message } = { ...(await response.json()) }
 
     return { status: response.status, error, message }
-  }
+  },
 } as const
 
 export default ProjectFormService

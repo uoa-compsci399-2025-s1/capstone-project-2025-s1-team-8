@@ -8,7 +8,6 @@ export const metadata: Metadata = {
 }
 
 export default function Form() {
-
   return (
     <AuthWrapper scopes={['admin', 'client']}>
       <ProtectedFormView />

@@ -45,9 +45,7 @@ const Radio: FC<RadioProps> = ({
             value={value}
             {...props}
           />
-          <span
-            className={`${radioStyle} ${borderErrorStyle} ${className}`}
-          >
+          <span className={`${radioStyle} ${borderErrorStyle} ${className}`}>
             <div className={`${dotErrorStyle}`} />
           </span>
           <p className="text-sm">{value}</p>
@@ -62,10 +60,8 @@ const Radio: FC<RadioProps> = ({
             value={customValue}
             {...props}
           />
-          <span
-            className={`${radioStyle} ${borderErrorStyle} ${className}`}
-          >
-            <div className={`${dotErrorStyle}`}/>
+          <span className={`${radioStyle} ${borderErrorStyle} ${className}`}>
+            <div className={`${dotErrorStyle}`} />
           </span>
           <Input
             type="text"

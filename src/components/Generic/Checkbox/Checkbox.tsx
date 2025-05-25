@@ -3,16 +3,18 @@ import React from 'react'
 import { FiCheck } from 'react-icons/fi'
 import { HiExclamation } from 'react-icons/hi'
 
+export interface options {
+  value: string
+  label: string
+}
+
 interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
-  options: Array<{
-    label: string
-    value: string
-  }>,
-  error?: boolean,
+  options: options[]
+  error?: boolean
   errorMessage?: string
 }
 
-const Checkbox: FC<CheckboxProps> = ({ 
+const Checkbox: FC<CheckboxProps> = ({
   options = [],
   error = false,
   errorMessage = 'Please select at least one option',

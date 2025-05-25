@@ -8,6 +8,7 @@ import Button from '@/components/Generic/Button/Button'
 import Input from '@/components/Generic/Input/InputField'
 import Textarea from '@/components/Generic/Textarea/Textarea'
 import Radio from '@/components/Generic/Radio/Radio'
+import type { options } from '@/components/Generic/Checkbox/Checkbox'
 import Checkbox from '@/components/Generic/Checkbox/Checkbox'
 import { FiCheck } from 'react-icons/fi'
 import { HiX, HiExclamation } from 'react-icons/hi'
@@ -23,11 +24,6 @@ interface formProject extends CreateProjectRequestBody {
   projectSupportAndMaintenance: boolean
 }
 
-interface semesterOptions {
-  value: string
-  label: string
-}
-
 const returnCalendarDateFromISOString = (isoString: string): string => {
   const date = new Date(isoString)
   return date.toLocaleDateString('en-NZ', {
@@ -41,8 +37,8 @@ const ProtectedFormView: FC = () => {
   const [showNotification, setShowNotification] = useState<boolean>(false)
 
   // id / semester name pairs for the upcoming semesters
-  const [upcomingSemesterOptions, setUpcomingSemesterOptions] = useState<semesterOptions[]>([])
-  const [nextSemesterOption, setNextSemesterOption] = useState<semesterOptions>();
+  const [upcomingSemesterOptions, setUpcomingSemesterOptions] = useState<options[]>([])
+  const [nextSemesterOption, setNextSemesterOption] = useState<options>()
 
   // State to manage the additional client details
   const [otherClientDetails, setOtherClientDetails] = useState<CreateProjectClient[]>([])
@@ -78,27 +74,31 @@ const ProtectedFormView: FC = () => {
         res.upcomingSemesters.map((semester) => ({
           value: semester.id,
           label: `${semester.name} (${returnCalendarDateFromISOString(semester.startDate)} - ${returnCalendarDateFromISOString(semester.endDate)})`,
-        }))
+        })),
       )
       // the next semester is the last one in the list
-      setNextSemesterOption(res.upcomingSemesters.length > 0 ? {
-        value: res.upcomingSemesters[res.upcomingSemesters.length - 1].id,
-        label: `${res.upcomingSemesters[res.upcomingSemesters.length - 1].name} (${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].startDate)} - ${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].endDate)})`
-        } : undefined);
+      setNextSemesterOption(
+        res.upcomingSemesters.length > 0
+          ? {
+              value: res.upcomingSemesters[res.upcomingSemesters.length - 1].id,
+              label: `${res.upcomingSemesters[res.upcomingSemesters.length - 1].name} (${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].startDate)} - ${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].endDate)})`,
+            }
+          : undefined,
+      )
     })
   }, [])
 
-  const hasFutureConsideration = String(watch('futureConsideration')) === "Yes";
+  const hasFutureConsideration = String(watch('futureConsideration')) === 'Yes'
   const onSubmit: SubmitHandler<formProject> = async (data) => {
     console.log(data)
     if (nextSemesterOption) {
-      data.semesters.push(nextSemesterOption?.value); // Add the next semester to the list of semesters
+      data.semesters.push(nextSemesterOption?.value) // Add the next semester to the list of semesters
     }
-    data.additionalClients = otherClientDetails;
-    data.futureConsideration = hasFutureConsideration;
-    data.timestamp = new Date().toISOString();
+    data.additionalClients = otherClientDetails
+    data.futureConsideration = hasFutureConsideration
+    data.timestamp = new Date().toISOString()
 
-    const res = await handleProjectFormSubmission(data as CreateProjectRequestBody);
+    const res = await handleProjectFormSubmission(data as CreateProjectRequestBody)
 
     // Handle the response as needed
     // For example, you can check for errors or success messages
@@ -239,9 +239,7 @@ const ProtectedFormView: FC = () => {
             <span className="text-pink-accent">*</span> Required
           </p>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-            <ol
-              className="flex flex-col gap-10 list-decimal list-outside text-dark-blue font-inter text-lg whitespace-pre-wrap ml-5"
-            >
+            <ol className="flex flex-col gap-10 list-decimal list-outside text-dark-blue font-inter text-lg whitespace-pre-wrap ml-5">
               <li>
                 <div className="flex justify-between items-center">
                   <div>
@@ -373,7 +371,7 @@ const ProtectedFormView: FC = () => {
                   errorMessage={errors.specialEquipmentRequirements?.message}
                   {...register('specialEquipmentRequirements', {
                     required: 'Please Select One Option',
-                    validate: (value) => value !== "" || 'Input Field must not be empty'
+                    validate: (value) => value !== '' || 'Input Field must not be empty',
                   })}
                 />
               </li>
@@ -383,10 +381,10 @@ const ProtectedFormView: FC = () => {
                 </label>
                 <p className="form-question-subheading">
                   Would you be open to the idea of <b>multiple teams working on your project</b>? If
-                  yes, please specify the maximum number of teams you would be happy to work
-                  with. To make it easier for you, all team meetings will be combined into the same
-                  time slot, ensuring you won&apos;t need to allocate more meeting time than you
-                  would with one team.
+                  yes, please specify the maximum number of teams you would be happy to work with.
+                  To make it easier for you, all team meetings will be combined into the same time
+                  slot, ensuring you won&apos;t need to allocate more meeting time than you would
+                  with one team.
                   <br />
                   <br />
                   For your consideration, 1-4 teams would require a 1-hour meeting fortnightly.
@@ -405,7 +403,7 @@ const ProtectedFormView: FC = () => {
                   errorMessage={errors.numberOfTeams?.message}
                   {...register('numberOfTeams', {
                     required: 'Number of Teams is required',
-                    validate: (value) => value !== "" || 'Number of Teams is required'
+                    validate: (value) => value !== '' || 'Number of Teams is required',
                   })}
                 />
               </li>
@@ -441,8 +439,9 @@ const ProtectedFormView: FC = () => {
                   Future consideration <span className="text-pink-accent">*</span>
                 </label>
                 <p className="form-question-subheading">
-                  If your project is not selected by students in the upcoming semester<b>{(nextSemesterOption) ? " (" + nextSemesterOption.label + ")" : ""}</b>, would you
-                  like it to be considered for following semesters?
+                  If your project is not selected by students in the upcoming semester
+                  <b>{nextSemesterOption ? ' (' + nextSemesterOption.label + ')' : ''}</b>, would
+                  you like it to be considered for following semesters?
                 </p>
                 <Radio
                   values={['Yes', 'No']}
@@ -460,12 +459,14 @@ const ProtectedFormView: FC = () => {
                   If you replied yes to the question above, what semesters would you like your
                   project to be considered for?
                 </p>
-                <Checkbox 
-                  options={upcomingSemesterOptions.slice(0, -2)} 
+                <Checkbox
+                  options={upcomingSemesterOptions.slice(0, -2)}
                   error={!!errors.semesters}
                   errorMessage={errors.semesters?.message}
                   {...register('semesters', {
-                    required: hasFutureConsideration ? 'Please select at least one semester' : false,
+                    required: hasFutureConsideration
+                      ? 'Please select at least one semester'
+                      : false,
                   })}
                 />
               </li>
@@ -570,9 +571,10 @@ const ProtectedFormView: FC = () => {
                   <Checkbox
                     options={[
                       {
-                        label: 'I understand that no resources will be available for support or maintenance after the semester ends, and that neither the University nor the participating students assume any liability for the project outcome.',
-                        value: 'yes'
-                      }
+                        label:
+                          'I understand that no resources will be available for support or maintenance after the semester ends, and that neither the University nor the participating students assume any liability for the project outcome.',
+                        value: 'yes',
+                      },
                     ]}
                     error={!!errors.projectSupportAndMaintenance}
                     errorMessage={errors.projectSupportAndMaintenance?.message}

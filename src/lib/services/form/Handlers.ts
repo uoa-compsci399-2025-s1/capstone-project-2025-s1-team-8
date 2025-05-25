@@ -14,9 +14,13 @@ export const handleFormPageLoad = async (): Promise<{
   upcomingSemesters: Semester[]
   error?: string
 }> => {
-  const { data: semesters, status, error } = await ProjectFormService.getUpcomingSemesters({
+  const {
+    data: semesters,
+    status,
+    error,
+  } = await ProjectFormService.getUpcomingSemesters({
     timeframe: SemesterType.Upcoming,
-    limit: 10
+    limit: 10,
   })
 
   if (status !== StatusCodes.OK) {
@@ -27,11 +31,9 @@ export const handleFormPageLoad = async (): Promise<{
   return { upcomingSemesters: semesters || [] }
 }
 
-export async function handleProjectFormSubmission(
-  formData: CreateProjectRequestBody,
-): Promise<{
-  success: boolean,
-  error?: string,
+export async function handleProjectFormSubmission(formData: CreateProjectRequestBody): Promise<{
+  success: boolean
+  error?: string
   message?: string
 }> {
   try {
@@ -39,14 +41,14 @@ export async function handleProjectFormSubmission(
     if (!formData.name) return { success: false, error: 'Project name is required' }
     if (!formData.description) return { success: false, error: 'Project description is required' }
     if (!formData.desiredOutput) return { success: false, error: 'Desired output is required' }
-    if (!formData.specialEquipmentRequirements) return { success: false, error: 'Special equipment requirements is required' }
+    if (!formData.specialEquipmentRequirements)
+      return { success: false, error: 'Special equipment requirements is required' }
     if (!formData.numberOfTeams) return { success: false, error: 'Number of teams is required' }
-    if (formData.futureConsideration && formData.semesters.length == 0) return { success: false, error: 'At least one semester must be selected' }
+    if (formData.futureConsideration && formData.semesters.length == 0)
+      return { success: false, error: 'At least one semester must be selected' }
 
     // Submit the form data
-    const { status, error, message } = await ProjectFormService.submitProjectForm(
-      formData
-    )
+    const { status, error, message } = await ProjectFormService.submitProjectForm(formData)
 
     if (status === StatusCodes.CREATED || status === StatusCodes.OK) {
       return { success: true, message }
