@@ -11,20 +11,47 @@ interface NavDropdownProps {
 
 const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
   return (
-    <Menu as="div" className="relative inline-block text-left">
-      <div>
-        <MenuButton className="inline-flex items-center gap-1 focus:outline-none nav-link-text">
-          {buttonText}
-          <IoChevronDown aria-hidden="true" className="size-4 text-current" />
-        </MenuButton>
-      </div>
+    <div className="relative">
+      {/* Mobile: render items inline */}
+    <Menu as="div" className="sm:hidden inline-block text-left">
+        <div>
+          <MenuButton className="inline-flex py-2 items-center gap-1 bg-inherit focus:outline-none nav-link-text">
+            {buttonText}
+            <IoChevronDown aria-hidden="true" className="size-4 text-current" />
+          </MenuButton>
+        </div>
 
-      <MenuItems
-        transition
-        className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
-      >
-        {items.map((item) => {
-          return (
+        <MenuItems
+          className=""
+        >
+          {items.map((item) => (
+            <div className="py-2" key={item.href}>
+              <MenuItem>
+                <Link
+                  href={item.href}
+                  className="nav-link-text"
+                >
+                  {item.text}
+                </Link>
+              </MenuItem>
+            </div>
+          ))}
+        </MenuItems>
+      </Menu>
+
+      {/* Desktop: dropdown menu */}
+      <Menu as="div" className="hidden sm:inline-block text-left">
+        <div>
+          <MenuButton className="inline-flex items-center gap-1 bg-inherit focus:outline-none nav-link-text">
+            {buttonText}
+            <IoChevronDown aria-hidden="true" className="size-4 text-current" />
+          </MenuButton>
+        </div>
+
+        <MenuItems
+          className="absolute right-0 z-10 mt-2 w-56 origin-top-right bg-inherit rounded-md shadow-lg ring-1 ring-black/5 transition focus:outline-none"
+        >
+          {items.map((item) => (
             <div className="py-1" key={item.href}>
               <MenuItem>
                 <Link
@@ -35,10 +62,10 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
                 </Link>
               </MenuItem>
             </div>
-          )
-        })}
-      </MenuItems>
-    </Menu>
+          ))}
+        </MenuItems>
+      </Menu>
+    </div>
   )
 }
 
