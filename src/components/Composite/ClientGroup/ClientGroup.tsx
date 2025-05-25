@@ -33,6 +33,8 @@ const ClientGroup: React.FC<ClientGroupProps> = ({ clients, onSave, updated, del
           clientInfo={clientInfo.client}
           projects={clientInfo.projects}
           onSave={onSave}
+          updated={updated}
+          deleted={deleted}
         />
       ))}
     </div>

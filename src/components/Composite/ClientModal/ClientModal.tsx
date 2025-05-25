@@ -35,7 +35,6 @@ const ClientModal: React.FC<ClientModalProps> = ({
   className = '',
   clientInfo,
   clientEmail,
-  // i need intro and affil here
   projects,
   onSave,
   onUpdated,
@@ -55,25 +54,27 @@ const ClientModal: React.FC<ClientModalProps> = ({
   const [previousIntroduction, setPreviousIntroduction] = useState<string>(
     clientInfo.introduction ?? '',
   )
-  const [showNotification, setShowNotification] = useState<boolean>(false)
   const [notificationMessage, setNotificationMessage] = useState<string>('')
-
-  const handleShowNotification = (message: string) => {
-    setNotificationMessage(message)
-    setShowNotification(true)
-  }
+  const [notificationType, setNotificationType] = useState<'success' | 'warning' | undefined>(
+    'warning',
+  )
+  const [notificationTitle, setNotificationTitle] = useState<string>('')
 
   const handleSave = async () => {
     const names = name.split(' ')
     const firstName = names[0]
     const lastName = names[1]
     if (!firstName || !lastName) {
-      handleShowNotification('Please enter a valid first and last name.')
+      setNotificationType('warning')
+      setNotificationTitle('Issue updating profile')
+      setNotificationMessage('Please enter a valid first and last name.')
       return
     }
 
     if (names.length > 2) {
-      handleShowNotification('Please enter only first and last name.')
+      setNotificationType('warning')
+      setNotificationTitle('Issue updating profile')
+      setNotificationMessage('Please enter only first and last name.')
       return
     }
     if (onSave) {
@@ -82,7 +83,9 @@ const ClientModal: React.FC<ClientModalProps> = ({
         setName(previousName)
         setAffiliation(previousAffiliation)
         setIntroduction(previousIntroduction)
-        handleShowNotification(
+        setNotificationType('warning')
+        setNotificationTitle('Issue updating profile')
+        setNotificationMessage(
           'Error updating profile: ' + ((res.error ?? '') || (res.details ?? '')),
         )
         return
@@ -92,6 +95,9 @@ const ClientModal: React.FC<ClientModalProps> = ({
     setPreviousAffiliation(affiliation)
     setPreviousIntroduction(introduction)
     setIsEditing(false)
+    setNotificationType('success')
+    setNotificationTitle('Success')
+    setNotificationMessage('Client updated successfully')
     onUpdated?.()
   }
 
@@ -102,16 +108,22 @@ const ClientModal: React.FC<ClientModalProps> = ({
   }
 
   return (
-    <Modal open={open} onClose={onClose} className={className + ' min-h-fit w-[75%] top-5'}>
+    <Modal
+      open={open}
+      onClose={() => {
+        setNotificationMessage('')
+        onClose?.()
+      }}
+      className={className + ' min-h-fit w-[75%] top-5'}
+    >
       <div className="fixed top-6 right-6 z-50">
         <Notification
-          isVisible={showNotification}
-          title={'Issue updating profile'}
+          isVisible={notificationMessage !== ''}
+          title={notificationTitle}
           message={notificationMessage}
-          type={'warning'}
+          type={notificationType}
           onClose={() => {
             setNotificationMessage('')
-            setShowNotification(false)
           }}
         />
       </div>
@@ -163,32 +175,41 @@ const ClientModal: React.FC<ClientModalProps> = ({
             )}
           </button>
         </div>
-        {/* @TODO still be able to edit affil and intro if they are NULL*/}
-        {affiliation && !isEditing ? (
+        {(affiliation || isEditing) && (
           <div className="flex flex-row gap-3 items-center mb-6">
             <Capsule variant="muted_blue" text="Affiliation" />
-            <Capsule variant="beige" text={affiliation} />
+            {isEditing ? (
+              <input
+                value={affiliation}
+                onChange={(e) => setAffiliation(e.target.value)}
+                className="editable-capsule"
+                placeholder="Add affiliation"
+                style={{ pointerEvents: 'initial' }}
+              />
+            ) : (
+              affiliation && <Capsule variant="beige" text={affiliation} />
+            )}
           </div>
-        ) : (
-          affiliation &&
-          isEditing && (
-            <input
-              value={affiliation}
-              onChange={(e) => setAffiliation(e.target.value)}
-              className="editable-capsule"
-            />
-          )
         )}
-        {introduction && !isEditing ? (
+        {(introduction || isEditing) && (
           <>
             <Capsule variant="muted_blue" text="Introduction" />
-            <p className="text-dark-blue font-inter text-sm whitespace-pre-wrap">{introduction}</p>
+            {isEditing ? (
+              <textarea
+                value={introduction}
+                onChange={(e) => setIntroduction(e.target.value)}
+                className="editable-capsule h-24 w-full p-2"
+                placeholder="Add introduction"
+                style={{ pointerEvents: 'initial' }}
+              />
+            ) : (
+              introduction && (
+                <p className="text-dark-blue font-inter text-sm whitespace-pre-wrap">
+                  {introduction}
+                </p>
+              )
+            )}
           </>
-        ) : (
-          introduction &&
-          isEditing && (
-            <p className="text-dark-blue whitespace-pre-line text-sm px-1">{introduction}</p>
-          )
         )}
       </div>
       {projects && (

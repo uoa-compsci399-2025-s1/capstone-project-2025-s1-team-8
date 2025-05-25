@@ -136,11 +136,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   handleUpdateClient={handleUpdateClient}
                   updated={async () => {
                     await refreshClients()
-                    setNotificationMessage('Client updated successfully')
                   }}
                   deleted={async () => {
                     await refreshClients()
-                    setNotificationMessage('Client deleted successfully')
                   }}
                 />
               </div>
@@ -158,6 +156,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   }}
                   updated={async () => {
                     await refreshSemesters()
+                    console.log('hello')
                     setNotificationMessage('Semester updated successfully')
                   }}
                   deleted={async () => {
