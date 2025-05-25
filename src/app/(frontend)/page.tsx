@@ -7,6 +7,7 @@ import EncapsulateText from 'src/assets/encapsulate-text.svg'
 import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 import type { UserCombinedInfo } from '@/types/Collections'
 import ClientService from '@/lib/services/client/ClientService'
+import { UserRole } from '@/types/User'
 
 export const metadata: Metadata = {
   title: 'Home',
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const clientInfo = await ClientService.getClientInfo()
   const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
+  const proposalLink = (user.role === (UserRole.Client || UserRole.Admin)) ? '/form' : '/auth/login'
   return (
     <div className="h-dvh flex flex-col items-center space-y-8">
       <NavBar onclick={handleLoginButtonClick} user={user} />
@@ -26,7 +28,7 @@ export default async function HomePage() {
         mb-10 mt-9"
         />
         <Button variant="outline" size="md">
-          <Link href="/auth/login">Submit your proposal</Link>
+          <Link href={proposalLink}>Submit your proposal</Link>
         </Button>
       </div>
     </div>
