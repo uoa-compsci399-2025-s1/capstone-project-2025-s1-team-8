@@ -44,7 +44,7 @@ export async function handleProjectFormSubmission(formData: CreateProjectRequest
     if (!formData.specialEquipmentRequirements)
       return { success: false, error: 'Special equipment requirements is required' }
     if (!formData.numberOfTeams) return { success: false, error: 'Number of teams is required' }
-    if (formData.futureConsideration && formData.semesters.length == 0)
+    if (formData.futureConsideration && formData.semesters.length === 0)
       return { success: false, error: 'At least one semester must be selected' }
 
     // Submit the form data
