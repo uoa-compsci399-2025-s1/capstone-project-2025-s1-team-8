@@ -36,12 +36,11 @@ export default class SemesterService {
    * @returns The retrieved semester documents
    */
   public async getAllSemesters(
-    limit: number = 100,
-    page: number = 1,
     timeframe: SemesterType = SemesterType.Default,
   ): Promise<PaginatedDocs<Semester>> {
     const currentDate = new Date().toISOString()
 
+    let limit: number | undefined = undefined
     let filter: Where = {}
     let sort: Sort = '-startDate'
 
@@ -91,8 +90,7 @@ export default class SemesterService {
     const data = await payload.find({
       collection: 'semester',
       limit,
-      pagination: true,
-      page: page,
+      pagination: false,
       where: filter,
       sort: sort,
     })
