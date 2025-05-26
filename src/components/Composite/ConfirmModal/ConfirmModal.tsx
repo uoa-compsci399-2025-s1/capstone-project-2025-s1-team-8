@@ -33,7 +33,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         <p className={`text-dark-blue font-semibold text-lg`}>{title}</p>
         <p className={`text-dark-blue leading-snug text-lg`}>{message}</p>
         <div className={`flex gap-3 pt-2 justify-end pr-2`}>
-        <Button
+          <Button
             variant="custom"
             size="sm"
             className="bg-muted-blue ring-1 ring-deeper-blue hover:bg-transparent-blue text-dark-blue font-medium"
