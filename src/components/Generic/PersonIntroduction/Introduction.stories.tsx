@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import Introduction from './Introduction'
-import EricPhoto from '@/assets/profiles/eric.jpg'
 
 const meta: Meta<typeof Introduction> = {
   title: 'Generic/Introduction',
@@ -23,6 +22,7 @@ export const Default: Story = {
   args: {
     name: 'Eric Zheng',
     role: 'Facilitator',
-    image: EricPhoto,
+    image: '/profiles/eric.jpeg',
+    link: 'https://www.linkedin.com/in/bethany-yates-9907651a9/',
   },
 }
