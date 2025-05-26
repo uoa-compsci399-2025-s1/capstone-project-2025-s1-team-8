@@ -16,18 +16,15 @@ class RouteWrapper {
   @Security('jwt')
   static async GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
-    const page = parseInt(searchParams.get('page') || '1')
-    const limit = parseInt(searchParams.get('limit') || '100')
     const timeframe = (searchParams.get('timeframe') || SemesterType.Default) as SemesterType
-    if (limit < 0 || limit > 100) {
-      return NextResponse.json({ error: 'Invalid page number' }, { status: StatusCodes.NOT_FOUND })
+    if (!Object.values(SemesterType).includes(timeframe)) {
+      return NextResponse.json(
+        { error: 'Invalid timeframe provided' },
+        { status: StatusCodes.BAD_REQUEST },
+      )
     }
     const semesterService = new SemesterService()
-    const { docs: semester, nextPage } = await semesterService.getAllSemesters(
-      limit,
-      page,
-      timeframe,
-    )
+    const { docs: semester, nextPage } = await semesterService.getAllSemesters(timeframe)
     return NextResponse.json({ data: semester, nextPage })
   }
 }
