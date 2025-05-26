@@ -3,11 +3,20 @@ import React from 'react'
 import Link from 'next/link'
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import Button from '@/components/Generic/Button/Button'
+import Image from 'next/image'
 import EncapsulateText from 'src/assets/encapsulate-text.svg'
 import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 import type { UserCombinedInfo } from '@/types/Collections'
 import ClientService from '@/lib/services/client/ClientService'
 import Teapot from '@/assets/error.svg'
+import FormImage from '@/assets/form.png'
+import ProjectsImage from '@/assets/project-list.png'
+import EricPhoto from '@/assets/profiles/eric.jpeg'
+import JooHuiPhoto from '@/assets/profiles/joohui.jpeg'
+import BethanyPhoto from '@/assets/profiles/bethany.jpeg'
+import DennisPhoto from '@/assets/profiles/dennis.jpeg'
+import SheenaPhoto from '@/assets/profiles/sheena.jpeg'
+import JefferyPhoto from '@/assets/profiles/jeffery.jpeg'
 import Introduction from '@/components/Generic/PersonIntroduction/Introduction'
 
 export const metadata: Metadata = {
@@ -70,20 +79,16 @@ export default async function HomePage() {
             </p>
           </div>
           <div className="rounded-xl w-4/5 lg:w-[47%] mb-1 overflow-hidden h-min self-end lg:self-center mt-10">
-            <img
-              src="/form.png"
-              alt="Project proposal form"
-              className="object-scale-down pointer-events-none"
-            />
+            <Image src={FormImage} alt="Project proposal form" className="object-scale-down" />
           </div>
         </div>
 
         <div>
           <div className="flex flex-col lg:flex-row relative gap-10 lg:gap-20 justify-between">
-            <img
-              src="/project-list.png"
+            <Image
+              src={ProjectsImage}
               alt="Projects list"
-              className="rounded-xl w-4/5 lg:w-[44%] h-auto object-scale-down pointer-events-none"
+              className="rounded-xl w-4/5 lg:w-[44%] h-auto object-scale-down"
             />
             <div className="w-full lg:w-[47%] mt-3 pb-12">
               <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-10 sm:leading-12 lg:leading-17">
@@ -117,37 +122,37 @@ export default async function HomePage() {
           <Introduction
             name="Eric Zheng"
             role="Facilitator"
-            image="/profiles/eric.jpeg"
+            image={EricPhoto}
             link="https://www.linkedin.com/in/eric-zheng-nz/"
           />
           <Introduction
             name="JooHui Lee"
             role="UI/UX Lead"
-            image="/profiles/joohui.jpeg"
+            image={JooHuiPhoto}
             link="https://www.linkedin.com/in/joohui-lee"
           />
           <Introduction
             name="Bethany Yates"
             role="Frontend Lead"
-            image="/profiles/bethany.jpeg"
+            image={BethanyPhoto}
             link="https://www.linkedin.com/in/bethany-yates-9907651a9/"
           />
           <Introduction
             name="Dennis Hu"
             role="Backend Lead"
-            image="/profiles/dennis.jpeg"
+            image={DennisPhoto}
             link="https://www.linkedin.com/in/dennishu811/"
           />
           <Introduction
             name="Sheena Lin"
             role="DevOps Lead"
-            image="/profiles/sheena.jpeg"
+            image={SheenaPhoto}
             link="https://www.linkedin.com/in/enshean/"
           />
           <Introduction
             name="Jeffery Ji"
             role="Documentation Lead"
-            image="/profiles/jeffery.jpeg"
+            image={JefferyPhoto}
             link="https://www.linkedin.com/in/jefferyji/"
           />
         </div>
