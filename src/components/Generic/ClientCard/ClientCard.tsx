@@ -45,17 +45,23 @@ const ClientCard: React.FC<ClientCardProps> = ({
 
   return (
     <>
-      <div className="bg-gradient-to-r from-denim-blue to-deeper-blue hover:from-[#35474c] hover:to-[#6d939d] w-full flex flex-row justify-between p-6">
+      <div
+        className="bg-gradient-to-r from-denim-blue to-deeper-blue hover:from-[#35474c] hover:to-[#6d939d] w-full flex flex-row justify-between p-6 cursor-pointer"
+        onClick={() => handleModal()}
+      >
         <div className="flex flex-row gap-4">
-          <p
-            className="text-light-beige font-semibold text-xl cursor-pointer"
-            onClick={() => handleModal()}
-          >
+          <p className="text-light-beige font-semibold text-xl">
             {`${clientInfo.firstName}${clientInfo.lastName ? ' ' + clientInfo.lastName : ''}`}
           </p>
           <p className="text-light-beige text-base self-end">{clientInfo.email}</p>
         </div>
-        <button onClick={() => handleCopy(clientInfo.email)}>
+        <button
+          className="z-10"
+          onClick={(e) => {
+            e.stopPropagation()
+            handleCopy(clientInfo.email)
+          }}
+        >
           {copied ? (
             <FiCheck className="self-center size-5 text-light-beige" />
           ) : (

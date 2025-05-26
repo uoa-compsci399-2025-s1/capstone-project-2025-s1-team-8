@@ -40,6 +40,8 @@ const ClientModal: React.FC<ClientModalProps> = ({
   onUpdated,
   // onDeleted,
 }) => {
+  // @TODO implement firstName and lastName separately input
+
   const [copied, setCopied] = useState(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [name, setName] = useState<string>(clientInfo.firstName + ' ' + clientInfo.lastName)
@@ -112,6 +114,7 @@ const ClientModal: React.FC<ClientModalProps> = ({
       open={open}
       onClose={() => {
         setNotificationMessage('')
+        setIsEditing(false)
         onClose?.()
       }}
       className={className + ' min-h-fit w-[75%] top-5'}
