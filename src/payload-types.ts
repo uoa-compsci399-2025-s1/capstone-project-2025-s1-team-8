@@ -656,7 +656,7 @@ export interface AboutSection {
    */
   title: string;
   /**
-   * A about us section description.
+   * An about us section description.
    */
   description: string;
   button: Button;
