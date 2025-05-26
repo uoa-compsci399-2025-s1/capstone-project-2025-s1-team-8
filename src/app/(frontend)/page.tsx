@@ -1,7 +1,8 @@
-import NavBar from '@/components/Generic/NavBar/NavBar'
-import Button from '@/components/Generic/Button/Button'
+import type { Metadata } from 'next'
 import React from 'react'
 import Link from 'next/link'
+import NavBar from '@/components/Generic/NavBar/NavBar'
+import Button from '@/components/Generic/Button/Button'
 import Image from 'next/image'
 import EncapsulateText from 'src/assets/encapsulate-text.svg'
 import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
@@ -18,7 +19,13 @@ import SheenaPhoto from '@/assets/profiles/sheena.jpeg'
 import JefferyPhoto from '@/assets/profiles/jeffery.jpeg'
 import Introduction from '@/components/Generic/PersonIntroduction/Introduction'
 
-const Homepage: React.FC = async () => {
+export const metadata: Metadata = {
+  title: 'Home',
+  description:
+    'Welcome to Encapsulate - A place to connect Computer Science students with innovative projects',
+}
+
+export default async function HomePage() {
   const clientInfo = await ClientService.getClientInfo()
   const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
   return (
@@ -153,5 +160,3 @@ const Homepage: React.FC = async () => {
     </div>
   )
 }
-
-export default Homepage

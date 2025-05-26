@@ -6,7 +6,7 @@ import { MediaSchema } from '@/types/Payload'
 import UserService from '@/data-layer/services/UserService'
 import { UserRole } from '@/types/User'
 import { NotFound } from 'payload'
-import { StatusCodes } from 'http-status-codes'
+import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 import type { RequestWithUser } from '@/types/Requests'
 
 export const UpdateUserRequestBody = z
@@ -90,7 +90,7 @@ class RouteWrapper {
       }
       console.error(error)
       return NextResponse.json(
-        { error: 'Internal server error' },
+        { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },
       )
     }

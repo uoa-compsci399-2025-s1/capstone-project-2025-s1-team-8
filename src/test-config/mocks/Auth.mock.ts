@@ -6,6 +6,7 @@ import { UserRole, UserRoleWithoutAdmin } from '@/types/User'
 export const CODE_MOCK = 'coolcode'
 export const UUID_MOCK = 'cool_uuid'
 export const STATE_MOCK = 'cool_state'
+export const ROLELESS_STATE_MOCK = Buffer.from(UUID_MOCK + ';').toString('base64')
 export const CLIENT_STATE_MOCK = Buffer.from(
   UUID_MOCK + ';' + UserRoleWithoutAdmin.Client,
 ).toString('base64')
