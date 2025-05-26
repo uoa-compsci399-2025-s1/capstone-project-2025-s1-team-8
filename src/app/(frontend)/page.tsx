@@ -8,6 +8,7 @@ import EncapsulateText from 'src/assets/encapsulate-text.svg'
 import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 import type { UserCombinedInfo } from '@/types/Collections'
 import ClientService from '@/lib/services/client/ClientService'
+import { UserRole } from '@/types/User'
 import Teapot from '@/assets/error.svg'
 import FormImage from '@/assets/form.png'
 import ProjectsImage from '@/assets/project-list.png'
@@ -28,6 +29,7 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const clientInfo = await ClientService.getClientInfo()
   const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
+  const proposalLink = user.role === (UserRole.Client || UserRole.Admin) ? '/form' : '/auth/login'
   return (
     <div>
       {/* Landing */}
@@ -37,9 +39,9 @@ export default async function HomePage() {
           <EncapsulateText
             className="w-[300px] lg:w-[700px] md:w-[600px] sm:w-[500px] transition-all duration-300 ease-in-out
         mb-10 mt-9"
-          />
-          <Button variant="outline" size="md">
-            <Link href="/auth/login">Submit your proposal</Link>
+        />
+        <Button variant="outline" size="md">
+            <Link href={proposalLink}>Submit your proposal</Link>
           </Button>
         </div>
       </div>
