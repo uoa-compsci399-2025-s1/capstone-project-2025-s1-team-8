@@ -1,7 +1,7 @@
 import type { CreateSemesterData, UpdateSemesterData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 import type { Semester } from '@/payload-types'
-import type { PaginatedDocs, Sort, Where } from 'payload'
+import type { Sort, Where } from 'payload'
 import { SemesterType } from '@/types/Semester'
 
 export default class SemesterService {
@@ -37,7 +37,7 @@ export default class SemesterService {
    */
   public async getAllSemesters(
     timeframe: SemesterType = SemesterType.Default,
-  ): Promise<PaginatedDocs<Semester>> {
+  ): Promise<Semester[]> {
     const currentDate = new Date().toISOString()
 
     let limit: number | undefined = undefined
@@ -94,7 +94,7 @@ export default class SemesterService {
       where: filter,
       sort: sort,
     })
-    return data
+    return data.docs
   }
 
   /**

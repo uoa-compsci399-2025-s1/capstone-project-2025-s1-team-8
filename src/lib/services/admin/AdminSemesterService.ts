@@ -20,20 +20,19 @@ const AdminSemesterService = {
   /**
    * Fetches all semesters
    *
-   * @returns - an object containing the status, data, nextPage, and error
+   * @returns an object containing the status, data, and error
    **/
   getAllSemesters: async function (): Promise<{
     status: StatusCodes
     data?: Semester[]
-    nextPage?: string
     error?: string
   }> {
     'use server'
     const url = buildNextRequestURL('/api/semesters', {})
     const response = await GetSemesters(await buildNextRequest(url, { method: 'GET' }))
-    const { data, nextPage, error } = { ...(await response.json()) }
+    const { data, error } = { ...(await response.json()) }
 
-    return { status: response.status, data, nextPage, error }
+    return { status: response.status, data, error }
   },
 
   /**

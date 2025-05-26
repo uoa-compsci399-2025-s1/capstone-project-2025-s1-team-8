@@ -24,8 +24,8 @@ class RouteWrapper {
       )
     }
     const semesterService = new SemesterService()
-    const { docs: semester, nextPage } = await semesterService.getAllSemesters(timeframe)
-    return NextResponse.json({ data: semester, nextPage })
+    const semesters = await semesterService.getAllSemesters(timeframe)
+    return NextResponse.json({ data: semesters })
   }
 }
 

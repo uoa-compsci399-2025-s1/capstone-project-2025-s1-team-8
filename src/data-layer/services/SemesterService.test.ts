@@ -25,8 +25,8 @@ describe('Semester service tests', () => {
     const semester1 = await semesterService.createSemester(semesterCreateMock)
     const semester2 = await semesterService.createSemester(semesterCreateMock)
     const fetchedSemester = await semesterService.getAllSemesters()
-    expect(fetchedSemester.docs.length).toEqual(2)
-    expect(fetchedSemester.docs).toEqual(expect.arrayContaining([semester1, semester2]))
+    expect(fetchedSemester.length).toEqual(2)
+    expect(fetchedSemester).toEqual(expect.arrayContaining([semester1, semester2]))
   })
 
   it('should get all semesters with timeframe filtering', async () => {
@@ -51,13 +51,13 @@ describe('Semester service tests', () => {
     })
 
     const past = await semesterService.getAllSemesters(SemesterType.Past)
-    expect(past.docs).toStrictEqual([pastSemester])
+    expect(past).toStrictEqual([pastSemester])
 
     const current = await semesterService.getAllSemesters(SemesterType.Current)
-    expect(current.docs).toStrictEqual([currentSemester])
+    expect(current).toStrictEqual([currentSemester])
 
     const upcoming = await semesterService.getAllSemesters(SemesterType.Upcoming)
-    expect(upcoming.docs).toStrictEqual([upcomingSemester])
+    expect(upcoming).toStrictEqual([upcomingSemester])
   })
 
   it('should get the next upcoming semester', async () => {
@@ -89,7 +89,7 @@ describe('Semester service tests', () => {
     })
 
     const nextSem = await semesterService.getAllSemesters(SemesterType.Next)
-    expect(nextSem.docs).toStrictEqual([nextSemester])
+    expect(nextSem).toStrictEqual([nextSemester])
   })
 
   it('should return undefined if semester does not exist', async () => {
@@ -124,7 +124,7 @@ describe('Semester service tests', () => {
     const semester2 = await semesterService.createSemester(semesterCreateMock2)
     const fetchedUsers = await semesterService.getAllSemesters()
 
-    expect(fetchedUsers.docs).toStrictEqual(expect.arrayContaining([semester1, semester2]))
+    expect(fetchedUsers).toStrictEqual(expect.arrayContaining([semester1, semester2]))
   })
 
   it('not found - find user with nonexistent id', async () => {
