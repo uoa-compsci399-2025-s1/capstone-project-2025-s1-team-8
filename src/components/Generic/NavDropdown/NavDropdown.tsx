@@ -15,13 +15,13 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
       {/* Mobile: render items inline */}
       <Menu as="div" className="sm:hidden inline-block text-left">
         <div>
-          <MenuButton className="inline-flex py-2 items-center gap-1 bg-inherit focus:outline-none nav-link-text">
+          <MenuButton className="inline-flex py-2 items-center gap-1 bg-beige focus:outline-none nav-link-text">
             {buttonText}
             <IoChevronDown aria-hidden="true" className="size-4 text-current" />
           </MenuButton>
         </div>
 
-        <MenuItems className="">
+        <MenuItems className="bg-beige">
           {items.map((item) => (
             <div className="py-2" key={item.href}>
               <MenuItem>
@@ -45,7 +45,7 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
 
         <MenuItems
           transition
-          className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+          className="bg-beige absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
         >
           {items.map((item) => {
             return (
