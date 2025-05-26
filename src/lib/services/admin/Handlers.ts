@@ -7,7 +7,7 @@ import type { typeToFlattenedError } from 'zod'
 import type { Project, Semester } from '@/payload-types'
 import { type ProjectDetails, ProjectStatus } from '@/types/Project'
 import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
-import { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
+import type { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
 
 /**
  * Handles the click event to create semester

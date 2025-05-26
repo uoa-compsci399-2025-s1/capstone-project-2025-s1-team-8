@@ -23,8 +23,8 @@ import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
 import type { User } from '@/payload-types'
 import useUnsavedChangesWarning from './UnsavedChangesHandler'
-import { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
-import { typeToFlattenedError } from 'zod'
+import type { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
+import type { typeToFlattenedError } from 'zod'
 
 export type DNDType = {
   id: UniqueIdentifier
