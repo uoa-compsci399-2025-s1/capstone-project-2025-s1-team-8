@@ -14,27 +14,37 @@ import AdminDashboard from './AdminDashboard'
 import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 
 const ProtectedAdminView = async (): Promise<JSX.Element> => {
-  const clientInfo = await ClientService.getClientInfo()
-  const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
+  try {
+    const clientInfo = await ClientService.getClientInfo()
+    const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
 
-  const fetchedAllClients = await getAllClients()
-  const clientsData = fetchedAllClients?.data || []
+    const fetchedAllClients = await getAllClients()
+    if (!fetchedAllClients || fetchedAllClients.error || !fetchedAllClients.data) {
+      throw new Error('Failed to fetch clients')
+    }
+    const clientsData = fetchedAllClients.data
 
-  const fetchAllSemesters = await handleGetAllSemesters()
-  const semestersData: Semester[] = fetchAllSemesters?.data || []
+    const fetchAllSemesters = await handleGetAllSemesters()
+    if (!fetchAllSemesters || fetchAllSemesters.error || !fetchAllSemesters.data) {
+      throw new Error('Failed to fetch semesters')
+    }
+    const semestersData: Semester[] = fetchAllSemesters.data
 
-  const fetchProjects = await getNextSemesterProjects()
-  const projectsData: SemesterContainerData = fetchProjects?.data || {
-    semesterId: '',
-    presetContainers: [],
+    const fetchProjects = await getNextSemesterProjects()
+    if (!fetchProjects || fetchProjects.error || !fetchProjects.data) {
+      throw new Error('Failed to fetch projects')
+    }
+    const projectsData: SemesterContainerData = fetchProjects.data
+
+    return (
+      <div>
+        <NavBar onclick={handleLoginButtonClick} user={user} />
+        <AdminDashboard clients={clientsData} semesters={semestersData} projects={projectsData} />
+      </div>
+    )
+  } catch (err) {
+    throw new Error('Something went wrong while fetching admin data.')
   }
-
-  return (
-    <div>
-      <NavBar onclick={handleLoginButtonClick} user={user} />
-      <AdminDashboard clients={clientsData} semesters={semestersData} projects={projectsData} />
-    </div>
-  )
 }
 
 export default ProtectedAdminView
