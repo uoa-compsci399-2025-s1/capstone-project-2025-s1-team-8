@@ -79,7 +79,11 @@ export default async function HomePage() {
             </p>
           </div>
           <div className="rounded-xl w-4/5 lg:w-[47%] mb-1 overflow-hidden h-min self-end lg:self-center mt-10">
-            <Image src={FormImage} alt="Project proposal form" className="object-scale-down pointer-events-none" />
+            <Image
+              src={FormImage}
+              alt="Project proposal form"
+              className="object-scale-down pointer-events-none"
+            />
           </div>
         </div>
 
