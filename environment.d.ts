@@ -26,10 +26,10 @@ declare global {
        * Secret used to secure JWT. You can see how to generate this secret [here](https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/wiki/Backend-Architecture#jwt-authentication).
        */
       JWT_SECRET: string
-      AWS_ACCESS_KEY_ID: string
-      AWS_SECRET_ACCESS_KEY: string
-      AWS_REGION: string
-      AWS_BUCKET_NAME: string
+      S3_ACCESS_KEY_ID: string
+      S3_SECRET_ACCESS_KEY: string
+      S3_REGION: string
+      S3_BUCKET: string
     }
   }
 }
