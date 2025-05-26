@@ -39,8 +39,8 @@ export default async function HomePage() {
           <EncapsulateText
             className="w-[300px] lg:w-[700px] md:w-[600px] sm:w-[500px] transition-all duration-300 ease-in-out
         mb-10 mt-9"
-        />
-        <Button variant="outline" size="md">
+          />
+          <Button variant="outline" size="md">
             <Link href={proposalLink}>Submit your proposal</Link>
           </Button>
         </div>
