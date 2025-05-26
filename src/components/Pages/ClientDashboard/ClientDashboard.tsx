@@ -32,7 +32,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects, onS
           <GradientTextArea
             heading="Tips for choosing a good project name:"
             text={`• Keep it short and straight to the point!
-            • The description is there for a reason!`}
+            • Please use the description if you would like to say more!`}
           />
         </div>
         <div className="lg:col-start-2 lg:row-span-2">

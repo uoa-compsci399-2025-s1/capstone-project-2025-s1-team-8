@@ -22,6 +22,7 @@ import Notification from '@/components/Generic/Notification/Notification'
 import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
 import type { User } from '@/payload-types'
+import useUnsavedChangesWarning from './UnsavedChangesHandler'
 import { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
 import { typeToFlattenedError } from 'zod'
 
@@ -120,6 +121,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
       )
     }
   }, [hasChanges])
+  useUnsavedChangesWarning(hasChanges)
 
   //TODO: when items are moved around, remove the active filter styles
 
