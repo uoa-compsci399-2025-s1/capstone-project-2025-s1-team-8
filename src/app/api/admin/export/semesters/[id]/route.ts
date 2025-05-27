@@ -4,7 +4,12 @@ import { NotFound } from 'payload'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 
 import ProjectService from '@/data-layer/services/ProjectService'
-import type { Project, Semester, SemesterProject as SemesterProjectType } from '@/payload-types'
+import type {
+  Project,
+  Semester,
+  SemesterProject as SemesterProjectType,
+  User,
+} from '@/payload-types'
 import { Security } from '@/business-layer/middleware/Security'
 
 class RouteWrapper {
@@ -25,6 +30,7 @@ class RouteWrapper {
         allSemesterProjects.push(...projects.docs)
         projects = await projectService.getAllSemesterProjectsBySemester(id, 100, projects.nextPage)
       }
+      // client, additionalClients, deadline, desiredOutput, specialEquipmentRequirements, numberOfTeams, desiredTeamSkills, availableResources, futureConsideration
       const csvHeaders = [
         'id',
         'number',
@@ -34,14 +40,26 @@ class RouteWrapper {
         'published',
         'updatedAt',
         'createdAt',
+        // Project related fields
+        'client',
+        'additionalClients',
+        'deadline',
+        'desiredOutput',
+        'specialEquipmentRequirements',
+        'numberOfTeams',
+        'desiredTeamSkills',
+        'availableResources',
+        'futureConsideration',
       ]
 
       const csvRows = [csvHeaders]
 
       for (const project of allSemesterProjects) {
+        // eslint-disable-next-line
+        const unpackedProject = { ...project, ...(project as any)['project'] } as any
+        console.log('Unpacked project:', unpackedProject)
         const row = csvHeaders.map((field) => {
-          // eslint-disable-next-line
-          const value = (project as any)[field]
+          const value = unpackedProject[field]
 
           switch (field) {
             case 'project':
@@ -56,8 +74,24 @@ class RouteWrapper {
               return JSON.stringify(new Date(value).toLocaleString())
             case 'createdAt':
               return JSON.stringify(new Date(value).toLocaleString())
+            // left joined fields
+            case 'client':
+              const client = value as User
+              return (
+                JSON.stringify(`${client.firstName} ${client.lastName ?? ''}`) || 'Client not found'
+              )
+            case 'additionalClients':
+              const additionalClients = (value || []) as User[]
+              if (additionalClients && additionalClients.length > 0) {
+                return JSON.stringify(
+                  additionalClients.map((client) => `${client.firstName} ${client.lastName ?? ''}`),
+                )
+              }
+              return 'No additional clients'
+            case 'deadline':
+              return value ? JSON.stringify(new Date(value).toLocaleDateString()) : 'No deadline'
             default:
-              return JSON.stringify(value ?? '')
+              return JSON.stringify(value ?? 'N/A')
           }
         })
 
