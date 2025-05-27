@@ -33,8 +33,6 @@ jobs:
             !**.md
             !.gitignore
             !.gitattributes
-            !.github/**
-            !.vscode/**
             !.env.example
 
   setup:
