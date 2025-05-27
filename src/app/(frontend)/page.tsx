@@ -39,9 +39,10 @@ export default async function HomePage() {
         mb-10 mt-9"
           />
           <Button variant="outline" size="md">
-            <Link href={proposalLink}>Submit your proposal</Link>
+            <Link href='/form'>Submit your proposal</Link>
           </Button>
-
+        </div>
+      </div>
 
       {/* About COMPSCI399 */}
       <div className="min-h-dvh w-full bg-deeper-blue px-[8%] py-25 flex flex-col justify-center">
