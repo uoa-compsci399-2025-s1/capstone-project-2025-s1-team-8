@@ -164,7 +164,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
       <div className="relative bg-transparent-blue max-w-full flex flex-col p-15 px-5 sm:px-10 md:px-15 pt-12 py-19 rounded-b-2xl gap-5 wrap-break-word">
         {otherClientDetails.length > 0 && type === 'student' && (
-          <Capsule variant="light_beige" text="Additional Clients"/>
+          <Capsule variant="light_beige" text="Additional Clients" />
         )}
         {otherClientDetails.length > 0 && (
           <div className="flex flex-col">
