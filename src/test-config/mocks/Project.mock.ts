@@ -23,6 +23,14 @@ export const projectMock: Project = {
   futureConsideration: false,
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
+  additionalClients: [
+    clientMock,
+    {
+      ...clientMock,
+      firstName: 'Additional',
+      lastName: 'Client',
+    },
+  ],
 }
 
 export const projectMock2: Project = {
