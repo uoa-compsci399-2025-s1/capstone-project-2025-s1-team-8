@@ -8,7 +8,7 @@ import Button from '@/components/Generic/Button/Button'
 import Input from '@/components/Generic/Input/InputField'
 import Textarea from '@/components/Generic/Textarea/Textarea'
 import Radio from '@/components/Generic/Radio/Radio'
-import type { options } from '@/components/Generic/Checkbox/Checkbox'
+import type { checkboxOptions } from '@/components/Generic/Checkbox/Checkbox'
 import Checkbox from '@/components/Generic/Checkbox/Checkbox'
 import { FiCheck } from 'react-icons/fi'
 import { HiX, HiExclamation } from 'react-icons/hi'
@@ -18,7 +18,7 @@ import type { CreateProjectRequestBody, CreateProjectClient } from '@/app/api/pr
 import { handleFormPageLoad, handleProjectFormSubmission } from '@/lib/services/form/Handlers'
 import Notification from '@/components/Generic/Notification/Notification'
 
-interface formProject extends CreateProjectRequestBody {
+interface FormProject extends CreateProjectRequestBody {
   meetingAttendance: boolean
   finalPresentationAttendance: boolean
   projectSupportAndMaintenance: boolean
@@ -37,8 +37,8 @@ const ProtectedFormView: FC = () => {
   const [showNotification, setShowNotification] = useState<boolean>(false)
 
   // id / semester name pairs for the upcoming semesters
-  const [upcomingSemesterOptions, setUpcomingSemesterOptions] = useState<options[]>([])
-  const [nextSemesterOption, setNextSemesterOption] = useState<options>()
+  const [upcomingSemesterOptions, setUpcomingSemesterOptions] = useState<checkboxOptions[]>([])
+  const [nextSemesterOption, setNextSemesterOption] = useState<checkboxOptions>()
 
   // State to manage the additional client details
   const [otherClientDetails, setOtherClientDetails] = useState<CreateProjectClient[]>([])
@@ -66,7 +66,7 @@ const ProtectedFormView: FC = () => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<formProject>()
+  } = useForm<FormProject>()
 
   useEffect(() => {
     handleFormPageLoad().then((res) => {
@@ -89,7 +89,7 @@ const ProtectedFormView: FC = () => {
   }, [])
 
   const hasFutureConsideration = String(watch('futureConsideration')) === 'Yes'
-  const onSubmit: SubmitHandler<formProject> = async (data) => {
+  const onSubmit: SubmitHandler<FormProject> = async (data) => {
     if (nextSemesterOption) {
       data.semesters.push(nextSemesterOption?.value) // Add the next semester to the list of semesters
     }
@@ -269,7 +269,7 @@ const ProtectedFormView: FC = () => {
                         type="text"
                         value={pair.firstName}
                         onChange={(e) => handleChange(idx, 'firstName', e.target.value)}
-                        placeholder="Other client's name"
+                        placeholder="First name"
                       />
                     </div>
                     <div className="w-80 flex flex-col gap-3">
@@ -279,7 +279,7 @@ const ProtectedFormView: FC = () => {
                         type="text"
                         value={pair.lastName}
                         onChange={(e) => handleChange(idx, 'lastName', e.target.value)}
-                        placeholder="Other client's name"
+                        placeholder="Last name"
                       />
                     </div>
                     <div className="w-full flex flex-col gap-3">
@@ -289,7 +289,7 @@ const ProtectedFormView: FC = () => {
                         type="email"
                         value={pair.email}
                         onChange={(e) => handleChange(idx, 'email', e.target.value)}
-                        placeholder="Other client's email"
+                        placeholder="Email"
                       />
                     </div>
                     <Button
@@ -318,7 +318,7 @@ const ProtectedFormView: FC = () => {
                   defaultValue={projectName}
                   error={!!errors.name}
                   errorMessage={errors.name?.message}
-                  {...register('name', { required: 'Project Title is required' })}
+                  {...register('name', { required: 'Project title is required' })}
                 />
               </li>
               <li>
@@ -334,7 +334,7 @@ const ProtectedFormView: FC = () => {
                   className="h-25"
                   error={!!errors.description}
                   errorMessage={errors.description?.message}
-                  {...register('description', { required: 'Project Description is required' })}
+                  {...register('description', { required: 'Project description is required' })}
                 />
               </li>
               <li>
@@ -351,7 +351,7 @@ const ProtectedFormView: FC = () => {
                   className="h-25"
                   error={!!errors.desiredOutput}
                   errorMessage={errors.desiredOutput?.message}
-                  {...register('desiredOutput', { required: 'Desired Output is required' })}
+                  {...register('desiredOutput', { required: 'Desired output is required' })}
                 />
               </li>
               <li>
@@ -369,8 +369,8 @@ const ProtectedFormView: FC = () => {
                   error={!!errors.specialEquipmentRequirements}
                   errorMessage={errors.specialEquipmentRequirements?.message}
                   {...register('specialEquipmentRequirements', {
-                    required: 'Please Select One Option',
-                    validate: (value) => value !== '' || 'Input Field must not be empty',
+                    required: 'Please select one option',
+                    validate: (value) => value !== '' || 'Input field must not be empty',
                   })}
                 />
               </li>
@@ -401,8 +401,8 @@ const ProtectedFormView: FC = () => {
                   error={!!errors.numberOfTeams}
                   errorMessage={errors.numberOfTeams?.message}
                   {...register('numberOfTeams', {
-                    required: 'Number of Teams is required',
-                    validate: (value) => value !== '' || 'Number of Teams is required',
+                    required: 'Number of teams is required',
+                    validate: (value) => value !== '' || 'Number of teams is required',
                   })}
                 />
               </li>
@@ -439,8 +439,8 @@ const ProtectedFormView: FC = () => {
                 </label>
                 <p className="form-question-subheading">
                   If your project is not selected by students in the upcoming semester
-                  <b>{nextSemesterOption ? ' (' + nextSemesterOption.label + ')' : ''}</b>, would
-                  you like it to be considered for following semesters?
+                  {nextSemesterOption ? ', ' + nextSemesterOption.label : ''}, would you like it to
+                  be considered for following semesters?
                 </p>
                 <Radio
                   values={['Yes', 'No']}
@@ -448,7 +448,7 @@ const ProtectedFormView: FC = () => {
                   error={!!errors.futureConsideration}
                   errorMessage={errors.futureConsideration?.message}
                   {...register('futureConsideration', {
-                    required: 'Future Consideration is required',
+                    required: 'Future consideration is required',
                   })}
                 />
               </li>
@@ -485,7 +485,7 @@ const ProtectedFormView: FC = () => {
                     style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
                     className="opacity-0 peer"
                     {...register('meetingAttendance', {
-                      required: 'Meeting Attendance is required',
+                      required: 'Meeting attendance is required',
                     })}
                   />
                   <span
@@ -526,7 +526,7 @@ const ProtectedFormView: FC = () => {
                     style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
                     className="opacity-0 peer"
                     {...register('finalPresentationAttendance', {
-                      required: 'Final Presentation Attendance is required',
+                      required: 'Final presentation attendance is required',
                     })}
                   />
                   <span
@@ -578,7 +578,7 @@ const ProtectedFormView: FC = () => {
                     error={!!errors.projectSupportAndMaintenance}
                     errorMessage={errors.projectSupportAndMaintenance?.message}
                     {...register('projectSupportAndMaintenance', {
-                      required: 'Project Support and Maintenance is required',
+                      required: 'Project support and maintenance is required',
                     })}
                   />
                 </label>

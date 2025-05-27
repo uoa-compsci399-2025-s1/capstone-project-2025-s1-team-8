@@ -3,13 +3,13 @@ import React from 'react'
 import { FiCheck } from 'react-icons/fi'
 import { HiExclamation } from 'react-icons/hi'
 
-export interface options {
+export interface checkboxOptions {
   value: string
   label: string
 }
 
 interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
-  options: options[]
+  options: checkboxOptions[]
   error?: boolean
   errorMessage?: string
 }

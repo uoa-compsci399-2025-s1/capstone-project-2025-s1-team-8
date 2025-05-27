@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import type { options } from './Checkbox'
+import type { checkboxOptions } from './Checkbox'
 import Checkbox from './Checkbox'
 
 const meta: Meta<typeof Checkbox> = {
@@ -27,6 +27,6 @@ export const Default: Story = {
         value: 'option3',
         label: 'Option 3',
       },
-    ] as options[],
+    ] as checkboxOptions[],
   },
 }

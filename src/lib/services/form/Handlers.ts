@@ -50,7 +50,7 @@ export async function handleProjectFormSubmission(formData: CreateProjectRequest
     // Submit the form data
     const { status, error, message } = await ProjectFormService.submitProjectForm(formData)
 
-    if (status === StatusCodes.CREATED || status === StatusCodes.OK) {
+    if (status === StatusCodes.CREATED) {
       return { success: true, message }
     } else {
       return { success: false, error: error || 'Failed to submit project proposal' }

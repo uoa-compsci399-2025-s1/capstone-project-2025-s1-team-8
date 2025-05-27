@@ -18,7 +18,7 @@ const Radio: FC<RadioProps> = ({
   customInput = false,
   className = '',
   error = false,
-  errorMessage = 'Please fill in this text-area',
+  errorMessage = 'Input field must not be empty',
   ...props
 }) => {
   const [customValue, setCustomValue] = useState('')
