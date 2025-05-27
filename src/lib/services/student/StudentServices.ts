@@ -21,15 +21,15 @@ export const StudentService = {
 
     if (semester.length === 0) {
       const semesterUrl1 = buildNextRequestURL('/api/semesters', { timeframe: SemesterType.Next })
-    const semesterResponse1 = await GetSemesters(
-      await buildNextRequest(semesterUrl1, { method: 'GET' }),
-    )
-    const { data: semester1, error: error1 } = await semesterResponse1.json()
+      const semesterResponse1 = await GetSemesters(
+        await buildNextRequest(semesterUrl1, { method: 'GET' }),
+      )
+      const { data: semester1, error: error1 } = await semesterResponse1.json()
       if (error1 || semester1.length === 0) {
         console.error('Failed to fetch upcoming semester:', error1)
         return null
       }
-      return {id: semester1[0].id, name: semester1[0].name }
+      return { id: semester1[0].id, name: semester1[0].name }
     }
 
     return { id: semester[0].id, name: semester[0].name }
