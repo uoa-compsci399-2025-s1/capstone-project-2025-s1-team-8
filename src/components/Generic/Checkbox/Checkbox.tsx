@@ -3,7 +3,7 @@ import React from 'react'
 import { FiCheck } from 'react-icons/fi'
 import { HiExclamation } from 'react-icons/hi'
 
-export interface checkboxOptions {
+export interface CheckboxOptions {
   value: string
   label: string
 }
