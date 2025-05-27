@@ -13,7 +13,6 @@
  * via the `definition` "supportedTimezones".
  */
 export type SupportedTimezones =
-  | 'Pacific/Midway'
   | 'Pacific/Niue'
   | 'Pacific/Honolulu'
   | 'Pacific/Rarotonga'
