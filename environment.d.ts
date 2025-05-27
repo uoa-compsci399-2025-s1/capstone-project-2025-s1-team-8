@@ -26,6 +26,26 @@ declare global {
        * Secret used to secure JWT. You can see how to generate this secret [here](https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/wiki/Backend-Architecture#jwt-authentication).
        */
       JWT_SECRET: string
+      /**
+       * The access key ID for the IAM user with access to the S3 bucket.
+       * For all S3 related set-up, please refer to the [docs](https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/wiki/AWS-Deployment#creating-an-s3-bucket-for-cms)
+       */
+      S3_ACCESS_KEY_ID: string
+      /**
+       * The secret access key for the IAM user with access to the S3 bucket
+       * [docs](https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/wiki/AWS-Deployment#creating-an-s3-bucket-for-cms)
+       */
+      S3_SECRET_ACCESS_KEY: string
+      /**
+       * The region of the S3 bucket
+       * [docs](https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/wiki/AWS-Deployment#creating-an-s3-bucket-for-cms)
+       */
+      S3_REGION: string
+      /**
+       * The name of the S3 bucket
+       * [docs](https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/wiki/AWS-Deployment#creating-an-s3-bucket-for-cms)
+       */
+      S3_BUCKET: string
     }
   }
 }
