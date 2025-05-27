@@ -45,7 +45,7 @@ const DraggableProjectCard = ({ id, projectInfo, onClick }: ProjectCardType) => 
           <p className="text-dark-blue text-xs pb-0.5">
             {(projectInfo.client as UserCombinedInfo).firstName +
               ' ' +
-              (projectInfo.client as UserCombinedInfo).lastName}
+              ((projectInfo.client as UserCombinedInfo).lastName ?? '')}
           </p>
           <p className="text-grey-1 p-0 pt-2 pb-1 text-[12px] leading-none">
             {truncatedDescription}
