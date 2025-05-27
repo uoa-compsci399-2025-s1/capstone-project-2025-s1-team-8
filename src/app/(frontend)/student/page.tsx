@@ -62,7 +62,7 @@ export default function Student() {
             description="Please check back at a later date!"
             type="margin-10"
             center={true}
-            className='pt-30'
+            className="pt-30"
           />
         )}
       </div>

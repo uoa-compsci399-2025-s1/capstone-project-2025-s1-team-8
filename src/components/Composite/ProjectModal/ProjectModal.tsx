@@ -132,11 +132,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             text={projectInfo.specialEquipmentRequirements}
           />
 
-          <Capsule
-            className="col-start-1"
-            variant="muted_blue"
-            text="Submitted"
-          />
+          <Capsule className="col-start-1" variant="muted_blue" text="Submitted" />
           <Capsule
             className="col-start-1 md:col-start-2 mb-4 md:mb-2"
             variant="gradient"
@@ -167,13 +163,13 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
       </div>
 
       <div className="relative bg-transparent-blue max-w-full flex flex-col p-15 px-5 sm:px-10 md:px-15 pt-12 py-19 rounded-b-2xl gap-5">
+        {otherClientDetails.length > 0 && type === 'student' && (
+          <Capsule variant="light_beige" text="Other Clients" className={'mb-3'} />
+        )}
         <div className="flex flex-col">
           <div
             className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3 pb-3`}
           >
-            {otherClientDetails.length > 0 && (
-              <Capsule variant="light_beige" text="Other Clients" className={'mb-3'} />
-            )}
             {otherClientDetails.map((clientDetails) => (
               <React.Fragment key={clientDetails.email}>
                 <h2 className="col-start-1 text-lg font-normal text-dark-blue font-inter alternate">
