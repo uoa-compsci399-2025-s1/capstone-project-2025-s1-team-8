@@ -15,6 +15,7 @@ import { Form } from './data-layer/collections/Form'
 import { Authentication } from './data-layer/collections/Authentication'
 import { ClientAdditionalInfo } from './data-layer/collections/ClientAdditionalInfo'
 import { Admin } from './data-layer/collections/Admin'
+import { Home } from './data-layer/globals/Home'
 import { s3Storage } from '@payloadcms/storage-s3'
 
 const filename = fileURLToPath(import.meta.url)
@@ -40,6 +41,7 @@ export default buildConfig({
     FormQuestion,
     Form,
   ],
+  globals: [Home],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
