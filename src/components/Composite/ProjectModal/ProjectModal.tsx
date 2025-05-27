@@ -154,7 +154,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />
-          <div className="col-start-1 md:col-start-2 col-end-[span_1] flex flex-row flex-wrap gap-2">
+          <div className="col-start-1 md:col-start-2 flex flex-row flex-wrap gap-2">
             {semesters.map((semester) => (
               <Capsule variant="beige" text={semester.name} key={semester.id} />
             ))}
@@ -164,42 +164,44 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
 
       <div className="relative bg-transparent-blue max-w-full flex flex-col p-15 px-5 sm:px-10 md:px-15 pt-12 py-19 rounded-b-2xl gap-5 wrap-break-word">
         {otherClientDetails.length > 0 && type === 'student' && (
-          <Capsule variant="light_beige" text="Other Clients" className={'mb-3'} />
+          <Capsule variant="light_beige" text="Additional Clients"/>
         )}
-        <div className="flex flex-col">
-          <div
-            className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3 pb-3`}
-          >
-            {otherClientDetails.map((clientDetails) => (
-              <React.Fragment key={clientDetails.email}>
-                <h2 className="col-start-1 text-lg font-normal text-dark-blue font-inter alternate">
-                  {clientDetails.firstName + ' ' + clientDetails.lastName}
-                </h2>
-                {type === 'admin' && (
-                  <>
-                    <h2 className="col-start-2 text-lg font-normal text-deeper-blue font-inter email break-all">
-                      |
-                    </h2>
-                    <h2 className="col-start-3 text-lg font-normal text-deeper-blue font-inter email">
-                      {clientDetails.email}
-                    </h2>
-                  </>
-                )}
-              </React.Fragment>
-            ))}
+        {otherClientDetails.length > 0 && (
+          <div className="flex flex-col">
+            <div
+              className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3 pb-3`}
+            >
+              {otherClientDetails.map((clientDetails) => (
+                <React.Fragment key={clientDetails.email}>
+                  <h2 className="col-start-1 text-lg font-normal text-dark-blue font-inter alternate">
+                    {clientDetails.firstName + ' ' + clientDetails.lastName}
+                  </h2>
+                  {type === 'admin' && (
+                    <>
+                      <h2 className="col-start-2 text-lg font-normal text-deeper-blue font-inter email break-all">
+                        |
+                      </h2>
+                      <h2 className="col-start-3 text-lg font-normal text-deeper-blue font-inter email">
+                        {clientDetails.email}
+                      </h2>
+                    </>
+                  )}
+                </React.Fragment>
+              ))}
 
-            {otherClientDetails.length > 0 && type === 'admin' && (
-              <Button
-                onClick={() => handleCopyAll(projectClient, otherClientDetails)}
-                className="col-start-5 row-start-1"
-                variant="muted_blue"
-                size="sm"
-              >
-                {copiedAll ? <FiCheck className="self-center size-4" /> : <p>Copy All Emails</p>}
-              </Button>
-            )}
+              {otherClientDetails.length > 0 && type === 'admin' && (
+                <Button
+                  onClick={() => handleCopyAll(projectClient, otherClientDetails)}
+                  className="col-start-5 row-start-1"
+                  variant="muted_blue"
+                  size="sm"
+                >
+                  {copiedAll ? <FiCheck className="self-center size-4" /> : <p>Copy All Emails</p>}
+                </Button>
+              )}
+            </div>
           </div>
-        </div>
+        )}
         {projectInfo.desiredTeamSkills && projectInfo.desiredTeamSkills != '' && (
           <>
             <Capsule variant="light_beige" text="Desired team skills" />

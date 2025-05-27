@@ -4,7 +4,6 @@ import SadTeapot from '@/components/Assets/SadTeapot/SadTeapot'
 interface TeapotCardProps {
   title: string
   description: string
-  type?: 'margin-5' | 'margin-10'
   center?: boolean
   className?: string
 }

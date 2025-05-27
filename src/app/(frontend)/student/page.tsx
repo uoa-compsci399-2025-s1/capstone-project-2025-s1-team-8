@@ -44,9 +44,9 @@ export default function Student() {
   return (
     <div>
       <NavBar user={loggedInUser} onclick={handleLoginButtonClick} />
-      <div className="">
-        <div className="pt-35 pb-20 items-center justify-center w-full px-8 sm:px-15 lg:px-30">
-          {hasProjects && (
+      <div>
+        {hasProjects && (
+          <div className="pt-35 pb-20 items-center justify-center w-full px-8 sm:px-15 lg:px-30">
             <ProjectCardList
               className="bg-muted-blue-op-45 px-7 md:px-15 pt-8 pb-12 rounded-2xl border-deeper-blue border"
               headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
@@ -54,13 +54,12 @@ export default function Student() {
               projects={projects}
               type="student"
             />
-          )}
-        </div>
+          </div>
+        )}
         {!hasProjects && (
           <TeapotCard
             title="Projects haven't been published yet"
             description="Please check back at a later date!"
-            type="margin-10"
             center={true}
             className="pt-30"
           />
