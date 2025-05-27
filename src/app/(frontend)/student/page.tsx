@@ -44,8 +44,8 @@ export default function Student() {
   return (
     <div>
       <NavBar user={loggedInUser} onclick={handleLoginButtonClick} />
-      <div className="pt-35 pb-20">
-        <div className="items-center justify-center w-full px-8 sm:px-15 lg:px-30">
+      <div className="">
+        <div className="pt-35 pb-20 items-center justify-center w-full px-8 sm:px-15 lg:px-30">
           {hasProjects && (
             <ProjectCardList
               className="bg-muted-blue-op-45 px-7 md:px-15 pt-8 pb-12 rounded-2xl border-deeper-blue border"
@@ -62,6 +62,7 @@ export default function Student() {
             description="Please check back at a later date!"
             type="margin-10"
             center={true}
+            className='pt-30'
           />
         )}
       </div>

@@ -12,7 +12,7 @@ export default meta
 type Story = StoryObj<typeof TeapotCard>
 
 export const Default: Story = {
-  render: function RenderSuccessNotification(args) {
+  render: function RenderTeapotCard(args) {
     return (
       <div className="bg-beige p-15">
         <TeapotCard {...args} />
@@ -22,13 +22,12 @@ export const Default: Story = {
   args: {
     title: "Projects haven't been published yet",
     description: 'Please check back at a later date!',
-    type: 'margin-5',
     center: true,
   },
 }
 
 export const Admin: Story = {
-  render: function RenderSuccessNotification(args) {
+  render: function RenderTeapotCard(args) {
     return (
       <div className="bg-beige p-15">
         <TeapotCard {...args} />
@@ -38,7 +37,6 @@ export const Admin: Story = {
   args: {
     title: 'Please Switch to a Desktop Device',
     description: 'This page is not available on mobile devices.',
-    type: 'margin-5',
     center: true,
   },
 }

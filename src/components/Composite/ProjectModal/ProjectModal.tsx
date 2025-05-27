@@ -63,9 +63,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     <Modal
       open={open}
       onClose={onClose}
-      className={className + ' min-h-fit w-[95%] md:w-[75%] top-5'}
+      className={className + ' min-h-fit w-[95%] sm:w-[85%] md:w-[75%] top-5'}
     >
-      <div className="relative max-w-full flex flex-col p-5 md:p-15 pt-19 pb-10 rounded-t-2xl gap-5 pointer-events-none wrap-break-word">
+      <div className="relative max-w-full flex flex-col p-15 px-5 sm:px-10 md:px-15 pt-19 rounded-t-2xl gap-5 pointer-events-none wrap-break-word">
         {/* edit button */}
         {type === 'admin' && (
           <button
@@ -120,39 +120,39 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         </p>
 
         {/* capsules for information */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[max-content_auto_max-content_max-content] grid-flow-row gap-2.5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[max-content_auto] grid-flow-row gap-2.5">
           <Capsule
             className="col-start-1 col-span-2 lg:col-span-1 mr-2"
             variant="muted_blue"
             text="Special requirements"
           />
           <Capsule
-            className="col-start-1 md:col-span-2 lg:col-start-2 lg:col-span-1 mr-2 mb-5 md:mb-0"
+            className="col-start-1 col-span-1 md:col-span-2 lg:col-start-2 mt-2 lg:mt-0 mb-5 md:mb-3"
             variant="beige"
             text={projectInfo.specialEquipmentRequirements}
           />
 
           <Capsule
-            className="col-start-1 lg:col-start-3 mr-2"
+            className="col-start-1"
             variant="muted_blue"
             text="Submitted"
           />
           <Capsule
-            className="col-start-1 md:col-start-2 lg:col-start-4 mr-2 mb-5 md:mb-0"
+            className="col-start-1 md:col-start-2 mb-4 md:mb-2"
             variant="gradient"
             text={convertDatetoddmmYYYY(new Date(projectInfo.createdAt))}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Number of teams" />
           <Capsule
-            className="col-start-1 md:col-start-2 mb-5 md:mb-0"
+            className="col-start-1 md:col-start-2 mb-4 md:mb-2"
             variant="beige"
             text={projectInfo.numberOfTeams}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Future consideration" />
           <Capsule
-            className="col-start-1 md:col-start-2 mb-5 md:mb-0"
+            className="col-start-1 md:col-start-2 mb-4 md:mb-2"
             variant="beige"
             text={projectInfo.futureConsideration ? 'Yes' : 'No'}
           />
@@ -166,7 +166,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         </div>
       </div>
 
-      <div className="relative bg-transparent-blue max-w-full flex flex-col px-5 md:px-15 pt-12 py-19 rounded-b-2xl gap-5">
+      <div className="relative bg-transparent-blue max-w-full flex flex-col p-15 px-5 sm:px-10 md:px-15 pt-12 py-19 rounded-b-2xl gap-5">
         <div className="flex flex-col">
           <div
             className={`grid grid-cols-[max-content_max-content_max-content_auto_max-content] grid-rows-${otherClientDetails.length} gap-x-3 pb-3`}

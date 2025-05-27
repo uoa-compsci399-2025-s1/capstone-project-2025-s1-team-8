@@ -154,7 +154,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       </div>
       <TeapotCard
         title={'Please switch to a desktop device'}
-        description=" The current device is not supported for the admin dashboard."
+        description="The current device is not supported for the admin dashboard."
         type="margin-10"
         className="lg:hidden pt-30"
       />
