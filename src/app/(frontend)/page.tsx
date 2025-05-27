@@ -39,7 +39,7 @@ export default async function HomePage() {
         mb-10 mt-9"
           />
           <Button variant="outline" size="md">
-            <Link href='/form'>Submit your proposal</Link>
+            <Link href="/form">Submit your proposal</Link>
           </Button>
         </div>
       </div>
