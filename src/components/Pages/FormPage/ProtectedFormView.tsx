@@ -8,7 +8,7 @@ import Button from '@/components/Generic/Button/Button'
 import Input from '@/components/Generic/Input/InputField'
 import Textarea from '@/components/Generic/Textarea/Textarea'
 import Radio from '@/components/Generic/Radio/Radio'
-import type { checkboxOptions } from '@/components/Generic/Checkbox/Checkbox'
+import type { CheckboxOptions } from '@/components/Generic/Checkbox/Checkbox'
 import Checkbox from '@/components/Generic/Checkbox/Checkbox'
 import { FiCheck } from 'react-icons/fi'
 import { HiX, HiExclamation } from 'react-icons/hi'
@@ -37,8 +37,8 @@ const ProtectedFormView: FC = () => {
   const [showNotification, setShowNotification] = useState<boolean>(false)
 
   // id / semester name pairs for the upcoming semesters
-  const [upcomingSemesterOptions, setUpcomingSemesterOptions] = useState<checkboxOptions[]>([])
-  const [nextSemesterOption, setNextSemesterOption] = useState<checkboxOptions>()
+  const [upcomingSemesterOptions, setUpcomingSemesterOptions] = useState<CheckboxOptions[]>([])
+  const [nextSemesterOption, setNextSemesterOption] = useState<CheckboxOptions>()
 
   // State to manage the additional client details
   const [otherClientDetails, setOtherClientDetails] = useState<CreateProjectClient[]>([])

@@ -9,7 +9,7 @@ export interface CheckboxOptions {
 }
 
 interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
-  options: checkboxOptions[]
+  options: CheckboxOptions[]
   error?: boolean
   errorMessage?: string
 }
