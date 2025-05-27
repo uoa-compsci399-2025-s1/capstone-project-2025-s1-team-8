@@ -155,7 +155,7 @@ const AdminSemesterService = {
     const urlNext = buildNextRequestURL('/api/semesters', { timeframe: SemesterType.Next })
     const responseNext = await GetSemesters(await buildNextRequest(urlNext, { method: 'GET' }))
     const dataNext = await responseNext.json()
-
+    
     if (dataCurrent.data.length && dataCurrent.data[0].id === semesterId) {
       return 'current'
     }
