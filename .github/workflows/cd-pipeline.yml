@@ -123,6 +123,3 @@ jobs:
 
             echo "Rebuilding and starting containers"
             docker-compose up -d --build
-
-      - run: echo "To be implemented"
-      # To be implemented at a later stage
