@@ -57,7 +57,6 @@ class RouteWrapper {
       for (const project of allSemesterProjects) {
         // eslint-disable-next-line
         const unpackedProject = { ...project, ...(project as any)['project'] } as any
-        console.log('Unpacked project:', unpackedProject)
         const row = csvHeaders.map((field) => {
           const value = unpackedProject[field]
 
