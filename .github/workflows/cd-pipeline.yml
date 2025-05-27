@@ -32,6 +32,11 @@ jobs:
       GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
       NEXT_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_URL }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      # S3
+      S3_ACCESS_KEY_ID:  ${{ secrets.S3_ACCESS_KEY_ID }}
+      S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+      S3_REGION: ${{ vars.S3_REGION }}
+      S3_BUCKET: ${{ vars.S3_BUCKET }}
     environment:
       name: staging
       # Note this url will change whenever our IP gets discarded, need to get our domain first.
@@ -67,6 +72,10 @@ jobs:
             echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
             echo "NEXT_PUBLIC_URL=${{ secrets.NEXT_PUBLIC_URL }}" >> .env
             echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+            echo "S3_ACCESS_KEY_ID=${{ secrets.S3_ACCESS_KEY_ID }}" >> .env
+            echo "S3_SECRET_ACCESS_KEY=${{ secrets.S3_SECRET_ACCESS_KEY }}" >> .env
+            echo "S3_REGION=${{ vars.S3_REGION }}" >> .env
+            echo "S3_BUCKET=${{ vars.S3_BUCKET }}" >> .env
 
             echo "Stopping old containers"
             docker-compose down
@@ -94,6 +103,11 @@ jobs:
       GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
       NEXT_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_URL }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      # S3
+      S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+      S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+      S3_REGION: ${{ vars.S3_REGION }}
+      S3_BUCKET: ${{ vars.S3_BUCKET }}
     environment:
       name: production
     runs-on: ubuntu-latest
