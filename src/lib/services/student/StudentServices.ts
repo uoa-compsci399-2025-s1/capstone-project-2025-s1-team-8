@@ -14,9 +14,22 @@ export const StudentService = {
     )
     const { data: semester, error } = await semesterResponse.json()
 
-    if (error || !semester?.length) {
+    if (error) {
       console.error('Failed to fetch current semester:', error)
       return null
+    }
+
+    if (semester.length === 0) {
+      const semesterUrl1 = buildNextRequestURL('/api/semesters', { timeframe: SemesterType.Next })
+    const semesterResponse1 = await GetSemesters(
+      await buildNextRequest(semesterUrl1, { method: 'GET' }),
+    )
+    const { data: semester1, error: error1 } = await semesterResponse1.json()
+      if (error1 || semester1.length === 0) {
+        console.error('Failed to fetch upcoming semester:', error1)
+        return null
+      }
+      return {id: semester1[0].id, name: semester1[0].name }
     }
 
     return { id: semester[0].id, name: semester[0].name }
@@ -24,6 +37,7 @@ export const StudentService = {
 
   getProjectsForCurrentSemester: async function (): Promise<ProjectDetails[]> {
     const res = await StudentService.getCurrentSemester()
+    console.log(res?.id, res?.name)
     if (!res) {
       console.error('No current semester found')
       return []
