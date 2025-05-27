@@ -70,11 +70,11 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
           {/* TODO: add link to About page */}
           {
             <div className="relative group p-2">
-              <Link href="/about" className="nav-link-text">
+              <Link href="/" className="nav-link-text">
                 About
               </Link>
               <span
-                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/about' ? 'scale-x-100' : ''}`}
+                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/' ? 'scale-x-100' : ''}`}
               />
             </div>
           }
@@ -160,7 +160,7 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
           </div>
         ))}
         <div className="p-[5%]">
-          <Link href="/about" className="nav-link-text">
+          <Link href="/" className="nav-link-text">
             About
           </Link>
         </div>
