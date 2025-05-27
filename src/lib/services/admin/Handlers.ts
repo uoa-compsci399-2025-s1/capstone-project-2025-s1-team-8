@@ -98,7 +98,7 @@ export const handleGetAllSemesters = async (): Promise<void | {
   error?: string
   data?: Semester[]
 }> => {
-  const { status, error, data } = await AdminService.getAllPaginatedSemesters()
+  const { status, error, data } = await AdminService.getAllSemesters()
   if (status === 200) {
     return { data }
   } else {
