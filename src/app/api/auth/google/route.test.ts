@@ -53,7 +53,7 @@ describe('Google Auth tests', async () => {
       maxAge: 60,
       httpOnly: true,
       sameSite: 'lax',
-      // secure: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production',
     })
     expect(oauth2Client.generateAuthUrl).toHaveBeenCalledWith({
       scope: SCOPES_ARRAY_MOCK,

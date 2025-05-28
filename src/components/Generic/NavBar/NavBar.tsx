@@ -27,7 +27,7 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
       ? '/admin'
       : user.role === UserRole.Client
         ? '/client'
-        : '/'
+        : '/student'
     : '/'
 
   const [isOpen, setIsOpen] = useState(false)
