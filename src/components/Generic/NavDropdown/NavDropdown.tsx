@@ -1,8 +1,10 @@
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
+'use client'
+
 import type { NavLink } from '../NavBar/NavBar'
 import Link from 'next/link'
 import React from 'react'
-import { IoChevronDown } from 'react-icons/io5'
+import { useState } from 'react'
+import { IoChevronDown, IoChevronUp } from 'react-icons/io5'
 
 interface NavDropdownProps {
   buttonText: string
@@ -10,59 +12,55 @@ interface NavDropdownProps {
 }
 
 const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const toggleMenu = () => setIsOpen(!isOpen)
   return (
     <div className="relative">
       {/* Mobile: render items inline */}
-      <Menu as="div" className="sm:hidden inline-block text-left">
+      <div className="md:hidden text-left" onClick={toggleMenu}>
         <div>
-          <MenuButton className="inline-flex py-2 items-center gap-1 focus:outline-none nav-link-text">
+          <button className="flex flex-row justify-between w-full nav-link-text">
             {buttonText}
-            <IoChevronDown aria-hidden="true" className="size-4 text-current" />
-          </MenuButton>
+            {!isOpen && <IoChevronDown aria-hidden="true" className="size-4 text-current" />}
+            {isOpen && <IoChevronUp aria-hidden="true" className="size-4 text-current" />}
+          </button>
         </div>
 
-        <MenuItems className="">
-          {items.map((item) => (
-            <div className="py-2" key={item.href}>
-              <MenuItem>
-                <Link href={item.href} className="nav-link-text">
-                  {item.text}
-                </Link>
-              </MenuItem>
-            </div>
-          ))}
-        </MenuItems>
-      </Menu>
-
-      {/* Desktop: dropdown menu */}
-      <Menu as="div" className="hidden sm:relative sm:inline-block text-right">
-        <div>
-          <MenuButton className="inline-flex items-center gap-1 focus:outline-none nav-link-text">
-            {buttonText}
-            <IoChevronDown aria-hidden="true" className="size-4 text-current" />
-          </MenuButton>
-        </div>
-
-        <MenuItems
-          transition
-          className="bg-beige absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
-        >
-          {items.map((item) => {
-            return (
-              <div className="py-1" key={item.href}>
-                <MenuItem>
-                  <Link
-                    href={item.href}
-                    className="block px-4 py-2 text-sm text-steel-blue data-focus:bg-steel-blue data-focus:text-beige data-focus:outline-hidden nav-link-text"
-                  >
+        {isOpen && (
+          <div className="">
+            {items.map((item) => (
+              <div className="py-2" key={item.href}>
+                <React.Fragment>
+                  <Link href={item.href} className="nav-link-text">
                     {item.text}
                   </Link>
-                </MenuItem>
+                </React.Fragment>
               </div>
-            )
-          })}
-        </MenuItems>
-      </Menu>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Desktop: dropdown menu */}
+      <div className="hidden md:flex md:relative">
+        <button onClick={toggleMenu} className="nav-link-text flex flex-row justify-center gap-1">
+          {buttonText} {!isOpen && <IoChevronDown className="mt-0.5" />}
+          {isOpen && <IoChevronUp className="mt-0.5" />}
+        </button>
+        {isOpen && (
+          <div className="bg-beige mt-2 absolute inline-block z-75 top-full left-0 w-45 rounded-lg shadow-lg">
+            {items.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="nav-link-text block px-4 py-2 text-sm text-gray-700 hover:bg-muted-blue-op-45"
+              >
+                {item.text}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

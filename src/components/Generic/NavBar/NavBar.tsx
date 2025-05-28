@@ -98,9 +98,7 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
                 ]}
                 buttonText="My Dashboards"
               ></NavDropdown>
-              <span
-                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/admin' ? 'scale-x-100' : ''}`}
-              />
+              <span className={`nav-link-text`} />
             </div>
           )}
           <div className="relative group p-2">
