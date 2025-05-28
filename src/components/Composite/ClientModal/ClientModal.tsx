@@ -44,10 +44,10 @@ const ClientModal: React.FC<ClientModalProps> = ({
 
   const [copied, setCopied] = useState(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
-  const [name, setName] = useState<string>(clientInfo.firstName + ' ' + clientInfo.lastName)
-  const [previousName, setPreviousName] = useState<string>(
-    clientInfo.firstName + ' ' + clientInfo.lastName,
-  )
+  const [firstName, setFirstName] = useState<string>(clientInfo.firstName)
+  const [lastName, setLastName] = useState<string>(clientInfo.lastName ?? '')
+  const [previousFirstName, setPreviousFirstName] = useState<string>(clientInfo.firstName)
+  const [previousLastName, setPreviousLastName] = useState<string>(clientInfo.lastName ?? '')
   const [affiliation, setAffiliation] = useState<string>(clientInfo.affiliation ?? '')
   const [previousAffiliation, setPreviousAffiliation] = useState<string>(
     clientInfo.affiliation ?? '',
@@ -63,9 +63,9 @@ const ClientModal: React.FC<ClientModalProps> = ({
   const [notificationTitle, setNotificationTitle] = useState<string>('')
 
   const handleSave = async () => {
-    const names = name.split(' ')
-    const firstName = names[0]
-    const lastName = names[1]
+    // const names = name.split(' ')
+    // const firstName = names[0]
+    // const lastName = names[1]
     if (!firstName || !lastName) {
       setNotificationType('warning')
       setNotificationTitle('Issue updating profile')
@@ -73,16 +73,17 @@ const ClientModal: React.FC<ClientModalProps> = ({
       return
     }
 
-    if (names.length > 2) {
-      setNotificationType('warning')
-      setNotificationTitle('Issue updating profile')
-      setNotificationMessage('Please enter only first and last name.')
-      return
-    }
+    // if (names.length > 2) {
+    //   setNotificationType('warning')
+    //   setNotificationTitle('Issue updating profile')
+    //   setNotificationMessage('Please enter only first and last name.')
+    //   return
+    // }
     if (onSave) {
       const res = await onSave(clientInfo.id, firstName, lastName, affiliation, introduction)
       if (res.error) {
-        setName(previousName)
+        setFirstName(previousFirstName)
+        setLastName(previousLastName)
         setAffiliation(previousAffiliation)
         setIntroduction(previousIntroduction)
         setNotificationType('warning')
@@ -93,7 +94,8 @@ const ClientModal: React.FC<ClientModalProps> = ({
         return
       }
     }
-    setPreviousName(name)
+    setPreviousFirstName(firstName)
+    setPreviousLastName(lastName)
     setPreviousAffiliation(affiliation)
     setPreviousIntroduction(introduction)
     setIsEditing(false)
@@ -115,6 +117,10 @@ const ClientModal: React.FC<ClientModalProps> = ({
       onClose={() => {
         setNotificationMessage('')
         setIsEditing(false)
+        setFirstName(previousFirstName)
+        setLastName(previousLastName)
+        setAffiliation(previousAffiliation)
+        setIntroduction(previousIntroduction)
         onClose?.()
       }}
       className={className + ' min-h-fit w-[75%] top-5'}
@@ -152,15 +158,23 @@ const ClientModal: React.FC<ClientModalProps> = ({
         </button>
         <div className="flex flex-row gap-5">
           {isEditing ? (
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="editable-capsule"
-              style={{ pointerEvents: 'initial' }}
-            />
+            <div>
+              <input
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="editable-capsule"
+                style={{ pointerEvents: 'initial' }}
+              />
+              <input
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="editable-capsule"
+                style={{ pointerEvents: 'initial' }}
+              />
+            </div>
           ) : (
             <h1 className="text-4xl font-normal m-0 text-dark-blue font-dm-serif-display">
-              {name}
+              {firstName + ' ' + lastName}
             </h1>
           )}
           <h2 className="text-lg font-normal text-steel-blue font-inter self-end pb-0.5">
