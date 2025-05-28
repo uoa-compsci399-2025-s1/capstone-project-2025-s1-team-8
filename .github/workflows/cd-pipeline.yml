@@ -23,7 +23,6 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
     environment:
       name: staging
-      # Note this url will change whenever our IP gets discarded, need to get our domain first.
       url: https://staging.compsci399.com
     runs-on: ubuntu-latest
     steps:
