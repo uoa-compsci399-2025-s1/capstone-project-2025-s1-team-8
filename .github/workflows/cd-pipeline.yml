@@ -24,7 +24,7 @@ jobs:
     environment:
       name: staging
       # Note this url will change whenever our IP gets discarded, need to get our domain first.
-      url: http://ec2-54-66-250-19.ap-southeast-2.compute.amazonaws.com:3000
+      url: https://staging.compsci399.com
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -78,7 +78,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production'
     environment:
       name: production
-      url: http://ec2-16-176-36-147.ap-southeast-2.compute.amazonaws.com:3000
+      url: https://compsci399.com
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
