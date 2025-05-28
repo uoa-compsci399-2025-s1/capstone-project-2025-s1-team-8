@@ -23,7 +23,7 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
     environment:
       name: staging
-      url: https://staging.compsci399.com
+      url: ${{ vars.NEXT_PUBLIC_URL }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -77,7 +77,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production'
     environment:
       name: production
-      url: https://compsci399.com
+      url: ${{ vars.NEXT_PUBLIC_URL }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
