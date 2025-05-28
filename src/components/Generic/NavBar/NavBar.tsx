@@ -98,7 +98,6 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
                 ]}
                 buttonText="My Dashboards"
               ></NavDropdown>
-              <span className={`nav-link-text`} />
             </div>
           )}
           <div className="relative group p-2">

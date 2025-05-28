@@ -43,7 +43,10 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
 
       {/* Desktop: dropdown menu */}
       <div className="hidden md:flex md:relative">
-        <button onClick={toggleMenu} className="nav-link-text flex flex-row justify-center gap-1">
+        <button
+          onClick={toggleMenu}
+          className="nav-link-text flex flex-row justify-center gap-1 mt-1"
+        >
           {buttonText} {!isOpen && <IoChevronDown className="mt-0.5" />}
           {isOpen && <IoChevronUp className="mt-0.5" />}
         </button>
