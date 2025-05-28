@@ -117,8 +117,8 @@ jobs:
             echo "Stopping old containers"
             docker-compose down
 
-            echo "Removing old images"
-            docker system prune -f
-
             echo "Rebuilding and starting containers"
             docker-compose up -d --build
+
+            echo "Removing old images after build"
+            docker system prune -f
