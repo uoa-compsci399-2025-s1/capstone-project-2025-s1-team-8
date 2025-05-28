@@ -21,17 +21,6 @@ jobs:
       cancel-in-progress: true
     name: Deploy Encapsulate to Staging
     if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
-    env:
-      EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
-      EC2_HOST: ${{ secrets.EC2_HOST }}
-      EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
-      # Repository secrets
-      DATABASE_URI: ${{ secrets.DATABASE_URI }}
-      PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
-      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-      NEXT_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_URL }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
     environment:
       name: staging
       # Note this url will change whenever our IP gets discarded, need to get our domain first.
@@ -67,6 +56,10 @@ jobs:
             echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
             echo "NEXT_PUBLIC_URL=${{ secrets.NEXT_PUBLIC_URL }}" >> .env
             echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+            echo "S3_ACCESS_KEY_ID=${{ secrets.S3_ACCESS_KEY_ID }}" >> .env
+            echo "S3_SECRET_ACCESS_KEY=${{ secrets.S3_SECRET_ACCESS_KEY }}" >> .env
+            echo "S3_REGION=${{ vars.S3_REGION }}" >> .env
+            echo "S3_BUCKET=${{ vars.S3_BUCKET }}" >> .env
 
             echo "Stopping old containers"
             docker-compose down
@@ -83,19 +76,9 @@ jobs:
       cancel-in-progress: true
     name: Deploy Encapsulate to Production
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production'
-    env:
-      EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
-      EC2_HOST: ${{ secrets.EC2_HOST }}
-      EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
-      # Repository secrets
-      DATABASE_URI: ${{ secrets.DATABASE_URI }}
-      PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
-      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-      NEXT_PUBLIC_URL: ${{ secrets.NEXT_PUBLIC_URL }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
     environment:
       name: production
+      url: http://ec2-16-176-36-147.ap-southeast-2.compute.amazonaws.com:3000
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -110,5 +93,33 @@ jobs:
           remote_user: ${{ secrets.EC2_USERNAME }}
           remote_key: ${{ secrets.EC2_SSH_KEY }}
 
-      - run: echo "To be implemented"
-      # To be implemented at a later stage
+      - name: Connect to Server via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            cd ~/app
+
+            echo "storing secrets"
+            echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> .env
+            echo "PAYLOAD_SECRET=${{ secrets.PAYLOAD_SECRET }}" >> .env
+            echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> .env
+            echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+            echo "NEXT_PUBLIC_URL=${{ secrets.NEXT_PUBLIC_URL }}" >> .env
+            echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+            echo "S3_ACCESS_KEY_ID=${{ secrets.S3_ACCESS_KEY_ID }}" >> .env
+            echo "S3_SECRET_ACCESS_KEY=${{ secrets.S3_SECRET_ACCESS_KEY }}" >> .env
+            echo "S3_REGION=${{ vars.S3_REGION }}" >> .env
+            echo "S3_BUCKET=${{ vars.S3_BUCKET }}" >> .env
+
+            echo "Stopping old containers"
+            docker-compose down
+
+            echo "Removing old images"
+            docker system prune -f
+
+            echo "Rebuilding and starting containers"
+            docker-compose up -d --build

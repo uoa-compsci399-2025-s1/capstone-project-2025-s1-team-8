@@ -33,8 +33,6 @@ jobs:
             !**.md
             !.gitignore
             !.gitattributes
-            !.github/**
-            !.vscode/**
             !.env.example
 
   setup:
@@ -244,6 +242,25 @@ jobs:
         with:
           script: |
             core.setFailed('Your code generation for typings are not up to date. Run pnpm generate:types')
+
+      - name: Generate import mapping
+        run: pnpm generate:importmap
+
+      - name: Write git diff
+        run: |
+          if git diff --quiet; then
+            echo "IMPORT_MAP_GEN_DIFF=0" >> $GITHUB_ENV
+          else
+            echo "IMPORT_MAP_GEN_DIFF=1" >> $GITHUB_ENV
+          fi
+
+      - name: Check for differences in map generation
+        if: ${{ env.IMPORT_MAP_GEN_DIFF != '0'}}
+        uses: actions/github-script@v3
+        with:
+          script: |
+            core.setFailed('Your code generation for maps are not up to date. Run pnpm generate:importmap')
+
 
   verify:
     name: Verify
