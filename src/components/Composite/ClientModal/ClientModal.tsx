@@ -63,9 +63,6 @@ const ClientModal: React.FC<ClientModalProps> = ({
   const [notificationTitle, setNotificationTitle] = useState<string>('')
 
   const handleSave = async () => {
-    // const names = name.split(' ')
-    // const firstName = names[0]
-    // const lastName = names[1]
     if (!firstName || !lastName) {
       setNotificationType('warning')
       setNotificationTitle('Issue updating profile')
@@ -73,12 +70,6 @@ const ClientModal: React.FC<ClientModalProps> = ({
       return
     }
 
-    // if (names.length > 2) {
-    //   setNotificationType('warning')
-    //   setNotificationTitle('Issue updating profile')
-    //   setNotificationMessage('Please enter only first and last name.')
-    //   return
-    // }
     if (onSave) {
       const res = await onSave(clientInfo.id, firstName, lastName, affiliation, introduction)
       if (res.error) {
@@ -158,7 +149,7 @@ const ClientModal: React.FC<ClientModalProps> = ({
         </button>
         <div className="flex flex-row gap-5">
           {isEditing ? (
-            <div>
+            <div className="space-x-2 space-y-2">
               <input
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
