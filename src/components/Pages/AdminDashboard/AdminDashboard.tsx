@@ -48,15 +48,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const updatePageCount = async (increment: boolean) => {
     if (increment) {
       if (pageNum < totalPages) {
-        setPageNum(pageNum + 1)
         const res = await getAllClients({ limit: itemsPerPage, cursor: pageNum })
+        setPageNum(pageNum + 1)
         setClientsData(res?.data || [])
         return clientsData
       }
     } else {
       if (pageNum > 1) {
-        setPageNum(pageNum - 1)
         const res = await getAllClients({ limit: itemsPerPage, cursor: pageNum })
+        setPageNum(pageNum - 1)
         setClientsData(res?.data || [])
         return clientsData
       }
