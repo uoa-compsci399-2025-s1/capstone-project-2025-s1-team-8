@@ -159,7 +159,6 @@ export const getAllClients = async (options:{limit?: number, cursor?: number}={}
   data?: { client: UserCombinedInfo; projects: ProjectDetails[] }[], nextPage?: number, totalPages?: number
 }> => {
   const getClientsResponse = await AdminService.getAllUsers({...options, role: UserRole.Client})
-  console.log('getClientsResponse:', getClientsResponse)
   const clientsWithProjects = await Promise.all(
     (getClientsResponse.data ?? []).map(async (client) => {
       const projectsResponse = await AdminService.getProjectsByUserId(client.id)
