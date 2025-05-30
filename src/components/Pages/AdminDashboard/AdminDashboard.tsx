@@ -51,8 +51,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         setPageNum(pageNum + 1)
         const res = await getAllClients({ limit: itemsPerPage, cursor: pageNum })
         setClientsData(res?.data || [])
-        //alert(clientsData.length)
-        //alert(res!.data!.length)
         return clientsData
       }
     } else {
