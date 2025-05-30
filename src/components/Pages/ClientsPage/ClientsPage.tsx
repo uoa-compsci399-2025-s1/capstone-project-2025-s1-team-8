@@ -10,38 +10,22 @@ import { MdOutlineNavigateNext, MdOutlineNavigateBefore } from 'react-icons/md'
 import { set } from 'zod'
 
 interface ClientsPageProps {
-  clients: {
+  clientsData: {
     client: UserCombinedInfo
     projects?: ProjectDetails[]
   }[]
   pageNum: number
-  updatePageCount: (
-    increment: boolean,
-  ) => Promise<{ client: UserCombinedInfo; projects?: ProjectDetails[] }[] | undefined>
+  updatePageCount: (increment: boolean) => void
   totalPages?: number
 }
 
 const ClientsPage: React.FC<ClientsPageProps> = ({
-  clients,
+  clientsData,
   pageNum,
   updatePageCount,
   totalPages = 0,
 }) => {
   const [searchValue, setSearchValue] = useState('')
-  const [clientData, setClientData] = useState(clients)
-
-  const handleGoPreviousPage = async () => {
-    const res = await updatePageCount(false)
-    if (res) {
-      setClientData(res)
-    }
-  }
-  const handleGoNextPage = async () => {
-    const res = await updatePageCount(true)
-    if (res) {
-      setClientData(res)
-    }
-  }
 
   return (
     <div className="w-full">
@@ -64,7 +48,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
       </div>
       <div className="pt-8">
         <ClientGroup
-          clients={clientData.filter((clientInfo) =>
+          clients={clientsData.filter((clientInfo) =>
             `${clientInfo.client.firstName} ${clientInfo.client.lastName ?? ''}`
               .toLowerCase()
               .includes(searchValue.trim().toLowerCase()),
@@ -73,14 +57,14 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
       </div>
       <div className="flex flex-row justify-center items-center gap-4 mt-8">
         {pageNum !== 1 && (
-          <button onClick={handleGoPreviousPage}>
+          <button onClick={async () => await updatePageCount(false)}>
             <MdOutlineNavigateBefore size={'2em'} />
           </button>
         )}
         <p>{pageNum}</p>
         {pageNum < totalPages && (
           <button>
-            <MdOutlineNavigateNext size={'2em'} onClick={handleGoNextPage} />
+            <MdOutlineNavigateNext size={'2em'} onClick={async () => await updatePageCount(true)} />
           </button>
         )}
       </div>
