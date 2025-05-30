@@ -47,6 +47,13 @@ const ProtectedFormView: FC = () => {
   const searchParams = useSearchParams()
   const projectName = searchParams.get('projectName') || ''
 
+  // check if trying to edit an existing project
+  const projectId = searchParams.get('projectId') || undefined
+
+  const [specialEquipmentRequirements, setSpecialEquipmentRequirements] = useState<string>('')
+  const [numberOfTeams, setNumberOfTeams] = useState<string>('')
+  
+
   const handleChange = (index: number, field: keyof CreateProjectClient, value: string) => {
     const updated = [...otherClientDetails]
     updated[index][field] = value
@@ -64,12 +71,40 @@ const ProtectedFormView: FC = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+    getValues,
     watch,
     formState: { errors },
   } = useForm<FormProject>()
 
   useEffect(() => {
-    handleFormPageLoad().then((res) => {
+    handleFormPageLoad(projectId).then((res) => {
+      if (res.projectData) {
+        setValue('name', res.projectData.name || '')
+        setValue('description', res.projectData.description || '')
+        setValue('desiredOutput', res.projectData.desiredOutput || '')
+        setSpecialEquipmentRequirements(
+          res.projectData.specialEquipmentRequirements || ''
+        )
+        setNumberOfTeams(
+          res.projectData.numberOfTeams || ''
+        )
+        setValue('desiredTeamSkills', res.projectData.desiredTeamSkills || '')
+        setValue('availableResources', res.projectData.availableResources || '')
+        setValue('futureConsideration', )
+        if (res.projectData.additionalClients) {
+          const clients = res.projectData.additionalClients.map((client) => ({
+            firstName: client.firstName || '',
+            lastName: client.lastName || '',
+            email: client.email || '',
+          }))
+          setOtherClientDetails(clients)
+        }
+        setValue('meetingAttendance', true)
+        setValue('finalPresentationAttendance', true)
+        setValue('projectSupportAndMaintenance', true)
+        setValue('semesters', res.projectData.semesters || [])
+      }
       setUpcomingSemesterOptions(
         res.upcomingSemesters.map((semester) => ({
           value: semester.id,
@@ -90,23 +125,25 @@ const ProtectedFormView: FC = () => {
 
   const hasFutureConsideration = String(watch('futureConsideration')) === 'Yes'
   const onSubmit: SubmitHandler<FormProject> = async (data) => {
-    if (nextSemesterOption) {
-      data.semesters.push(nextSemesterOption?.value) // Add the next semester to the list of semesters
-    }
-    data.additionalClients = otherClientDetails
-    data.futureConsideration = hasFutureConsideration
-    data.timestamp = new Date().toISOString()
+    console.log(getValues('numberOfTeams'))
+    console.log(data)
+    // if (nextSemesterOption) {
+    //   data.semesters.push(nextSemesterOption?.value) // Add the next semester to the list of semesters
+    // }
+    // data.additionalClients = otherClientDetails
+    // data.futureConsideration = hasFutureConsideration
+    // data.timestamp = new Date().toISOString()
 
-    const res = await handleProjectFormSubmission(data as CreateProjectRequestBody)
+    // const res = await handleProjectFormSubmission(data as CreateProjectRequestBody)
 
-    // Handle the response as needed
-    // For example, you can check for errors or success messages
-    if (res?.success) {
-      redirect('/client')
-    } else {
-      console.error('Error submitting form:', res?.error)
-      setShowNotification(true)
-    }
+    // // Handle the response as needed
+    // // For example, you can check for errors or success messages
+    // if (res?.success) {
+    //   redirect('/client')
+    // } else {
+    //   console.error('Error submitting form:', res?.error)
+    //   setShowNotification(true)
+    // }
   }
 
   return (
@@ -368,6 +405,7 @@ const ProtectedFormView: FC = () => {
                   customInput={true}
                   error={!!errors.specialEquipmentRequirements}
                   errorMessage={errors.specialEquipmentRequirements?.message}
+                  defaultValue={specialEquipmentRequirements}
                   {...register('specialEquipmentRequirements', {
                     required: 'Please select one option',
                     validate: (value) => value !== '' || 'Input field must not be empty',
@@ -400,6 +438,7 @@ const ProtectedFormView: FC = () => {
                   customInput={true}
                   error={!!errors.numberOfTeams}
                   errorMessage={errors.numberOfTeams?.message}
+                  defaultValue={numberOfTeams}
                   {...register('numberOfTeams', {
                     required: 'Number of teams is required',
                     validate: (value) => value !== '' || 'Number of teams is required',

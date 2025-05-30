@@ -1,6 +1,7 @@
 import { buildNextRequest } from '@/utils/buildNextRequest'
 import { buildNextRequestURL } from '@/utils/buildNextRequestURL'
 import { GET as GetSemesters } from '@/app/api/semesters/route'
+import { GET as GetProjectById } from '@/app/api/projects/[id]/route'
 import { POST as CreateProject } from '@/app/api/projects/route'
 import type { StatusCodes } from 'http-status-codes'
 import type { Semester } from '@/payload-types'
@@ -29,6 +30,25 @@ const ProjectFormService = {
     const { data, nextPage, error } = { ...(await response.json()) }
 
     return { status: response.status, data, nextPage, error }
+  },
+
+  /**
+   * Fetches a project by its ID
+   * @param id The ID of the project
+   * @returns The project data with status information
+   */
+  getProjectById: async function (id: string): Promise<{
+    status: StatusCodes
+    data?: CreateProjectRequestBody
+    error?: string
+  }> {
+    'use server'
+    const url = buildNextRequestURL(`/api/projects/${id}`, {})
+    const response = await GetProjectById(await buildNextRequest(url, { method: 'GET' }), {
+      params: Promise.resolve({ id }),
+    })
+    const { data, error } = { ...(await response.json()) }
+    return { status: response.status, data, error }
   },
 
   /**
