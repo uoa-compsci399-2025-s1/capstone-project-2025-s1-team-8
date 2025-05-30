@@ -18,33 +18,29 @@ import { SemesterType } from '@/types/Semester'
 
 const AdminSemesterService = {
   /**
-   * returns all semesters with pagination
+   * Fetches all semesters
    *
-   * @param options - pagination options including page and limit
-   * @returns - an object containing the status, data, nextPage, and error
+   * @returns an object containing the status, data, and error
    **/
-  getAllPaginatedSemesters: async function (
-    options: { page?: number; limit?: number } = {},
-  ): Promise<{
+  getAllSemesters: async function (): Promise<{
     status: StatusCodes
     data?: Semester[]
-    nextPage?: string
     error?: string
   }> {
     'use server'
-    const url = buildNextRequestURL('/api/semesters', options)
+    const url = buildNextRequestURL('/api/semesters', {})
     const response = await GetSemesters(await buildNextRequest(url, { method: 'GET' }))
-    const { data, nextPage, error } = { ...(await response.json()) }
+    const { data, error } = { ...(await response.json()) }
 
-    return { status: response.status, data, nextPage, error }
+    return { status: response.status, data, error }
   },
 
   /**
-   * returns all Semester Projects for a given semester with pagination
+   * Fetches paginated projects based on a semester ID.
    *
-   * @param semesterId
-   * @param options
-   * @returns - an object containing the status, data, nextPage, and error
+   * @param semesterId the ID of the semester to fetch projects for
+   * @param options optional parameters for pagination and filtering
+   * @returns an object containing the status, data, nextPage, and error
    */
   getAllPaginatedProjectsBySemesterId: async function (
     semesterId: string,
@@ -71,10 +67,10 @@ const AdminSemesterService = {
   },
 
   /**
-   * creates a semester
+   * Creates a semester
    *
-   * @param semester
-   * @returns - an object containing the status, data, and error, details
+   * @param semester the semester data to create
+   * @returns an object containing the status, data, and error, details
    */
   createSemester: async function (semester: CreateSemesterData): Promise<{
     status: StatusCodes
@@ -93,11 +89,11 @@ const AdminSemesterService = {
   },
 
   /**
-   * updates a semester
+   * Updates a semester
    *
-   * @param semesterId
-   * @param semester updates semester data
-   * @returns - an object containing the status, data, and error, details
+   * @param semesterId the ID of the semester to update
+   * @param semester the updated semester data
+   * @returns an object containing the status, data, and error, details
    */
   updateSemester: async function (
     semesterId: string,
@@ -122,10 +118,10 @@ const AdminSemesterService = {
   },
 
   /**
-   * deletes a semester
+   * Deletes a semester
    *
-   * @param semesterId
-   * @returns - an object containing the status, data, and error
+   * @param semesterId the ID of the semester to delete
+   * @returns an object containing the status, data, and error
    */
   deleteSemester: async function (semesterId: string): Promise<{
     status: StatusCodes
@@ -143,7 +139,7 @@ const AdminSemesterService = {
   },
 
   /**
-   * checks if the semester is current or upcoming
+   * Check if a target semester is current or upcoming
    *
    * @param semesterId The ID of the semester to check
    * @returns a string indicating if the semester is current, upcoming, or empty
@@ -160,20 +156,20 @@ const AdminSemesterService = {
     const responseNext = await GetSemesters(await buildNextRequest(urlNext, { method: 'GET' }))
     const dataNext = await responseNext.json()
 
-    if (dataCurrent.data && dataCurrent.data[0].id === semesterId) {
+    if (dataCurrent.data?.length && dataCurrent.data[0].id === semesterId) {
       return 'current'
     }
-    if (dataNext.data && dataNext.data[0].id === semesterId) {
+    if (dataNext.data?.length && dataNext.data[0].id === semesterId) {
       return 'upcoming'
     }
     return ''
   },
 
   /**
-   * returns all semesters for a given project
+   * Returns all semesters for a given project
    *
-   * @param projectId
-   * @returns - an object containing the status, data, and error
+   * @param projectId the ID of the project to fetch semesters for
+   * @returns an object containing the status, data, and error
    */
   getProjectSemesters: async function (projectId: string): Promise<{
     status: StatusCodes
