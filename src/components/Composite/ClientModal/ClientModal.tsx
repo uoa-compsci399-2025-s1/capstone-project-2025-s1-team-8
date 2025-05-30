@@ -206,9 +206,9 @@ const ClientModal: React.FC<ClientModalProps> = ({
               <textarea
                 value={introduction}
                 onChange={(e) => setIntroduction(e.target.value)}
-                className="editable-capsule h-24 w-full p-2"
+                className="editable-capsule h-24 w-full p-2 resize-none"
                 placeholder="Add introduction"
-                style={{ pointerEvents: 'initial' }}
+                style={{ pointerEvents: 'initial', width: '39%' }}
               />
             ) : (
               introduction && (
