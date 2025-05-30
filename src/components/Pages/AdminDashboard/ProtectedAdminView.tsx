@@ -20,7 +20,6 @@ const ProtectedAdminView = async (): Promise<JSX.Element> => {
   const fetchedAllClients = await getAllClients()
   const clientsData = fetchedAllClients?.data || []
   const totalPages = fetchedAllClients?.totalPages || 0
-  console.log('Total Pages:', totalPages)
 
   const fetchAllSemesters = await handleGetAllSemesters()
   const semestersData: Semester[] = fetchAllSemesters?.data || []
