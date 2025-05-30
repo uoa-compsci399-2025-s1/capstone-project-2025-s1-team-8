@@ -3,7 +3,7 @@ import { ClientCombinedInfoSchema } from './Payload'
 
 export const JWTResponseSchema = z.object({
   user: ClientCombinedInfoSchema,
-  access_token: z.string(),
+  accessToken: z.string().optional(),
 })
 
 export type JWTResponse = z.infer<typeof JWTResponseSchema>

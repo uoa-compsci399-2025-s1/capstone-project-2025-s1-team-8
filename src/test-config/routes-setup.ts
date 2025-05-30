@@ -68,6 +68,10 @@ beforeEach(async () => {
       googleAuthScopes: SCOPES_ARRAY_MOCK,
       oauth2Client: {
         getToken: (code: string) => (code === CODE_MOCK ? { tokens: tokensMock } : null),
+        revokeToken: vi.fn().mockImplementation((accessToken: string) => {
+          if (accessToken === ACCESS_TOKEN_MOCK) return true
+          return false
+        }),
       },
     }
   })
