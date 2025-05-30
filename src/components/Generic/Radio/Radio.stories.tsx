@@ -11,13 +11,6 @@ const meta: Meta<typeof Radio> = {
 export default meta
 type Story = StoryObj<typeof Radio>
 
-// export const Default: Story = {
-//   args: {
-//     values: ['Option 1', 'Option 2', 'Option 3'],
-//     customInput: true,
-//   },
-// }
-
 export const Default: Story = {
   render: function RenderModal(args) {
     return (

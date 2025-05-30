@@ -116,9 +116,9 @@ const ProtectedFormView: FC = () => {
       setNextSemesterOption(
         res.upcomingSemesters.length > 0
           ? {
-              value: res.upcomingSemesters[res.upcomingSemesters.length - 1].id,
-              label: `${res.upcomingSemesters[res.upcomingSemesters.length - 1].name} (${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].startDate)} - ${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].endDate)})`,
-            }
+            value: res.upcomingSemesters[res.upcomingSemesters.length - 1].id,
+            label: `${res.upcomingSemesters[res.upcomingSemesters.length - 1].name} (${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].startDate)} - ${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].endDate)})`,
+          }
           : undefined,
       )
     })
