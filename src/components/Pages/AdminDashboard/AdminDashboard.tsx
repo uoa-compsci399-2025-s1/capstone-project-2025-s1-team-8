@@ -16,6 +16,7 @@ import {
   handlePublishChanges,
   updateProjectOrdersAndStatus,
   handleGetAllSemesters,
+  getAllClients,
 } from '@/lib/services/admin/Handlers'
 import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
@@ -26,18 +27,43 @@ type AdminDashboardProps = {
   clients: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
   semesters: Semester[]
   projects: SemesterContainerData
+  totalPages?: number
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({
   clients,
   semesters: initialSemesters,
   projects,
+  totalPages = 0,
 }) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
 
   const [activeNav, setActiveNav] = useState<number | null>(null)
   const [notificationMessage, setNotificationMessage] = useState('')
   const [semesters, setSemesters] = useState<Semester[]>(initialSemesters)
+  const [clientsData, setClientsData] = useState(clients)
+  const [pageNum, setPageNum] = useState(1)
+  const itemsPerPage = 10
+
+  const updatePageCount = async (increment: boolean) => {
+    if (increment) {
+      if (pageNum < totalPages) {
+        setPageNum(pageNum + 1)
+        const res = await getAllClients({ limit: itemsPerPage, cursor: pageNum })
+        setClientsData(res?.data || [])
+        //alert(clientsData.length)
+        //alert(res!.data!.length)
+        return clientsData
+      }
+    } else {
+      if (pageNum > 1) {
+        setPageNum(pageNum - 1)
+        const res = await getAllClients({ limit: itemsPerPage, cursor: pageNum })
+        setClientsData(res?.data || [])
+        return clientsData
+      }
+    }
+  }
 
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
@@ -119,7 +145,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 aria-hidden={activeNav !== 1}
                 tabIndex={activeNav === 1 ? 0 : -1}
               >
-                <ClientsPage clients={clients} />
+                <ClientsPage
+                  clients={clientsData}
+                  pageNum={pageNum}
+                  updatePageCount={updatePageCount}
+                  totalPages={totalPages}
+                />
               </div>
 
               <div

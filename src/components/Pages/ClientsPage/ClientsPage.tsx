@@ -6,15 +6,42 @@ import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
 
+import { MdOutlineNavigateNext, MdOutlineNavigateBefore } from 'react-icons/md'
+import { set } from 'zod'
+
 interface ClientsPageProps {
   clients: {
     client: UserCombinedInfo
     projects?: ProjectDetails[]
   }[]
+  pageNum: number
+  updatePageCount: (
+    increment: boolean,
+  ) => Promise<{ client: UserCombinedInfo; projects?: ProjectDetails[] }[] | undefined>
+  totalPages?: number
 }
 
-const ClientsPage: React.FC<ClientsPageProps> = ({ clients }) => {
+const ClientsPage: React.FC<ClientsPageProps> = ({
+  clients,
+  pageNum,
+  updatePageCount,
+  totalPages = 0,
+}) => {
   const [searchValue, setSearchValue] = useState('')
+  const [clientData, setClientData] = useState(clients)
+
+  const handleGoPreviousPage = async () => {
+    const res = await updatePageCount(false)
+    if (res) {
+      setClientData(res)
+    }
+  }
+  const handleGoNextPage = async () => {
+    const res = await updatePageCount(true)
+    if (res) {
+      setClientData(res)
+    }
+  }
 
   return (
     <div className="w-full">
@@ -37,12 +64,25 @@ const ClientsPage: React.FC<ClientsPageProps> = ({ clients }) => {
       </div>
       <div className="pt-8">
         <ClientGroup
-          clients={clients.filter((clientInfo) =>
+          clients={clientData.filter((clientInfo) =>
             `${clientInfo.client.firstName} ${clientInfo.client.lastName ?? ''}`
               .toLowerCase()
               .includes(searchValue.trim().toLowerCase()),
           )}
         />
+      </div>
+      <div className="flex flex-row justify-center items-center gap-4 mt-8">
+        {pageNum !== 1 && (
+          <button onClick={handleGoPreviousPage}>
+            <MdOutlineNavigateBefore size={'2em'} />
+          </button>
+        )}
+        <p>{pageNum}</p>
+        {pageNum < totalPages && (
+          <button>
+            <MdOutlineNavigateNext size={'2em'} onClick={handleGoNextPage} />
+          </button>
+        )}
       </div>
     </div>
   )

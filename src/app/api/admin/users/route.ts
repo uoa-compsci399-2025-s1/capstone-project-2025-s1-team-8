@@ -33,7 +33,7 @@ class RouteWrapper {
       )
     }
     const userService = new UserService()
-    const { docs: rawUserData, nextPage } = await userService.getAllUsers(
+    const { docs: rawUserData, nextPage, totalPages } = await userService.getAllUsers(
       limit,
       cursor,
       (userRole as UserRole) ?? undefined,
@@ -51,7 +51,7 @@ class RouteWrapper {
       }),
     )
 
-    return NextResponse.json({ data: combinedUserData, nextPage })
+    return NextResponse.json({ data: combinedUserData, nextPage, totalPages })
   }
 }
 

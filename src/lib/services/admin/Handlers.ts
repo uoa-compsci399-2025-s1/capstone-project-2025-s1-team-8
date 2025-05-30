@@ -7,6 +7,7 @@ import type { typeToFlattenedError } from 'zod'
 import type { Project, Semester } from '@/payload-types'
 import { type ProjectDetails, ProjectStatus } from '@/types/Project'
 import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
+import { UserRole } from '@/types/User'
 
 /**
  * Handles the click event to create semester
@@ -154,10 +155,11 @@ export const isCurrentOrUpcoming = async (id: string): Promise<'current' | 'upco
  *
  * @returns All {@link UserCombinedInfo}'s with their projects
  */
-export const getAllClients = async (): Promise<void | {
-  data?: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
+export const getAllClients = async (options:{limit?: number, cursor?: number}={}): Promise<void | {
+  data?: { client: UserCombinedInfo; projects: ProjectDetails[] }[], nextPage?: number, totalPages?: number
 }> => {
-  const getClientsResponse = await AdminService.getAllUsers()
+  const getClientsResponse = await AdminService.getAllUsers({...options, role: UserRole.Client})
+  console.log('getClientsResponse:', getClientsResponse)
   const clientsWithProjects = await Promise.all(
     (getClientsResponse.data ?? []).map(async (client) => {
       const projectsResponse = await AdminService.getProjectsByUserId(client.id)
@@ -167,7 +169,7 @@ export const getAllClients = async (): Promise<void | {
       }
     }),
   )
-  return { data: clientsWithProjects }
+  return { data: clientsWithProjects, nextPage: getClientsResponse.nextPage, totalPages: getClientsResponse.totalPages }
 }
 
 /**
