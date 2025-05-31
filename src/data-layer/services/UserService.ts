@@ -56,7 +56,7 @@ export default class UserService {
    *
    * @param options Optional parameters for pagination and filtering
    * - limit The maximum number of users to return (defaults to 100)
-   * - page The page number for pagination
+   * - page The page number for pagination (defaults to 1)
    * - role Filter users by their role (optional)
    * - query A search query to filter users by first or last name (optional)
    * @returns A paginated list of user documents
@@ -69,6 +69,7 @@ export default class UserService {
       query?: string
     } = {
       limit: 100,
+      page: 1,
     },
   ): Promise<PaginatedDocs<User>> {
     return await payload.find({
