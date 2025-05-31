@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     title: 'Encapsulate',
     description: 'Connecting Computer Science Students with Innovative Projects',
     siteName: 'Encapsulate',
-    images: `${process.env.NEXT_PUBLIC_URL}/favicon.png`,
+    images: `${process.env.NEXT_PUBLIC_URL}/default.png`,
     type: 'website',
   },
 }
