@@ -122,7 +122,7 @@ describe('User service test', () => {
         lastName: 'dontfindme',
       })
 
-      const fetchedUsers = await userService.getAllUsers({ query: 'very cool' })
+      const fetchedUsers = await userService.getAllUsers({ query: 'very coo' })
       expect(fetchedUsers.docs.length).toEqual(1)
       expect(fetchedUsers.docs).toEqual([userMock])
     })
