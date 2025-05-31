@@ -69,9 +69,9 @@ describe('tests /api/admin/users', async () => {
       expect(json.nextPage).toBeDefined()
     })
 
-    it('should get all users correctly with limits and cursor', async () => {
+    it('should get all users correctly with limits and page', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const req = createMockNextRequest(`/api/admin/users?limit=3&cursor=1`)
+      const req = createMockNextRequest(`/api/admin/users?limit=3&page=1`)
       const res = await GET(req)
       const json = await res.json()
       expect(res.status).toBe(StatusCodes.OK)
@@ -108,7 +108,7 @@ describe('tests /api/admin/users', async () => {
       expect(json.nextPage).toBe(2)
 
       const req2 = createMockNextRequest(
-        `/api/admin/users?role=client&limit=1&cursor=${json.nextPage}`,
+        `/api/admin/users?role=client&limit=1&page=${json.nextPage}`,
       )
       const res2 = await GET(req2)
       const json2 = await res2.json()
@@ -174,16 +174,16 @@ describe('tests /api/admin/users', async () => {
       })
     })
 
-    it('should return a valid response if the cursor is invalid or out of range', async () => {
+    it('should return a valid response if the page is invalid or out of range', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const invalidCursorReq = createMockNextRequest(`/api/admin/users?cursor=invalid`)
-      const res = await GET(invalidCursorReq)
+      const invalidPageReq = createMockNextRequest(`/api/admin/users?page=invalid`)
+      const res = await GET(invalidPageReq)
       const json = await res.json()
       expect(res.status).toBe(StatusCodes.OK)
       expect(json.data.length).toBe(3)
       expect(json.nextPage).toBeNull()
 
-      const outOfRangeReq = createMockNextRequest(`/api/admin/users?cursor=100`)
+      const outOfRangeReq = createMockNextRequest(`/api/admin/users?page=100`)
       const res2 = await GET(outOfRangeReq)
       const json2 = await res2.json()
       expect(json2.data).toEqual([])

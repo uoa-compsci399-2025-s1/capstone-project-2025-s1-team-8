@@ -18,7 +18,7 @@ class RouteWrapper {
   static async GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
     const limit = parseInt(searchParams.get('limit') || '10') // default value as fallback
-    const cursor = parseInt(searchParams.get('cursor') || '0')
+    const page = parseInt(searchParams.get('page') || '0')
     const userRole = searchParams.get('role')
     const query = searchParams.get('query') || undefined
 
@@ -36,7 +36,7 @@ class RouteWrapper {
     const userService = new UserService()
     const { docs: rawUserData, nextPage } = await userService.getAllUsers({
       limit,
-      page: cursor,
+      page,
       role: (userRole as UserRole) ?? undefined,
       query,
     })
