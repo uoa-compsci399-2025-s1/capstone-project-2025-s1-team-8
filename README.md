@@ -132,3 +132,7 @@ See further towards contributing guidelines in the [GitHub Wiki](https://github.
 [Dennis Hu - Backend Lead](https://github.com/midnightcuberx)
 
 [Sheena Lin - DevOps Lead](https://github.com/elin277)
+
+## License
+
+This project is licensed under the MIT License – see the [LICENSE](./LICENSE) file for details.
