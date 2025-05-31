@@ -44,6 +44,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [clientsData, setClientsData] = useState(clients)
   const [pageNum, setPageNum] = useState(1)
   const [isFetching, setIsFetching] = useState(false)
+  const [clientDataLoaded, setclientDataLoaded] = useState(false)
   const itemsPerPage = 10
 
   const updatePageCount = async (
@@ -97,6 +98,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
     setActiveNav(saved !== null ? Number(saved) : 0)
+    const pageNumSaved = localStorage.getItem('clientPageNum')
+    const pageNumUpdated = pageNumSaved !== null ? Number(pageNumSaved) : 1
+    setPageNum(pageNumUpdated)
+    getAllClients({ limit: itemsPerPage, cursor: pageNumUpdated }).then((res) => {
+      setClientsData(res?.data || [])
+      setclientDataLoaded(true)
+    })
+
   }, [])
 
   useEffect(() => {
@@ -112,7 +121,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     }
   }
 
-  if (activeNav === null) return null // Wait for nav to be loaded
+  useEffect(() => {
+    localStorage.setItem('clientPageNum', String(pageNum))
+  }, [pageNum])
+
+  if (activeNav === null || !clientDataLoaded) return null // Wait for nav to be loaded
 
   return (
     <>
