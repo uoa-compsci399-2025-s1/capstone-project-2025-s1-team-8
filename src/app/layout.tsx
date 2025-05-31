@@ -35,7 +35,7 @@ export const metadata: Metadata = {
       url: 'https://www.linkedin.com/in/jefferyji/',
     },
   ],
-  icons: '/favicon.png',
+  icons: '/favicon.ico',
   openGraph: {
     title: 'Encapsulate',
     description: 'Connecting Computer Science Students with Innovative Projects',

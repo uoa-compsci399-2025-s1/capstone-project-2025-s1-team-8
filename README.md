@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/favicon.png" alt="Encapsulate Logo" width="120" />
+  <img src="public/light-logo.png" alt="Encapsulate Logo" width="120" />
 
   # Encapsulate
 
