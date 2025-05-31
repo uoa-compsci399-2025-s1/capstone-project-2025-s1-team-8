@@ -1,6 +1,13 @@
-# Encapsulate
+<div align="center">
+  <img src="public/favicon.png" alt="Encapsulate Logo" width="120" />
 
-Project by Team 8, Status 418.
+  # Encapsulate
+
+  [![CI Pipeline](https://img.shields.io/github/actions/workflow/status/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/ci-pipeline.yml?branch=main&label=CI%20Pipeline&logo=githubactions&logoColor=white&style=for-the-badge)](https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/actions/workflows/ci-pipeline.yml "Continuous Integration Pipeline: lint, prettier, code generation, tests, build")
+  [![CD Pipeline](https://img.shields.io/github/actions/workflow/status/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/cd-pipeline.yml?branch=main&label=CD%20Pipeline&logo=amazonec2&logoColor=white&style=for-the-badge)](
+
+  <em>Project by Team 8, Status 418.</em>
+</div>
 
 ### About
 
@@ -115,6 +122,8 @@ See further towards contributing guidelines in the [GitHub Wiki](https://github.
 
 [Eric Zheng - Facilitator](https://github.com/monoclonalAb)
 
+[Jeffery Ji - Tech Lead](https://github.com/jeffplays2005)
+
 [JooHui Lee - Lead Designer](https://github.com/joohuil)
 
 [Bethany Yates - Frontend Lead](https://github.com/bethany-aroha)
@@ -122,5 +131,3 @@ See further towards contributing guidelines in the [GitHub Wiki](https://github.
 [Dennis Hu - Backend Lead](https://github.com/midnightcuberx)
 
 [Sheena Lin - DevOps Lead](https://github.com/elin277)
-
-[Jeffery Ji - Documentation Lead](https://github.com/jeffplays2005)
