@@ -53,8 +53,11 @@ export default class UserService {
   /**
    * Retrieves a paginated list of user documents from the database.
    *
-   * @param limit The maximum number of users to retrieve, defaults to 100
-   * @param pagingCounter The page number to retrieve
+   * @param options Optional parameters for pagination and filtering
+   * - limit The maximum number of users to return (defaults to 100)
+   * - pagingCounter The page number for pagination
+   * - roleFilter Filter users by their role (optional)
+   * - query A search query to filter users by first or last name (optional)
    * @returns A paginated list of user documents
    */
   public async getAllUsers(
@@ -62,6 +65,7 @@ export default class UserService {
       limit?: number
       pagingCounter?: number
       roleFilter?: UserRole
+      query?: string
     } = {
       limit: 100,
     },
@@ -74,6 +78,32 @@ export default class UserService {
               equals: options.roleFilter,
             }
           : {},
+        or: options.query
+          ? [
+              {
+                firstName: {
+                  like: options.query,
+                  // in: options.query.split(/ /g).join(','),
+                },
+              },
+              {
+                lastName: {
+                  like: options.query,
+                  // in: options.query.split(/ /g).join(','),
+                },
+              },
+              {
+                firstName: {
+                  in: options.query.split(/ /g).join(','),
+                },
+              },
+              {
+                lastName: {
+                  in: options.query.split(/ /g).join(','),
+                },
+              },
+            ]
+          : [],
       },
       limit: options.limit,
       pagination: true,

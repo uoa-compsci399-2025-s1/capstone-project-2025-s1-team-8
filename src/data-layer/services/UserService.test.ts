@@ -63,6 +63,70 @@ describe('User service test', () => {
       expect(nextPage.docs[0].id).not.toEqual(fetchedUsers.docs[0].id)
     })
 
+    it('should find all users with a certain first name', async () => {
+      const userMock = await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'searchforme',
+      })
+      const userMock2 = await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'searchforme2',
+      })
+      await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'shouldnt find me',
+      })
+
+      const fetchedUsers = await userService.getAllUsers({ query: 'searchforme' })
+      expect(fetchedUsers.docs.length).toEqual(2)
+      expect(fetchedUsers.docs).toEqual(expect.arrayContaining([userMock, userMock2]))
+    })
+
+    it('should find all users with a certain last name', async () => {
+      const userMock = await userService.createUser({
+        ...clientCreateMock,
+        lastName: 'cool',
+      })
+      const userMock2 = await userService.createUser({
+        ...clientCreateMock,
+        lastName: 'coollll',
+      })
+      await userService.createUser({
+        ...clientCreateMock,
+        lastName: 'col',
+      })
+      await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'searchforme2',
+        lastName: 'dontfindme',
+      })
+
+      const fetchedUsers = await userService.getAllUsers({ query: 'cool' })
+      expect(fetchedUsers.docs.length).toEqual(2)
+      expect(fetchedUsers.docs).toEqual(expect.arrayContaining([userMock, userMock2]))
+    })
+
+    it('should find all users with a certain first name and last name', async () => {
+      const userMock = await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'very',
+        lastName: 'cool',
+      })
+      await userService.createUser({
+        ...clientCreateMock,
+        lastName: 'col',
+      })
+      await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'searchforme2',
+        lastName: 'dontfindme',
+      })
+
+      const fetchedUsers = await userService.getAllUsers({ query: 'very cool' })
+      expect(fetchedUsers.docs.length).toEqual(1)
+      expect(fetchedUsers.docs).toEqual([userMock])
+    })
+
     it('not found - find user with nonexistent id', async () => {
       await expect(userService.getUser('nonexistent_id')).rejects.toThrow('Not Found')
     })
