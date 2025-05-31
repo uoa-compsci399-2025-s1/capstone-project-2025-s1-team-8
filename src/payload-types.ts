@@ -100,8 +100,12 @@ export interface Config {
   db: {
     defaultIDType: string;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    Home: Home;
+  };
+  globalsSelect: {
+    Home: HomeSelect<false> | HomeSelect<true>;
+  };
   locale: null;
   user: Admin & {
     collection: 'admin';
@@ -264,7 +268,6 @@ export interface Project {
   additionalClients?: (string | User)[] | null;
   attachments?: (string | Media)[] | null;
   deadline?: string | null;
-  timestamp: string;
   desiredOutput: string;
   specialEquipmentRequirements: string;
   numberOfTeams: string;
@@ -533,7 +536,6 @@ export interface ProjectSelect<T extends boolean = true> {
   additionalClients?: T;
   attachments?: T;
   deadline?: T;
-  timestamp?: T;
   desiredOutput?: T;
   specialEquipmentRequirements?: T;
   numberOfTeams?: T;
@@ -630,6 +632,134 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Home".
+ */
+export interface Home {
+  id: string;
+  aboutSection: AboutSection;
+  demoSection: DemoSection;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutSection".
+ */
+export interface AboutSection {
+  /**
+   * The title of the about section.
+   */
+  title: string;
+  /**
+   * An about us section description.
+   */
+  description: string;
+  button: Button;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Button".
+ */
+export interface Button {
+  /**
+   * The name of the button.
+   */
+  buttonName: string;
+  /**
+   * The link of the button.
+   */
+  buttonLink: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DemoSection".
+ */
+export interface DemoSection {
+  clientDemo: ClientDemo;
+  studentDemo: StudentDemo;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ClientDemo".
+ */
+export interface ClientDemo {
+  /**
+   * The title of the client demo section.
+   */
+  title: string;
+  /**
+   * A description of the client demo section.
+   */
+  description: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StudentDemo".
+ */
+export interface StudentDemo {
+  /**
+   * The title of the student demo section.
+   */
+  title: string;
+  /**
+   * A description of the student demo section.
+   */
+  description: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Home_select".
+ */
+export interface HomeSelect<T extends boolean = true> {
+  aboutSection?: T | AboutSectionSelect<T>;
+  demoSection?: T | DemoSectionSelect<T>;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AboutSection_select".
+ */
+export interface AboutSectionSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  button?: T | ButtonSelect<T>;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Button_select".
+ */
+export interface ButtonSelect<T extends boolean = true> {
+  buttonName?: T;
+  buttonLink?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DemoSection_select".
+ */
+export interface DemoSectionSelect<T extends boolean = true> {
+  clientDemo?: T | ClientDemoSelect<T>;
+  studentDemo?: T | StudentDemoSelect<T>;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ClientDemo_select".
+ */
+export interface ClientDemoSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StudentDemo_select".
+ */
+export interface StudentDemoSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
