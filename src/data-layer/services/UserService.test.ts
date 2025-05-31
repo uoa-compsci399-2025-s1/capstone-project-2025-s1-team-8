@@ -54,7 +54,7 @@ describe('User service test', () => {
 
       const nextPage = await userService.getAllUsers({
         limit: 3,
-        pagingCounter: fetchedUsers.nextPage ? fetchedUsers.nextPage : undefined,
+        page: fetchedUsers.nextPage ? fetchedUsers.nextPage : undefined,
       })
 
       expect(nextPage.docs.length).toEqual(2)

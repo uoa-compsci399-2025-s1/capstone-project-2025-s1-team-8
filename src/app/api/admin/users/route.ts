@@ -36,8 +36,8 @@ class RouteWrapper {
     const userService = new UserService()
     const { docs: rawUserData, nextPage } = await userService.getAllUsers({
       limit,
-      pagingCounter: cursor,
-      roleFilter: (userRole as UserRole) ?? undefined,
+      page: cursor,
+      role: (userRole as UserRole) ?? undefined,
       query,
     })
 

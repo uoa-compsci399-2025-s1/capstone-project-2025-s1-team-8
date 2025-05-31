@@ -56,7 +56,7 @@ export default class UserService {
    *
    * @param options Optional parameters for pagination and filtering
    * - limit The maximum number of users to return (defaults to 100)
-   * - pagingCounter The page number for pagination
+   * - page The page number for pagination
    * - roleFilter Filter users by their role (optional)
    * - query A search query to filter users by first or last name (optional)
    * @returns A paginated list of user documents
@@ -64,8 +64,8 @@ export default class UserService {
   public async getAllUsers(
     options: {
       limit?: number
-      pagingCounter?: number
-      roleFilter?: UserRole
+      page?: number
+      role?: UserRole
       query?: string
     } = {
       limit: 100,
@@ -74,9 +74,9 @@ export default class UserService {
     return await payload.find({
       collection: 'user',
       where: {
-        role: options.roleFilter
+        role: options.role
           ? {
-              equals: options.roleFilter,
+              equals: options.role,
             }
           : {},
         and: options.query
@@ -87,7 +87,7 @@ export default class UserService {
       },
       limit: options.limit,
       pagination: true,
-      page: options.pagingCounter,
+      page: options.page,
     })
   }
 
