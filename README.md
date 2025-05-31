@@ -128,7 +128,7 @@ See further towards contributing guidelines in the [GitHub Wiki](https://github.
 
 [Jeffery Ji - Tech Lead](https://github.com/jeffplays2005)
 
-[JooHui Lee - Lead Designer](https://github.com/joohuil)
+[JooHui Lee - UI/UX Lead](https://github.com/joohuil)
 
 [Bethany Yates - Frontend Lead](https://github.com/bethany-aroha)
 
