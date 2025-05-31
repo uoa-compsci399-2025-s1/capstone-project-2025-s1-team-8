@@ -74,11 +74,6 @@ export const Project: CollectionConfig = {
       required: false,
     },
     {
-      name: 'timestamp',
-      type: 'date',
-      required: true,
-    },
-    {
       name: 'desiredOutput',
       type: 'textarea',
       required: true,
