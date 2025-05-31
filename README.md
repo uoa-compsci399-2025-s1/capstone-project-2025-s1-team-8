@@ -1,6 +1,17 @@
-# Encapsulate
+<div align="center">
+  <img src="public/light-logo.png" alt="Encapsulate Logo" width="120" />
 
-Project by Team 8, Status 418.
+  # Encapsulate
+
+  [![CI Pipeline](https://img.shields.io/github/actions/workflow/status/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/ci-pipeline.yml?branch=main&label=CI%20Pipeline&logo=githubactions&logoColor=white&style=for-the-badge)](https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/actions/workflows/ci-pipeline.yml "Continuous Integration Pipeline: lint, prettier, code generation, tests, build")
+  [![CD Pipeline](https://img.shields.io/github/actions/workflow/status/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/cd-pipeline.yml?branch=main&label=CD%20Pipeline&logo=amazonec2&logoColor=white&style=for-the-badge)](https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/actions/workflows/cd-pipeline.yml "Continuous Deployment Pipeline: deploy to production, deploy to staging")
+  [![License](https://img.shields.io/github/license/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8?style=for-the-badge)](https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/tree/main/LICENSE "MIT License")
+
+  [![Production Monitoring](https://img.shields.io/uptimerobot/status/m800642218-33a651eaa7d41a0f2e0103b8?style=for-the-badge&label=Production&logo=rocket&logoColor=fff&up_message=online&down_message=offline&up_color=blue)](https://stats.uptimerobot.com/kBXBfHuI9R/800642218 "Production Monitoring")
+  [![Staging Monitoring](https://img.shields.io/uptimerobot/status/m800642225-1604e8691d20ede3cc5d7b75?style=for-the-badge&label=Staging&logo=rocket&logoColor=fff&up_message=online&down_message=offline&up_color=blue)](https://stats.uptimerobot.com/kBXBfHuI9R/800642225 "Staging Monitoring")
+
+  <em>Project by Team 8, Status 418.</em>
+</div>
 
 ### About
 
@@ -115,7 +126,9 @@ See further towards contributing guidelines in the [GitHub Wiki](https://github.
 
 [Eric Zheng - Facilitator](https://github.com/monoclonalAb)
 
-[JooHui Lee - Lead Designer](https://github.com/joohuil)
+[Jeffery Ji - Tech Lead](https://github.com/jeffplays2005)
+
+[JooHui Lee - UI/UX Lead](https://github.com/joohuil)
 
 [Bethany Yates - Frontend Lead](https://github.com/bethany-aroha)
 
@@ -123,4 +136,6 @@ See further towards contributing guidelines in the [GitHub Wiki](https://github.
 
 [Sheena Lin - DevOps Lead](https://github.com/elin277)
 
-[Jeffery Ji - Documentation Lead](https://github.com/jeffplays2005)
+## License
+
+This project is licensed under the MIT License – see the [LICENSE](./LICENSE) file for details.
