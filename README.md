@@ -4,7 +4,7 @@
   # Encapsulate
 
   [![CI Pipeline](https://img.shields.io/github/actions/workflow/status/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/ci-pipeline.yml?branch=main&label=CI%20Pipeline&logo=githubactions&logoColor=white&style=for-the-badge)](https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/actions/workflows/ci-pipeline.yml "Continuous Integration Pipeline: lint, prettier, code generation, tests, build")
-  [![CD Pipeline](https://img.shields.io/github/actions/workflow/status/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/cd-pipeline.yml?branch=main&label=CD%20Pipeline&logo=amazonec2&logoColor=white&style=for-the-badge)](
+  [![CD Pipeline](https://img.shields.io/github/actions/workflow/status/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/cd-pipeline.yml?branch=main&label=CD%20Pipeline&logo=amazonec2&logoColor=white&style=for-the-badge)](https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/actions/workflows/cd-pipeline.yml "Continuous Deployment Pipeline: deploy to production, deploy to staging")
 
   <em>Project by Team 8, Status 418.</em>
 </div>
