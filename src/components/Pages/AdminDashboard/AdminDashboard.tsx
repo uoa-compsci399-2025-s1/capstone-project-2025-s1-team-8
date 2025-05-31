@@ -22,6 +22,7 @@ import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
 import Notification from '@/components/Generic/Notification/Notification'
 import { TeapotCard } from '@/components/Generic/TeapotCard/TeapotCard'
+import { useSearchParams } from 'next/navigation'
 
 type AdminDashboardProps = {
   clients: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
@@ -38,6 +39,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 }) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
 
+  const searchParams = useSearchParams()
   const [activeNav, setActiveNav] = useState<number | null>(null)
   const [notificationMessage, setNotificationMessage] = useState('')
   const [semesters, setSemesters] = useState<Semester[]>(initialSemesters)
@@ -51,10 +53,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     firstPage: boolean = false,
     lastPage: boolean = false,
   ) => {
+    //const pageParam = searchParams.get('page')
+    //const pageNum = pageParam ? parseInt(pageParam, 10) : 1
     try {
+      if (isFetching) return
+      setIsFetching(true)
       if (firstPage) {
-        if (isFetching) return
-        setIsFetching(true)
         if (totalPages === 0 || pageNum === 1) {
           return
         }

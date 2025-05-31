@@ -29,7 +29,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
   pageNum,
   updatePageCount,
   totalPages = 0,
-  isFetching
+  isFetching,
 }) => {
   const [searchValue, setSearchValue] = useState('')
 
