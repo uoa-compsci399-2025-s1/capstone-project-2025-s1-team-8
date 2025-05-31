@@ -20,6 +20,7 @@ class RouteWrapper {
     const limit = parseInt(searchParams.get('limit') || '10') // default value as fallback
     const cursor = parseInt(searchParams.get('cursor') || '0')
     const userRole = searchParams.get('role')
+    const query = searchParams.get('query') || undefined
 
     if (limit > 100 || limit <= 0) {
       return NextResponse.json(
@@ -37,6 +38,7 @@ class RouteWrapper {
       limit,
       pagingCounter: cursor,
       roleFilter: (userRole as UserRole) ?? undefined,
+      query,
     })
 
     const combinedUserData = await Promise.all(

@@ -83,13 +83,11 @@ export default class UserService {
               {
                 firstName: {
                   like: options.query,
-                  // in: options.query.split(/ /g).join(','),
                 },
               },
               {
                 lastName: {
                   like: options.query,
-                  // in: options.query.split(/ /g).join(','),
                 },
               },
               {
