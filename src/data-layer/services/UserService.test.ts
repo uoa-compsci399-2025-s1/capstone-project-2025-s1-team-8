@@ -123,8 +123,18 @@ describe('User service test', () => {
       })
 
       const fetchedUsers = await userService.getAllUsers({ query: 'very coo' })
-      expect(fetchedUsers.docs.length).toEqual(1)
-      expect(fetchedUsers.docs).toEqual([userMock])
+      expect(fetchedUsers.docs).toStrictEqual([userMock])
+    })
+
+    it('should ignore double spacing during full name queries', async () => {
+      const userMock = await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'foo',
+        lastName: 'bar',
+      })
+
+      const fetchedUsers = await userService.getAllUsers({ query: 'foo  bar' })
+      expect(fetchedUsers.docs).toStrictEqual([userMock])
     })
 
     it('not found - find user with nonexistent id', async () => {

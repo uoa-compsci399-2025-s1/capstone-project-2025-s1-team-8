@@ -81,9 +81,12 @@ export default class UserService {
             }
           : {},
         and: options.query
-          ? options.query.split(/ /g).map((token) => ({
-              or: [{ firstName: { like: token } }, { lastName: { like: token } }] as Where[],
-            }))
+          ? options.query
+              .split(/ /g)
+              .filter((token) => token)
+              .map((token) => ({
+                or: [{ firstName: { like: token } }, { lastName: { like: token } }] as Where[],
+              }))
           : [],
       },
       limit: options.limit,
