@@ -58,22 +58,26 @@ export default class UserService {
    * @returns A paginated list of user documents
    */
   public async getAllUsers(
-    limit: number = 100,
-    pagingCounter?: number,
-    roleFilter?: UserRole,
+    options: {
+      limit?: number
+      pagingCounter?: number
+      roleFilter?: UserRole
+    } = {
+      limit: 100,
+    },
   ): Promise<PaginatedDocs<User>> {
     return await payload.find({
       collection: 'user',
       where: {
-        role: !!roleFilter
+        role: options.roleFilter
           ? {
-              equals: roleFilter,
+              equals: options.roleFilter,
             }
           : {},
       },
-      limit,
+      limit: options.limit,
       pagination: true,
-      page: pagingCounter,
+      page: options.pagingCounter,
     })
   }
 

@@ -47,15 +47,16 @@ describe('User service test', () => {
     it('should return a paginated list of users', async () => {
       await userService.createUser(clientCreateMock)
       await userService.createUser(adminCreateMock)
-      const fetchedUsers = await userService.getAllUsers(3)
+      const fetchedUsers = await userService.getAllUsers({ limit: 3 })
 
       expect(fetchedUsers.docs.length).toEqual(3)
       expect(fetchedUsers.hasNextPage).toBeTruthy()
 
-      const nextPage = await userService.getAllUsers(
-        3,
-        fetchedUsers.nextPage ? fetchedUsers.nextPage : undefined,
-      )
+      const nextPage = await userService.getAllUsers({
+        limit: 3,
+        pagingCounter: fetchedUsers.nextPage ? fetchedUsers.nextPage : undefined,
+      })
+
       expect(nextPage.docs.length).toEqual(2)
       expect(nextPage.hasNextPage).toBeFalsy()
 
