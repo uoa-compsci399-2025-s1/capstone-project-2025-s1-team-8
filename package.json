@@ -2,7 +2,7 @@
   "name": "capstone-project-2025-s1-team-8",
   "version": "1.0.0",
   "description": "Encapsulate is a platform to connect Clients, Admins, and Students to manage submit and view projects for the UoA's capstone course, COMPSCI 399.",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build --experimental-build-mode compile",
