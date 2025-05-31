@@ -12,13 +12,14 @@ import {
   MdLastPage,
   MdFirstPage,
 } from 'react-icons/md'
+import { redirect, useSearchParams } from 'next/navigation'
 
 interface ClientsPageProps {
   clientsData: {
     client: UserCombinedInfo
     projects?: ProjectDetails[]
   }[]
-  pageNum: number
+  //pageNum: number
   updatePageCount: (increment: boolean, firstPage?: boolean, lastPage?: boolean) => void
   totalPages?: number
   isFetching: boolean
@@ -26,12 +27,22 @@ interface ClientsPageProps {
 
 const ClientsPage: React.FC<ClientsPageProps> = ({
   clientsData,
-  pageNum,
+  //pageNum,
   updatePageCount,
   totalPages = 0,
   isFetching,
 }) => {
   const [searchValue, setSearchValue] = useState('')
+  const searchParams = useSearchParams()
+  const pageParam = searchParams.get('page')
+  const parsed = pageParam ? parseInt(pageParam, 10) : 1
+  let pageNum: number
+
+  if (isNaN(parsed)) {
+    pageNum = 1
+  } else{
+    pageNum = parsed
+  }
 
   return (
     <div className="w-full">
@@ -63,7 +74,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
       </div>
       <div className="flex flex-row justify-center items-center gap-4 mt-8">
         <button
-          onClick={async () => await updatePageCount(false, true)}
+          onClick={async () => redirect('/admin?page=1')}
           disabled={pageNum === 1 || isFetching}
           className={pageNum === 1 ? 'opacity-30 cursor-default' : 'cursor-pointer'}
         >
@@ -71,7 +82,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
         </button>
 
         <button
-          onClick={async () => await updatePageCount(false)}
+          onClick={async () => redirect(`/admin?page=${pageNum - 1}`)}
           disabled={pageNum === 1 || isFetching}
           className={pageNum === 1 ? 'opacity-30 cursor-default' : 'cursor-pointer'}
         >
@@ -81,7 +92,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
         <p>{pageNum}</p>
 
         <button
-          onClick={async () => await updatePageCount(true)}
+          onClick={async () => redirect(`/admin?page=${pageNum + 1}`)}
           disabled={pageNum >= totalPages || isFetching}
           className={pageNum >= totalPages ? 'opacity-30 cursor-default' : 'cursor-pointer'}
         >
@@ -89,7 +100,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
         </button>
 
         <button
-          onClick={async () => await updatePageCount(true, false, true)}
+          onClick={async () => redirect(`/admin?page=${totalPages}`)}
           disabled={pageNum >= totalPages || isFetching}
           className={pageNum >= totalPages ? 'opacity-30 cursor-default' : 'cursor-pointer'}
         >

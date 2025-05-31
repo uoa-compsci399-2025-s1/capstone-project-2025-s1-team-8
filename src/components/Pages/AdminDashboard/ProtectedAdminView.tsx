@@ -13,11 +13,15 @@ import NavBar from '@/components/Generic/NavBar/NavBar'
 import AdminDashboard from './AdminDashboard'
 import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 
-const ProtectedAdminView = async (): Promise<JSX.Element> => {
+interface ProtectedAdminViewProps {
+  cursor?: number
+}
+const ProtectedAdminView = async ({cursor=1}: ProtectedAdminViewProps): Promise<JSX.Element> => {
+
   const clientInfo = await ClientService.getClientInfo()
   const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
 
-  const fetchedAllClients = await getAllClients()
+  const fetchedAllClients = await getAllClients({limit: 10, cursor })
   const clientsData = fetchedAllClients?.data || []
   const totalPages = fetchedAllClients?.totalPages || 0
 

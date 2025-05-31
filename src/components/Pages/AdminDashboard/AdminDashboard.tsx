@@ -44,7 +44,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [notificationMessage, setNotificationMessage] = useState('')
   const [semesters, setSemesters] = useState<Semester[]>(initialSemesters)
   const [clientsData, setClientsData] = useState(clients)
-  const [pageNum, setPageNum] = useState(1)
+  //const [pageNum, setPageNum] = useState(1)
   const [isFetching, setIsFetching] = useState(false)
   const itemsPerPage = 10
 
@@ -53,8 +53,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     firstPage: boolean = false,
     lastPage: boolean = false,
   ) => {
-    //const pageParam = searchParams.get('page')
-    //const pageNum = pageParam ? parseInt(pageParam, 10) : 1
+    const pageParam = searchParams.get('page')
+    const parsed = pageParam ? parseInt(pageParam, 10) : 1
+    let pageNum;
+    if (isNaN(parsed)) {
+      pageNum = 1
+    } else{
+      pageNum = parsed
+    }
+
     try {
       if (isFetching) return
       setIsFetching(true)
@@ -62,7 +69,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         if (totalPages === 0 || pageNum === 1) {
           return
         }
-        setPageNum(1)
+        //setPageNum(1)
         const res = await getAllClients({ limit: itemsPerPage, cursor: 1 })
         setClientsData(res?.data || [])
         return
@@ -71,7 +78,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         if (totalPages === 0 || pageNum === totalPages) {
           return
         }
-        setPageNum(totalPages)
+        //setPageNum(totalPages)
         const res = await getAllClients({ limit: itemsPerPage, cursor: totalPages })
         setClientsData(res?.data || [])
         return
@@ -79,14 +86,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       if (increment) {
         if (pageNum < totalPages) {
           const res = await getAllClients({ limit: itemsPerPage, cursor: pageNum + 1 })
-          setPageNum(pageNum + 1)
+          //setPageNum(pageNum + 1)
           setClientsData(res?.data || [])
           //return clientsData
         }
       } else {
         if (pageNum > 1) {
           const res = await getAllClients({ limit: itemsPerPage, cursor: pageNum - 1 })
-          setPageNum(pageNum - 1)
+          //setPageNum(pageNum - 1)
           setClientsData(res?.data || [])
           //return clientsData
         }
@@ -178,7 +185,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               >
                 <ClientsPage
                   clientsData={clientsData}
-                  pageNum={pageNum}
+                  //pageNum={pageNum}
                   updatePageCount={updatePageCount}
                   totalPages={totalPages}
                   isFetching={isFetching}

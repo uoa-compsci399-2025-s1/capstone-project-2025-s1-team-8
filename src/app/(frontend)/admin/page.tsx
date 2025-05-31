@@ -8,9 +8,17 @@ export const metadata: Metadata = {
 }
 
 const AdminPage = () => {
+  const pageParam = new URLSearchParams(window.location.search).get('page')
+  const parsed = pageParam ? parseInt(pageParam, 10) : 1
+  let cursor: number;
+  if (isNaN(parsed)) {
+    cursor = 1
+  } else {
+    cursor = parsed
+  }
   return (
     <AuthWrapper scopes={['admin']}>
-      <ProtectedAdminView />
+      <ProtectedAdminView cursor={cursor} />
     </AuthWrapper>
   )
 }
