@@ -105,6 +105,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       setClientsData(res?.data || [])
       setclientDataLoaded(true)
     })
+
   }, [])
 
   useEffect(() => {
