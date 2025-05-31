@@ -43,23 +43,52 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [semesters, setSemesters] = useState<Semester[]>(initialSemesters)
   const [clientsData, setClientsData] = useState(clients)
   const [pageNum, setPageNum] = useState(1)
+  const [isFetching, setIsFetching] = useState(false)
   const itemsPerPage = 10
 
-  const updatePageCount = async (increment: boolean) => {
-    if (increment) {
-      if (pageNum < totalPages) {
-        const res = await getAllClients({ limit: itemsPerPage, cursor: pageNum + 1 })
-        setPageNum(pageNum + 1)
+  const updatePageCount = async (
+    increment: boolean,
+    firstPage: boolean = false,
+    lastPage: boolean = false,
+  ) => {
+    try {
+      if (firstPage) {
+        if (isFetching) return
+        setIsFetching(true)
+        if (totalPages === 0 || pageNum === 1) {
+          return
+        }
+        setPageNum(1)
+        const res = await getAllClients({ limit: itemsPerPage, cursor: 1 })
         setClientsData(res?.data || [])
-        //return clientsData
+        return
       }
-    } else {
-      if (pageNum > 1) {
-        const res = await getAllClients({ limit: itemsPerPage, cursor: pageNum - 1 })
-        setPageNum(pageNum - 1)
+      if (lastPage) {
+        if (totalPages === 0 || pageNum === totalPages) {
+          return
+        }
+        setPageNum(totalPages)
+        const res = await getAllClients({ limit: itemsPerPage, cursor: totalPages })
         setClientsData(res?.data || [])
-        //return clientsData
+        return
       }
+      if (increment) {
+        if (pageNum < totalPages) {
+          const res = await getAllClients({ limit: itemsPerPage, cursor: pageNum + 1 })
+          setPageNum(pageNum + 1)
+          setClientsData(res?.data || [])
+          //return clientsData
+        }
+      } else {
+        if (pageNum > 1) {
+          const res = await getAllClients({ limit: itemsPerPage, cursor: pageNum - 1 })
+          setPageNum(pageNum - 1)
+          setClientsData(res?.data || [])
+          //return clientsData
+        }
+      }
+    } finally {
+      setIsFetching(false)
     }
   }
 
@@ -148,6 +177,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   pageNum={pageNum}
                   updatePageCount={updatePageCount}
                   totalPages={totalPages}
+                  isFetching={isFetching}
                 />
               </div>
 

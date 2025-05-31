@@ -1,13 +1,17 @@
 'use client'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/16/solid'
 
 import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
 
-import { MdOutlineNavigateNext, MdOutlineNavigateBefore } from 'react-icons/md'
-import { set } from 'zod'
+import {
+  MdOutlineNavigateNext,
+  MdOutlineNavigateBefore,
+  MdLastPage,
+  MdFirstPage,
+} from 'react-icons/md'
 
 interface ClientsPageProps {
   clientsData: {
@@ -15,8 +19,9 @@ interface ClientsPageProps {
     projects?: ProjectDetails[]
   }[]
   pageNum: number
-  updatePageCount: (increment: boolean) => void
+  updatePageCount: (increment: boolean, firstPage?: boolean, lastPage?: boolean) => void
   totalPages?: number
+  isFetching: boolean
 }
 
 const ClientsPage: React.FC<ClientsPageProps> = ({
@@ -24,6 +29,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
   pageNum,
   updatePageCount,
   totalPages = 0,
+  isFetching
 }) => {
   const [searchValue, setSearchValue] = useState('')
 
@@ -56,17 +62,39 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
         />
       </div>
       <div className="flex flex-row justify-center items-center gap-4 mt-8">
-        {pageNum !== 1 && (
-          <button onClick={async () => await updatePageCount(false)}>
-            <MdOutlineNavigateBefore size={'2em'} />
-          </button>
-        )}
+        <button
+          onClick={async () => await updatePageCount(false, true)}
+          disabled={pageNum === 1 || isFetching}
+          className={pageNum === 1 ? 'opacity-30 cursor-default' : 'cursor-pointer'}
+        >
+          <MdFirstPage size="2em" />
+        </button>
+
+        <button
+          onClick={async () => await updatePageCount(false)}
+          disabled={pageNum === 1 || isFetching}
+          className={pageNum === 1 ? 'opacity-30 cursor-default' : 'cursor-pointer'}
+        >
+          <MdOutlineNavigateBefore size="2em" />
+        </button>
+
         <p>{pageNum}</p>
-        {pageNum < totalPages && (
-          <button>
-            <MdOutlineNavigateNext size={'2em'} onClick={async () => await updatePageCount(true)} />
-          </button>
-        )}
+
+        <button
+          onClick={async () => await updatePageCount(true)}
+          disabled={pageNum >= totalPages || isFetching}
+          className={pageNum >= totalPages ? 'opacity-30 cursor-default' : 'cursor-pointer'}
+        >
+          <MdOutlineNavigateNext size="2em" />
+        </button>
+
+        <button
+          onClick={async () => await updatePageCount(true, false, true)}
+          disabled={pageNum >= totalPages || isFetching}
+          className={pageNum >= totalPages ? 'opacity-30 cursor-default' : 'cursor-pointer'}
+        >
+          <MdLastPage size="2em" />
+        </button>
       </div>
     </div>
   )

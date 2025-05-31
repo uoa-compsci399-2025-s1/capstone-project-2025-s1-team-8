@@ -155,10 +155,14 @@ export const isCurrentOrUpcoming = async (id: string): Promise<'current' | 'upco
  *
  * @returns All {@link UserCombinedInfo}'s with their projects
  */
-export const getAllClients = async (options:{limit?: number, cursor?: number}={}): Promise<void | {
-  data?: { client: UserCombinedInfo; projects: ProjectDetails[] }[], nextPage?: number, totalPages?: number
+export const getAllClients = async (
+  options: { limit?: number; cursor?: number } = {},
+): Promise<void | {
+  data?: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
+  nextPage?: number
+  totalPages?: number
 }> => {
-  const getClientsResponse = await AdminService.getAllUsers({...options, role: UserRole.Client})
+  const getClientsResponse = await AdminService.getAllUsers({ ...options, role: UserRole.Client })
   const clientsWithProjects = await Promise.all(
     (getClientsResponse.data ?? []).map(async (client) => {
       const projectsResponse = await AdminService.getProjectsByUserId(client.id)
@@ -168,7 +172,11 @@ export const getAllClients = async (options:{limit?: number, cursor?: number}={}
       }
     }),
   )
-  return { data: clientsWithProjects, nextPage: getClientsResponse.nextPage, totalPages: getClientsResponse.totalPages }
+  return {
+    data: clientsWithProjects,
+    nextPage: getClientsResponse.nextPage,
+    totalPages: getClientsResponse.totalPages,
+  }
 }
 
 /**
