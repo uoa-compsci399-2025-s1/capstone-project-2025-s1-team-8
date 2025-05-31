@@ -116,6 +116,45 @@ describe('tests /api/admin/users', async () => {
       expect(json2.nextPage).toBe(3)
     })
 
+    it('should correctly filter based on name queries', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const userMock = await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'very',
+        lastName: 'cool',
+      })
+      const userMock2 = await userService.createUser({
+        ...clientCreateMock,
+        lastName: 'col',
+      })
+      await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'searchforme2',
+        lastName: 'dontfindme',
+      })
+
+      const res = await GET(createMockNextRequest('/api/admin/users?query=cool'))
+      const json = await res.json()
+
+      expect(json.data.length).toBe(1)
+      expect(json.data).toStrictEqual([userMock])
+
+      const res2 = await GET(createMockNextRequest('/api/admin/users?query=very'))
+      const json2 = await res2.json()
+
+      expect(json2.data.length).toBe(1)
+      expect(json2.data).toStrictEqual([userMock])
+
+      const res3 = await GET(createMockNextRequest('/api/admin/users?query=co'))
+      const json3 = await res3.json()
+      expect(json3.data.length).toBe(2)
+      expect(json3.data).toEqual(expect.arrayContaining([userMock, userMock2]))
+
+      const res4 = await GET(createMockNextRequest('/api/admin/users?query=very+cool'))
+      const json4 = await res4.json()
+      expect(json4.data).toStrictEqual([userMock])
+    })
+
     it('should return client additional info as well', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const newClient = await userService.createUser(clientCreateMock)
