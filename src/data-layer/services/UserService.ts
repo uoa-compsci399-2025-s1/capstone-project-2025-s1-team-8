@@ -1,3 +1,6 @@
+import type { Where, PaginatedDocs } from 'payload'
+import { NotFound } from 'payload'
+
 import type { ClientAdditionalInfo, User } from '@/payload-types'
 import { payload } from '../adapters/Payload'
 import type {
@@ -6,8 +9,6 @@ import type {
   UpdateClientAdditionalInfoData,
   UpdateUserData,
 } from '@/types/Collections'
-import type { PaginatedDocs } from 'payload'
-import { NotFound } from 'payload'
 import type { UserRole } from '@/types/User'
 
 export default class UserService {
@@ -78,29 +79,10 @@ export default class UserService {
               equals: options.roleFilter,
             }
           : {},
-        or: options.query
-          ? [
-              {
-                firstName: {
-                  like: options.query,
-                },
-              },
-              {
-                lastName: {
-                  like: options.query,
-                },
-              },
-              {
-                firstName: {
-                  in: options.query.split(/ /g).join(','),
-                },
-              },
-              {
-                lastName: {
-                  in: options.query.split(/ /g).join(','),
-                },
-              },
-            ]
+        and: options.query
+          ? options.query.split(/ /g).map((token) => ({
+              or: [{ firstName: { like: token } }, { lastName: { like: token } }] as Where[],
+            }))
           : [],
       },
       limit: options.limit,
