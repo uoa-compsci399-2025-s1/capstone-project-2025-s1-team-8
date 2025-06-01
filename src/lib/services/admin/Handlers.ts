@@ -222,17 +222,17 @@ export async function updateProjectOrdersAndStatus({
  * @param semesterId The id of the upcoming semester
  * @returns Error or success message
  */
-export async function handlePublishChanges({
-  presetContainers,
-  semesterId,
-}: SemesterContainerData): Promise<void> {
+export async function handlePublishChanges(
+  { presetContainers, semesterId }: SemesterContainerData,
+  publish: boolean,
+): Promise<void> {
   const container = presetContainers[2]
   for (let i = 0; i < container.currentItems.length; i++) {
     const project = container.currentItems[i]
     await AdminService.updateSemesterProject(
       semesterId,
       project.projectInfo.semesterProjectId ?? '',
-      { published: true },
+      { published: publish },
     )
   }
   await updateProjectOrdersAndStatus({ presetContainers, semesterId })

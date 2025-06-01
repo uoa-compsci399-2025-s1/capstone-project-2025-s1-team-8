@@ -17,12 +17,13 @@ import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProj
 import { FilterProvider } from '@/contexts/FilterContext'
 import type { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import type { ProjectDetails, ProjectStatus } from '@/types/Project'
-import { FiSave, FiPrinter } from 'react-icons/fi'
+import { FiSave } from 'react-icons/fi'
 import Notification from '@/components/Generic/Notification/Notification'
 import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
 import type { User } from '@/payload-types'
 import useUnsavedChangesWarning from './UnsavedChangesHandler'
+import { LuEyeOff, LuEye } from 'react-icons/lu'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -39,7 +40,7 @@ export interface SemesterContainerData {
 
 export type DndComponentProps = SemesterContainerData & {
   onSaveChanges: (params: SemesterContainerData) => Promise<void>
-  onPublishChanges: (params: SemesterContainerData) => Promise<void>
+  onPublishChanges: (params: SemesterContainerData, publish: boolean) => Promise<void>
 }
 
 const defaultProjectInfo: ProjectDetails = {
@@ -74,12 +75,18 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
   const [showNotification, setShowNotification] = useState<boolean>(false)
   const [successNotification, setSuccessNotification] = useState<string | null>(null)
+  const [toPublishToggle, setToPublishToggle] = useState(true) // if true, projects are unpublished and need publishing, if false, projects are published and can be unpublished
 
   const buttonItems = [
     { Icon: FiSave, value: 'save', label: 'Save' },
-    { Icon: FiPrinter, value: 'publish', label: 'Publish' },
+    {
+      Icon: toPublishToggle ? LuEye : LuEyeOff,
+      value: toPublishToggle ? 'publish' : 'unpublish',
+      label: toPublishToggle ? 'Publish' : 'Unpublish',
+    },
     { Icon: HiOutlineDocumentDownload, value: 'downloadcsv', label: 'Download CSV' },
   ]
+
   useEffect(() => {
     if (hasChanges) {
       setShowNotification(true)
@@ -138,12 +145,17 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
   async function handlePublishChanges() {
     // send changes to the backend
-    await onPublishChanges({ presetContainers: containers, semesterId })
-    setSuccessNotification('The approved projects have been published!')
+    await onPublishChanges({ presetContainers: containers, semesterId }, toPublishToggle)
+    const message = toPublishToggle
+      ? 'The approved projects have been published!'
+      : 'All projects are now unpublished'
+    setSuccessNotification(message)
 
     setTimeout(() => {
       setSuccessNotification(null)
     }, 5000)
+
+    setToPublishToggle(!toPublishToggle)
   }
 
   function handleDownloadCsv() {
@@ -514,7 +526,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
               if (value === 'save') {
                 handleSaveChanges()
               }
-              if (value === 'publish') {
+              if (value === 'publish' || value === 'unpublish') {
                 handlePublishChanges()
               }
               if (value === 'downloadcsv') {
