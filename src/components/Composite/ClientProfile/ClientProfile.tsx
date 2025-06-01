@@ -94,17 +94,17 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
           }}
         />
       </div>
-      <div className="w-full h-[685px] relative bg-light-beige rounded-2xl ring-1 ring-deeper-blue p-8 pt-10 pb-14 overflow-y-auto">
+      <div className="w-full h-[685px] relative bg-light-beige rounded-2xl ring-1 ring-deeper-blue px-6 sm:px-8 pt-10 pb-14 overflow-y-auto">
         <h2 className="text-dark-blue font-inter text-xl tracking-wide pb-8">My profile</h2>
 
         {isEditing ? (
           <FiSave
-            className="w-4 h-4 absolute text-dark-blue hover:text-steel-blue top-11.5 right-10"
+            className="w-4 h-4 absolute text-dark-blue hover:text-steel-blue top-11.5 right-7 sm:right-10"
             onClick={handleSave}
           />
         ) : (
           <FiEdit
-            className="w-4 h-4 absolute text-dark-blue hover:text-steel-blue top-11.5 right-10"
+            className="w-4 h-4 absolute text-dark-blue hover:text-steel-blue top-11.5 right-7 sm:right-10"
             onClick={() => setIsEditing(true)}
           />
         )}
@@ -122,7 +122,11 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
               className="editable-capsule"
             />
           ) : (
-            <Capsule text={name} variant="beige" className="col-start-2" />
+            <Capsule
+              text={name}
+              variant="beige"
+              className="col-start-1 sm:col-start-2 mb-2 sm:mb-0"
+            />
           )}
 
           <Capsule
@@ -130,7 +134,11 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
             variant="muted_blue"
             className="ring-1 ring-muted-blue col-start-1"
           />
-          <Capsule text={clientInfo.email} variant="beige" className="col-start-2" />
+          <Capsule
+            text={clientInfo.email}
+            variant="beige"
+            className="col-start-1 sm:col-start-2 mb-2 sm:mb-0"
+          />
 
           <Capsule
             text="Affiliation"
@@ -138,7 +146,11 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
             className="ring-1 ring-muted-blue col-start-1 mr-5"
           />
           {affiliation && !isEditing ? (
-            <Capsule text={affiliation} variant="beige" className="col-start-2" />
+            <Capsule
+              text={affiliation}
+              variant="beige"
+              className="col-start-1 sm:col-start-2 mb-2 sm:mb-0"
+            />
           ) : (
             isEditing && (
               <input
