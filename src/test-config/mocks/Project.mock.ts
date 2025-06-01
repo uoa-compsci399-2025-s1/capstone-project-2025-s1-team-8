@@ -15,7 +15,6 @@ export const projectMock: Project = {
   description: 'Description 1',
   client: clientMock,
   deadline: new Date().toISOString(),
-  timestamp: new Date().toISOString(),
   desiredOutput: 'cool project',
   specialEquipmentRequirements: 'computer',
   numberOfTeams: '5',
@@ -23,6 +22,14 @@ export const projectMock: Project = {
   futureConsideration: false,
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
+  additionalClients: [
+    clientMock,
+    {
+      ...clientMock,
+      firstName: 'Additional',
+      lastName: 'Client',
+    },
+  ],
 }
 
 export const projectMock2: Project = {
@@ -31,7 +38,6 @@ export const projectMock2: Project = {
   description: 'Description 2',
   client: clientMock,
   deadline: new Date().toISOString(),
-  timestamp: new Date().toISOString(),
   desiredOutput: 'cool project',
   specialEquipmentRequirements: 'computer',
   numberOfTeams: '5',
@@ -46,7 +52,6 @@ export const projectCreateMock: CreateProjectData = {
   description: 'Description 2',
   client: clientMock,
   deadline: new Date().toISOString(),
-  timestamp: new Date().toISOString(),
   desiredOutput: 'cool project',
   specialEquipmentRequirements: 'computer',
   numberOfTeams: '5',
@@ -59,7 +64,6 @@ export const projectCreateMock2: CreateProjectData = {
   description: 'Description 2',
   client: clientMock,
   deadline: new Date().toISOString(),
-  timestamp: new Date().toISOString(),
   desiredOutput: 'cool project',
   specialEquipmentRequirements: 'computer',
   numberOfTeams: '5',

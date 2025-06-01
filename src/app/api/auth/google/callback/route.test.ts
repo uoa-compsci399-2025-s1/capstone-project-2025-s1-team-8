@@ -70,8 +70,8 @@ describe('GET /api/auth/google/callback', async () => {
     expect(mockSet).toHaveBeenCalledWith(AUTH_COOKIE_NAME, JWT_MOCK, {
       maxAge: 3600,
       httpOnly: true,
-      sameSite: 'strict',
-      // secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
     })
   })
 

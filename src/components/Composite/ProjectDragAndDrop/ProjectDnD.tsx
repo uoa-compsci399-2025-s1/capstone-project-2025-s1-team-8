@@ -65,7 +65,6 @@ const defaultProjectInfo: ProjectDetails = {
   additionalClients: null,
   attachments: null,
   deadline: null,
-  timestamp: '',
   desiredOutput: '',
   specialEquipmentRequirements: '',
   numberOfTeams: '',
@@ -125,13 +124,9 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
   //TODO: when items are moved around, remove the active filter styles
 
-  const [containerFilters, setContainerFilters] = useState<Record<string, string | undefined>>({})
-
-  useEffect(() => {
-    if (containers) {
-      setContainerFilters(Object.fromEntries(containers.map((c) => [c.id, 'originalOrder'])))
-    }
-  }, [containers])
+  const [containerFilters, setContainerFilters] = useState<Record<string, string | undefined>>(() =>
+    Object.fromEntries(presetContainers.map((c) => [c.id, 'originalOrder'])),
+  )
 
   const handleFilterChange = (containerId: UniqueIdentifier, newFilter?: string) => {
     setContainerFilters((prev) => ({

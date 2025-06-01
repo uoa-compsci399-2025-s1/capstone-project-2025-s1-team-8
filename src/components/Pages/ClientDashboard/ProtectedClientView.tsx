@@ -18,7 +18,7 @@ const ProtectedClientView = async (): Promise<JSX.Element> => {
       <div>
         <NavBar user={user} onclick={handleLoginButtonClick} />
       </div>
-      <div className="items-center justify-center w-full px-8 sm:px-15 lg:px-30 pt-40 pb-20">
+      <div className="items-center justify-center w-full px-8 sm:px-15 lg:px-30 pt-35 pb-20">
         <Suspense fallback={<div className="text-center">Loading...</div>}>
           <ClientDashboard client={user} projects={projects} onSave={handleClientProfileUpdate} />
         </Suspense>

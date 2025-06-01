@@ -35,12 +35,12 @@ export const metadata: Metadata = {
       url: 'https://www.linkedin.com/in/jefferyji/',
     },
   ],
-  icons: '/favicon.png',
+  icons: '/favicon.ico',
   openGraph: {
     title: 'Encapsulate',
     description: 'Connecting Computer Science Students with Innovative Projects',
     siteName: 'Encapsulate',
-    images: `${process.env.NEXT_PUBLIC_URL}/favicon.png`,
+    images: `${process.env.NEXT_PUBLIC_URL}/default.png`,
     type: 'website',
   },
 }
@@ -50,7 +50,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   )
 }
