@@ -52,6 +52,7 @@ const ProtectedFormView: FC = () => {
 
   const [specialEquipmentRequirements, setSpecialEquipmentRequirements] = useState<string>('')
   const [numberOfTeams, setNumberOfTeams] = useState<string>('')
+  const [futureConsideration, setFutureConsideration] = useState<string>('')
   
 
   const handleChange = (index: number, field: keyof CreateProjectClient, value: string) => {
@@ -72,14 +73,24 @@ const ProtectedFormView: FC = () => {
     register,
     handleSubmit,
     setValue,
-    getValues,
     watch,
     formState: { errors },
   } = useForm<FormProject>()
 
   useEffect(() => {
     handleFormPageLoad(projectId).then((res) => {
+      console.log("hi", res.projectData)
       if (res.projectData) {
+        if (res.projectData.additionalClients) {
+          const clients = res.projectData.additionalClients
+          .filter(client => typeof client !== 'string')
+          .map((client) => ({
+            firstName: client.firstName || '',
+            lastName: client.lastName || '',
+            email: client.email || '',
+          }))
+          setOtherClientDetails(clients)
+        }
         setValue('name', res.projectData.name || '')
         setValue('description', res.projectData.description || '')
         setValue('desiredOutput', res.projectData.desiredOutput || '')
@@ -91,19 +102,16 @@ const ProtectedFormView: FC = () => {
         )
         setValue('desiredTeamSkills', res.projectData.desiredTeamSkills || '')
         setValue('availableResources', res.projectData.availableResources || '')
-        setValue('futureConsideration', )
-        if (res.projectData.additionalClients) {
-          const clients = res.projectData.additionalClients.map((client) => ({
-            firstName: client.firstName || '',
-            lastName: client.lastName || '',
-            email: client.email || '',
-          }))
-          setOtherClientDetails(clients)
-        }
+        setFutureConsideration(
+          res.projectData.futureConsideration ? 'Yes' : 'No'
+        )
         setValue('meetingAttendance', true)
         setValue('finalPresentationAttendance', true)
         setValue('projectSupportAndMaintenance', true)
-        setValue('semesters', res.projectData.semesters || [])
+        if (res.projectData.futureConsideration) {
+          const semesterIds = (res.projectData.semesters || []).map(sem => sem.id);
+          setValue('semesters', semesterIds || [])
+        }
       }
       setUpcomingSemesterOptions(
         res.upcomingSemesters.map((semester) => ({
@@ -125,25 +133,24 @@ const ProtectedFormView: FC = () => {
 
   const hasFutureConsideration = String(watch('futureConsideration')) === 'Yes'
   const onSubmit: SubmitHandler<FormProject> = async (data) => {
-    console.log(getValues('numberOfTeams'))
     console.log(data)
-    // if (nextSemesterOption) {
-    //   data.semesters.push(nextSemesterOption?.value) // Add the next semester to the list of semesters
-    // }
-    // data.additionalClients = otherClientDetails
-    // data.futureConsideration = hasFutureConsideration
-    // data.timestamp = new Date().toISOString()
+    if (nextSemesterOption) {
+      data.semesters.push(nextSemesterOption?.value) // Add the next semester to the list of semesters
+    }
+    data.additionalClients = otherClientDetails
+    data.futureConsideration = hasFutureConsideration
+    data.timestamp = new Date().toISOString()
 
-    // const res = await handleProjectFormSubmission(data as CreateProjectRequestBody)
+    const res = await handleProjectFormSubmission(data as CreateProjectRequestBody)
 
-    // // Handle the response as needed
-    // // For example, you can check for errors or success messages
-    // if (res?.success) {
-    //   redirect('/client')
-    // } else {
-    //   console.error('Error submitting form:', res?.error)
-    //   setShowNotification(true)
-    // }
+    // Handle the response as needed
+    // For example, you can check for errors or success messages
+    if (res?.success) {
+      redirect('/client')
+    } else {
+      console.error('Error submitting form:', res?.error)
+      setShowNotification(true)
+    }
   }
 
   return (
@@ -486,6 +493,7 @@ const ProtectedFormView: FC = () => {
                   required={false}
                   error={!!errors.futureConsideration}
                   errorMessage={errors.futureConsideration?.message}
+                  defaultValue={futureConsideration}
                   {...register('futureConsideration', {
                     required: 'Future consideration is required',
                   })}

@@ -7,6 +7,9 @@ import type { StatusCodes } from 'http-status-codes'
 import type { Semester } from '@/payload-types'
 import type { SemesterType } from '@/types/Semester'
 import type { CreateProjectRequestBody } from '@/app/api/projects/route'
+import AdminProjectService from '../admin/AdminProjectService'
+import type { Project } from '@/payload-types'
+import type { ProjectDetails } from '@/types/Project'
 
 const ProjectFormService = {
   /**
@@ -39,7 +42,7 @@ const ProjectFormService = {
    */
   getProjectById: async function (id: string): Promise<{
     status: StatusCodes
-    data?: CreateProjectRequestBody
+    data?: ProjectDetails
     error?: string
   }> {
     'use server'
@@ -47,8 +50,16 @@ const ProjectFormService = {
     const response = await GetProjectById(await buildNextRequest(url, { method: 'GET' }), {
       params: Promise.resolve({ id }),
     })
-    const { data, error } = { ...(await response.json()) }
-    return { status: response.status, data, error }
+    const { data: project, error } = { ...(await response.json()) }
+
+    const semesterResult = await AdminProjectService.getProjectSemesters(project.id);
+
+    const projectDetails: ProjectDetails = {
+      ...project,
+      semesters: semesterResult.data ?? [],
+    };
+
+    return { status: response.status, data: projectDetails, error }
   },
 
   /**
