@@ -1,9 +1,13 @@
 {
-  "name": "capstone-project-2025-s1-team-8",
+  "name": "encapsulate",
   "version": "1.0.0",
   "description": "Encapsulate is a platform to connect Clients, Admins, and Students to manage submit and view projects for the UoA's capstone course, COMPSCI 399.",
-  "license": "ISC",
+  "license": "MIT",
   "type": "module",
+  "private": true,
+  "author": {
+    "name": "UoA Compsci 399 2025 S1 Team 8"
+  },
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build --experimental-build-mode compile",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev --turbopack",
@@ -23,7 +27,6 @@
     "type": "git",
     "url": "git+https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8.git"
   },
-  "author": "",
   "bugs": {
     "url": "https://github.com/uoa-compsci399-2025-s1/capstone-project-2025-s1-team-8/issues"
   },
