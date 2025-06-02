@@ -32,7 +32,10 @@ export default async function HomePage() {
   const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
 
   const homePage = await GetHomePage()
-  const data: Home = (await homePage.json()).data
+  const homePageCMS: Home = (await homePage.json()).data
+
+  const aboutSection = homePageCMS.aboutSection
+  const demoSection = homePageCMS.demoSection
 
   return (
     <div>
@@ -54,16 +57,16 @@ export default async function HomePage() {
       <div className="min-h-dvh w-full bg-deeper-blue px-[8%] py-25 flex flex-col justify-center">
         <div>
           <h1 className="font-silkscreen text-light-beige text-3xl sm:text-4xl md:text-5xl font-normal pb-5">
-            {data.aboutSection.title}
+            {aboutSection.title}
           </h1>
           <p className="text-light-beige text-sm/4 sm:text-base/5 lg:text-lg/6 pb-15">
-            {data.aboutSection.description}
+            {aboutSection.description}
             <br />
             <br />
             {`This capstone course is designed to permit the student to exhibit problem-solving, critical thinking and communication skills, and the ability to use relevant technology; all skills developed throughout the programme. This enables them to become ‘business ready’ for their eventual engagement with companies in their future employment.`}
           </p>
           <Button variant="light" size="sm">
-            <Link href={`${data.aboutSection.title}`}>See previous projects</Link>
+            <Link href={`${aboutSection.button.buttonLink}`}>{aboutSection.button.buttonName}</Link>
           </Button>
         </div>
       </div>
@@ -73,15 +76,10 @@ export default async function HomePage() {
         <div className="flex flex-col lg:flex-row relative justify-between gap-10 lg:gap-20">
           <div className="w-full lg:w-[45%]">
             <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-10 sm:leading-12 lg:leading-17">
-              Encapsulate
-              <br />
-              for clients
+              {demoSection.clientDemo.title}
             </h1>
             <p className="text-sm/4 sm:text-base/5 lg:text-lg/6 text-steel-blue">
-              {`Hello! My name is John Doe and I am a lecturer at the University of Auckland. My hobbies include snorkelling, fishing, reading, baking, eating, sleeping and taking various methods of transport to my destination! FIRE`}
-              <br />
-              <br />
-              {`"John Doe" is a common placeholder name used to represent an unknown or anonymous individual, particularly in legal or informal contexts. It's often used as a stand-in when a person's real name is not known, needs to be protected, or when a general example is needed. The female equivalent is "Jane Doe". `}
+              {demoSection.clientDemo.description}
             </p>
           </div>
           <div className="rounded-xl w-4/5 lg:w-[47%] mb-1 overflow-hidden h-min self-end lg:self-center mt-10">
@@ -102,12 +100,10 @@ export default async function HomePage() {
             />
             <div className="w-full lg:w-[47%] mt-3 pb-12">
               <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-10 sm:leading-12 lg:leading-17">
-                Encapsulate
-                <br />
-                for students
+                {demoSection.studentDemo.title}
               </h1>
               <p className="text-sm/4 sm:text-base/5 lg:text-lg/6 text-steel-blue">
-                {`Students are able to browse approved projects and their descriptions for the upcoming semester. This means that students can pre-emptively consider which projects align the best with their interests, and use this knowledge to make the most of their capstone experience.`}
+                {demoSection.studentDemo.description}
               </p>
             </div>
           </div>
