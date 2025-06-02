@@ -164,6 +164,17 @@ jobs:
       - name: Run Next build
         run: pnpm build
 
+      - name: Upload Next cache
+        uses: actions/cache@v4
+        with:
+           path: |
+             ~/.pnpm
+             ${{ github.workspace }}/.next/cache
+           # Generate a new cache whenever packages or source files change.
+           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yml') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
+           restore-keys: |
+             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yml') }}-
+
   test:
     needs: [check_changes, setup]
     if: ${{ needs.check_changes.outputs.exists == 'true' }}
