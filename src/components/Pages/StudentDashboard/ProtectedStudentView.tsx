@@ -11,7 +11,6 @@ export default async function ProtectedStudentView() {
   const res = await handleStudentPageLoad()
   const semesterName = res.name
   const projects: ProjectDetails[] = res.projects
-  console.log(res)
 
   const userInfo = await ClientService.getClientInfo()
   const studentInfo: UserCombinedInfo = userInfo.userInfo
