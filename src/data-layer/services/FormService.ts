@@ -1,72 +1,8 @@
-import type { Form, FormQuestion } from '@/payload-types'
-import type {
-  CreateFormData,
-  UpdateFormData,
-  UpdateFormQuestionData,
-  CreateFormQuestionData,
-} from '@/types/Collections'
+import type { FormQuestion } from '@/payload-types'
+import type { UpdateFormQuestionData, CreateFormQuestionData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
-import { NotFound } from 'payload'
 
 export default class FormService {
-  /**
-   * Creates a new form document in the database.
-   *
-   * @param newForm The new form data object to create
-   * @returns The created form document
-   */
-  public async createForm(newForm: CreateFormData): Promise<Form> {
-    return await payload.create({
-      collection: 'form',
-      data: newForm,
-    })
-  }
-
-  /**
-   * Retrieves a form document from the database by its ID.
-   *
-   * @returns The retrieved form document
-   */
-  public async getForm(): Promise<Form> {
-    const form = (
-      await payload.find({
-        collection: 'form',
-      })
-    ).docs[0]
-    if (!form) {
-      throw new NotFound(() => 'Not Found')
-    }
-    return form
-  }
-
-  /**
-   * Updates a form from the database.
-   *
-   * @param updatedForm the updated form data object
-   * @returns An a form document
-   */
-  public async updateForm(updatedForm: UpdateFormData): Promise<Form> {
-    const form = await this.getForm()
-    return await payload.update({
-      collection: 'form',
-      id: form.id,
-      data: updatedForm,
-    })
-  }
-
-  /**
-   * Deletes a form from the database.
-   *
-   * @param formID the ID of the form to delete
-   * @returns A form document
-   */
-  public async deleteForm(formID: string): Promise<void> {
-    await payload.delete({
-      collection: 'form',
-      id: formID,
-    })
-  }
-
   /**
    * Creates a new formQuestion
    *

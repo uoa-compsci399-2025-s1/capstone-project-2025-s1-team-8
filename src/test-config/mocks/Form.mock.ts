@@ -42,12 +42,3 @@ export const questionResponseMock: QuestionResponse = {
   question: formQuestionMock,
   answer: 'Would be good to have a MVP done by blah blah...',
 }
-
-/*
- * Form mocks
- */
-
-export const formMock: CreateFormData = {
-  name: 'Form Mock',
-  description: 'Form Description Mock',
-}
