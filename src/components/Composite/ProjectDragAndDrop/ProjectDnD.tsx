@@ -50,7 +50,6 @@ const defaultProjectInfo: ProjectDetails = {
   additionalClients: null,
   attachments: null,
   deadline: null,
-  timestamp: '',
   desiredOutput: '',
   specialEquipmentRequirements: '',
   numberOfTeams: '',

@@ -143,7 +143,6 @@ const ProtectedFormView: FC = () => {
     }
     data.additionalClients = otherClientDetails
     data.futureConsideration = hasFutureConsideration
-    data.timestamp = new Date().toISOString()
 
     const res = await handleProjectFormSubmission(data as CreateProjectRequestBody)
 
@@ -543,10 +542,10 @@ const ProtectedFormView: FC = () => {
                   <span
                     className={`${!!errors.finalPresentationAttendance ? 'border-pink-accent hover:outline-dark-pink peer-focus:outline-dark-pink' : 'border-steel-blue hover:outline-deeper-blue peer-focus:outline-deeper-blue'}
                         w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] rounded-sm
-                        peer-checked:bg-steel-blue 
+                        peer-checked:bg-steel-blue
                         [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
-                        hover:outline 
-                        peer-focus:outline 
+                        hover:outline
+                        peer-focus:outline
                         transition-colors duration-150`}
                   >
                     <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
@@ -584,10 +583,10 @@ const ProtectedFormView: FC = () => {
                   <span
                     className={`${!!errors.finalPresentationAttendance ? 'border-pink-accent hover:outline-dark-pink peer-focus:outline-dark-pink' : 'border-steel-blue hover:outline-deeper-blue peer-focus:outline-deeper-blue'}
                         w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] rounded-sm
-                        peer-checked:bg-steel-blue 
+                        peer-checked:bg-steel-blue
                         [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
-                        hover:outline 
-                        peer-focus:outline 
+                        hover:outline
+                        peer-focus:outline
                         transition-colors duration-150`}
                   >
                     <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />

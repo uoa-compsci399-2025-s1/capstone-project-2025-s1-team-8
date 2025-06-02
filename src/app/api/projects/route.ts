@@ -31,7 +31,6 @@ export const CreateProjectRequestBodySchema = z.object({
     .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
     .optional(),
   semesters: z.array(z.string()),
-  timestamp: z.string().datetime({ message: 'Invalid date format, should be in ISO 8601 format' }),
   desiredOutput: z.string(),
   specialEquipmentRequirements: z.string(),
   numberOfTeams: z.string(),

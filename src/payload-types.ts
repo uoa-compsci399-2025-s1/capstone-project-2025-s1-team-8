@@ -268,7 +268,6 @@ export interface Project {
   additionalClients?: (string | User)[] | null;
   attachments?: (string | Media)[] | null;
   deadline?: string | null;
-  timestamp: string;
   desiredOutput: string;
   specialEquipmentRequirements: string;
   numberOfTeams: string;
@@ -537,7 +536,6 @@ export interface ProjectSelect<T extends boolean = true> {
   additionalClients?: T;
   attachments?: T;
   deadline?: T;
-  timestamp?: T;
   desiredOutput?: T;
   specialEquipmentRequirements?: T;
   numberOfTeams?: T;

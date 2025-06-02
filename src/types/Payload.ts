@@ -85,7 +85,6 @@ export const ProjectSchema = z.object({
   description: z.string(),
   attachments: z.array(z.union([z.string(), MediaSchema])).optional(),
   deadline: z.string().optional(),
-  timestamp: z.string(),
   updatedAt: z.string(),
   createdAt: z.string(),
   desiredOutput: z.string(),
