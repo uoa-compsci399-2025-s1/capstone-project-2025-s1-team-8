@@ -13,7 +13,7 @@ export const Home: GlobalConfig = {
           name: 'title',
           type: 'text',
           required: true,
-          defaultValue: 'About Compsci399',
+          defaultValue: 'ABOUT COMPSCI399',
           admin: {
             description: 'The title of the about section.',
           },

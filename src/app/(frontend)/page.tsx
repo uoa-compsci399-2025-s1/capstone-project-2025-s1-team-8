@@ -18,6 +18,8 @@ import DennisPhoto from '@/assets/profiles/dennis.jpeg'
 import SheenaPhoto from '@/assets/profiles/sheena.jpeg'
 import JefferyPhoto from '@/assets/profiles/jeffery.jpeg'
 import Introduction from '@/components/Generic/PersonIntroduction/Introduction'
+import { GET as GetHomePage } from '../api/globals/home/route'
+import type { Home } from '@/payload-types'
 
 export const metadata: Metadata = {
   title: 'Home',
@@ -28,6 +30,10 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const clientInfo = await ClientService.getClientInfo()
   const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
+
+  const homePage = await GetHomePage()
+  const data: Home = (await homePage.json()).data
+
   return (
     <div>
       {/* Landing */}
@@ -48,16 +54,16 @@ export default async function HomePage() {
       <div className="min-h-dvh w-full bg-deeper-blue px-[8%] py-25 flex flex-col justify-center">
         <div>
           <h1 className="font-silkscreen text-light-beige text-3xl sm:text-4xl md:text-5xl font-normal pb-5">
-            ABOUT COMPSCI399
+            {data.aboutSection.title}
           </h1>
           <p className="text-light-beige text-sm/4 sm:text-base/5 lg:text-lg/6 pb-15">
-            {`COMPSCI399 Capstone is the culmination of the Computer Science degree for students at the University of Auckland. It is a compulsory course that students must undertake in order to graduate, and serves as a showcase of the knowledge and skills a student has acquired throughout their studies. Capstone courses are generally seen to have three main aims: integrating the knowledge and skills gained in the programme, reflecting on prior learning, and transitioning into the workplace. Using this as a starting point, this Computer Science capstone is seen as an opportunity to integrate the knowledge gained in the entire degree programme through problem-based learning. Students will be allocated into small teams who will then work together to solve a substantial problem. The teams will design, develop, and produce an artefact to solve the problem and present their work.`}
+            {data.aboutSection.description}
             <br />
             <br />
             {`This capstone course is designed to permit the student to exhibit problem-solving, critical thinking and communication skills, and the ability to use relevant technology; all skills developed throughout the programme. This enables them to become ‘business ready’ for their eventual engagement with companies in their future employment.`}
           </p>
           <Button variant="light" size="sm">
-            <Link href={'https://www.capitalise.space/'}>See previous projects</Link>
+            <Link href={`${data.aboutSection.title}`}>See previous projects</Link>
           </Button>
         </div>
       </div>
