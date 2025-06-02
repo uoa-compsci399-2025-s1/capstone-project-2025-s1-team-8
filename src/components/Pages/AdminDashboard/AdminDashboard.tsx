@@ -46,10 +46,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [isFetching, setIsFetching] = useState(false)
   const itemsPerPage = 10
 
-  const searchForClients = async (searchValue: string) => {
-    
-  }
-
   const updatePageCount = async (
     increment: boolean,
     firstPage: boolean = false,
@@ -182,7 +178,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   clientsData={clientsData}
                   pageNum={pageNum}
                   updatePageCount={updatePageCount}
-                  searchForClients={searchForClients}
                   totalPages={totalPages}
                   isFetching={isFetching}
                 />
