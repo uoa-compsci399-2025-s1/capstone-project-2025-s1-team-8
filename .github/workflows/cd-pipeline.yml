@@ -50,10 +50,13 @@ jobs:
           key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Prune developer dependencies
-        run: pnpm prune --prod
+        run: pnpm install --prod --frozen-lockfile
 
       - name: Run Next build
         run: pnpm build
+
+      - name: Remove standalone node_modules
+        run: rm -rf ./.next/standalone/node_modules
 
       - name: Upload standalone to EC2
         uses: burnett01/rsync-deployments@7.0.2
