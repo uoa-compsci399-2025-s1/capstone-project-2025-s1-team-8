@@ -7,7 +7,7 @@ FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 COPY . .
-RUN pnpm install --frozen-lockfile --prod
+RUN corepack enable pnpm && pnpm install --frozen-lockfile --prod
 
 EXPOSE 3000
 CMD ["node", "server.js"]
