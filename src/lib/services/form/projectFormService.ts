@@ -51,12 +51,12 @@ const ProjectFormService = {
     })
     const { data: project, error } = { ...(await response.json()) }
 
-    const semesterResult = await AdminProjectService.getProjectSemesters(project.id);
+    const semesterResult = await AdminProjectService.getProjectSemesters(project.id)
 
     const projectDetails: ProjectDetails = {
       ...project,
       semesters: semesterResult.data ?? [],
-    };
+    }
 
     return { status: response.status, data: projectDetails, error }
   },

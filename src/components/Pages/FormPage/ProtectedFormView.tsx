@@ -53,7 +53,6 @@ const ProtectedFormView: FC = () => {
   const [specialEquipmentRequirements, setSpecialEquipmentRequirements] = useState<string>('')
   const [numberOfTeams, setNumberOfTeams] = useState<string>('')
   const [futureConsideration, setFutureConsideration] = useState<string>('')
-  
 
   const handleChange = (index: number, field: keyof CreateProjectClient, value: string) => {
     const updated = [...otherClientDetails]
@@ -87,46 +86,42 @@ const ProtectedFormView: FC = () => {
         // filling out the additional clients
         if (res.projectData.additionalClients) {
           const clients = res.projectData.additionalClients
-          // since clients is type User | string[], we need to filter out strings
-          .filter(client => typeof client !== 'string')
-          .map((client) => ({
-            firstName: client.firstName || '',
-            lastName: client.lastName || '',
-            email: client.email || '',
-          }))
+            // since clients is type User | string[], we need to filter out strings
+            .filter((client) => typeof client !== 'string')
+            .map((client) => ({
+              firstName: client.firstName || '',
+              lastName: client.lastName || '',
+              email: client.email || '',
+            }))
           setOtherClientDetails(clients)
         }
 
         setValue('name', res.projectData.name || '')
         setValue('description', res.projectData.description || '')
         setValue('desiredOutput', res.projectData.desiredOutput || '')
-        setSpecialEquipmentRequirements(
-          res.projectData.specialEquipmentRequirements || ''
-        )
-        setNumberOfTeams(
-          res.projectData.numberOfTeams || ''
-        )
+        setSpecialEquipmentRequirements(res.projectData.specialEquipmentRequirements || '')
+        setNumberOfTeams(res.projectData.numberOfTeams || '')
         setValue('desiredTeamSkills', res.projectData.desiredTeamSkills || '')
         setValue('availableResources', res.projectData.availableResources || '')
-        setFutureConsideration(
-          res.projectData.futureConsideration ? 'Yes' : 'No'
-        )
+        setFutureConsideration(res.projectData.futureConsideration ? 'Yes' : 'No')
         setValue('meetingAttendance', true)
         setValue('finalPresentationAttendance', true)
         setValue('projectSupportAndMaintenance', true)
 
         // for updating future semesters, we want to check which semesters are provided that we can select
         if (res.projectData.futureConsideration) {
-          const semesterIds = (res.projectData.semesters || []).map(sem => sem.id);
+          const semesterIds = (res.projectData.semesters || []).map((sem) => sem.id)
           setValue('semesters', semesterIds || [])
         }
       }
       // sets upcoming semester options from earliest -> latest
       setUpcomingSemesterOptions(
-        res.upcomingSemesters.map((semester) => ({
-          value: semester.id,
-          label: `${semester.name} (${returnCalendarDateFromISOString(semester.startDate)} - ${returnCalendarDateFromISOString(semester.endDate)})`,
-        })).reverse()
+        res.upcomingSemesters
+          .map((semester) => ({
+            value: semester.id,
+            label: `${semester.name} (${returnCalendarDateFromISOString(semester.startDate)} - ${returnCalendarDateFromISOString(semester.endDate)})`,
+          }))
+          .reverse(),
       )
       // the closest upcoming semester is the last one in the list
       setNextSemesterOption(
