@@ -11,12 +11,12 @@ import { Project } from './data-layer/collections/Project'
 import { SemesterProject } from './data-layer/collections/SemesterProject'
 import { Semester } from './data-layer/collections/Semester'
 import { FormQuestion } from './data-layer/collections/FormQuestion'
-import { Form } from './data-layer/collections/Form'
 import { Authentication } from './data-layer/collections/Authentication'
 import { ClientAdditionalInfo } from './data-layer/collections/ClientAdditionalInfo'
 import { Admin } from './data-layer/collections/Admin'
 import { Home } from './data-layer/globals/Home'
 import { s3Storage } from '@payloadcms/storage-s3'
+import { Form } from './data-layer/globals/Form'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -39,9 +39,8 @@ export default buildConfig({
     SemesterProject,
     Semester,
     FormQuestion,
-    Form,
   ],
-  globals: [Home],
+  globals: [Home, Form],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

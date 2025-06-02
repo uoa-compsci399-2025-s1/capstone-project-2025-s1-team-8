@@ -76,7 +76,6 @@ export interface Config {
     semesterProject: SemesterProject;
     semester: Semester;
     formQuestion: FormQuestion;
-    form: Form;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -92,7 +91,6 @@ export interface Config {
     semesterProject: SemesterProjectSelect<false> | SemesterProjectSelect<true>;
     semester: SemesterSelect<false> | SemesterSelect<true>;
     formQuestion: FormQuestionSelect<false> | FormQuestionSelect<true>;
-    form: FormSelect<false> | FormSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -102,9 +100,11 @@ export interface Config {
   };
   globals: {
     Home: Home;
+    form: Form;
   };
   globalsSelect: {
     Home: HomeSelect<false> | HomeSelect<true>;
+    form: FormSelect<false> | FormSelect<true>;
   };
   locale: null;
   user: Admin & {
@@ -346,23 +346,6 @@ export interface Semester {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form".
- */
-export interface Form {
-  id: string;
-  /**
-   * The form name
-   */
-  name: string;
-  /**
-   * The form description
-   */
-  description: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -403,10 +386,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'formQuestion';
         value: string | FormQuestion;
-      } | null)
-    | ({
-        relationTo: 'form';
-        value: string | Form;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -593,16 +572,6 @@ export interface FormQuestionSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form_select".
- */
-export interface FormSelect<T extends boolean = true> {
-  name?: T;
-  description?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
@@ -711,6 +680,67 @@ export interface StudentDemo {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form".
+ */
+export interface Form {
+  id: string;
+  /**
+   * The name of this form
+   */
+  name: string;
+  descriptionSection: DescriptionSection;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The form description
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DescriptionSection".
+ */
+export interface DescriptionSection {
+  /**
+   * The title of the student demo section.
+   */
+  projectRequirements: {
+    /**
+     * The title of the project requirements section.
+     */
+    title: string;
+    /**
+     * The description of the project requirements.
+     */
+    description: string;
+  };
+  /**
+   * The description of the supervision requirements.
+   */
+  supervisionRequirements: {
+    /**
+     * The title of the supervision requirements section.
+     */
+    title: string;
+    /**
+     * The description of the supervision requirements.
+     */
+    description: string;
+  };
+  /**
+   * The description of the disclaimer and limitations.
+   */
+  disclaimerAndLimitations: {
+    /**
+     * The title of the disclaimer and limitations.
+     */
+    title: string;
+    /**
+     * The limitations of the project.
+     */
+    description: string;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "Home_select".
  */
 export interface HomeSelect<T extends boolean = true> {
@@ -760,6 +790,41 @@ export interface ClientDemoSelect<T extends boolean = true> {
 export interface StudentDemoSelect<T extends boolean = true> {
   title?: T;
   description?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form_select".
+ */
+export interface FormSelect<T extends boolean = true> {
+  name?: T;
+  descriptionSection?: T | DescriptionSectionSelect<T>;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DescriptionSection_select".
+ */
+export interface DescriptionSectionSelect<T extends boolean = true> {
+  projectRequirements?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  supervisionRequirements?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  disclaimerAndLimitations?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
