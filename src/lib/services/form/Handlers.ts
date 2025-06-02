@@ -5,13 +5,18 @@ import { StatusCodes } from 'http-status-codes'
 import { SemesterType } from '@/types/Semester'
 import type { Semester } from '@/payload-types'
 import type { CreateProjectRequestBody } from '@/app/api/projects/route'
+import type { Project } from '@/payload-types'
+import type { ProjectDetails } from '@/types/Project'
 
 /**
  * Handles loading upcoming semesters for the form submission page
  * @returns An object containing upcoming semesters or an error
  */
-export const handleFormPageLoad = async (): Promise<{
+export const handleFormPageLoad = async (
+  projectId?: string,
+): Promise<{
   upcomingSemesters: Semester[]
+  projectData: ProjectDetails | undefined
   error?: string
 }> => {
   const {
@@ -25,10 +30,25 @@ export const handleFormPageLoad = async (): Promise<{
 
   if (status !== StatusCodes.OK) {
     console.error('Error fetching upcoming semesters:', error)
-    return { upcomingSemesters: [], error: error || 'Failed to load upcoming semesters' }
+    return { upcomingSemesters: [], projectData: undefined, error: error || 'Failed to load upcoming semesters' }
   }
 
-  return { upcomingSemesters: semesters || [] }
+  if (projectId) {
+    const { 
+      data: project, 
+      status, 
+      error,
+    } = await ProjectFormService.getProjectById(projectId)
+
+    if (status !== StatusCodes.OK) {
+      console.error('Error fetching project by ID:', error)
+      return { upcomingSemesters: [], projectData: undefined, error: error || 'Failed to load project data' }
+    }
+
+    return { upcomingSemesters: semesters || [], projectData: project || undefined }
+  }
+
+  return { upcomingSemesters: semesters || [], projectData: undefined }
 }
 
 export async function handleProjectFormSubmission(formData: CreateProjectRequestBody): Promise<{
