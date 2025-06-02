@@ -5,7 +5,6 @@ import { StatusCodes } from 'http-status-codes'
 import { SemesterType } from '@/types/Semester'
 import type { Semester } from '@/payload-types'
 import type { CreateProjectRequestBody } from '@/app/api/projects/route'
-import type { Project } from '@/payload-types'
 import type { ProjectDetails } from '@/types/Project'
 
 /**
@@ -16,7 +15,7 @@ export const handleFormPageLoad = async (
   projectId?: string,
 ): Promise<{
   upcomingSemesters: Semester[]
-  projectData: ProjectDetails | undefined
+  projectData?: ProjectDetails | undefined
   error?: string
 }> => {
   const {

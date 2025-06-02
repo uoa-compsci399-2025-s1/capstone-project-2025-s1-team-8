@@ -8,7 +8,6 @@ import type { Semester } from '@/payload-types'
 import type { SemesterType } from '@/types/Semester'
 import type { CreateProjectRequestBody } from '@/app/api/projects/route'
 import AdminProjectService from '../admin/AdminProjectService'
-import type { Project } from '@/payload-types'
 import type { ProjectDetails } from '@/types/Project'
 
 const ProjectFormService = {

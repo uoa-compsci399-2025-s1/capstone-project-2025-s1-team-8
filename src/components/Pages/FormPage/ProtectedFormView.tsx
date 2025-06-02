@@ -79,10 +79,15 @@ const ProtectedFormView: FC = () => {
 
   useEffect(() => {
     handleFormPageLoad(projectId).then((res) => {
-      console.log("hi", res.projectData)
+      if (!res.projectData && typeof res.upcomingSemesters === 'undefined') {
+        redirect('/form/not-found')
+      }
+
       if (res.projectData) {
+        // filling out the additional clients
         if (res.projectData.additionalClients) {
           const clients = res.projectData.additionalClients
+          // since clients is type User | string[], we need to filter out strings
           .filter(client => typeof client !== 'string')
           .map((client) => ({
             firstName: client.firstName || '',
@@ -91,6 +96,7 @@ const ProtectedFormView: FC = () => {
           }))
           setOtherClientDetails(clients)
         }
+
         setValue('name', res.projectData.name || '')
         setValue('description', res.projectData.description || '')
         setValue('desiredOutput', res.projectData.desiredOutput || '')
@@ -108,18 +114,21 @@ const ProtectedFormView: FC = () => {
         setValue('meetingAttendance', true)
         setValue('finalPresentationAttendance', true)
         setValue('projectSupportAndMaintenance', true)
+
+        // for updating future semesters, we want to check which semesters are provided that we can select
         if (res.projectData.futureConsideration) {
           const semesterIds = (res.projectData.semesters || []).map(sem => sem.id);
           setValue('semesters', semesterIds || [])
         }
       }
+      // sets upcoming semester options from earliest -> latest
       setUpcomingSemesterOptions(
         res.upcomingSemesters.map((semester) => ({
           value: semester.id,
           label: `${semester.name} (${returnCalendarDateFromISOString(semester.startDate)} - ${returnCalendarDateFromISOString(semester.endDate)})`,
-        })),
+        })).reverse()
       )
-      // the next semester is the last one in the list
+      // the closest upcoming semester is the last one in the list
       setNextSemesterOption(
         res.upcomingSemesters.length > 0
           ? {
@@ -506,7 +515,8 @@ const ProtectedFormView: FC = () => {
                   project to be considered for?
                 </p>
                 <Checkbox
-                  options={upcomingSemesterOptions.slice(0, -2)}
+                  // we want all semesters EXCEPT the next one (since it is guaranteed to be selected)
+                  options={upcomingSemesterOptions.slice(1)}
                   error={!!errors.semesters}
                   errorMessage={errors.semesters?.message}
                   {...register('semesters', {
