@@ -73,8 +73,8 @@ jobs:
         uses: burnett01/rsync-deployments@7.0.2
         with:
           switches: -avz --delete
-          path: ./.next/standalone
-          remote_path: ~/standalone
+          path: ./.next/standalone/
+          remote_path: ~/standalone/
           remote_host: ${{ secrets.EC2_HOST }}
           remote_user: ${{ secrets.EC2_USERNAME }}
           remote_key: ${{ secrets.EC2_SSH_KEY }}
@@ -83,8 +83,8 @@ jobs:
         uses: burnett01/rsync-deployments@7.0.2
         with:
           switches: -avz --delete
-          path: ./.next/static
-          remote_path: ~/standalone/.next/static
+          path: ./.next/static/
+          remote_path: ~/standalone/.next/static/
           remote_host: ${{ secrets.EC2_HOST }}
           remote_user: ${{ secrets.EC2_USERNAME }}
           remote_key: ${{ secrets.EC2_SSH_KEY }}
@@ -93,8 +93,8 @@ jobs:
         uses: burnett01/rsync-deployments@7.0.2
         with:
           switches: -avz --delete
-          path: ./public
-          remote_path: ~/standalone/public
+          path: ./public/
+          remote_path: ~/standalone/public/
           remote_host: ${{ secrets.EC2_HOST }}
           remote_user: ${{ secrets.EC2_USERNAME }}
           remote_key: ${{ secrets.EC2_SSH_KEY }}
