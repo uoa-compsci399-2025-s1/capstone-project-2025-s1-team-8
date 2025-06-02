@@ -42,7 +42,7 @@
     "@payloadcms/richtext-lexical": "^3.40.0",
     "@payloadcms/storage-s3": "^3.40.0",
     "@svgr/webpack": "^8.1.0",
-    "@tailwindcss/postcss": "^4.1.7",
+    "@tailwindcss/postcss": "^4.1.8",
     "autoprefixer": "^10.4.21",
     "bcryptjs": "^3.0.2",
     "cross-env": "^7.0.3",
@@ -60,7 +60,7 @@
     "react-icons": "^5.5.0",
     "react-laag": "^2.0.5",
     "sharp": "0.32.6",
-    "tailwindcss": "^4.1.7",
+    "tailwindcss": "^4.1.8",
     "typescript": "5.7.3",
     "zod": "^3.25.48"
   },
