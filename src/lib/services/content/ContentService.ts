@@ -3,6 +3,11 @@ import { GET as GetHomePage } from '@/app/api/globals/home/route'
 import homeContent from '@/lib/defaults/Home'
 
 const ContentService = {
+  /**
+   * Method to fetch the home page content from Payload
+   *
+   * @returns The home page content
+   */
   getHomePage: async function (): Promise<Home> {
     'use server'
     const homePage = await GetHomePage()
