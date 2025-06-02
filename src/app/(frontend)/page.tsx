@@ -57,10 +57,12 @@ export default async function HomePage() {
             {aboutSection.title}
           </h1>
           <p className="text-light-beige text-sm/4 sm:text-base/5 lg:text-lg/6 pb-15">
-            {aboutSection.description}
-            <br />
-            <br />
-            {`This capstone course is designed to permit the student to exhibit problem-solving, critical thinking and communication skills, and the ability to use relevant technology; all skills developed throughout the programme. This enables them to become ‘business ready’ for their eventual engagement with companies in their future employment.`}
+            {aboutSection.description.split('\n').map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
           </p>
           <Button variant="light" size="sm">
             <Link href={aboutSection.button.buttonLink}>{aboutSection.button.buttonName}</Link>
@@ -76,7 +78,12 @@ export default async function HomePage() {
               {demoSection.clientDemo.title}
             </h1>
             <p className="text-sm/4 sm:text-base/5 lg:text-lg/6 text-steel-blue">
-              {demoSection.clientDemo.description}
+              {demoSection.clientDemo.description.split('\n').map((line, index) => (
+                <React.Fragment key={index}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              ))}
             </p>
           </div>
           <div className="rounded-xl w-4/5 lg:w-[47%] mb-1 overflow-hidden h-min self-end lg:self-center mt-10">
@@ -100,7 +107,12 @@ export default async function HomePage() {
                 {demoSection.studentDemo.title}
               </h1>
               <p className="text-sm/4 sm:text-base/5 lg:text-lg/6 text-steel-blue">
-                {demoSection.studentDemo.description}
+                {demoSection.studentDemo.description.split('\n').map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}
               </p>
             </div>
           </div>
