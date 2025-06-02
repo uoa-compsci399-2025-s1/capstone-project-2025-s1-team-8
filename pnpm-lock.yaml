@@ -24,17 +24,17 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0(react@19.0.0)
       '@payloadcms/db-mongodb':
-        specifier: ^3.39.1
-        version: 3.39.1(@aws-sdk/credential-providers@3.812.0)(gcp-metadata@6.1.1)(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))
+        specifier: ^3.40.0
+        version: 3.40.0(@aws-sdk/credential-providers@3.812.0)(gcp-metadata@6.1.1)(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))
       '@payloadcms/next':
-        specifier: ^3.39.1
-        version: 3.39.1(@types/react@19.0.12)(graphql@16.11.0)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
+        specifier: ^3.40.0
+        version: 3.40.0(@types/react@19.0.12)(graphql@16.11.0)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
       '@payloadcms/richtext-lexical':
-        specifier: ^3.39.1
-        version: 3.39.1(@faceless-ui/modal@3.0.0-beta.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@faceless-ui/scroll-info@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@payloadcms/next@3.39.1(@types/react@19.0.12)(graphql@16.11.0)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3))(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)(yjs@13.6.27)
+        specifier: ^3.40.0
+        version: 3.40.0(@faceless-ui/modal@3.0.0-beta.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@faceless-ui/scroll-info@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@payloadcms/next@3.40.0(@types/react@19.0.12)(graphql@16.11.0)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3))(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)(yjs@13.6.27)
       '@payloadcms/storage-s3':
-        specifier: ^3.39.1
-        version: 3.39.1(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
+        specifier: ^3.40.0
+        version: 3.40.0(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
       '@svgr/webpack':
         specifier: ^8.1.0
         version: 8.1.0(typescript@5.7.3)
@@ -69,8 +69,8 @@ importers:
         specifier: ^15.2.5
         version: 15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4)
       payload:
-        specifier: ^3.39.1
-        version: 3.39.1(graphql@16.11.0)(typescript@5.7.3)
+        specifier: ^3.40.0
+        version: 3.40.0(graphql@16.11.0)(typescript@5.7.3)
       postcss:
         specifier: ^8.5.3
         version: 8.5.3
@@ -1793,59 +1793,59 @@ packages:
     resolution: {integrity: sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==}
     engines: {node: '>=12.4.0'}
 
-  '@payloadcms/db-mongodb@3.39.1':
-    resolution: {integrity: sha512-8X28M1GDgdSgijykl20dV/E7NoGrTHw/4Li05bmAq5oYuByDZ6MSnYucbFJ7qPiZ6qqZMqktp42aAdem4g03kg==}
+  '@payloadcms/db-mongodb@3.40.0':
+    resolution: {integrity: sha512-mHOZq75GV4Fey+KOAuQOl7M76WDAuuq060NsxNNWqGG32d5ic3KuSXjCt7QAKhL9TIBGfNFmYly8riQRHsxXRw==}
     peerDependencies:
-      payload: 3.39.1
+      payload: 3.40.0
 
-  '@payloadcms/graphql@3.39.1':
-    resolution: {integrity: sha512-hCDaEhUcvQw2ik2j0XqeEvPL2jGbSMBFV6jJsw6l5m0mxyu5Kc2/Soqj1/yrJ/Kldn8M34m8im5oByTIBw8P4g==}
+  '@payloadcms/graphql@3.40.0':
+    resolution: {integrity: sha512-6L6dQgPA30EzUXeTO6BHfHzuUxPnM9qWRuT2Rx6z69JyxVPiTssvuHrqr/NQYjK/X6ZE8cKT5RfgrjhPeRsj+g==}
     hasBin: true
     peerDependencies:
       graphql: ^16.8.1
-      payload: 3.39.1
+      payload: 3.40.0
 
-  '@payloadcms/next@3.39.1':
-    resolution: {integrity: sha512-VDNXCQXuxEWQ7m1U9e0gz14u233sWUAv4H0z8hM3C9+te2fC+EKToPqdWPY6eBYlhiRHNPfwNK4N/tqFAZKWAg==}
+  '@payloadcms/next@3.40.0':
+    resolution: {integrity: sha512-vElV+lzDcJ4XMGD982sTNLpK92+/CTwEk98izN4GRMghpbD/rTWphi7GcV5jtpRmptIkkVdh5H3YlL1gWL43bg==}
     engines: {node: ^18.20.2 || >=20.9.0}
     peerDependencies:
       graphql: ^16.8.1
       next: ^15.2.3
-      payload: 3.39.1
+      payload: 3.40.0
 
-  '@payloadcms/plugin-cloud-storage@3.39.1':
-    resolution: {integrity: sha512-LoL5/2BjyspAKETwEE5laMoAjcARz/fGE+ZPKQHHE6B1Jf4t00OuxG4KuDhG3mIccIO+mSeaC4+xckNMeMf7KA==}
+  '@payloadcms/plugin-cloud-storage@3.40.0':
+    resolution: {integrity: sha512-pjkcaWBsMw3naBYHToQs8KCdZ1B6eh9S7CC40ZkXLD/M4FUWlCtGbPxNUumwoWPdLmCnWf9pq+28Xtb200+H4g==}
     peerDependencies:
-      payload: 3.39.1
+      payload: 3.40.0
       react: ^19.0.0 || ^19.0.0-rc-65a56d0e-20241020
       react-dom: ^19.0.0 || ^19.0.0-rc-65a56d0e-20241020
 
-  '@payloadcms/richtext-lexical@3.39.1':
-    resolution: {integrity: sha512-8uZwOxngPKndTQdJNr3LvDa3RNSlT7NnC4N7H5FOPw1icAYrhzUhE36ak0/XmvMBVdMKxvgn7UVvWJi78JKuIw==}
+  '@payloadcms/richtext-lexical@3.40.0':
+    resolution: {integrity: sha512-Pky0WcugLpPqWTTvnV84FOZAtADUFTVbvSgo71hBnQZ5LvDQzM/2D5A9T6pzU4PInRZZlFYHfDVD6yOIq4X51A==}
     engines: {node: ^18.20.2 || >=20.9.0}
     peerDependencies:
       '@faceless-ui/modal': 3.0.0-beta.2
       '@faceless-ui/scroll-info': 2.0.0
-      '@payloadcms/next': 3.39.1
-      payload: 3.39.1
+      '@payloadcms/next': 3.40.0
+      payload: 3.40.0
       react: ^19.0.0 || ^19.0.0-rc-65a56d0e-20241020
       react-dom: ^19.0.0 || ^19.0.0-rc-65a56d0e-20241020
 
-  '@payloadcms/storage-s3@3.39.1':
-    resolution: {integrity: sha512-VTelFdtZ0RbTaqOkOmCsaFy2zkvPAvWkk0yDkIq9qSAhUSHRJh4TYsnOVtNW8erkmboajs2ns6aAgdReh0T01A==}
+  '@payloadcms/storage-s3@3.40.0':
+    resolution: {integrity: sha512-1szCinzcCRoP1jJ274P4tpLHkYzCQn1SHz1FMBUkIiHQXl+3v/6VA5IHYI1WO4yjnuAbVVXX6H1oSKFqBhawOw==}
     engines: {node: ^18.20.2 || >=20.9.0}
     peerDependencies:
-      payload: 3.39.1
+      payload: 3.40.0
 
-  '@payloadcms/translations@3.39.1':
-    resolution: {integrity: sha512-GwU6lwpi5hEijaE64dRNPIF1x8J2aN4loR+Z7Hqk2DP5UqtHTRmNx6LLTzanUfwvOiyR1nnFpCsHyAC57c8gtw==}
+  '@payloadcms/translations@3.40.0':
+    resolution: {integrity: sha512-h15Cm2YYBop0S4W6YBsQyPjIRIuio5stwhjFSrjQVdkP5+jkLxJes3LYMY3VvwJ4tmxU/HdIaMtH+i288nbOmw==}
 
-  '@payloadcms/ui@3.39.1':
-    resolution: {integrity: sha512-kjnLYSFgmqdyTPF4ecqqRUyHFb4hQalZ6Z/6qs6Sz9XYZHgY5hwN6MJIL6L/MDh0Tv7acaRUlTCQNWjzjEU79g==}
+  '@payloadcms/ui@3.40.0':
+    resolution: {integrity: sha512-2Xl0EQy4LTYcTCCWU5+XPk2+P/CgkTK6o0Hjs0+topcfJ/L08+15HKq1ymROJUIDFj7gWXOV5n0WVQAAkzMCaA==}
     engines: {node: ^18.20.2 || >=20.9.0}
     peerDependencies:
       next: ^15.2.3
-      payload: 3.39.1
+      payload: 3.40.0
       react: ^19.0.0 || ^19.0.0-rc-65a56d0e-20241020
       react-dom: ^19.0.0 || ^19.0.0-rc-65a56d0e-20241020
 
@@ -1984,10 +1984,6 @@ packages:
   '@rushstack/eslint-patch@1.11.0':
     resolution: {integrity: sha512-zxnHvoMQVqewTJr/W4pKjF0bMGiKJv1WX7bSrkl46Hg0QjESbzBROWK0Wg4RphzSOS5Jiy7eFimmM3UgMrMZbQ==}
 
-  '@smithy/abort-controller@4.0.2':
-    resolution: {integrity: sha512-Sl/78VDtgqKxN2+1qduaVE140XF+Xg+TafkncspwM4jFP/LHr76ZHmIY/y3V1M0mMLNk+Je6IGbzxy23RSToMw==}
-    engines: {node: '>=18.0.0'}
-
   '@smithy/abort-controller@4.0.3':
     resolution: {integrity: sha512-AqXFf6DXnuRBXy4SoK/n1mfgHaKaq36bmkphmD1KO0nHq6xK/g9KHSW4HEsPQUBCGdIEfuJifGHwxFXPIFay9Q==}
     engines: {node: '>=18.0.0'}
@@ -2122,10 +2118,6 @@ packages:
 
   '@smithy/smithy-client@4.2.6':
     resolution: {integrity: sha512-WEqP0wQ1N/lVS4pwNK1Vk+0i6QIr66cq/xbu1dVy1tM0A0qYwAYyz0JhbquzM5pMa8s89lyDBtoGKxo7iG74GA==}
-    engines: {node: '>=18.0.0'}
-
-  '@smithy/types@4.2.0':
-    resolution: {integrity: sha512-7eMk09zQKCO+E/ivsjQv+fDlOupcFUCSC/L2YUPgwhvowVGWbPQHjEFcmjt7QQ4ra5lyowS92SV53Zc6XD4+fg==}
     engines: {node: '>=18.0.0'}
 
   '@smithy/types@4.3.0':
@@ -5406,8 +5398,8 @@ packages:
     resolution: {integrity: sha512-vE7JKRyES09KiunauX7nd2Q9/L7lhok4smP9RZTDeD4MVs72Dp2qNFVz39Nz5a0FVEW0BJR6C0DYrq6unoziZA==}
     engines: {node: '>= 14.16'}
 
-  payload@3.39.1:
-    resolution: {integrity: sha512-VDJe5hGkAAmwJugsu/Cc41G3XIEdqX5Yc6N/s+c5BycKwvM4sPUno/UoFZp7oedPIfUnMUus3wHq6oDNH5se0A==}
+  payload@3.40.0:
+    resolution: {integrity: sha512-At6mEvAYs4Enhy7rh0hIazOETKddPp2yWA75LCEWP1n2M6ev6pvgpLkeGgaTOxtwtYq48VwAXkLxI/9e9eOmjw==}
     engines: {node: ^18.20.2 || >=20.9.0}
     hasBin: true
     peerDependencies:
@@ -6793,7 +6785,7 @@ snapshots:
       '@smithy/node-http-handler': 4.0.4
       '@smithy/protocol-http': 5.1.0
       '@smithy/smithy-client': 4.2.6
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/url-parser': 4.0.2
       '@smithy/util-base64': 4.0.0
       '@smithy/util-body-length-browser': 4.0.0
@@ -6853,7 +6845,7 @@ snapshots:
       '@smithy/node-http-handler': 4.0.4
       '@smithy/protocol-http': 5.1.0
       '@smithy/smithy-client': 4.2.6
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/url-parser': 4.0.2
       '@smithy/util-base64': 4.0.0
       '@smithy/util-body-length-browser': 4.0.0
@@ -6898,7 +6890,7 @@ snapshots:
       '@smithy/node-http-handler': 4.0.4
       '@smithy/protocol-http': 5.1.0
       '@smithy/smithy-client': 4.2.6
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/url-parser': 4.0.2
       '@smithy/util-base64': 4.0.0
       '@smithy/util-body-length-browser': 4.0.0
@@ -6942,7 +6934,7 @@ snapshots:
       '@smithy/node-http-handler': 4.0.4
       '@smithy/protocol-http': 5.1.0
       '@smithy/smithy-client': 4.2.6
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/url-parser': 4.0.2
       '@smithy/util-base64': 4.0.0
       '@smithy/util-body-length-browser': 4.0.0
@@ -6966,7 +6958,7 @@ snapshots:
       '@smithy/protocol-http': 5.1.0
       '@smithy/signature-v4': 5.1.0
       '@smithy/smithy-client': 4.2.6
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-middleware': 4.0.2
       fast-xml-parser: 4.4.1
       tslib: 2.8.1
@@ -6981,7 +6973,7 @@ snapshots:
       '@smithy/protocol-http': 5.1.0
       '@smithy/signature-v4': 5.1.0
       '@smithy/smithy-client': 4.2.6
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-middleware': 4.0.2
       fast-xml-parser: 4.4.1
       tslib: 2.8.1
@@ -6991,7 +6983,7 @@ snapshots:
       '@aws-sdk/client-cognito-identity': 3.812.0
       '@aws-sdk/types': 3.804.0
       '@smithy/property-provider': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
@@ -7002,7 +6994,7 @@ snapshots:
       '@aws-sdk/core': 3.812.0
       '@aws-sdk/types': 3.804.0
       '@smithy/property-provider': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     optional: true
 
@@ -7011,7 +7003,7 @@ snapshots:
       '@aws-sdk/core': 3.816.0
       '@aws-sdk/types': 3.804.0
       '@smithy/property-provider': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@aws-sdk/credential-provider-http@3.812.0':
@@ -7023,7 +7015,7 @@ snapshots:
       '@smithy/property-provider': 4.0.2
       '@smithy/protocol-http': 5.1.0
       '@smithy/smithy-client': 4.2.6
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-stream': 4.2.0
       tslib: 2.8.1
     optional: true
@@ -7037,7 +7029,7 @@ snapshots:
       '@smithy/property-provider': 4.0.2
       '@smithy/protocol-http': 5.1.0
       '@smithy/smithy-client': 4.2.6
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-stream': 4.2.0
       tslib: 2.8.1
 
@@ -7054,7 +7046,7 @@ snapshots:
       '@smithy/credential-provider-imds': 4.0.4
       '@smithy/property-provider': 4.0.2
       '@smithy/shared-ini-file-loader': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
@@ -7073,7 +7065,7 @@ snapshots:
       '@smithy/credential-provider-imds': 4.0.4
       '@smithy/property-provider': 4.0.2
       '@smithy/shared-ini-file-loader': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
@@ -7090,7 +7082,7 @@ snapshots:
       '@smithy/credential-provider-imds': 4.0.4
       '@smithy/property-provider': 4.0.2
       '@smithy/shared-ini-file-loader': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
@@ -7108,7 +7100,7 @@ snapshots:
       '@smithy/credential-provider-imds': 4.0.4
       '@smithy/property-provider': 4.0.2
       '@smithy/shared-ini-file-loader': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
@@ -7119,7 +7111,7 @@ snapshots:
       '@aws-sdk/types': 3.804.0
       '@smithy/property-provider': 4.0.2
       '@smithy/shared-ini-file-loader': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     optional: true
 
@@ -7129,7 +7121,7 @@ snapshots:
       '@aws-sdk/types': 3.804.0
       '@smithy/property-provider': 4.0.2
       '@smithy/shared-ini-file-loader': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@aws-sdk/credential-provider-sso@3.812.0':
@@ -7140,7 +7132,7 @@ snapshots:
       '@aws-sdk/types': 3.804.0
       '@smithy/property-provider': 4.0.2
       '@smithy/shared-ini-file-loader': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
@@ -7154,7 +7146,7 @@ snapshots:
       '@aws-sdk/types': 3.804.0
       '@smithy/property-provider': 4.0.2
       '@smithy/shared-ini-file-loader': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
@@ -7165,7 +7157,7 @@ snapshots:
       '@aws-sdk/nested-clients': 3.812.0
       '@aws-sdk/types': 3.804.0
       '@smithy/property-provider': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
@@ -7177,7 +7169,7 @@ snapshots:
       '@aws-sdk/nested-clients': 3.817.0
       '@aws-sdk/types': 3.804.0
       '@smithy/property-provider': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
@@ -7201,7 +7193,7 @@ snapshots:
       '@smithy/credential-provider-imds': 4.0.4
       '@smithy/node-config-provider': 4.1.1
       '@smithy/property-provider': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
@@ -7210,7 +7202,7 @@ snapshots:
   '@aws-sdk/lib-storage@3.817.0(@aws-sdk/client-s3@3.817.0)':
     dependencies:
       '@aws-sdk/client-s3': 3.817.0
-      '@smithy/abort-controller': 4.0.2
+      '@smithy/abort-controller': 4.0.3
       '@smithy/middleware-endpoint': 4.1.6
       '@smithy/smithy-client': 4.2.6
       buffer: 5.6.0
@@ -7224,7 +7216,7 @@ snapshots:
       '@aws-sdk/util-arn-parser': 3.804.0
       '@smithy/node-config-provider': 4.1.1
       '@smithy/protocol-http': 5.1.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-config-provider': 4.0.0
       tslib: 2.8.1
 
@@ -7232,7 +7224,7 @@ snapshots:
     dependencies:
       '@aws-sdk/types': 3.804.0
       '@smithy/protocol-http': 5.1.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@aws-sdk/middleware-flexible-checksums@3.816.0':
@@ -7245,7 +7237,7 @@ snapshots:
       '@smithy/is-array-buffer': 4.0.0
       '@smithy/node-config-provider': 4.1.1
       '@smithy/protocol-http': 5.1.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-middleware': 4.0.2
       '@smithy/util-stream': 4.2.0
       '@smithy/util-utf8': 4.0.0
@@ -7255,26 +7247,26 @@ snapshots:
     dependencies:
       '@aws-sdk/types': 3.804.0
       '@smithy/protocol-http': 5.1.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@aws-sdk/middleware-location-constraint@3.804.0':
     dependencies:
       '@aws-sdk/types': 3.804.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@aws-sdk/middleware-logger@3.804.0':
     dependencies:
       '@aws-sdk/types': 3.804.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@aws-sdk/middleware-recursion-detection@3.804.0':
     dependencies:
       '@aws-sdk/types': 3.804.0
       '@smithy/protocol-http': 5.1.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@aws-sdk/middleware-sdk-s3@3.816.0':
@@ -7287,7 +7279,7 @@ snapshots:
       '@smithy/protocol-http': 5.1.0
       '@smithy/signature-v4': 5.1.0
       '@smithy/smithy-client': 4.2.6
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-config-provider': 4.0.0
       '@smithy/util-middleware': 4.0.2
       '@smithy/util-stream': 4.2.0
@@ -7297,7 +7289,7 @@ snapshots:
   '@aws-sdk/middleware-ssec@3.804.0':
     dependencies:
       '@aws-sdk/types': 3.804.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@aws-sdk/middleware-user-agent@3.812.0':
@@ -7307,7 +7299,7 @@ snapshots:
       '@aws-sdk/util-endpoints': 3.808.0
       '@smithy/core': 3.3.3
       '@smithy/protocol-http': 5.1.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     optional: true
 
@@ -7318,7 +7310,7 @@ snapshots:
       '@aws-sdk/util-endpoints': 3.808.0
       '@smithy/core': 3.3.3
       '@smithy/protocol-http': 5.1.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@aws-sdk/nested-clients@3.812.0':
@@ -7349,7 +7341,7 @@ snapshots:
       '@smithy/node-http-handler': 4.0.4
       '@smithy/protocol-http': 5.1.0
       '@smithy/smithy-client': 4.2.6
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/url-parser': 4.0.2
       '@smithy/util-base64': 4.0.0
       '@smithy/util-body-length-browser': 4.0.0
@@ -7393,7 +7385,7 @@ snapshots:
       '@smithy/node-http-handler': 4.0.4
       '@smithy/protocol-http': 5.1.0
       '@smithy/smithy-client': 4.2.6
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/url-parser': 4.0.2
       '@smithy/util-base64': 4.0.0
       '@smithy/util-body-length-browser': 4.0.0
@@ -7412,7 +7404,7 @@ snapshots:
     dependencies:
       '@aws-sdk/types': 3.804.0
       '@smithy/node-config-provider': 4.1.1
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-config-provider': 4.0.0
       '@smithy/util-middleware': 4.0.2
       tslib: 2.8.1
@@ -7425,7 +7417,7 @@ snapshots:
       '@smithy/middleware-endpoint': 4.1.6
       '@smithy/protocol-http': 5.1.0
       '@smithy/smithy-client': 4.2.6
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@aws-sdk/signature-v4-multi-region@3.816.0':
@@ -7434,7 +7426,7 @@ snapshots:
       '@aws-sdk/types': 3.804.0
       '@smithy/protocol-http': 5.1.0
       '@smithy/signature-v4': 5.1.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@aws-sdk/token-providers@3.812.0':
@@ -7443,7 +7435,7 @@ snapshots:
       '@aws-sdk/types': 3.804.0
       '@smithy/property-provider': 4.0.2
       '@smithy/shared-ini-file-loader': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
@@ -7456,14 +7448,14 @@ snapshots:
       '@aws-sdk/types': 3.804.0
       '@smithy/property-provider': 4.0.2
       '@smithy/shared-ini-file-loader': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
 
   '@aws-sdk/types@3.804.0':
     dependencies:
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@aws-sdk/util-arn-parser@3.804.0':
@@ -7473,7 +7465,7 @@ snapshots:
   '@aws-sdk/util-endpoints@3.808.0':
     dependencies:
       '@aws-sdk/types': 3.804.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-endpoints': 3.0.4
       tslib: 2.8.1
 
@@ -7481,7 +7473,7 @@ snapshots:
     dependencies:
       '@aws-sdk/types': 3.804.0
       '@smithy/querystring-builder': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@aws-sdk/util-locate-window@3.804.0':
@@ -7491,7 +7483,7 @@ snapshots:
   '@aws-sdk/util-user-agent-browser@3.804.0':
     dependencies:
       '@aws-sdk/types': 3.804.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       bowser: 2.11.0
       tslib: 2.8.1
 
@@ -7500,7 +7492,7 @@ snapshots:
       '@aws-sdk/middleware-user-agent': 3.812.0
       '@aws-sdk/types': 3.804.0
       '@smithy/node-config-provider': 4.1.1
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
     optional: true
 
@@ -7509,12 +7501,12 @@ snapshots:
       '@aws-sdk/middleware-user-agent': 3.816.0
       '@aws-sdk/types': 3.804.0
       '@smithy/node-config-provider': 4.1.1
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@aws-sdk/xml-builder@3.804.0':
     dependencies:
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@babel/code-frame@7.27.1':
@@ -8980,11 +8972,11 @@ snapshots:
 
   '@nolyfill/is-core-module@1.0.39': {}
 
-  '@payloadcms/db-mongodb@3.39.1(@aws-sdk/credential-providers@3.812.0)(gcp-metadata@6.1.1)(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))':
+  '@payloadcms/db-mongodb@3.40.0(@aws-sdk/credential-providers@3.812.0)(gcp-metadata@6.1.1)(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))':
     dependencies:
       mongoose: 8.9.5(@aws-sdk/credential-providers@3.812.0)(gcp-metadata@6.1.1)
       mongoose-paginate-v2: 1.8.5
-      payload: 3.39.1(graphql@16.11.0)(typescript@5.7.3)
+      payload: 3.40.0(graphql@16.11.0)(typescript@5.7.3)
       prompts: 2.4.2
       uuid: 10.0.0
     transitivePeerDependencies:
@@ -8997,23 +8989,23 @@ snapshots:
       - socks
       - supports-color
 
-  '@payloadcms/graphql@3.39.1(graphql@16.11.0)(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(typescript@5.7.3)':
+  '@payloadcms/graphql@3.40.0(graphql@16.11.0)(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(typescript@5.7.3)':
     dependencies:
       graphql: 16.11.0
       graphql-scalars: 1.22.2(graphql@16.11.0)
-      payload: 3.39.1(graphql@16.11.0)(typescript@5.7.3)
+      payload: 3.40.0(graphql@16.11.0)(typescript@5.7.3)
       pluralize: 8.0.0
       ts-essentials: 10.0.3(typescript@5.7.3)
       tsx: 4.19.2
     transitivePeerDependencies:
       - typescript
 
-  '@payloadcms/next@3.39.1(@types/react@19.0.12)(graphql@16.11.0)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
+  '@payloadcms/next@3.40.0(@types/react@19.0.12)(graphql@16.11.0)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
     dependencies:
       '@dnd-kit/core': 6.0.8(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@payloadcms/graphql': 3.39.1(graphql@16.11.0)(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(typescript@5.7.3)
-      '@payloadcms/translations': 3.39.1
-      '@payloadcms/ui': 3.39.1(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
+      '@payloadcms/graphql': 3.40.0(graphql@16.11.0)(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(typescript@5.7.3)
+      '@payloadcms/translations': 3.40.0
+      '@payloadcms/ui': 3.40.0(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
       busboy: 1.6.0
       dequal: 2.0.3
       file-type: 19.3.0
@@ -9023,7 +9015,7 @@ snapshots:
       http-status: 2.1.0
       next: 15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4)
       path-to-regexp: 6.3.0
-      payload: 3.39.1(graphql@16.11.0)(typescript@5.7.3)
+      payload: 3.40.0(graphql@16.11.0)(typescript@5.7.3)
       qs-esm: 7.0.2
       react-diff-viewer-continued: 4.0.5(@types/react@19.0.12)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       sass: 1.77.4
@@ -9036,11 +9028,11 @@ snapshots:
       - supports-color
       - typescript
 
-  '@payloadcms/plugin-cloud-storage@3.39.1(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
+  '@payloadcms/plugin-cloud-storage@3.40.0(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
     dependencies:
-      '@payloadcms/ui': 3.39.1(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
+      '@payloadcms/ui': 3.40.0(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
       find-node-modules: 2.1.3
-      payload: 3.39.1(graphql@16.11.0)(typescript@5.7.3)
+      payload: 3.40.0(graphql@16.11.0)(typescript@5.7.3)
       range-parser: 1.2.1
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
@@ -9051,7 +9043,7 @@ snapshots:
       - supports-color
       - typescript
 
-  '@payloadcms/richtext-lexical@3.39.1(@faceless-ui/modal@3.0.0-beta.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@faceless-ui/scroll-info@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@payloadcms/next@3.39.1(@types/react@19.0.12)(graphql@16.11.0)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3))(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)(yjs@13.6.27)':
+  '@payloadcms/richtext-lexical@3.40.0(@faceless-ui/modal@3.0.0-beta.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@faceless-ui/scroll-info@2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@payloadcms/next@3.40.0(@types/react@19.0.12)(graphql@16.11.0)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3))(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)(yjs@13.6.27)':
     dependencies:
       '@faceless-ui/modal': 3.0.0-beta.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@faceless-ui/scroll-info': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -9065,9 +9057,9 @@ snapshots:
       '@lexical/selection': 0.28.0
       '@lexical/table': 0.28.0
       '@lexical/utils': 0.28.0
-      '@payloadcms/next': 3.39.1(@types/react@19.0.12)(graphql@16.11.0)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
-      '@payloadcms/translations': 3.39.1
-      '@payloadcms/ui': 3.39.1(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
+      '@payloadcms/next': 3.40.0(@types/react@19.0.12)(graphql@16.11.0)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
+      '@payloadcms/translations': 3.40.0
+      '@payloadcms/ui': 3.40.0(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
       '@types/uuid': 10.0.0
       acorn: 8.12.1
       bson-objectid: 2.0.4
@@ -9079,7 +9071,7 @@ snapshots:
       mdast-util-from-markdown: 2.0.2
       mdast-util-mdx-jsx: 3.1.3
       micromark-extension-mdx-jsx: 3.0.1
-      payload: 3.39.1(graphql@16.11.0)(typescript@5.7.3)
+      payload: 3.40.0(graphql@16.11.0)(typescript@5.7.3)
       qs-esm: 7.0.2
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
@@ -9094,13 +9086,13 @@ snapshots:
       - typescript
       - yjs
 
-  '@payloadcms/storage-s3@3.39.1(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
+  '@payloadcms/storage-s3@3.40.0(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
     dependencies:
       '@aws-sdk/client-s3': 3.817.0
       '@aws-sdk/lib-storage': 3.817.0(@aws-sdk/client-s3@3.817.0)
       '@aws-sdk/s3-request-presigner': 3.817.0
-      '@payloadcms/plugin-cloud-storage': 3.39.1(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
-      payload: 3.39.1(graphql@16.11.0)(typescript@5.7.3)
+      '@payloadcms/plugin-cloud-storage': 3.40.0(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)
+      payload: 3.40.0(graphql@16.11.0)(typescript@5.7.3)
     transitivePeerDependencies:
       - '@types/react'
       - aws-crt
@@ -9111,11 +9103,11 @@ snapshots:
       - supports-color
       - typescript
 
-  '@payloadcms/translations@3.39.1':
+  '@payloadcms/translations@3.40.0':
     dependencies:
       date-fns: 4.1.0
 
-  '@payloadcms/ui@3.39.1(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.39.1(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
+  '@payloadcms/ui@3.40.0(@types/react@19.0.12)(monaco-editor@0.52.2)(next@15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4))(payload@3.40.0(graphql@16.11.0)(typescript@5.7.3))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(typescript@5.7.3)':
     dependencies:
       '@date-fns/tz': 1.2.0
       '@dnd-kit/core': 6.0.8(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -9125,14 +9117,14 @@ snapshots:
       '@faceless-ui/scroll-info': 2.0.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@faceless-ui/window-info': 3.0.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@monaco-editor/react': 4.7.0(monaco-editor@0.52.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@payloadcms/translations': 3.39.1
+      '@payloadcms/translations': 3.40.0
       bson-objectid: 2.0.4
       date-fns: 4.1.0
       dequal: 2.0.3
       md5: 2.3.0
       next: 15.2.5(@babel/core@7.27.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.77.4)
       object-to-formdata: 4.5.1
-      payload: 3.39.1(graphql@16.11.0)(typescript@5.7.3)
+      payload: 3.40.0(graphql@16.11.0)(typescript@5.7.3)
       qs-esm: 7.0.2
       react: 19.0.0
       react-datepicker: 7.6.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -9231,11 +9223,6 @@ snapshots:
 
   '@rushstack/eslint-patch@1.11.0': {}
 
-  '@smithy/abort-controller@4.0.2':
-    dependencies:
-      '@smithy/types': 4.2.0
-      tslib: 2.8.1
-
   '@smithy/abort-controller@4.0.3':
     dependencies:
       '@smithy/types': 4.3.0
@@ -9253,7 +9240,7 @@ snapshots:
   '@smithy/config-resolver@4.1.2':
     dependencies:
       '@smithy/node-config-provider': 4.1.1
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-config-provider': 4.0.0
       '@smithy/util-middleware': 4.0.2
       tslib: 2.8.1
@@ -9262,7 +9249,7 @@ snapshots:
     dependencies:
       '@smithy/middleware-serde': 4.0.5
       '@smithy/protocol-http': 5.1.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-body-length-browser': 4.0.0
       '@smithy/util-middleware': 4.0.2
       '@smithy/util-stream': 4.2.0
@@ -9273,7 +9260,7 @@ snapshots:
     dependencies:
       '@smithy/node-config-provider': 4.1.1
       '@smithy/property-provider': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/url-parser': 4.0.2
       tslib: 2.8.1
 
@@ -9311,7 +9298,7 @@ snapshots:
     dependencies:
       '@smithy/protocol-http': 5.1.0
       '@smithy/querystring-builder': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-base64': 4.0.0
       tslib: 2.8.1
 
@@ -9324,7 +9311,7 @@ snapshots:
 
   '@smithy/hash-node@4.0.2':
     dependencies:
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-buffer-from': 4.0.0
       '@smithy/util-utf8': 4.0.0
       tslib: 2.8.1
@@ -9337,7 +9324,7 @@ snapshots:
 
   '@smithy/invalid-dependency@4.0.2':
     dependencies:
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@smithy/is-array-buffer@2.2.0':
@@ -9357,7 +9344,7 @@ snapshots:
   '@smithy/middleware-content-length@4.0.2':
     dependencies:
       '@smithy/protocol-http': 5.1.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@smithy/middleware-endpoint@4.1.6':
@@ -9366,7 +9353,7 @@ snapshots:
       '@smithy/middleware-serde': 4.0.5
       '@smithy/node-config-provider': 4.1.1
       '@smithy/shared-ini-file-loader': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/url-parser': 4.0.2
       '@smithy/util-middleware': 4.0.2
       tslib: 2.8.1
@@ -9377,7 +9364,7 @@ snapshots:
       '@smithy/protocol-http': 5.1.0
       '@smithy/service-error-classification': 4.0.3
       '@smithy/smithy-client': 4.2.6
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-middleware': 4.0.2
       '@smithy/util-retry': 4.0.3
       tslib: 2.8.1
@@ -9386,64 +9373,64 @@ snapshots:
   '@smithy/middleware-serde@4.0.5':
     dependencies:
       '@smithy/protocol-http': 5.1.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@smithy/middleware-stack@4.0.2':
     dependencies:
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@smithy/node-config-provider@4.1.1':
     dependencies:
       '@smithy/property-provider': 4.0.2
       '@smithy/shared-ini-file-loader': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@smithy/node-http-handler@4.0.4':
     dependencies:
-      '@smithy/abort-controller': 4.0.2
+      '@smithy/abort-controller': 4.0.3
       '@smithy/protocol-http': 5.1.0
       '@smithy/querystring-builder': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@smithy/property-provider@4.0.2':
     dependencies:
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@smithy/protocol-http@5.1.0':
     dependencies:
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@smithy/querystring-builder@4.0.2':
     dependencies:
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-uri-escape': 4.0.0
       tslib: 2.8.1
 
   '@smithy/querystring-parser@4.0.2':
     dependencies:
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@smithy/service-error-classification@4.0.3':
     dependencies:
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
 
   '@smithy/shared-ini-file-loader@4.0.2':
     dependencies:
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@smithy/signature-v4@5.1.0':
     dependencies:
       '@smithy/is-array-buffer': 4.0.0
       '@smithy/protocol-http': 5.1.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-hex-encoding': 4.0.0
       '@smithy/util-middleware': 4.0.2
       '@smithy/util-uri-escape': 4.0.0
@@ -9456,12 +9443,8 @@ snapshots:
       '@smithy/middleware-endpoint': 4.1.6
       '@smithy/middleware-stack': 4.0.2
       '@smithy/protocol-http': 5.1.0
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-stream': 4.2.0
-      tslib: 2.8.1
-
-  '@smithy/types@4.2.0':
-    dependencies:
       tslib: 2.8.1
 
   '@smithy/types@4.3.0':
@@ -9471,7 +9454,7 @@ snapshots:
   '@smithy/url-parser@4.0.2':
     dependencies:
       '@smithy/querystring-parser': 4.0.2
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@smithy/util-base64@4.0.0':
@@ -9506,7 +9489,7 @@ snapshots:
     dependencies:
       '@smithy/property-provider': 4.0.2
       '@smithy/smithy-client': 4.2.6
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       bowser: 2.11.0
       tslib: 2.8.1
 
@@ -9517,13 +9500,13 @@ snapshots:
       '@smithy/node-config-provider': 4.1.1
       '@smithy/property-provider': 4.0.2
       '@smithy/smithy-client': 4.2.6
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@smithy/util-endpoints@3.0.4':
     dependencies:
       '@smithy/node-config-provider': 4.1.1
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@smithy/util-hex-encoding@4.0.0':
@@ -9532,20 +9515,20 @@ snapshots:
 
   '@smithy/util-middleware@4.0.2':
     dependencies:
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@smithy/util-retry@4.0.3':
     dependencies:
       '@smithy/service-error-classification': 4.0.3
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       tslib: 2.8.1
 
   '@smithy/util-stream@4.2.0':
     dependencies:
       '@smithy/fetch-http-handler': 5.0.2
       '@smithy/node-http-handler': 4.0.4
-      '@smithy/types': 4.2.0
+      '@smithy/types': 4.3.0
       '@smithy/util-base64': 4.0.0
       '@smithy/util-buffer-from': 4.0.0
       '@smithy/util-hex-encoding': 4.0.0
@@ -13390,10 +13373,10 @@ snapshots:
 
   pathval@2.0.0: {}
 
-  payload@3.39.1(graphql@16.11.0)(typescript@5.7.3):
+  payload@3.40.0(graphql@16.11.0)(typescript@5.7.3):
     dependencies:
       '@next/env': 15.3.2
-      '@payloadcms/translations': 3.39.1
+      '@payloadcms/translations': 3.40.0
       '@types/busboy': 1.5.4
       ajv: 8.17.1
       bson-objectid: 2.0.4
