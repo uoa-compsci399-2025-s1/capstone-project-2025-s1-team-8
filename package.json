@@ -92,7 +92,7 @@
   },
   "engines": {
     "node": ">=22",
-    "pnpm": "^9"
+    "pnpm": "^10.0.0"
   },
   "volta": {
     "node": "22.16.0"
@@ -102,5 +102,5 @@
       "sharp"
     ]
   },
-  "packageManager": "pnpm@9.0.0"
+  "packageManager": "pnpm@10.11.0"
 }
