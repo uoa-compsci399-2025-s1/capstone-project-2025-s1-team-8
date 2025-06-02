@@ -19,6 +19,7 @@ import SheenaPhoto from '@/assets/profiles/sheena.jpeg'
 import JefferyPhoto from '@/assets/profiles/jeffery.jpeg'
 import Introduction from '@/components/Generic/PersonIntroduction/Introduction'
 import ContentService from '@/lib/services/content/ContentService'
+import { parseCMS } from '@/lib/util/CMSUtil'
 
 export const metadata: Metadata = {
   title: 'Home',
@@ -57,12 +58,7 @@ export default async function HomePage() {
             {aboutSection.title}
           </h1>
           <p className="text-light-beige text-sm/4 sm:text-base/5 lg:text-lg/6 pb-15">
-            {aboutSection.description.split('\n').map((line, index) => (
-              <React.Fragment key={index}>
-                {line}
-                <br />
-              </React.Fragment>
-            ))}
+            {parseCMS(aboutSection.description)}
           </p>
           <Button variant="light" size="sm">
             <Link href={aboutSection.button.buttonLink}>{aboutSection.button.buttonName}</Link>
@@ -78,12 +74,7 @@ export default async function HomePage() {
               {demoSection.clientDemo.title}
             </h1>
             <p className="text-sm/4 sm:text-base/5 lg:text-lg/6 text-steel-blue">
-              {demoSection.clientDemo.description.split('\n').map((line, index) => (
-                <React.Fragment key={index}>
-                  {line}
-                  <br />
-                </React.Fragment>
-              ))}
+              {parseCMS(demoSection.clientDemo.description)}
             </p>
           </div>
           <div className="rounded-xl w-4/5 lg:w-[47%] mb-1 overflow-hidden h-min self-end lg:self-center mt-10">
@@ -107,12 +98,7 @@ export default async function HomePage() {
                 {demoSection.studentDemo.title}
               </h1>
               <p className="text-sm/4 sm:text-base/5 lg:text-lg/6 text-steel-blue">
-                {demoSection.studentDemo.description.split('\n').map((line, index) => (
-                  <React.Fragment key={index}>
-                    {line}
-                    <br />
-                  </React.Fragment>
-                ))}
+                {parseCMS(demoSection.studentDemo.description)}
               </p>
             </div>
           </div>
