@@ -17,7 +17,7 @@ const ContentService = {
       const json = await homePage.json()
       homePageCMS = json.data
     } else {
-      console.error('Failed to fetch home page content')
+      console.error('Failed to fetch home page content: ', homePage.status)
     }
 
     return homePageCMS
