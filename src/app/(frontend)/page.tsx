@@ -31,7 +31,7 @@ export default async function HomePage() {
   const clientInfo = await ClientService.getClientInfo()
   const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
 
-  const homePageCMS = await ContentService.getHomePage()
+  const homePageCMS = (await ContentService.getHomePage()).content
   const aboutSection = homePageCMS.aboutSection
   const demoSection = homePageCMS.demoSection
 
