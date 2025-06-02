@@ -18,8 +18,7 @@ import DennisPhoto from '@/assets/profiles/dennis.jpeg'
 import SheenaPhoto from '@/assets/profiles/sheena.jpeg'
 import JefferyPhoto from '@/assets/profiles/jeffery.jpeg'
 import Introduction from '@/components/Generic/PersonIntroduction/Introduction'
-import { GET as GetHomePage } from '../api/globals/home/route'
-import type { Home } from '@/payload-types'
+import ContentService from '@/lib/services/content/ContentService'
 
 export const metadata: Metadata = {
   title: 'Home',
@@ -31,9 +30,7 @@ export default async function HomePage() {
   const clientInfo = await ClientService.getClientInfo()
   const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
 
-  const homePage = await GetHomePage()
-  const homePageCMS: Home = (await homePage.json()).data
-
+  const homePageCMS = await ContentService.getHomePage()
   const aboutSection = homePageCMS.aboutSection
   const demoSection = homePageCMS.demoSection
 
@@ -66,7 +63,7 @@ export default async function HomePage() {
             {`This capstone course is designed to permit the student to exhibit problem-solving, critical thinking and communication skills, and the ability to use relevant technology; all skills developed throughout the programme. This enables them to become ‘business ready’ for their eventual engagement with companies in their future employment.`}
           </p>
           <Button variant="light" size="sm">
-            <Link href={`${aboutSection.button.buttonLink}`}>{aboutSection.button.buttonName}</Link>
+            <Link href={aboutSection.button.buttonLink}>{aboutSection.button.buttonName}</Link>
           </Button>
         </div>
       </div>
