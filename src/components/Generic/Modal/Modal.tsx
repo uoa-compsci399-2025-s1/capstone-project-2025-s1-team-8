@@ -58,7 +58,7 @@ const Modal: React.FC<ModalProps> = ({ children, open, onClose, className = '' }
         className={`relative bg-light-beige max-w-full flex flex-col rounded-2xl my-auto ${className}`}
       >
         <button
-          className="absolute top-10 right-10 rounded-full hover:cursor-pointer"
+          className="absolute top-8 right-7 sm:top-10 sm:right-10 rounded-full hover:cursor-pointer"
           onClick={onClose}
         >
           <XMarkIcon className="w-5 h-5 text-dark-blue hover:text-steel-blue" />
