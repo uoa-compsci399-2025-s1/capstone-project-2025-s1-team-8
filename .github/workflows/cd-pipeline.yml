@@ -77,6 +77,8 @@ jobs:
           cp -r ./.next/static/. deploy/standalone/.next/static/
           cp -r ./public/. deploy/standalone/public/
           cp ./pnpm-lock.yaml deploy/standalone/
+          cp ./Dockerfile deploy/Dockerfile
+          cp ./docker-compose.yml deploy/docker-compose.yml
 
       - name: Upload combined directory to EC2
         uses: burnett01/rsync-deployments@7.0.2
@@ -109,6 +111,15 @@ jobs:
             echo "S3_SECRET_ACCESS_KEY=${{ secrets.S3_SECRET_ACCESS_KEY }}" >> .env
             echo "S3_REGION=${{ vars.S3_REGION }}" >> .env
             echo "S3_BUCKET=${{ vars.S3_BUCKET }}" >> .env
+
+            echo "Stopping old containers"
+            docker-compose down
+
+            echo "Rebuilding and starting containers"
+            docker-compose up -d --build
+
+            echo "Removing old images after build"
+            docker system prune -f
 
   deploy-to-production:
     concurrency:
