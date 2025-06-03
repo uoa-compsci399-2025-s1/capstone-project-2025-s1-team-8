@@ -18,7 +18,7 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
     <div className="relative">
       {/* Mobile: render items inline */}
       <div className="md:hidden text-left" onClick={toggleMenu}>
-        <div>
+        <div className="pb-2">
           <button className="flex flex-row justify-between w-full nav-link-text">
             {buttonText}
             {!isOpen && <IoChevronDown aria-hidden="true" className="size-4 text-current" />}
@@ -29,7 +29,7 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
         {isOpen && (
           <div className="">
             {items.map((item) => (
-              <div className="py-2" key={item.href}>
+              <div className="py-2 px-4" key={item.href}>
                 <React.Fragment>
                   <Link href={item.href} className="nav-link-text">
                     {item.text}
