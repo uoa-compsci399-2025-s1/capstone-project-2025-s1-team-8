@@ -2,7 +2,6 @@ import { z } from 'zod'
 
 import type {
   ClientAdditionalInfo,
-  Form,
   FormQuestion,
   Media,
   Project,
@@ -68,14 +67,6 @@ export const QuestionResponseSchema = z.object({
   answer: z.string(),
   id: z.string().nullable().optional(),
 })
-
-export const FormSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.string(),
-  updatedAt: z.string(),
-  createdAt: z.string(),
-}) satisfies z.ZodType<Form>
 
 export const ProjectSchema = z.object({
   id: z.string(),
