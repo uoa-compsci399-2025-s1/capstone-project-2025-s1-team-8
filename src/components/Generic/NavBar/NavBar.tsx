@@ -79,16 +79,14 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
               </div>
             )}
             {user && user.role === UserRole.Admin && (
-              <div className="relative group p-2">
-                <NavDropdown
-                  items={[
-                    { href: '/admin', text: 'Admin Dashboard' },
-                    { href: '/client', text: 'Client Dashboard' },
-                    { href: '/student', text: 'Student Dashboard' },
-                  ]}
-                  buttonText="My Dashboards"
-                ></NavDropdown>
-              </div>
+              <NavDropdown
+                items={[
+                  { href: '/admin', text: 'Admin Dashboard' },
+                  { href: '/client', text: 'Client Dashboard' },
+                  { href: '/student', text: 'Student Dashboard' },
+                ]}
+                buttonText="My Dashboards"
+              ></NavDropdown>
             )}
             <div className="relative group p-2">
               {

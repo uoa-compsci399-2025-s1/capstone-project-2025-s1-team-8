@@ -43,13 +43,18 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
 
       {/* Desktop: dropdown menu */}
       <div className="hidden md:flex md:relative">
-        <button
-          onClick={toggleMenu}
-          className="nav-link-text flex flex-row justify-center gap-2 mt-1"
-        >
-          {buttonText} {!isOpen && <IoChevronDown className="mt-0.5" />}
-          {isOpen && <IoChevronUp className="mt-0.5" />}
-        </button>
+        <div className="relative group p-2">
+          <button
+            onClick={toggleMenu}
+            className="nav-link-text flex flex-row justify-center gap-2 mt-1"
+          >
+            {buttonText} {!isOpen && <IoChevronDown className="mt-0.5" />}
+            {isOpen && <IoChevronUp className="mt-0.5" />}
+          </button>
+          {!isOpen && (
+            <span className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100`} />
+          )}
+        </div>
         {isOpen && (
           <div className="bg-beige mt-2 absolute inline-block z-75 top-full right-0 w-50 rounded-lg shadow-lg">
             {items.map((item) => (
