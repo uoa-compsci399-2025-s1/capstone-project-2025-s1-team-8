@@ -38,15 +38,15 @@ export const handleFormPageLoad = async (
   }
 
   if (projectId) {
-    const { 
-      data: project, 
-      status, 
-      error,
-    } = await ProjectFormService.getProjectById(projectId)
+    const { data: project, status, error } = await ProjectFormService.getProjectById(projectId)
 
     if (status !== StatusCodes.OK) {
       console.error('Error fetching project by ID:', error)
-      return { upcomingSemesters: [], projectData: undefined, error: error || 'Failed to load project data' }
+      return {
+        upcomingSemesters: [],
+        projectData: undefined,
+        error: error || 'Failed to load project data',
+      }
     }
 
     return { upcomingSemesters: semesters || [], projectData: project || undefined }

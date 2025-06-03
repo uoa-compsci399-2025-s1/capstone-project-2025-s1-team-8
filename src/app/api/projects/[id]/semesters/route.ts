@@ -66,5 +66,35 @@ class RouteWrapper {
       )
     }
   }
+
+  @Security('jwt', ['admin', 'client'])
+  static async DELETE(
+    _req: RequestWithUser,
+    {
+      params,
+    }: {
+      params: Promise<{ id: string }>
+    },
+  ) {
+    const { id } = await params
+    const projectService = new ProjectService()
+    try {
+      await projectService.deleteSemesterProject(id)
+      return NextResponse.json({ status: StatusCodes.OK })
+    } catch (error) {
+      if (error instanceof NotFound) {
+        return NextResponse.json(
+          { error: 'Semester Project not found' },
+          { status: StatusCodes.NOT_FOUND },
+        )
+      }
+      return NextResponse.json(
+        { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
+        { status: StatusCodes.INTERNAL_SERVER_ERROR },
+      )
+    }
+  }
 }
-export const GET = RouteWrapper.GET
+
+export const GET = RouteWrapper.GET,
+  DELETE = RouteWrapper.DELETE
