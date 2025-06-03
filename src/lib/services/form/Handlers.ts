@@ -109,6 +109,29 @@ export async function handleProjectUpdate(
     )
 
     if (status === StatusCodes.OK && updatedProject) {
+      // get all semester projects of this project
+      const { data: existingSemesters } = await ProjectFormService.getProjectSemesters(projectId)
+
+      // if the semester is not in the form data, remove it @TODO remove?
+
+      // go through all selected semesters in form data, and create a semester project if it doesn't exist
+      for (const upcomingSemester of formData.semesters || []) {
+        console.log(upcomingSemester)
+        const semesterProjectExists = (existingSemesters || []).some((existingSemester) => {
+          return existingSemester.id === upcomingSemester
+        })
+        if (!semesterProjectExists) {
+          const { status } = await ProjectFormService.createSemesterProject(
+            upcomingSemester,
+            updatedProject,
+          )
+          if (status !== StatusCodes.CREATED) {
+            console.error('Failed to create semester project for', upcomingSemester)
+            return { success: false, error: 'Failed to create semester project' }
+          }
+        }
+      }
+
       return { success: true, message }
     } else {
       return { success: false, error: error || 'Failed to update project proposal' }
