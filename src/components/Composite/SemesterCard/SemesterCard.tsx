@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useRef, useEffect } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
-import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
+import EditDeleteDropdown from '@/components/Composite/EditDropdown/EditDeleteDropdown'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import type { Semester } from '@/payload-types'
@@ -121,7 +121,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
             className="absolute top-8.25 right-19 text-steel-blue hover:text-deep-teal cursor-pointer"
             aria-label="Edit"
           >
-            <EditDropdown containerWidth={200} onEdit={() => onEdit?.(semester.id)} />
+            <EditDeleteDropdown containerWidth={200} onEdit={() => onEdit?.(semester.id)} />
           </button>
 
           {/* Details Section */}

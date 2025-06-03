@@ -4,7 +4,7 @@ import type { ModalProps } from '@/components/Generic/Modal/Modal'
 import Modal from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy, FiSave } from 'react-icons/fi'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
-import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
+import EditDeleteDropdown from '@/components/Composite/EditDropdown/EditDeleteDropdown'
 import type { ProjectDetails } from '@/types/Project'
 import Notification from '@/components/Generic/Notification/Notification'
 import type { UserCombinedInfo } from '@/types/Collections'
@@ -139,7 +139,7 @@ const ClientModal: React.FC<ClientModalProps> = ({
               onClick={handleSave}
             />
           ) : (
-            <EditDropdown
+            <EditDeleteDropdown
               containerWidth={200}
               onEdit={() => {
                 setIsEditing(true)
