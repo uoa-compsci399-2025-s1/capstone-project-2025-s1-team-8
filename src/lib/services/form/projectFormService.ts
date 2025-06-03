@@ -5,7 +5,6 @@ import { GET as GetProjectById, PATCH as UpdateProject } from '@/app/api/project
 import type { UpdateProjectRequestBody } from '@/app/api/projects/[id]/route'
 import { POST as CreateProject } from '@/app/api/projects/route'
 import { GET as GetProjectSemesters } from '@/app/api/projects/[id]/semesters/route'
-import { DELETE as DeleteSemesterProject } from '@/app/api/projects/[id]/semesters/route'
 import { POST as CreateSemesterProject } from '@/app/api/semesters/[id]/projects/route'
 import type { StatusCodes } from 'http-status-codes'
 import type { Project, Semester, SemesterProject } from '@/payload-types'
@@ -126,24 +125,6 @@ const ProjectFormService = {
     const { data, error } = { ...(await response.json()) }
 
     return { status: response.status, data, error }
-  },
-
-  deleteSemesterProject: async function (semesterProjectId: string): Promise<{
-    status: StatusCodes
-    error?: string
-    message?: string
-  }> {
-    'use server'
-    const url = buildNextRequestURL(`/api/projects/${semesterProjectId}/semesters`, {})
-    const response = await DeleteSemesterProject(
-      await buildNextRequest(url, { method: 'DELETE' }),
-      {
-        params: Promise.resolve({ id: semesterProjectId }),
-      },
-    )
-    const { error, message } = { ...(await response.json()) }
-
-    return { status: response.status, error, message }
   },
 
   createSemesterProject: async function (

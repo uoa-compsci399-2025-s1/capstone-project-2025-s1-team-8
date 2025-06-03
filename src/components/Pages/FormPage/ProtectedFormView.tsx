@@ -194,7 +194,7 @@ const ProtectedFormView: FC = () => {
         />
       </div>
       <div className="relative bg-light-beige max-w-full flex flex-col rounded-2xl my-auto border border-deeper-blue">
-        <div className="relative flex flex-col p-18 pt-20 rounded-t-2xl gap-6">
+        <div className="relative flex flex-col p-18 py-10 rounded-t-2xl gap-6">
           <Link href="/client">
             <button
               className="absolute top-10 right-10 rounded-full hover:cursor-pointer"
