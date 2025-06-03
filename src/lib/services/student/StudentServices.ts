@@ -37,7 +37,6 @@ export const StudentService = {
 
   getProjectsForCurrentSemester: async function (): Promise<ProjectDetails[]> {
     const res = await StudentService.getCurrentSemester()
-    console.log(res?.id, res?.name)
     if (!res) {
       console.error('No current semester found')
       return []
