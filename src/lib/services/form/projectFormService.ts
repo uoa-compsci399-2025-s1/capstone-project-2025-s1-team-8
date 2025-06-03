@@ -7,13 +7,13 @@ import { POST as CreateProject } from '@/app/api/projects/route'
 import { GET as GetProjectSemesters } from '@/app/api/projects/[id]/semesters/route'
 import { DELETE as DeleteSemesterProject } from '@/app/api/projects/[id]/semesters/route'
 import { POST as CreateSemesterProject } from '@/app/api/semesters/[id]/projects/route'
-import type { CreateSemesterProjectRequestBody } from '@/app/api/semesters/[id]/projects/route'
 import type { StatusCodes } from 'http-status-codes'
 import type { Project, Semester, SemesterProject } from '@/payload-types'
 import type { SemesterType } from '@/types/Semester'
 import type { CreateProjectRequestBody } from '@/app/api/projects/route'
 import AdminProjectService from '../admin/AdminProjectService'
-import { ProjectDetails, ProjectStatus } from '@/types/Project'
+import type { ProjectDetails } from '@/types/Project'
+import { ProjectStatus } from '@/types/Project'
 
 const ProjectFormService = {
   /**

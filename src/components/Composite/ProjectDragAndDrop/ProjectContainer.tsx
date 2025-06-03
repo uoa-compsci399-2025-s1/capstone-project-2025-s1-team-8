@@ -121,6 +121,7 @@ const ProjectContainer = ({
           open={!!openProject}
           onClose={() => setOpenProject(null)}
           projectInfo={openProject}
+          semesters={openProject.semesters}
         >
           Open Project
         </ProjectModal>

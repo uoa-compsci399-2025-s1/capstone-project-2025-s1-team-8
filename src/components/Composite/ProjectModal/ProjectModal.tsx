@@ -9,7 +9,6 @@ import Button from '@/components/Generic/Button/Button'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 import type { Project, Semester } from '@/payload-types'
 import type { UserCombinedInfo } from '@/types/Collections'
-import type { ProjectDetails } from '@/types/Project'
 import { useRouter } from 'next/navigation'
 
 interface ProjectModalProps extends ModalProps {
