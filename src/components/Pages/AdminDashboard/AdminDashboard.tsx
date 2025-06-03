@@ -19,7 +19,6 @@ import {
   getAllClients,
 } from '@/lib/services/admin/Handlers'
 import { handleUpdateClient } from '@/lib/services/admin/Handlers'
-import MobileAdminView from '@/components/Composite/MobileAdminView/MobileAdminView'
 import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
 import Notification from '@/components/Generic/Notification/Notification'
