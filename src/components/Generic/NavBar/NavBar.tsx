@@ -86,7 +86,7 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
                   { href: '/student', text: 'Student Dashboard' },
                 ]}
                 buttonText="My Dashboards"
-              ></NavDropdown>
+              />
             )}
             <div className="relative group p-2">
               {

@@ -61,7 +61,7 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
               <Link
                 key={item.href}
                 href={item.href}
-                className="nav-link-text block px-4 mr-2 py-2 text-sm text-gray-700 hover:bg-muted-blue-op-45 rounded-lg text-right"
+                className="nav-link-text block pl-4 pr-6 py-2 text-sm text-gray-700 hover:bg-muted-blue-op-45 rounded-lg text-right"
               >
                 {item.text}
               </Link>
