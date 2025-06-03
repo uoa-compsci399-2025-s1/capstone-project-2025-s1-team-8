@@ -68,24 +68,13 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
                 />
               </div>
             ))}
-            {/* TODO: add link to About page */}
-            {
-              <div className="relative group p-2">
-                <Link href="/" className="nav-link-text">
-                  About
-                </Link>
-                <span
-                  className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/' ? 'scale-x-100' : ''}`}
-                />
-              </div>
-            }
             {user && user.role !== UserRole.Admin && (
               <div className="relative group p-2">
                 <Link href={dashboardLink} className="nav-link-text">
                   {'My Dashboard'}
                 </Link>
                 <span
-                  className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/client' ? 'scale-x-100' : ''}`}
+                  className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === dashboardLink ? 'scale-x-100' : ''}`}
                 />
               </div>
             )}
@@ -157,19 +146,11 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
               </Link>
             </div>
           ))}
-          <div className="p-[5%]">
-            <Link href="/" className="nav-link-text">
-              About
-            </Link>
-          </div>
           {user && user.role !== UserRole.Admin && (
             <div className="p-[5%]">
               <Link href={dashboardLink} className="nav-link-text">
                 {'My Dashboard'}
               </Link>
-              <span
-                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/client' ? 'scale-x-100' : ''}`}
-              />
             </div>
           )}
           {user && user.role === UserRole.Admin && (
@@ -182,9 +163,6 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
                 ]}
                 buttonText="My Dashboards"
               ></NavDropdown>
-              <span
-                className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${pathname === '/admin' ? 'scale-x-100' : ''}`}
-              />
             </div>
           )}
           <div className="p-[5%]">

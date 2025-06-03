@@ -45,18 +45,18 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
       <div className="hidden md:flex md:relative">
         <button
           onClick={toggleMenu}
-          className="nav-link-text flex flex-row justify-center gap-1 mt-1"
+          className="nav-link-text flex flex-row justify-center gap-2 mt-1"
         >
           {buttonText} {!isOpen && <IoChevronDown className="mt-0.5" />}
           {isOpen && <IoChevronUp className="mt-0.5" />}
         </button>
         {isOpen && (
-          <div className="bg-beige mt-2 absolute inline-block z-75 top-full left-0 w-48 rounded-lg shadow-lg">
+          <div className="bg-beige mt-2 absolute inline-block z-75 top-full right-0 w-50 rounded-lg shadow-lg">
             {items.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="nav-link-text block px-4 py-2 text-sm text-gray-700 hover:bg-muted-blue-op-45 text-right"
+                className="nav-link-text block px-4 mr-2 py-2 text-sm text-gray-700 hover:bg-muted-blue-op-45 rounded-lg text-right"
               >
                 {item.text}
               </Link>

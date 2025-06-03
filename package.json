@@ -36,7 +36,6 @@
     "@dnd-kit/modifiers": "^9.0.0",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
-    "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
     "@payloadcms/db-mongodb": "^3.39.1",
     "@payloadcms/next": "^3.39.1",
