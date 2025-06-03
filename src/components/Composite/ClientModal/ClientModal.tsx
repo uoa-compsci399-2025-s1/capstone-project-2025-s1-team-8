@@ -40,8 +40,6 @@ const ClientModal: React.FC<ClientModalProps> = ({
   onUpdated,
   // onDeleted,
 }) => {
-  // @TODO implement firstName and lastName separately input
-
   const [copied, setCopied] = useState(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [firstName, setFirstName] = useState<string>(clientInfo.firstName)
