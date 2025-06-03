@@ -18,20 +18,12 @@ type Story = StoryObj<typeof Radio>
 //   },
 // }
 
-
 export const Default: Story = {
   render: function RenderModal(args) {
-
     return (
-      <form className="flex flex-col gap-4"> 
-        <Radio
-          values={args.values}
-          customInput={args.customInput}
-        />
-        <button type='submit'>
-          Submit
-        </button>
-
+      <form className="flex flex-col gap-4">
+        <Radio values={args.values} customInput={args.customInput} />
+        <button type="submit">Submit</button>
       </form>
     )
   },

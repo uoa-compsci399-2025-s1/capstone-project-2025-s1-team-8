@@ -23,31 +23,30 @@ const Radio: FC<RadioProps> = ({
   defaultValue = '',
   ...props
 }) => {
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState('')
   const [customValue, setCustomValue] = useState('')
 
   useEffect(() => {
-    const initialValue = defaultValue || '';
-    
+    const initialValue = defaultValue || ''
+
     if (initialValue) {
       // Check if the initial value exists in the predefined values
       if (values.includes(initialValue)) {
-        setSelectedValue(initialValue);
-        setCustomValue('');
+        setSelectedValue(initialValue)
+        setCustomValue('')
       } else if (customInput) {
         // If value doesn't exist in predefined options and customInput is enabled,
         // select the custom input and prefill it
-        setSelectedValue(initialValue);
-        setCustomValue(initialValue);
+        setSelectedValue(initialValue)
+        setCustomValue(initialValue)
       }
     }
-  }, [defaultValue, values, customInput]);
+  }, [defaultValue, values, customInput])
 
-
-  const handleChange = (e : React.MouseEvent<HTMLInputElement>) => {
-    const input = e.target as HTMLInputElement;
-    setSelectedValue(input.value);
-  };
+  const handleChange = (e: React.MouseEvent<HTMLInputElement>) => {
+    const input = e.target as HTMLInputElement
+    setSelectedValue(input.value)
+  }
 
   const borderErrorStyle = `${error ? 'border-pink-accent hover:outline-dark-pink peer-focus:outline-dark-pink' : 'border-steel-blue hover:outline-deeper-blue peer-focus:outline-deeper-blue'}`
   const dotErrorStyle = `${error ? 'bg-pink-accent' : 'bg-steel-blue'} w-[8px] h-[8px] rounded-full self-center m-auto transition-opacity duration-300`
