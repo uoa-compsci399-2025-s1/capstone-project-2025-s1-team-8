@@ -151,19 +151,12 @@ const ProtectedFormView: FC = () => {
   }
 
   const editProject: SubmitHandler<FormProject> = async (data) => {
-    // @TODO @eric what does this bit of code do
-    // if (nextSemesterOption) {
-    //   data.semesters.push(nextSemesterOption?.value) // Add the next semester to the list of semesters
-    // }
     if (!projectId) {
       return
     }
-
-    // @TODO @eric why are these not taken from the form?
     data.additionalClients = otherClientDetails
     data.futureConsideration = hasFutureConsideration
     const {
-      // unused variables @TODO can we remove these from the form data?
       meetingAttendance: _meetingAttendance,
       finalPresentationAttendance: _finalPresentationAttendance,
       projectSupportAndMaintenance: _projectSupportAndMaintenance,
@@ -173,7 +166,7 @@ const ProtectedFormView: FC = () => {
     const res = await handleProjectUpdate(projectId, cleanedData as UpdateProjectRequestBody)
 
     if (res?.success) {
-      // redirect('/client')
+      redirect('/client')
     } else {
       console.error('Error submitting form:', res?.error)
       setShowNotification(true)
