@@ -25,7 +25,6 @@ const AdminClientService = {
     error?: string
   }> {
     'use server'
-    console.log(options)
     const url = buildNextRequestURL('/api/admin/users', options)
     const response = await GetUsers(await buildNextRequest(url, { method: 'GET' }))
     const { data, nextPage, totalPages, error } = { ...(await response.json()) }

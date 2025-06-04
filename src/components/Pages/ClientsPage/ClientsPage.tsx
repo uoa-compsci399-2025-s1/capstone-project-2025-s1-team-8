@@ -34,7 +34,6 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
   isFetching,
 }) => {
   const [searchValue, setSearchValue] = useState('')
-  //const [debouncedValue, setDebouncedValue] = useState('')
 
   function debounce(func: (searchValue: string) => void, delay: number) {
     let timeout: NodeJS.Timeout
@@ -46,18 +45,6 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
     }
   }
   const search = useMemo(() => debounce(searchForClients, 300), [searchForClients])
-
-  /*useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(searchValue)
-    }, 300)
-
-    return () => clearTimeout(handler)
-  }, [searchValue])
-
-  useEffect(() => {
-    searchForClients(debouncedValue)
-  }, [debouncedValue])*/
 
   return (
     <div className="w-full">
