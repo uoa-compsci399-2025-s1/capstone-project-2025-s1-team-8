@@ -4,7 +4,8 @@
   "globalEnv": [],
   "remoteCache": {
     "enabled": true,
-    "uploadTimeout": 180
+    "uploadTimeout": 180,
+    "preflight": true
   },
   "tasks": {
     "check-types": {
