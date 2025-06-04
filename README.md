@@ -60,7 +60,7 @@ pnpm install
 To start the development server, run:
 
 ```bash
-pnpm dev
+pnpm turbo:dev
 ```
 
 The development server will be running at `http://localhost:3000`.
@@ -71,12 +71,22 @@ Environment variables are used to store sensitive information that should not be
 
 Copy the `.env.example` file and rename it to `.env`.
 
+```bash
+cp .env.example .env
+```
+
 #### Type Generation
 
 We use payload's built-in code generation to generate types for our project. To do this you can run the following command:
 
 ```bash
-pnpm generate:types
+pnpm turbo:generate:types
+```
+
+We also need to generate import maps for our project. To do this you can run the following command:
+
+```bash
+pnpm turbo:generate:importmap
 ```
 
 ### Testing
@@ -90,7 +100,7 @@ Tests should be suffixed with the extension, `.test.ts`. I.e. for `auth.ts`, we 
 To run all the tests the following command can be used
 
 ```bash
-pnpm test
+pnpm turbo:test
 ```
 
 To run a single test you can use the following command

@@ -113,7 +113,12 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "@swc/core",
-      "sharp"
+      "@tailwindcss/oxide",
+      "core-js-pure",
+      "esbuild",
+      "mongodb-memory-server",
+      "sharp",
+      "unrs-resolver"
     ]
   },
   "packageManager": "pnpm@10.11.0"
