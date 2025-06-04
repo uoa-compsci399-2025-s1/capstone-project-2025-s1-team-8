@@ -45,17 +45,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
-          run_install: false
-
       - name: Cache node_modules
         uses: actions/cache@v4
         id: cache-node-modules
@@ -65,6 +54,19 @@ jobs:
           restore-keys: |
             node-modules-
           lookup-only: true
+
+      - name: Setup Node.js
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Setup pnpm
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+          run_install: false
 
       - name: Restore only if cache missed
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
