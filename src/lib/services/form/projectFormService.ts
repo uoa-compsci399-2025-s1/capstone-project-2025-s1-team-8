@@ -4,15 +4,12 @@ import { GET as GetSemesters } from '@/app/api/semesters/route'
 import { GET as GetProjectById, PATCH as UpdateProject } from '@/app/api/projects/[id]/route'
 import type { UpdateProjectRequestBody } from '@/app/api/projects/[id]/route'
 import { POST as CreateProject } from '@/app/api/projects/route'
-import { GET as GetProjectSemesters } from '@/app/api/projects/[id]/semesters/route'
-import { POST as CreateSemesterProject } from '@/app/api/semesters/[id]/projects/route'
 import type { StatusCodes } from 'http-status-codes'
-import type { Project, Semester, SemesterProject } from '@/payload-types'
+import type { Project, Semester } from '@/payload-types'
 import type { SemesterType } from '@/types/Semester'
 import type { CreateProjectRequestBody } from '@/app/api/projects/route'
 import AdminProjectService from '../admin/AdminProjectService'
 import type { ProjectDetails } from '@/types/Project'
-import { ProjectStatus } from '@/types/Project'
 
 const ProjectFormService = {
   /**
@@ -110,46 +107,6 @@ const ProjectFormService = {
     const { error, message, data: updatedProject } = { ...(await response.json()) }
 
     return { status: response.status, error, message, updatedProject }
-  },
-
-  getProjectSemesters: async function (projectId: string): Promise<{
-    status: StatusCodes
-    data?: Semester[]
-    error?: string
-  }> {
-    'use server'
-    const url = `/api/projects/${projectId}/semesters`
-    const response = await GetProjectSemesters(await buildNextRequest(url, { method: 'GET' }), {
-      params: Promise.resolve({ id: projectId }),
-    })
-    const { data, error } = { ...(await response.json()) }
-
-    return { status: response.status, data, error }
-  },
-
-  createSemesterProject: async function (
-    semesterId: string,
-    project: Project,
-  ): Promise<{
-    status: StatusCodes
-    data?: SemesterProject
-    error?: string
-  }> {
-    'use server'
-    const url = buildNextRequestURL(`api/semesters/${semesterId}/projects`, {})
-
-    const response = await CreateSemesterProject(
-      await buildNextRequest(url, {
-        method: 'POST',
-        body: { project, status: ProjectStatus.Pending, published: false },
-      }),
-      {
-        params: Promise.resolve({ id: semesterId }),
-      },
-    )
-    const { data, error } = { ...(await response.json()) }
-
-    return { status: response.status, data, error }
   },
 } as const
 
