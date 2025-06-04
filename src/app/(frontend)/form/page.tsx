@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { AuthWrapper } from '@/components/Middleware/AuthWrapper'
 import ProtectedFormView from '@/components/Pages/FormPage/ProtectedFormView'
-import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'Project Form',
@@ -11,9 +10,7 @@ export const metadata: Metadata = {
 export default function Form() {
   return (
     <AuthWrapper scopes={['admin', 'client']}>
-      <Suspense fallback={<div className="text-center">Loading...</div>}>
-        <ProtectedFormView />
-      </Suspense>
+      <ProtectedFormView />
     </AuthWrapper>
   )
 }
