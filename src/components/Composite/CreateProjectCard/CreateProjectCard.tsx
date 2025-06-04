@@ -25,7 +25,7 @@ const CreateProjectCard = () => {
           <Button
             variant="custom"
             size="custom"
-            className="bg-deeper-blue text-light-beige ring-1 ring-steel-blue hover:bg-steel-blue rounded-xl px-4 py-2 text-sm"
+            className="bg-deeper-blue text-light-beige ring-1 ring-steel-blue hover:bg-steel-blue rounded-xl px-3 py-2 text-xs sm:px-4 sm:py-2 sm:text-sm"
           >
             Next
           </Button>

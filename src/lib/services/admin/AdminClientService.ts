@@ -16,7 +16,7 @@ import AdminProjectService from './AdminProjectService'
 
 const AdminClientService = {
   getAllUsers: async function (
-    options: { limit?: number; page?: number; role?: UserRole; query?: string } = {},
+    options: { limit?: number; cursor?: number; role?: UserRole } = {},
   ): Promise<{
     status: StatusCodes
     data?: UserCombinedInfo[]

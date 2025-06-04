@@ -1,6 +1,3 @@
-import type { Where, PaginatedDocs } from 'payload'
-import { NotFound } from 'payload'
-
 import type { ClientAdditionalInfo, User } from '@/payload-types'
 import { payload } from '../adapters/Payload'
 import type {
@@ -9,6 +6,8 @@ import type {
   UpdateClientAdditionalInfoData,
   UpdateUserData,
 } from '@/types/Collections'
+import type { PaginatedDocs } from 'payload'
+import { NotFound } from 'payload'
 import type { UserRole } from '@/types/User'
 
 export default class UserService {
@@ -54,44 +53,27 @@ export default class UserService {
   /**
    * Retrieves a paginated list of user documents from the database.
    *
-   * @param options Optional parameters for pagination and filtering
-   * - limit The maximum number of users to return (defaults to 100)
-   * - page The page number for pagination (defaults to 1)
-   * - role Filter users by their role (optional)
-   * - query A search query to filter users by first or last name (optional)
+   * @param limit The maximum number of users to retrieve, defaults to 100
+   * @param pagingCounter The page number to retrieve
    * @returns A paginated list of user documents
    */
   public async getAllUsers(
-    options: {
-      limit?: number
-      page?: number
-      role?: UserRole
-      query?: string
-    } = {
-      limit: 100,
-      page: 1,
-    },
+    limit: number = 100,
+    pagingCounter?: number,
+    roleFilter?: UserRole,
   ): Promise<PaginatedDocs<User>> {
     return await payload.find({
       collection: 'user',
       where: {
-        role: options.role
+        role: !!roleFilter
           ? {
-              equals: options.role,
+              equals: roleFilter,
             }
           : {},
-        and: options.query
-          ? options.query
-              .split(/ /g)
-              .filter((token) => token)
-              .map((token) => ({
-                or: [{ firstName: { like: token } }, { lastName: { like: token } }] as Where[],
-              }))
-          : [],
       },
-      limit: options.limit,
+      limit,
       pagination: true,
-      page: options.page,
+      page: pagingCounter,
     })
   }
 

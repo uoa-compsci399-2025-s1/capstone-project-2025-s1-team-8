@@ -26,7 +26,7 @@ interface ClientDashboardProps {
 const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects, onSave }) => {
   return (
     <div>
-      <div className="grid grid-cols-1 xl:grid-cols-2 xl:grid-rows-[auto_1fr] gap-20 sm:gap-16 xl:gap-10 pb-12 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-[auto_1fr] gap-10 pb-12 items-stretch">
         <CreateProjectCard />
         <div className="row-start-2 -ml-5">
           <GradientTextArea
@@ -35,12 +35,12 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects, onS
             • Please use the description if you would like to say more!`}
           />
         </div>
-        <div className="xl:col-start-2 xl:row-span-2">
+        <div className="lg:col-start-2 lg:row-span-2">
           <ClientProfile clientInfo={client} onSave={onSave} />
         </div>
       </div>
       <ProjectCardList
-        className="bg-muted-blue-op-45 px-6 pt-6 pb-9 sm:px-7 lg:px-15 lg:pt-8 sm:pb-12 rounded-2xl border-deeper-blue border"
+        className="bg-muted-blue-op-45 px-7 md:px-15 pt-8 pb-12 rounded-2xl border-deeper-blue border"
         headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
         heading="My projects"
         projects={projects}

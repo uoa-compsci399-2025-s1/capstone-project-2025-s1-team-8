@@ -108,7 +108,7 @@ class RouteWrapper {
     } catch (error) {
       if (error instanceof NotFound)
         return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
-      console.error(error)
+      console.log(error)
       return NextResponse.json(
         { error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) },
         { status: StatusCodes.INTERNAL_SERVER_ERROR },

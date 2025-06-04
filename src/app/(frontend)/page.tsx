@@ -130,12 +130,6 @@ export default async function HomePage() {
             link="https://www.linkedin.com/in/eric-zheng-nz/"
           />
           <Introduction
-            name="Jeffery Ji"
-            role="Tech Lead"
-            image={JefferyPhoto}
-            link="https://www.linkedin.com/in/jefferyji/"
-          />
-          <Introduction
             name="JooHui Lee"
             role="UI/UX Lead"
             image={JooHuiPhoto}
@@ -158,6 +152,12 @@ export default async function HomePage() {
             role="DevOps Lead"
             image={SheenaPhoto}
             link="https://www.linkedin.com/in/enshean/"
+          />
+          <Introduction
+            name="Jeffery Ji"
+            role="Documentation Lead"
+            image={JefferyPhoto}
+            link="https://www.linkedin.com/in/jefferyji/"
           />
         </div>
       </div>

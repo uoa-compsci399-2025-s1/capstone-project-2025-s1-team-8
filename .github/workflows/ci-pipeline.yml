@@ -161,16 +161,6 @@ jobs:
       - name: Prune developer dependencies
         run: pnpm prune --prod
 
-      - name: Download Next build cache
-        uses: actions/cache@v4
-        with:
-           path: |
-             ~/.pnpm
-             ${{ github.workspace }}/.next/cache
-           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yml') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
-           restore-keys: |
-             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yml') }}-
-
       - name: Run Next build
         run: pnpm build
 

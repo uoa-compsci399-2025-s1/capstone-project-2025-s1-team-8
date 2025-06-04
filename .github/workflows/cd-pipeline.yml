@@ -26,71 +26,19 @@ jobs:
       url: ${{ vars.NEXT_PUBLIC_URL }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
-          run_install: false
-
-      # Restore cached node_modules
-      - name: Restore node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
-
-      - name: Prune developer dependencies
-        run: pnpm install --prod --frozen-lockfile
-
-      - name: Restore Next cache
-        uses: actions/cache@v4
-        with:
-           path: |
-             ~/.pnpm
-             ${{ github.workspace }}/.next/cache
-           # Generate a new cache whenever packages or source files change.
-           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yml') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
-           restore-keys: |
-             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yml') }}-
-
-      - name: Run Next build
-        run: pnpm build
-
-      - name: Remove standalone node_modules
-        run: rm -rf ./.next/standalone/node_modules
-
-      - name: Prepare directory structure for deployment
-        run: |
-          mkdir -p deploy/standalone
-          cp -r ./.next/standalone/. deploy/standalone/
-          mkdir -p deploy/standalone/.next/static
-          cp -r ./.next/static/. deploy/standalone/.next/static/
-          cp -r ./public/. deploy/standalone/public/
-          cp ./pnpm-lock.yaml deploy/standalone/
-          cp ./Dockerfile deploy/standalone/Dockerfile
-          cp ./docker-compose.yml deploy/standalone/docker-compose.yml
-
-      - name: Upload combined directory to EC2
+      - name: Upload repo to EC2
         uses: burnett01/rsync-deployments@7.0.2
         with:
-          switches: -avz --delete
-          path: ./deploy/standalone/
-          remote_path: ~/standalone/
+          switches: -avz --delete --exclude '.git' --exclude 'node_modules' --exclude '.next' --exclude '.pnpm-store'
+          path: ./
+          remote_path: ~/app
           remote_host: ${{ secrets.EC2_HOST }}
           remote_user: ${{ secrets.EC2_USERNAME }}
           remote_key: ${{ secrets.EC2_SSH_KEY }}
 
-      - name: Connect to server via SSH and store secrets
+      - name: Connect to Server via SSH
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -98,7 +46,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-            cd ~/standalone
+            cd ~/app
 
             echo "storing secrets"
             echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> .env
@@ -132,71 +80,19 @@ jobs:
       url: ${{ vars.NEXT_PUBLIC_URL }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
-          run_install: false
-
-      # Restore cached node_modules
-      - name: Restore node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
-
-      - name: Prune developer dependencies
-        run: pnpm install --prod --frozen-lockfile
-
-      - name: Restore Next cache
-        uses: actions/cache@v4
-        with:
-           path: |
-             ~/.pnpm
-             ${{ github.workspace }}/.next/cache
-           # Generate a new cache whenever packages or source files change.
-           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yml') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
-           restore-keys: |
-             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yml') }}-
-
-      - name: Run Next build
-        run: pnpm build
-
-      - name: Remove standalone node_modules
-        run: rm -rf ./.next/standalone/node_modules
-
-      - name: Prepare directory structure for deployment
-        run: |
-          mkdir -p deploy/standalone
-          cp -r ./.next/standalone/. deploy/standalone/
-          mkdir -p deploy/standalone/.next/static
-          cp -r ./.next/static/. deploy/standalone/.next/static/
-          cp -r ./public/. deploy/standalone/public/
-          cp ./pnpm-lock.yaml deploy/standalone/
-          cp ./Dockerfile deploy/standalone/Dockerfile
-          cp ./docker-compose.yml deploy/standalone/docker-compose.yml
-
-      - name: Upload combined directory to EC2
+      - name: Upload repo to EC2
         uses: burnett01/rsync-deployments@7.0.2
         with:
-          switches: -avz --delete
-          path: ./deploy/standalone/
-          remote_path: ~/standalone/
+          switches: -avz --delete --exclude '.git' --exclude 'node_modules' --exclude '.next' --exclude '.pnpm-store'
+          path: ./
+          remote_path: ~/app
           remote_host: ${{ secrets.EC2_HOST }}
           remote_user: ${{ secrets.EC2_USERNAME }}
           remote_key: ${{ secrets.EC2_SSH_KEY }}
 
-      - name: Connect to server via SSH and store secrets
+      - name: Connect to Server via SSH
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -204,7 +100,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-            cd ~/standalone
+            cd ~/app
 
             echo "storing secrets"
             echo "DATABASE_URI=${{ secrets.DATABASE_URI }}" >> .env

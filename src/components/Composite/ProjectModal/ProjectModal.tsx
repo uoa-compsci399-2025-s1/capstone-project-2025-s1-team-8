@@ -69,7 +69,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         {/* edit button */}
         {type === 'admin' && (
           <button
-            className="absolute top-8 right-16 sm:top-10 sm:right-20 text-dark-blue hover:text-steel-blue cursor-pointer"
+            className="absolute top-10 right-20 text-dark-blue hover:text-steel-blue cursor-pointer"
             style={{ pointerEvents: 'initial' }}
             aria-label="Edit"
           >

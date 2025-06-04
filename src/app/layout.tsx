@@ -35,12 +35,12 @@ export const metadata: Metadata = {
       url: 'https://www.linkedin.com/in/jefferyji/',
     },
   ],
-  icons: '/favicon.ico',
+  icons: '/favicon.png',
   openGraph: {
     title: 'Encapsulate',
     description: 'Connecting Computer Science Students with Innovative Projects',
     siteName: 'Encapsulate',
-    images: `${process.env.NEXT_PUBLIC_URL}/default.png`,
+    images: `${process.env.NEXT_PUBLIC_URL}/favicon.png`,
     type: 'website',
   },
 }
