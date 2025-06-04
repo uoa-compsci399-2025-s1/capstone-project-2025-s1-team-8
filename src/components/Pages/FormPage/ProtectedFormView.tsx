@@ -156,6 +156,7 @@ const ProtectedFormView: FC = () => {
     }
     data.additionalClients = otherClientDetails
     data.futureConsideration = hasFutureConsideration
+    data.semesters = data.semesters || []
     const {
       meetingAttendance: _meetingAttendance,
       finalPresentationAttendance: _finalPresentationAttendance,
@@ -166,7 +167,7 @@ const ProtectedFormView: FC = () => {
     const res = await handleProjectUpdate(projectId, cleanedData as UpdateProjectRequestBody)
 
     if (res?.success) {
-      redirect('/client')
+      // redirect('/client')
     } else {
       console.error('Error submitting form:', res?.error)
       setShowNotification(true)
