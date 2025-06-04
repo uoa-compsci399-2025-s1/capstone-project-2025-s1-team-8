@@ -10,7 +10,12 @@
   },
   "scripts": {
     "turbo:build": "turbo build",
+    "turbo:dev": "turbo dev",
     "turbo:test": "turbo test",
+    "turbo:prettier": "turbo yassify",
+    "turbo:lint": "turbo lint",
+    "turbo:generate:importmap": "turbo generate:importmap",
+    "turbo:generate:types": "turbo generate:types",
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build --experimental-build-mode compile",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev --turbopack",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
