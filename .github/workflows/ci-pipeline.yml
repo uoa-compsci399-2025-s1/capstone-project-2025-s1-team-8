@@ -54,21 +54,29 @@ jobs:
           version: latest
           run_install: false
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      # Cache the node_modules directory
-      - name: Cache turbo cache
+      - name: Restore Turborepo cache
+        id: cache
         uses: actions/cache@v4
-        id: cache-node-modules
         with:
           path: |
-            node_modules
             .turbo
-            .next/cache
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
+            node_modules
+          key: ${{ runner.os }}-turbo-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-turbo-
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: pnpm install --frozen-lockfile
+
+      - name: Upload cache
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache@v4
+        with:
+          path: |
+            .turbo
+            node_modules
+          key: ${{ runner.os }}-turbo-${{ hashFiles('**/pnpm-lock.yaml') }}
 
   style:
     needs: [check_changes, setup]
@@ -89,15 +97,13 @@ jobs:
           version: latest
           run_install: false
 
-      # Restore cached node_modules
-      - name: Restore turbo cache
+      - name: Restore Turborepo cache
         uses: actions/cache@v4
         with:
           path: |
-            node_modules
             .turbo
-            .next/cache
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
+            node_modules
+          key: ${{ runner.os }}-turbo-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-turbo-
 
@@ -123,15 +129,13 @@ jobs:
           version: latest
           run_install: false
 
-      # Restore cached node_modules
-      - name: Restore turbo cache
+      - name: Restore Turborepo cache
         uses: actions/cache@v4
         with:
           path: |
-            node_modules
             .turbo
-            .next/cache
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
+            node_modules
+          key: ${{ runner.os }}-turbo-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-turbo-
 
@@ -157,15 +161,13 @@ jobs:
           version: latest
           run_install: false
 
-      # Restore cached node_modules
-      - name: Restore turbo cache
+      - name: Restore Turborepo cache
         uses: actions/cache@v4
         with:
           path: |
-            node_modules
             .turbo
-            .next/cache
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
+            node_modules
+          key: ${{ runner.os }}-turbo-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-turbo-
 
@@ -197,15 +199,13 @@ jobs:
           version: latest
           run_install: false
 
-      # Restore cached node_modules
-      - name: Restore turbo cache
+      - name: Restore Turborepo cache
         uses: actions/cache@v4
         with:
           path: |
-            node_modules
             .turbo
-            .next/cache
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
+            node_modules
+          key: ${{ runner.os }}-turbo-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-turbo-
 
@@ -231,15 +231,13 @@ jobs:
           version: latest
           run_install: false
 
-      # Restore cached node_modules
-      - name: Restore turbo cache
+      - name: Restore Turborepo cache
         uses: actions/cache@v4
         with:
           path: |
-            node_modules
             .turbo
-            .next/cache
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
+            node_modules
+          key: ${{ runner.os }}-turbo-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-turbo-
 
