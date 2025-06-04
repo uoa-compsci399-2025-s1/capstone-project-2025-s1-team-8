@@ -27,7 +27,7 @@
         "S3_BUCKET_NAME"
       ],
       "inputs": ["$TURBO_DEFAULT$", ".env", "./src"],
-      "outputs": [".next/**"]
+      "outputs": [".next/**", "!.next/cache/**"]
     },
     "dev": {
       "cache": false,
