@@ -37,9 +37,6 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
-      - name: Enable Corepack
-        run: corepack enable
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
@@ -142,9 +139,6 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
-      - name: Enable Corepack
-        run: corepack enable
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
@@ -173,7 +167,7 @@ jobs:
              ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yml') }}-
 
       - name: Run Next build
-        run: pnpm build
+        run: pnpm turbo:build
 
       - name: Remove standalone node_modules
         run: rm -rf ./.next/standalone/node_modules
