@@ -77,7 +77,11 @@ const AdminClientService = {
     const response = await DeleteUser(await buildNextRequest(url, { method: 'DELETE' }), {
       params: Promise.resolve({ id: userId }),
     })
-    const { error } = await response.json()
+    let error
+    if (response.status !== 204) {
+      const body = await response.json()
+      error = body.error
+    }
 
     return { status: response.status, error }
   },
@@ -99,7 +103,7 @@ const AdminClientService = {
     const { data, nextPage, error } = { ...(await response.json()) }
 
     const projectDetailsList: ProjectDetails[] = await Promise.all(
-      data.map(async (project: Project) => {
+      data?.map(async (project: Project) => {
         const semesterResult = await AdminProjectService.getProjectSemesters(project.id)
         return {
           ...project,

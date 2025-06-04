@@ -25,6 +25,10 @@ interface ClientModalProps extends ModalProps {
     message?: string
     details?: string
   }>
+  onDelete?: (clientId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
   onUpdated?: () => void
   onDeleted?: () => void
 }
@@ -37,8 +41,9 @@ const ClientModal: React.FC<ClientModalProps> = ({
   clientEmail,
   projects,
   onSave,
+  onDelete,
   onUpdated,
-  // onDeleted,
+  onDeleted,
 }) => {
   const [copied, setCopied] = useState(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
@@ -141,6 +146,10 @@ const ClientModal: React.FC<ClientModalProps> = ({
               containerWidth={200}
               onEdit={() => {
                 setIsEditing(true)
+              }}
+              onDelete={() => {
+                onDelete?.(clientInfo.id)
+                onDeleted?.()
               }}
             />
           )}

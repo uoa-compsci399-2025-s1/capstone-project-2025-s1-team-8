@@ -23,6 +23,10 @@ interface ClientsPageProps {
     message?: string
     details?: string
   }>
+  handleDeleteClient?: (clientId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
   updated: () => void
   deleted: () => void
 }
@@ -30,6 +34,7 @@ interface ClientsPageProps {
 const ClientsPage: React.FC<ClientsPageProps> = ({
   clients,
   handleUpdateClient,
+  handleDeleteClient,
   updated,
   deleted,
 }) => {
@@ -62,6 +67,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
               .includes(searchValue.trim().toLowerCase()),
           )}
           onSave={handleUpdateClient}
+          onDelete={handleDeleteClient}
           updated={updated}
           deleted={deleted}
         />

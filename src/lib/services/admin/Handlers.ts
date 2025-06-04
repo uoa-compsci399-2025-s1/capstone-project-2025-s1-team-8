@@ -254,3 +254,15 @@ export async function handleUpdateClient(
   const response = await AdminService.updateUser(clientId, updatedClient)
   return { data: response.data }
 }
+
+export async function handleDeleteClient(clientId: string): Promise<{
+  error?: string
+  message?: string
+}> {
+  const response = await AdminService.deleteUser(clientId)
+  if (response.status === 204) {
+    return { message: 'Client deleted successfully' }
+  } else {
+    return { error: response.error }
+  }
+}

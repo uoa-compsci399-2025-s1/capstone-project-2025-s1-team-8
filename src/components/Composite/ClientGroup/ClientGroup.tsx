@@ -20,19 +20,30 @@ export interface ClientGroupProps {
     message?: string
     details?: string
   }>
+  onDelete?: (clientId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
   updated: () => void
   deleted: () => void
 }
 
-const ClientGroup: React.FC<ClientGroupProps> = ({ clients, onSave, updated, deleted }) => {
+const ClientGroup: React.FC<ClientGroupProps> = ({
+  clients,
+  onSave,
+  onDelete,
+  updated,
+  deleted,
+}) => {
   return (
     <div className="w-full rounded-2xl overflow-hidden border border-beige divide-beige divide-y-2">
       {clients.map((clientInfo, index) => (
         <ClientCard
-          key={index}
+          key={clientInfo.client.id || index}
           clientInfo={clientInfo.client}
           projects={clientInfo.projects}
           onSave={onSave}
+          onDelete={onDelete}
           updated={updated}
           deleted={deleted}
         />

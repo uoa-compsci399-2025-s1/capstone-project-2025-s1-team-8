@@ -17,6 +17,7 @@ import {
   updateProjectOrdersAndStatus,
   handleGetAllSemesters,
   getAllClients,
+  handleDeleteClient,
 } from '@/lib/services/admin/Handlers'
 import { handleUpdateClient } from '@/lib/services/admin/Handlers'
 import SemestersPage from '../SemestersPage/SemestersPage'
@@ -133,11 +134,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <ClientsPage
                   clients={clients}
                   handleUpdateClient={handleUpdateClient}
+                  handleDeleteClient={handleDeleteClient}
                   updated={async () => {
                     await refreshClients()
                   }}
                   deleted={async () => {
                     await refreshClients()
+                    setNotificationMessage('Client deleted successfully')
                   }}
                 />
               </div>

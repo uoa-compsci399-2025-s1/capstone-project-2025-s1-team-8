@@ -133,6 +133,10 @@ class RouteWrapper {
       const userProjects = await projectService.getProjectsByClientId(id)
       for (const project of userProjects.docs) {
         await projectService.deleteProject(project.id)
+        const semesterProjects = await projectService.getSemesterProjectsByProject(project.id)
+        for (const semesterProject of semesterProjects) {
+          await projectService.deleteSemesterProject(semesterProject.id)
+        }
       }
       await userService.deleteUser(id)
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })

@@ -19,6 +19,10 @@ export interface ClientCardProps {
     message?: string
     details?: string
   }>
+  onDelete?: (clientId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
   updated: () => void
   deleted: () => void
 }
@@ -27,6 +31,7 @@ const ClientCard: React.FC<ClientCardProps> = ({
   clientInfo,
   projects,
   onSave,
+  onDelete,
   updated,
   deleted,
 }) => {
@@ -76,11 +81,13 @@ const ClientCard: React.FC<ClientCardProps> = ({
         clientInfo={clientInfo}
         projects={projects}
         onSave={onSave}
+        onDelete={onDelete}
         onUpdated={() => {
           updated?.()
         }}
         onDeleted={() => {
           deleted?.()
+          handleModal()
         }}
       />
     </>
