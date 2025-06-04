@@ -36,7 +36,11 @@
     },
     "test": {
       "dependsOn": ["^test"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*", "**.ts"]
+      "inputs": ["$TURBO_DEFAULT$", ".env*", "**.ts", "**.tsx"]
+    },
+    "test:watch": {
+      "cache": false,
+      "persistent": true
     },
     "lint": {
       "inputs": ["$TURBO_DEFAULT$", "**/*.js", "**/*.ts", "**/*.tsx"]
