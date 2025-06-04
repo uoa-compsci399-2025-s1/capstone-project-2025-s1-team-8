@@ -58,12 +58,17 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       # Cache the node_modules directory
-      - name: Cache node_modules
+      - name: Cache turbo cache
         uses: actions/cache@v4
         id: cache-node-modules
         with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
+          path: |
+            node_modules
+            .turbo
+            .next/cache
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
 
   style:
     needs: [check_changes, setup]
@@ -85,14 +90,19 @@ jobs:
           run_install: false
 
       # Restore cached node_modules
-      - name: Restore node_modules
+      - name: Restore turbo cache
         uses: actions/cache@v4
         with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
+          path: |
+            node_modules
+            .turbo
+            .next/cache
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
 
       - name: Check formatting
-        run: pnpm prettier --check .
+        run: pnpm turbo prettier:check
 
   lint:
     needs: [check_changes, setup]
@@ -117,14 +127,19 @@ jobs:
           run_install: false
 
       # Restore cached node_modules
-      - name: Restore node_modules
+      - name: Restore turbo cache
         uses: actions/cache@v4
         with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
+          path: |
+            node_modules
+            .turbo
+            .next/cache
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
 
       - name: Run linting
-        run: pnpm lint
+        run: pnpm turbo:lint
 
   build:
     needs: [check_changes, setup]
@@ -149,11 +164,16 @@ jobs:
           run_install: false
 
       # Restore cached node_modules
-      - name: Restore node_modules
+      - name: Restore turbo cache
         uses: actions/cache@v4
         with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
+          path: |
+            node_modules
+            .turbo
+            .next/cache
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
 
       - name: Run typescript compile
         run: pnpm tsc --noEmit
@@ -161,18 +181,8 @@ jobs:
       - name: Prune developer dependencies
         run: pnpm prune --prod
 
-      - name: Download Next build cache
-        uses: actions/cache@v4
-        with:
-           path: |
-             ~/.pnpm
-             ${{ github.workspace }}/.next/cache
-           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yml') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
-           restore-keys: |
-             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yml') }}-
-
       - name: Run Next build
-        run: pnpm build
+        run: pnpm turbo:build
 
   test:
     needs: [check_changes, setup]
@@ -197,14 +207,19 @@ jobs:
           run_install: false
 
       # Restore cached node_modules
-      - name: Restore node_modules
+      - name: Restore turbo cache
         uses: actions/cache@v4
         with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
+          path: |
+            node_modules
+            .turbo
+            .next/cache
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
 
       - name: Test
-        run: pnpm test
+        run: pnpm turbo:test
 
   codegen:
     needs: [check_changes, setup]
@@ -229,14 +244,19 @@ jobs:
           run_install: false
 
       # Restore cached node_modules
-      - name: Restore node_modules
+      - name: Restore turbo cache
         uses: actions/cache@v4
         with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
+          path: |
+            node_modules
+            .turbo
+            .next/cache
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
 
       - name: Generate typing
-        run: pnpm generate:types
+        run: pnpm turbo:generate:types
 
       - name: Write git diff
         run: |
@@ -254,7 +274,7 @@ jobs:
             core.setFailed('Your code generation for typings are not up to date. Run pnpm generate:types')
 
       - name: Generate import mapping
-        run: pnpm generate:importmap
+        run: pnpm turbo:generate:importmap
 
       - name: Write git diff
         run: |

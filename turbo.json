@@ -31,7 +31,7 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*"]
     },
     "lint": {},
-    "yassify": {},
+    "prettier:check": {},
     "generate:importmap": {
       "outputs": ["./src/app/payload/admin/importMap.js"]
     },
