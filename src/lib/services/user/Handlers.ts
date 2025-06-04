@@ -7,7 +7,7 @@ import type { LoginRequestBodySchema } from '@/app/api/auth/login/route'
 import UserService from './UserService'
 import type { RegisterRequestBodySchema } from '@/app/api/auth/register/route'
 import type { UserRoleWithoutAdmin } from '@/types/User'
-import { isValidEmail, isValidPassword } from '@/lib/util/util'
+import { isValidEmail, isValidPassword } from '@/lib/util/AuthUtil'
 import type { UserCombinedInfo } from '@/types/Collections'
 
 /**

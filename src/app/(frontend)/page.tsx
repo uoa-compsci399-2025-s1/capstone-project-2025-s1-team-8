@@ -18,6 +18,8 @@ import DennisPhoto from '@/assets/profiles/dennis.jpeg'
 import SheenaPhoto from '@/assets/profiles/sheena.jpeg'
 import JefferyPhoto from '@/assets/profiles/jeffery.jpeg'
 import Introduction from '@/components/Generic/PersonIntroduction/Introduction'
+import ContentService from '@/lib/services/content/ContentService'
+import { parseCMS } from '@/lib/util/CMSUtil'
 
 export const metadata: Metadata = {
   title: 'Home',
@@ -28,6 +30,11 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const clientInfo = await ClientService.getClientInfo()
   const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
+
+  const homePageCMS = (await ContentService.getHomePage()).content
+  const aboutSection = homePageCMS.aboutSection
+  const demoSection = homePageCMS.demoSection
+
   return (
     <div>
       {/* Landing */}
@@ -48,16 +55,13 @@ export default async function HomePage() {
       <div className="min-h-dvh w-full bg-deeper-blue px-[8%] py-25 flex flex-col justify-center">
         <div>
           <h1 className="font-silkscreen text-light-beige text-3xl sm:text-4xl md:text-5xl font-normal pb-5">
-            ABOUT COMPSCI399
+            {aboutSection.title}
           </h1>
           <p className="text-light-beige text-sm/4 sm:text-base/5 lg:text-lg/6 pb-15">
-            {`COMPSCI399 Capstone is the culmination of the Computer Science degree for students at the University of Auckland. It is a compulsory course that students must undertake in order to graduate, and serves as a showcase of the knowledge and skills a student has acquired throughout their studies. Capstone courses are generally seen to have three main aims: integrating the knowledge and skills gained in the programme, reflecting on prior learning, and transitioning into the workplace. Using this as a starting point, this Computer Science capstone is seen as an opportunity to integrate the knowledge gained in the entire degree programme through problem-based learning. Students will be allocated into small teams who will then work together to solve a substantial problem. The teams will design, develop, and produce an artefact to solve the problem and present their work.`}
-            <br />
-            <br />
-            {`This capstone course is designed to permit the student to exhibit problem-solving, critical thinking and communication skills, and the ability to use relevant technology; all skills developed throughout the programme. This enables them to become ‘business ready’ for their eventual engagement with companies in their future employment.`}
+            {parseCMS(aboutSection.description)}
           </p>
           <Button variant="light" size="sm">
-            <Link href={'https://www.capitalise.space/'}>See previous projects</Link>
+            <Link href={aboutSection.button.buttonLink}>{aboutSection.button.buttonName}</Link>
           </Button>
         </div>
       </div>
@@ -67,15 +71,10 @@ export default async function HomePage() {
         <div className="flex flex-col lg:flex-row relative justify-between gap-10 lg:gap-20">
           <div className="w-full lg:w-[45%]">
             <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-10 sm:leading-12 lg:leading-17">
-              Encapsulate
-              <br />
-              for clients
+              {demoSection.clientDemo.title}
             </h1>
             <p className="text-sm/4 sm:text-base/5 lg:text-lg/6 text-steel-blue">
-              {`Hello! My name is John Doe and I am a lecturer at the University of Auckland. My hobbies include snorkelling, fishing, reading, baking, eating, sleeping and taking various methods of transport to my destination! FIRE`}
-              <br />
-              <br />
-              {`"John Doe" is a common placeholder name used to represent an unknown or anonymous individual, particularly in legal or informal contexts. It's often used as a stand-in when a person's real name is not known, needs to be protected, or when a general example is needed. The female equivalent is "Jane Doe". `}
+              {parseCMS(demoSection.clientDemo.description)}
             </p>
           </div>
           <div className="rounded-xl w-4/5 lg:w-[47%] mb-1 overflow-hidden h-min self-end lg:self-center mt-10">
@@ -96,12 +95,10 @@ export default async function HomePage() {
             />
             <div className="w-full lg:w-[47%] mt-3 pb-12">
               <h1 className="font-dm-serif-display text-deeper-blue font-normal leading-10 sm:leading-12 lg:leading-17">
-                Encapsulate
-                <br />
-                for students
+                {demoSection.studentDemo.title}
               </h1>
               <p className="text-sm/4 sm:text-base/5 lg:text-lg/6 text-steel-blue">
-                {`Students are able to browse approved projects and their descriptions for the upcoming semester. This means that students can pre-emptively consider which projects align the best with their interests, and use this knowledge to make the most of their capstone experience.`}
+                {parseCMS(demoSection.studentDemo.description)}
               </p>
             </div>
           </div>
@@ -130,6 +127,12 @@ export default async function HomePage() {
             link="https://www.linkedin.com/in/eric-zheng-nz/"
           />
           <Introduction
+            name="Jeffery Ji"
+            role="Tech Lead"
+            image={JefferyPhoto}
+            link="https://www.linkedin.com/in/jefferyji/"
+          />
+          <Introduction
             name="JooHui Lee"
             role="UI/UX Lead"
             image={JooHuiPhoto}
@@ -152,12 +155,6 @@ export default async function HomePage() {
             role="DevOps Lead"
             image={SheenaPhoto}
             link="https://www.linkedin.com/in/enshean/"
-          />
-          <Introduction
-            name="Jeffery Ji"
-            role="Documentation Lead"
-            image={JefferyPhoto}
-            link="https://www.linkedin.com/in/jefferyji/"
           />
         </div>
       </div>

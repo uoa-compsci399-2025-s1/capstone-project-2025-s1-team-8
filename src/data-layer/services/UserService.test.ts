@@ -47,19 +47,94 @@ describe('User service test', () => {
     it('should return a paginated list of users', async () => {
       await userService.createUser(clientCreateMock)
       await userService.createUser(adminCreateMock)
-      const fetchedUsers = await userService.getAllUsers(3)
+      const fetchedUsers = await userService.getAllUsers({ limit: 3 })
 
       expect(fetchedUsers.docs.length).toEqual(3)
       expect(fetchedUsers.hasNextPage).toBeTruthy()
 
-      const nextPage = await userService.getAllUsers(
-        3,
-        fetchedUsers.nextPage ? fetchedUsers.nextPage : undefined,
-      )
+      const nextPage = await userService.getAllUsers({
+        limit: 3,
+        page: fetchedUsers.nextPage ? fetchedUsers.nextPage : undefined,
+      })
+
       expect(nextPage.docs.length).toEqual(2)
       expect(nextPage.hasNextPage).toBeFalsy()
 
       expect(nextPage.docs[0].id).not.toEqual(fetchedUsers.docs[0].id)
+    })
+
+    it('should find all users with a certain first name', async () => {
+      const userMock = await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'searchforme',
+      })
+      const userMock2 = await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'searchforme2',
+      })
+      await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'shouldnt find me',
+      })
+
+      const fetchedUsers = await userService.getAllUsers({ query: 'searchforme' })
+      expect(fetchedUsers.docs.length).toEqual(2)
+      expect(fetchedUsers.docs).toEqual(expect.arrayContaining([userMock, userMock2]))
+    })
+
+    it('should find all users with a certain last name', async () => {
+      const userMock = await userService.createUser({
+        ...clientCreateMock,
+        lastName: 'cool',
+      })
+      const userMock2 = await userService.createUser({
+        ...clientCreateMock,
+        lastName: 'coollll',
+      })
+      await userService.createUser({
+        ...clientCreateMock,
+        lastName: 'col',
+      })
+      await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'searchforme2',
+        lastName: 'dontfindme',
+      })
+
+      const fetchedUsers = await userService.getAllUsers({ query: 'cool' })
+      expect(fetchedUsers.docs.length).toEqual(2)
+      expect(fetchedUsers.docs).toEqual(expect.arrayContaining([userMock, userMock2]))
+    })
+
+    it('should find all users with a certain first name and last name', async () => {
+      const userMock = await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'very',
+        lastName: 'cool',
+      })
+      await userService.createUser({
+        ...clientCreateMock,
+        lastName: 'col',
+      })
+      await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'searchforme2',
+        lastName: 'dontfindme',
+      })
+
+      const fetchedUsers = await userService.getAllUsers({ query: 'very coo' })
+      expect(fetchedUsers.docs).toStrictEqual([userMock])
+    })
+
+    it('should ignore double spacing during full name queries', async () => {
+      const userMock = await userService.createUser({
+        ...clientCreateMock,
+        firstName: 'foo',
+        lastName: 'bar',
+      })
+
+      const fetchedUsers = await userService.getAllUsers({ query: 'foo  bar' })
+      expect(fetchedUsers.docs).toStrictEqual([userMock])
     })
 
     it('not found - find user with nonexistent id', async () => {
