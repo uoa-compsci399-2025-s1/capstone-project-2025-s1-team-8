@@ -113,6 +113,19 @@ pnpm test <test-name>
 
 We use the following technologies:
 
+**Development Operations**
+
+We are using the following tools for development operations:
+
+- [pnpm](https://pnpm.io/)
+  - Used to manage dependencies and scripts for the project.
+- [turbo](https://turbo.build/)
+  - Used to speed up the development process by running tasks in parallel, caching results, and optimizing dependencies.
+- [Docker](https://www.docker.com/)
+  - Used to containerize the application and its dependencies, ensuring consistent and reproducible environments.
+- [GitHub Actions](https://github.com/features/actions)
+  - Used to automate the build, test, and deployment process, ensuring that the application is always in a working state.
+
 **Frontend:**
 
 The main framework for this project is using `Next.js`, it is most important to understand that we are using the [App Router](https://nextjs.org/docs/app) and [API Routes](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) to build the project. Note that you will need to have some understanding of React to work on this project.
