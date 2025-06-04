@@ -6,7 +6,9 @@
     "enabled": true
   },
   "tasks": {
-    "check-types": {},
+    "check-types": {
+      "inputs": ["$TURBO_DEFAULT$", "**.ts", "**.tsx"]
+    },
     "build": {
       "dependsOn": ["^build"],
       "env": [
