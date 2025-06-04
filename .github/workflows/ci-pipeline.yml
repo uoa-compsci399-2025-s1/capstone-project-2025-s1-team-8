@@ -117,9 +117,6 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
-      - name: Enable Corepack
-        run: corepack enable
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
@@ -153,9 +150,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-
-      - name: Enable Corepack
-        run: corepack enable
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -197,9 +191,6 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
-      - name: Enable Corepack
-        run: corepack enable
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
@@ -233,9 +224,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-
-      - name: Enable Corepack
-        run: corepack enable
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
