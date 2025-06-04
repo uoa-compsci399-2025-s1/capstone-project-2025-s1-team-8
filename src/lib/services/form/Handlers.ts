@@ -112,11 +112,8 @@ export async function handleProjectUpdate(
       // get all semester projects of this project
       const { data: existingSemesters } = await ProjectFormService.getProjectSemesters(projectId)
 
-      // if the semester is not in the form data, remove it @TODO remove?
-
       // go through all selected semesters in form data, and create a semester project if it doesn't exist
       for (const upcomingSemester of formData.semesters || []) {
-        console.log(upcomingSemester)
         const semesterProjectExists = (existingSemesters || []).some((existingSemester) => {
           return existingSemester.id === upcomingSemester
         })
