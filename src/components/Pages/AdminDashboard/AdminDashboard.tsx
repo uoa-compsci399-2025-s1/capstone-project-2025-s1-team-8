@@ -50,7 +50,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   const searchForClients = async (searchValue: string) => {
     const query = searchValue.trim().toLowerCase()
-    //console.log(query)
     const res = await getAllClients({limit: itemsPerPage, page: 1, query})
     setClientsData(res?.data || [])
     setPageNum(1)
