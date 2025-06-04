@@ -158,7 +158,7 @@ jobs:
           key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Run typescript compile
-        run: pnpm tsc --noEmit
+        run: pnpm turbo:check-types
 
       - name: Prune developer dependencies
         run: pnpm prune --prod

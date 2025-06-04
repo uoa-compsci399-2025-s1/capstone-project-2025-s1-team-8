@@ -9,6 +9,7 @@
     "name": "UoA Compsci 399 2025 S1 Team 8"
   },
   "scripts": {
+    "turbo:check-types": "turbo check-types",
     "turbo:build": "turbo build",
     "turbo:dev": "turbo dev",
     "turbo:test": "turbo test",
@@ -17,6 +18,7 @@
     "turbo:generate:importmap": "turbo generate:importmap",
     "turbo:generate:types": "turbo generate:types",
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build --experimental-build-mode compile",
+    "check-types": "tsc --noEmit",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev --turbopack",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",

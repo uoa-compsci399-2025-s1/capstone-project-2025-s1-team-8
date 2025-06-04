@@ -6,6 +6,7 @@
     "enabled": true
   },
   "tasks": {
+    "check-types": {},
     "build": {
       "dependsOn": ["^build"],
       "env": [
