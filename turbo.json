@@ -32,7 +32,7 @@
     },
     "test": {
       "dependsOn": ["^test"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"]
+      "inputs": ["$TURBO_DEFAULT$", ".env*", "**.ts"]
     },
     "lint": {},
     "prettier:check": {},

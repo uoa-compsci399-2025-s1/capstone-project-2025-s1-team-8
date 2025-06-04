@@ -94,7 +94,6 @@ jobs:
           remote_user: ${{ secrets.EC2_USERNAME }}
           remote_key: ${{ secrets.EC2_SSH_KEY }}
 
-
       - name: Connect to server via SSH and store secrets
         uses: appleboy/ssh-action@v1
         with:
