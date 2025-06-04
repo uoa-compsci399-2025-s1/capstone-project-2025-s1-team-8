@@ -16,7 +16,9 @@ import {
   handlePublishChanges,
   updateProjectOrdersAndStatus,
   handleGetAllSemesters,
+  getAllClients,
 } from '@/lib/services/admin/Handlers'
+import { handleUpdateClient } from '@/lib/services/admin/Handlers'
 import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
 import Notification from '@/components/Generic/Notification/Notification'
@@ -29,7 +31,7 @@ type AdminDashboardProps = {
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({
-  clients,
+  clients: initialClients,
   semesters: initialSemesters,
   projects,
 }) => {
@@ -38,6 +40,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [activeNav, setActiveNav] = useState<number | null>(null)
   const [notificationMessage, setNotificationMessage] = useState('')
   const [semesters, setSemesters] = useState<Semester[]>(initialSemesters)
+  const [clients, setClients] =
+    useState<{ client: UserCombinedInfo; projects: ProjectDetails[] }[]>(initialClients)
 
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
@@ -54,6 +58,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     const res = await handleGetAllSemesters()
     if (res?.data) {
       setSemesters(res.data)
+    }
+  }
+
+  const refreshClients = async () => {
+    const res = await getAllClients()
+    if (res?.data) {
+      setClients(res.data)
     }
   }
 
@@ -119,7 +130,16 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 aria-hidden={activeNav !== 1}
                 tabIndex={activeNav === 1 ? 0 : -1}
               >
-                <ClientsPage clients={clients} />
+                <ClientsPage
+                  clients={clients}
+                  handleUpdateClient={handleUpdateClient}
+                  updated={async () => {
+                    await refreshClients()
+                  }}
+                  deleted={async () => {
+                    await refreshClients()
+                  }}
+                />
               </div>
 
               <div
@@ -135,6 +155,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   }}
                   updated={async () => {
                     await refreshSemesters()
+                    console.log('hello')
                     setNotificationMessage('Semester updated successfully')
                   }}
                   deleted={async () => {

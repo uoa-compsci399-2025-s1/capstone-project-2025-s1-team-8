@@ -7,14 +7,14 @@ import { FiEdit } from 'react-icons/fi'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import { BsThreeDots } from 'react-icons/bs'
 
-interface ProjectFilterProps {
+interface EditDeleteDropdownProps {
   className?: string
   containerWidth?: number
   onEdit?: (e: React.MouseEvent<HTMLDivElement>) => void
   onDelete?: (e: React.MouseEvent<HTMLDivElement>) => void
 }
 
-const EditDropdownOptions: DropdownOptionType[] = [
+const EditDeleteDropdownOptions: DropdownOptionType[] = [
   {
     text: 'Edit',
     icon: <FiEdit className="w-4 h-4" />,
@@ -29,7 +29,7 @@ const EditDropdownOptions: DropdownOptionType[] = [
   },
 ]
 
-const ProjectFilter: React.FC<ProjectFilterProps> = ({
+const EditDeleteDropdown: React.FC<EditDeleteDropdownProps> = ({
   className,
   containerWidth,
   onEdit,
@@ -63,7 +63,7 @@ const ProjectFilter: React.FC<ProjectFilterProps> = ({
           style={{ width: newMaxWidth }}
         >
           <div className={`bg-dark-blue rounded-lg flex flex-col gap-1 p-1.5 ${className}`}>
-            {EditDropdownOptions.map((option, index) => (
+            {EditDeleteDropdownOptions.map((option, index) => (
               <div
                 key={index}
                 onClick={(e) => {
@@ -91,4 +91,4 @@ const ProjectFilter: React.FC<ProjectFilterProps> = ({
   )
 }
 
-export default ProjectFilter
+export default EditDeleteDropdown

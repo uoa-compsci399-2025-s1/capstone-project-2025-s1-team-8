@@ -7,7 +7,7 @@ import type { typeToFlattenedError } from 'zod'
 import type { Project, Semester } from '@/payload-types'
 import { type ProjectDetails, ProjectStatus } from '@/types/Project'
 import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
-
+import type { UpdateUserRequestBody } from '@/app/api/admin/users/[id]/route'
 /**
  * Handles the click event to create semester
  *
@@ -50,16 +50,11 @@ export const handleUpdateSemester = async (
   message?: string
   details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
 }> => {
-  const name = formData.get('semesterName') as string
-  const deadline = formData.get('submissionDeadline') as string
-  const startDate = formData.get('startDate') as string
-  const endDate = formData.get('endDate') as string
-
   const { status, error, details } = await AdminService.updateSemester(id, {
-    name,
-    startDate,
-    endDate,
-    deadline,
+    name: formData.get('semesterName') as string,
+    startDate: new Date(formData.get('startDate') as string).toISOString(),
+    endDate: new Date(formData.get('endDate') as string).toISOString(),
+    deadline: new Date(formData.get('submissionDeadline') as string).toISOString(),
   })
 
   if (status === 200) {
@@ -236,4 +231,26 @@ export async function handlePublishChanges({
     )
   }
   await updateProjectOrdersAndStatus({ presetContainers, semesterId })
+}
+
+export async function handleUpdateClient(
+  clientId: string,
+  firstName: string,
+  lastName: string,
+  affiliation: string,
+  introduction: string,
+): Promise<{
+  data?: UserCombinedInfo
+  error?: string
+  message?: string
+  details?: string
+}> {
+  const updatedClient: UpdateUserRequestBody = {
+    firstName,
+    lastName,
+    affiliation,
+    introduction,
+  }
+  const response = await AdminService.updateUser(clientId, updatedClient)
+  return { data: response.data }
 }

@@ -15,8 +15,13 @@ import { HiX, HiExclamation } from 'react-icons/hi'
 import { redirect, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import type { CreateProjectRequestBody, CreateProjectClient } from '@/app/api/projects/route'
-import { handleFormPageLoad, handleProjectFormSubmission } from '@/lib/services/form/Handlers'
+import {
+  handleFormPageLoad,
+  handleProjectFormSubmission,
+  handleProjectUpdate,
+} from '@/lib/services/form/Handlers'
 import Notification from '@/components/Generic/Notification/Notification'
+import type { UpdateProjectRequestBody } from '@/app/api/projects/[id]/route'
 
 interface FormProject extends CreateProjectRequestBody {
   meetingAttendance: boolean
@@ -47,6 +52,13 @@ const ProtectedFormView: FC = () => {
   const searchParams = useSearchParams()
   const projectName = searchParams.get('projectName') || ''
 
+  // check if trying to edit an existing project
+  const projectId = searchParams.get('projectId') || undefined
+
+  const [specialEquipmentRequirements, setSpecialEquipmentRequirements] = useState<string>('')
+  const [numberOfTeams, setNumberOfTeams] = useState<string>('')
+  const [futureConsideration, setFutureConsideration] = useState<string>('')
+
   const handleChange = (index: number, field: keyof CreateProjectClient, value: string) => {
     const updated = [...otherClientDetails]
     updated[index][field] = value
@@ -64,12 +76,41 @@ const ProtectedFormView: FC = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     watch,
     formState: { errors },
   } = useForm<FormProject>()
 
   useEffect(() => {
-    handleFormPageLoad().then((res) => {
+    handleFormPageLoad(projectId).then((res) => {
+      console.log('hi', res.projectData)
+      if (res.projectData) {
+        if (res.projectData.additionalClients) {
+          const clients = res.projectData.additionalClients
+            .filter((client) => typeof client !== 'string')
+            .map((client) => ({
+              firstName: client.firstName || '',
+              lastName: client.lastName || '',
+              email: client.email || '',
+            }))
+          setOtherClientDetails(clients)
+        }
+        setValue('name', res.projectData.name || '')
+        setValue('description', res.projectData.description || '')
+        setValue('desiredOutput', res.projectData.desiredOutput || '')
+        setSpecialEquipmentRequirements(res.projectData.specialEquipmentRequirements || '')
+        setNumberOfTeams(res.projectData.numberOfTeams || '')
+        setValue('desiredTeamSkills', res.projectData.desiredTeamSkills || '')
+        setValue('availableResources', res.projectData.availableResources || '')
+        setFutureConsideration(res.projectData.futureConsideration ? 'Yes' : 'No')
+        setValue('meetingAttendance', true)
+        setValue('finalPresentationAttendance', true)
+        setValue('projectSupportAndMaintenance', true)
+        if (res.projectData.futureConsideration) {
+          const semesterIds = (res.projectData.semesters || []).map((sem) => sem.id)
+          setValue('semesters', semesterIds || [])
+        }
+      }
       setUpcomingSemesterOptions(
         res.upcomingSemesters.map((semester) => ({
           value: semester.id,
@@ -90,6 +131,7 @@ const ProtectedFormView: FC = () => {
 
   const hasFutureConsideration = String(watch('futureConsideration')) === 'Yes'
   const onSubmit: SubmitHandler<FormProject> = async (data) => {
+    console.log(data)
     if (nextSemesterOption) {
       data.semesters.push(nextSemesterOption?.value) // Add the next semester to the list of semesters
     }
@@ -102,6 +144,30 @@ const ProtectedFormView: FC = () => {
     // For example, you can check for errors or success messages
     if (res?.success) {
       redirect('/client')
+    } else {
+      console.error('Error submitting form:', res?.error)
+      setShowNotification(true)
+    }
+  }
+
+  const editProject: SubmitHandler<FormProject> = async (data) => {
+    if (!projectId) {
+      return
+    }
+    data.additionalClients = otherClientDetails
+    data.futureConsideration = hasFutureConsideration
+    data.semesters = data.semesters || []
+    const {
+      meetingAttendance: _meetingAttendance,
+      finalPresentationAttendance: _finalPresentationAttendance,
+      projectSupportAndMaintenance: _projectSupportAndMaintenance,
+      ...cleanedData
+    } = data
+
+    const res = await handleProjectUpdate(projectId, cleanedData as UpdateProjectRequestBody)
+
+    if (res?.success) {
+      // redirect('/client')
     } else {
       console.error('Error submitting form:', res?.error)
       setShowNotification(true)
@@ -122,7 +188,7 @@ const ProtectedFormView: FC = () => {
         />
       </div>
       <div className="relative bg-light-beige max-w-full flex flex-col rounded-2xl my-auto border border-deeper-blue">
-        <div className="relative flex flex-col p-18 pt-20 rounded-t-2xl gap-6">
+        <div className="relative flex flex-col p-18 py-10 rounded-t-2xl gap-6">
           <Link href="/client">
             <button
               className="absolute top-10 right-10 rounded-full hover:cursor-pointer"
@@ -132,9 +198,9 @@ const ProtectedFormView: FC = () => {
             </button>
           </Link>
           <h1 className="text-4xl font-normal m-0 text-dark-blue font-dm-serif-display mb-3">
-            Computer Science Capstone: Project Proposal Form
+            {projectId ? 'Edit project' : 'Computer Science Capstone: Project Proposal Form'}
           </h1>
-          <div>
+          <div className={projectId ? 'hidden' : ''}>
             <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
               Deadline
             </h2>
@@ -150,7 +216,7 @@ const ProtectedFormView: FC = () => {
               </em>
             </p>
           </div>
-          <div>
+          <div className={projectId ? 'hidden' : ''}>
             <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
               Project Requirements
             </h2>
@@ -169,7 +235,7 @@ const ProtectedFormView: FC = () => {
               progressively enhancing its functionality.
             </p>
           </div>
-          <div>
+          <div className={projectId ? 'hidden' : ''}>
             <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
               Supervision Requirements
             </h2>
@@ -181,7 +247,7 @@ const ProtectedFormView: FC = () => {
               feedback on your team&apos;s performance.
             </p>
           </div>
-          <div>
+          <div className={projectId ? 'hidden' : ''}>
             <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
               Disclaimer & Limitations
             </h2>
@@ -195,7 +261,7 @@ const ProtectedFormView: FC = () => {
               continuity, or further development of the project after the course concludes.
             </p>
           </div>
-          <div>
+          <div className={projectId ? 'hidden' : ''}>
             <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
               Contacts & Information
             </h2>
@@ -236,7 +302,10 @@ const ProtectedFormView: FC = () => {
           <p className="text-dark-blue font-inter pb-6">
             <span className="text-pink-accent">*</span> Required
           </p>
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <form
+            onSubmit={projectId ? handleSubmit(editProject) : handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
+          >
             <ol className="flex flex-col gap-10 list-decimal list-outside text-dark-blue font-inter text-lg whitespace-pre-wrap ml-5">
               <li>
                 <div className="flex justify-between items-center">
@@ -367,6 +436,7 @@ const ProtectedFormView: FC = () => {
                   customInput={true}
                   error={!!errors.specialEquipmentRequirements}
                   errorMessage={errors.specialEquipmentRequirements?.message}
+                  defaultValue={specialEquipmentRequirements}
                   {...register('specialEquipmentRequirements', {
                     required: 'Please select one option',
                     validate: (value) => value !== '' || 'Input field must not be empty',
@@ -399,6 +469,7 @@ const ProtectedFormView: FC = () => {
                   customInput={true}
                   error={!!errors.numberOfTeams}
                   errorMessage={errors.numberOfTeams?.message}
+                  defaultValue={numberOfTeams}
                   {...register('numberOfTeams', {
                     required: 'Number of teams is required',
                     validate: (value) => value !== '' || 'Number of teams is required',
@@ -446,6 +517,7 @@ const ProtectedFormView: FC = () => {
                   required={false}
                   error={!!errors.futureConsideration}
                   errorMessage={errors.futureConsideration?.message}
+                  defaultValue={futureConsideration}
                   {...register('futureConsideration', {
                     required: 'Future consideration is required',
                   })}
@@ -468,7 +540,7 @@ const ProtectedFormView: FC = () => {
                   })}
                 />
               </li>
-              <li>
+              <li className={projectId ? 'hidden' : ''}>
                 <label htmlFor="MeetingAttendance">
                   Meeting attendance <span className="text-pink-accent">*</span>
                 </label>
@@ -510,7 +582,7 @@ const ProtectedFormView: FC = () => {
                   </div>
                 )}
               </li>
-              <li>
+              <li className={projectId ? 'hidden' : ''}>
                 <label htmlFor="FinalPresentationAttendance">
                   Final presentation attendance <span className="text-pink-accent">*</span>
                 </label>
@@ -550,7 +622,7 @@ const ProtectedFormView: FC = () => {
                   </div>
                 )}
               </li>
-              <li>
+              <li className={projectId ? 'hidden' : ''}>
                 <label htmlFor="ProjectSupportAndMaintenance">
                   Project Support and Maintenance <span className="text-pink-accent">*</span>
                 </label>

@@ -11,9 +11,28 @@ interface ClientsPageProps {
     client: UserCombinedInfo
     projects?: ProjectDetails[]
   }[]
+  handleUpdateClient?: (
+    clientId: string,
+    firstName: string,
+    lastName: string,
+    affiliation: string,
+    introduction: string,
+  ) => Promise<{
+    data?: UserCombinedInfo
+    error?: string
+    message?: string
+    details?: string
+  }>
+  updated: () => void
+  deleted: () => void
 }
 
-const ClientsPage: React.FC<ClientsPageProps> = ({ clients }) => {
+const ClientsPage: React.FC<ClientsPageProps> = ({
+  clients,
+  handleUpdateClient,
+  updated,
+  deleted,
+}) => {
   const [searchValue, setSearchValue] = useState('')
 
   return (
@@ -42,6 +61,9 @@ const ClientsPage: React.FC<ClientsPageProps> = ({ clients }) => {
               .toLowerCase()
               .includes(searchValue.trim().toLowerCase()),
           )}
+          onSave={handleUpdateClient}
+          updated={updated}
+          deleted={deleted}
         />
       </div>
     </div>

@@ -67,4 +67,5 @@ class RouteWrapper {
     }
   }
 }
+
 export const GET = RouteWrapper.GET

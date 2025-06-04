@@ -7,19 +7,14 @@ import { Security } from '@/business-layer/middleware/Security'
 import type { RequestWithUser } from '@/types/Requests'
 import { MediaSchema, UserSchema } from '@/types/Payload'
 import { UserRole } from '@/types/User'
-import type { User } from '@/payload-types'
+import type { Semester, User } from '@/payload-types'
+import type { CreateSemesterProjectData } from '@/types/Collections'
+import { ProjectStatus } from '@/types/Project'
+import SemesterService from '@/data-layer/services/SemesterService'
 
-export const UpdateProjectRequestBody = z.object({
+export const UpdateProjectRequestBodySchema = z.object({
   name: z.string().optional(),
   description: z.string().optional(),
-  deadline: z
-    .string()
-    .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
-    .optional(),
-  timestamp: z
-    .string()
-    .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
-    .optional(),
   clients: z
     .union([
       z.array(z.string()).nonempty('At least one client is required'),
@@ -27,7 +22,15 @@ export const UpdateProjectRequestBody = z.object({
     ])
     .optional(),
   attachments: z.array(MediaSchema).max(5).optional(),
+  desiredOutput: z.string().optional(),
+  desiredTeamSkills: z.string().optional(),
+  availableResources: z.string().optional(),
+  specialEquipmentRequirements: z.string().optional(),
+  numberOfTeams: z.string().optional(),
+  futureConsideration: z.boolean().optional(),
+  semesters: z.array(z.string()).optional(),
 })
+export type UpdateProjectRequestBody = z.infer<typeof UpdateProjectRequestBodySchema>
 
 class RouteWrapper {
   /**
@@ -94,8 +97,39 @@ class RouteWrapper {
       ) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: StatusCodes.UNAUTHORIZED })
       }
-      const body = UpdateProjectRequestBody.parse(await req.json())
+      const body = UpdateProjectRequestBodySchema.parse(await req.json())
       const data = await projectService.updateProject(id, body)
+      // handle creating semester project
+      if (body.semesters) {
+        // @TODO it created sem proj in a sem that already exists
+        // get all semester projects of this project
+        const existingSemesterProjects = await projectService.getSemesterProjectsByProject(id)
+        // go through all selected semesters in form data, and create a semester project if it doesn't exist
+        for (const selectedSemester of body.semesters) {
+          const semesterProjectExists = (existingSemesterProjects || []).some(
+            (existingSemesterProjects) => {
+              return (existingSemesterProjects.semester as Semester).id === selectedSemester
+            },
+          )
+          if (!semesterProjectExists) {
+            const semesterService = new SemesterService()
+            const semester = await semesterService.getSemester(selectedSemester)
+            const semesterProject = await projectService.createSemesterProject({
+              project: data,
+              status: ProjectStatus.Pending,
+              published: false,
+              semester: semester,
+            } as CreateSemesterProjectData)
+            if (!semesterProject) {
+              console.error('Failed to create semester project for', selectedSemester)
+              return NextResponse.json(
+                { error: 'Failed to create semester project' },
+                { status: StatusCodes.INTERNAL_SERVER_ERROR },
+              )
+            }
+          }
+        }
+      }
       return NextResponse.json({ data: data })
     } catch (error) {
       if (error instanceof NotFound) {
