@@ -8,6 +8,8 @@ on:
 
 env:
   CI: 'true'
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -92,7 +94,7 @@ jobs:
           key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Check formatting
-        run: pnpm prettier --check .
+        run: pnpm turbo:prettier
 
   lint:
     needs: [check_changes, setup]
@@ -124,7 +126,7 @@ jobs:
           key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Run linting
-        run: pnpm lint
+        run: pnpm turbo:lint
 
   build:
     needs: [check_changes, setup]
@@ -172,7 +174,7 @@ jobs:
              ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yml') }}-
 
       - name: Run Next build
-        run: pnpm build
+        run: pnpm turbo:build
 
   test:
     needs: [check_changes, setup]
@@ -204,7 +206,7 @@ jobs:
           key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Test
-        run: pnpm test
+        run: pnpm turbo:test
 
   codegen:
     needs: [check_changes, setup]
@@ -236,7 +238,7 @@ jobs:
           key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Generate typing
-        run: pnpm generate:types
+        run: pnpm turbo:generate:types
 
       - name: Write git diff
         run: |
@@ -254,7 +256,7 @@ jobs:
             core.setFailed('Your code generation for typings are not up to date. Run pnpm generate:types')
 
       - name: Generate import mapping
-        run: pnpm generate:importmap
+        run: pnpm turbo:generate:importmap
 
       - name: Write git diff
         run: |
@@ -270,7 +272,6 @@ jobs:
         with:
           script: |
             core.setFailed('Your code generation for maps are not up to date. Run pnpm generate:importmap')
-
 
   verify:
     name: Verify
