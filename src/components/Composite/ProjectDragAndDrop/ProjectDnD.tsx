@@ -96,28 +96,28 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   ]
   let timeoutId: ReturnType<typeof setTimeout> | null = null
 
-  const showNotification = (title: string, message: string, type: 'success' | 'warning') => {
-    if (timeoutId) {
-      clearTimeout(timeoutId)
-    }
+  // const showNotification = (title: string, message: string, type: 'success' | 'warning') => {
+  //   if (timeoutId) {
+  //     clearTimeout(timeoutId)
+  //   }
 
-    // Show the new notification
-    setNotification({ title, message, type })
+  //   // Show the new notification
+  //   setNotification({ title, message, type })
 
-    // Set a new timeout
-    timeoutId = setTimeout(() => {
-      setNotification(null)
-      timeoutId = null // Reset the ID
-    }, 6000)
-  }
+  //   // Set a new timeout
+  //   timeoutId = setTimeout(() => {
+  //     setNotification(null)
+  //     timeoutId = null // Reset the ID
+  //   }, 6000)
+  // }
 
   useEffect(() => {
     if (hasChanges) {
-      showNotification(
-        'Unsaved changes',
-        "You\'ve made changes to the project order. Don\'t forget to save!",
-        'warning',
-      )
+      setNotification({
+        title: 'Unsaved changes',
+        message: "You\'ve made changes to the project order. Don\'t forget to save!",
+        type: 'warning',
+      })
     }
   }, [hasChanges])
   useUnsavedChangesWarning(hasChanges)
@@ -144,13 +144,17 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
     const savedChangesMessage = await onSaveChanges({ presetContainers: containers, semesterId })
     if (savedChangesMessage && 'error' in savedChangesMessage) {
-      showNotification(
-        'Error',
-        'There was an error saving your changes. Please try again.',
-        'warning',
-      )
+      setNotification({
+        title: 'Error',
+        message: 'There was an error saving your changes. Please try again.',
+        type: 'warning',
+      })
     } else {
-      showNotification('Success', 'Your changes have been saved successfully!', 'success')
+      setNotification({
+        title: 'Success',
+        message: 'Your changes have been saved successfully!',
+        type: 'success',
+      })
     }
 
     setContainers((prev) =>
@@ -164,23 +168,27 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   async function handlePublishChanges() {
     const publishMessage = await onPublishChanges({ presetContainers: containers, semesterId })
     if (publishMessage && 'error' in publishMessage) {
-      showNotification(
-        'Error',
-        'There was an error publishing the approved projects. Please try again.',
-        'warning',
-      )
+      setNotification({
+        title: 'Error',
+        message: 'There was an error publishing the approved projects. Please try again.',
+        type: 'warning',
+      })
     } else {
-      showNotification(
-        'Success',
-        'The approved projects have been successfully published!',
-        'success',
-      )
+      setNotification({
+        title: 'Success',
+        message: 'The approved projects have been successfully published!',
+        type: 'success',
+      })
     }
   }
 
   function handleDownloadCsv() {
     window.open(`/api/admin/export/semesters/${semesterId}`, '_blank')
-    showNotification('Success', 'You have successfully downloaded the list of projects', 'success')
+    setNotification({
+      title: 'Success',
+      message: 'You have successfully downloaded the list of projects',
+      type: 'success',
+    })
   }
 
   function sortProjects(containerId: UniqueIdentifier, filter: string): void {

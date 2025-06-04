@@ -46,12 +46,17 @@ const Notification: FC<NotificationProps> = memo(
       warning: 'text-dark-pink text-sm',
     }
 
+    const closeButton = {
+      success: 'text-dark-green',
+      warning: 'hover:text-dark-pink text-pink-accent',
+    }
+
     return (
       <div className={bgRoot[type]}>
         {onClose && (
           <button
             onClick={onClose}
-            className="absolute top-2 right-2 text-md text-pink-accent hover:text-dark-pink transition-colors cursor-pointer"
+            className={`absolute top-2 right-2 text-md transition-colors cursor-pointer ${closeButton[type]}`}
             aria-label="Close notification"
           >
             <FiX className="w-4 h-4" />
