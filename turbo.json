@@ -38,8 +38,12 @@
       "dependsOn": ["^test"],
       "inputs": ["$TURBO_DEFAULT$", ".env*", "**.ts"]
     },
-    "lint": {},
-    "prettier:check": {},
+    "lint": {
+      "inputs": ["$TURBO_DEFAULT$", "**/*.js", "**/*.ts", "**/*.tsx"]
+    },
+    "prettier:check": {
+      "inputs": ["$TURBO_DEFAULT$", "**/*.js", "**/*.ts", "**/*.tsx"]
+    },
     "generate:importmap": {
       "outputs": ["./src/app/payload/admin/importMap.js"]
     },
