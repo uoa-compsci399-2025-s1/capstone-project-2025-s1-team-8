@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useMemo } from 'react'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/16/solid'
 
 import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
@@ -34,9 +34,20 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
   isFetching,
 }) => {
   const [searchValue, setSearchValue] = useState('')
-  const [debouncedValue, setDebouncedValue] = useState('')
+  //const [debouncedValue, setDebouncedValue] = useState('')
 
-  useEffect(() => {
+  function debounce(func: (searchValue: string) => void, delay: number) {
+    let timeout: NodeJS.Timeout
+    return function (searchValue: string) {
+      clearTimeout(timeout)
+      timeout = setTimeout(() => {
+        func(searchValue)
+      }, delay)
+    }
+  }
+  const search = useMemo(() => debounce(searchForClients, 300), [searchForClients])
+
+  /*useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedValue(searchValue)
     }, 300)
@@ -46,7 +57,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
 
   useEffect(() => {
     searchForClients(debouncedValue)
-  }, [debouncedValue])
+  }, [debouncedValue])*/
 
   return (
     <div className="w-full">
@@ -56,8 +67,9 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
         </span>
         <input
           value={searchValue ? searchValue : ''}
-          onChange={(e) => {
+          onChange={async (e) => {
             setSearchValue(e.target.value)
+            await search(e.target.value)
           }}
           placeholder="Search client..."
           className="pl-11 w-full placeholder-muted-blue text-dark-blue border-[1.5px] border-deeper-blue focus:outline focus:outline-deeper-blue rounded-full px-4 pt-2 pb-1.5 text-sm font-normal bg-light-beige"
