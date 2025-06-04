@@ -58,9 +58,9 @@ jobs:
         with:
            path: .next/cache
            # Generate a new cache whenever packages or source files change.
-           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yml') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
+           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
            restore-keys: |
-             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yml') }}-
+             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
 
       - name: Run Next build
         run: pnpm turbo:build
