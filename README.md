@@ -125,6 +125,8 @@ We are using the following tools for development operations:
   - Used to containerize the application and its dependencies, ensuring consistent and reproducible environments.
 - [GitHub Actions](https://github.com/features/actions)
   - Used to automate the build, test, and deployment process, ensuring that the application is always in a working state.
+- [Cloudflare](https://www.cloudflare.com/)
+  - Used to improve the performance and security of the application.
 
 **Frontend:**
 
