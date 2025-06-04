@@ -3,7 +3,8 @@
   "globalDependencies": [".env"],
   "globalEnv": [],
   "remoteCache": {
-    "enabled": true
+    "enabled": true,
+    "uploadTimeout": 180
   },
   "tasks": {
     "check-types": {
