@@ -22,19 +22,20 @@ import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
 import Notification from '@/components/Generic/Notification/Notification'
 import { TeapotCard } from '@/components/Generic/TeapotCard/TeapotCard'
+import { set } from 'zod'
 
 type AdminDashboardProps = {
   clients: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
   semesters: Semester[]
   projects: SemesterContainerData
-  totalPages?: number
+  totalNumPages?: number
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({
   clients,
   semesters: initialSemesters,
   projects,
-  totalPages = 0,
+  totalNumPages = 0,
 }) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
 
@@ -44,26 +45,40 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [clientsData, setClientsData] = useState(clients)
   const [pageNum, setPageNum] = useState(1)
   const [isFetching, setIsFetching] = useState(false)
+  const [totalPages, setTotalPages] = useState(totalNumPages)
   const itemsPerPage = 10
 
-  const searchForClients = async (searchValue: string) => {}
+  const searchForClients = async (searchValue: string) => {
+    const query = searchValue.trim().toLowerCase()
+    //console.log(query)
+    const res = await getAllClients({limit: itemsPerPage, page: 1, query})
+    setClientsData(res?.data || [])
+    setPageNum(1)
+    if (res?.totalPages) {
+      setTotalPages(res.totalPages)
+    } else {
+      setTotalPages(0)
+    }
+  }
 
   const updatePageCount = async (
     increment: boolean,
     firstPage: boolean = false,
     lastPage: boolean = false,
+    searchValue: string = '',
   ) => {
     //const pageParam = searchParams.get('page')
     //const pageNum = pageParam ? parseInt(pageParam, 10) : 1
     try {
       if (isFetching) return
       setIsFetching(true)
+      const query = searchValue.trim().toLowerCase()
       if (firstPage) {
         if (totalPages === 0 || pageNum === 1) {
           return
         }
         setPageNum(1)
-        const res = await getAllClients({ limit: itemsPerPage, page: 1 })
+        const res = await getAllClients({ limit: itemsPerPage, page: 1, query })
         setClientsData(res?.data || [])
         return
       }
@@ -72,20 +87,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           return
         }
         setPageNum(totalPages)
-        const res = await getAllClients({ limit: itemsPerPage, page: totalPages })
+        const res = await getAllClients({ limit: itemsPerPage, page: totalPages, query })
         setClientsData(res?.data || [])
         return
       }
       if (increment) {
         if (pageNum < totalPages) {
-          const res = await getAllClients({ limit: itemsPerPage, page: pageNum + 1 })
+          const res = await getAllClients({ limit: itemsPerPage, page: pageNum + 1, query })
           setPageNum(pageNum + 1)
           setClientsData(res?.data || [])
           //return clientsData
         }
       } else {
         if (pageNum > 1) {
-          const res = await getAllClients({ limit: itemsPerPage, page: pageNum - 1 })
+          const res = await getAllClients({ limit: itemsPerPage, page: pageNum - 1, query })
           setPageNum(pageNum - 1)
           setClientsData(res?.data || [])
           //return clientsData

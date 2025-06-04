@@ -37,7 +37,7 @@ const ProtectedAdminView = async (): Promise<JSX.Element> => {
         clients={clientsData}
         semesters={semestersData}
         projects={projectsData}
-        totalPages={totalPages}
+        totalNumPages={totalPages}
       />
     </div>
   )
