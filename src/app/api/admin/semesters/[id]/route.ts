@@ -71,10 +71,9 @@ class RouteWrapper {
    */
   @Security('jwt', ['admin'])
   static async DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-    const { id } = await params
-    const semesterDataService = new SemesterDataService()
-
     try {
+      const { id } = await params
+      const semesterDataService = new SemesterDataService()
       await semesterDataService.deleteSemester(id)
       const projectService = new ProjectService()
       const semesterProjects = await projectService.getAllSemesterProjectsBySemester(id)
