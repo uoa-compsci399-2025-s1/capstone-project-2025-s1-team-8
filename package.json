@@ -9,6 +9,8 @@
     "name": "UoA Compsci 399 2025 S1 Team 8"
   },
   "scripts": {
+    "turbo:build": "turbo build",
+    "turbo:test": "turbo test",
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build --experimental-build-mode compile",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev --turbopack",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
@@ -17,7 +19,8 @@
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "yassify": "prettier --write .",
     "storybook": "storybook dev -p 6006",
@@ -61,6 +64,7 @@
     "react-laag": "^2.0.5",
     "sharp": "0.32.6",
     "tailwindcss": "^4.1.8",
+    "turbo": "^2.5.4",
     "typescript": "5.7.3",
     "zod": "^3.25.48"
   },
@@ -100,6 +104,7 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
+      "@swc/core",
       "sharp"
     ]
   },
