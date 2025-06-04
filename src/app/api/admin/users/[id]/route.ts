@@ -7,6 +7,7 @@ import UserService from '@/data-layer/services/UserService'
 import { UserRole } from '@/types/User'
 import type { UserCombinedInfo } from '@/types/Collections'
 import { Security } from '@/business-layer/middleware/Security'
+import ProjectService from '@/data-layer/services/ProjectService'
 
 export const UpdateUserRequestBodySchema = z.object({
   firstName: z.string().optional(),
@@ -128,6 +129,11 @@ class RouteWrapper {
     try {
       const { id } = await params
       const userService = new UserService()
+      const projectService = new ProjectService()
+      const userProjects = await projectService.getProjectsByClientId(id)
+      for (const project of userProjects.docs) {
+        await projectService.deleteProject(project.id)
+      }
       await userService.deleteUser(id)
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
     } catch (error) {

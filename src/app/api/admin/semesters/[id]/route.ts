@@ -5,6 +5,7 @@ import { NotFound } from 'payload'
 import { z, ZodError } from 'zod'
 import SemesterService from '@/data-layer/services/SemesterService'
 import { Security } from '@/business-layer/middleware/Security'
+import ProjectService from '@/data-layer/services/ProjectService'
 
 export const UpdateSemesterRequestBody = z.object({
   name: z.string().optional(),
@@ -74,6 +75,11 @@ class RouteWrapper {
       const { id } = await params
       const semesterService = new SemesterService()
       await semesterService.deleteSemester(id)
+      const projectService = new ProjectService()
+      const semesterProjects = await projectService.getAllSemesterProjectsBySemester(id)
+      for (const semesterProject of semesterProjects.docs) {
+        await projectService.deleteSemesterProject(semesterProject.id)
+      }
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
     } catch (error) {
       if (error instanceof NotFound)

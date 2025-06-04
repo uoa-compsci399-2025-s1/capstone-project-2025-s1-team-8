@@ -135,6 +135,10 @@ class RouteWrapper {
         return NextResponse.json({ error: 'Unauthorized' }, { status: StatusCodes.UNAUTHORIZED })
       }
       await projectService.deleteProject(id)
+      const semesterProjects = await projectService.getSemesterProjectsByProject(id)
+      for (const semesterProject of semesterProjects) {
+        await projectService.deleteSemesterProject(semesterProject.id)
+      }
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
     } catch (error) {
       if (error instanceof NotFound) {
