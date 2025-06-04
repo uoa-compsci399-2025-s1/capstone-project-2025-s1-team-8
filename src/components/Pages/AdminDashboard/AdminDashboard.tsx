@@ -46,9 +46,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [isFetching, setIsFetching] = useState(false)
   const itemsPerPage = 10
 
-  const searchForClients = async (searchValue: string) => {
-    
-  }
+  const searchForClients = async (searchValue: string) => {}
 
   const updatePageCount = async (
     increment: boolean,
@@ -60,7 +58,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     try {
       if (isFetching) return
       setIsFetching(true)
-      console.log(totalPages, pageNum, firstPage, lastPage, increment)
       if (firstPage) {
         if (totalPages === 0 || pageNum === 1) {
           return
@@ -77,16 +74,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         setPageNum(totalPages)
         const res = await getAllClients({ limit: itemsPerPage, page: totalPages })
         setClientsData(res?.data || [])
-        console.log(clientsData)
         return
       }
       if (increment) {
         if (pageNum < totalPages) {
-          console.log(pageNum + 1)
           const res = await getAllClients({ limit: itemsPerPage, page: pageNum + 1 })
           setPageNum(pageNum + 1)
           setClientsData(res?.data || [])
-          console.log(clientsData)
           //return clientsData
         }
       } else {
@@ -94,7 +88,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           const res = await getAllClients({ limit: itemsPerPage, page: pageNum - 1 })
           setPageNum(pageNum - 1)
           setClientsData(res?.data || [])
-          console.log(clientsData)
           //return clientsData
         }
       }

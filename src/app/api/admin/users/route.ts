@@ -34,7 +34,11 @@ class RouteWrapper {
       )
     }
     const userService = new UserService()
-    const { docs: rawUserData, nextPage, totalPages } = await userService.getAllUsers({
+    const {
+      docs: rawUserData,
+      nextPage,
+      totalPages,
+    } = await userService.getAllUsers({
       limit,
       page,
       role: (userRole as UserRole) ?? undefined,

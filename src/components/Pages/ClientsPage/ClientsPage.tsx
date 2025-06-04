@@ -43,7 +43,9 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
         </span>
         <input
           value={searchValue ? searchValue : ''}
-          onChange={(e) => {setSearchValue(e.target.value); }}
+          onChange={(e) => {
+            setSearchValue(e.target.value)
+          }}
           placeholder="Search client..."
           className="pl-11 w-full placeholder-muted-blue text-dark-blue border-[1.5px] border-deeper-blue focus:outline focus:outline-deeper-blue rounded-full px-4 pt-2 pb-1.5 text-sm font-normal bg-light-beige"
         />
