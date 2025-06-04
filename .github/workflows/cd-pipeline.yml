@@ -42,16 +42,12 @@ jobs:
           version: latest
           run_install: false
 
-      - name: Restore Turborepo cache
-        id: cache
+      # Restore cached node_modules
+      - name: Restore node_modules
         uses: actions/cache@v4
         with:
-          path: |
-            .turbo
-            node_modules
-          key: ${{ runner.os }}-turbo-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-
+          path: node_modules
+          key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Prune developer dependencies
         run: pnpm install --prod --frozen-lockfile
