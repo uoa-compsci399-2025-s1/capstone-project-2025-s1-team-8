@@ -22,7 +22,6 @@ import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
 import Notification from '@/components/Generic/Notification/Notification'
 import { TeapotCard } from '@/components/Generic/TeapotCard/TeapotCard'
-import { set } from 'zod'
 
 type AdminDashboardProps = {
   clients: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
@@ -50,7 +49,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   const searchForClients = async (searchValue: string) => {
     const query = searchValue.trim().toLowerCase()
-    const res = await getAllClients({limit: itemsPerPage, page: 1, query})
+    const res = await getAllClients({ limit: itemsPerPage, page: 1, query })
     setClientsData(res?.data || [])
     setPageNum(1)
     if (res?.totalPages) {

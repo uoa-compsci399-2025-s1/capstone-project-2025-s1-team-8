@@ -34,21 +34,19 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
   isFetching,
 }) => {
   const [searchValue, setSearchValue] = useState('')
-  const [debouncedValue, setDebouncedValue] = useState('');
+  const [debouncedValue, setDebouncedValue] = useState('')
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      setDebouncedValue(searchValue);
-    }, 300);
+      setDebouncedValue(searchValue)
+    }, 300)
 
-    return () => clearTimeout(handler);
-  }, [searchValue]);
+    return () => clearTimeout(handler)
+  }, [searchValue])
 
   useEffect(() => {
-
     searchForClients(debouncedValue)
-
-  }, [debouncedValue]);
+  }, [debouncedValue])
 
   return (
     <div className="w-full">
@@ -59,7 +57,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
         <input
           value={searchValue ? searchValue : ''}
           onChange={(e) => {
-            setSearchValue(e.target.value);
+            setSearchValue(e.target.value)
           }}
           placeholder="Search client..."
           className="pl-11 w-full placeholder-muted-blue text-dark-blue border-[1.5px] border-deeper-blue focus:outline focus:outline-deeper-blue rounded-full px-4 pt-2 pb-1.5 text-sm font-normal bg-light-beige"

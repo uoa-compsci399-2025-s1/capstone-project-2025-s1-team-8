@@ -156,7 +156,7 @@ export const isCurrentOrUpcoming = async (id: string): Promise<'current' | 'upco
  * @returns All {@link UserCombinedInfo}'s with their projects
  */
 export const getAllClients = async (
-  options: { limit?: number; page?: number, query?: string } = {},
+  options: { limit?: number; page?: number; query?: string } = {},
 ): Promise<void | {
   data?: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
   nextPage?: number
