@@ -20,6 +20,11 @@ interface SemesterCardProps extends Semester {
     message?: string
   }>
   deletedProject: () => void
+  onDeleteSemester: (semesterId: string) => Promise<void | {
+    error?: string
+    message?: string
+  }>
+  deletedSemester?: () => void
 }
 const SemesterCard: React.FC<SemesterCardProps> = ({
   semester,
@@ -28,6 +33,8 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
   onEdit,
   onDeleteProject,
   deletedProject,
+  onDeleteSemester,
+  deletedSemester,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -129,7 +136,14 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
             className="absolute top-8.25 right-19 text-steel-blue hover:text-deep-teal cursor-pointer"
             aria-label="Edit"
           >
-            <EditDeleteDropdown containerWidth={200} onEdit={() => onEdit?.(semester.id)} />
+            <EditDeleteDropdown
+              containerWidth={200}
+              onEdit={() => onEdit?.(semester.id)}
+              onDelete={() => {
+                onDeleteSemester?.(semester.id)
+                deletedSemester?.()
+              }}
+            />
           </button>
 
           {/* Details Section */}

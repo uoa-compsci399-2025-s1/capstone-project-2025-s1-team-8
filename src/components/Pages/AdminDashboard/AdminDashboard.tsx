@@ -276,22 +276,22 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               >
                 <SemestersPage
                   semesters={semesters}
-                  created={async () => {
+                  createdSemester={async () => {
                     await refreshSemesters()
                     setNotificationMessage('Semester created successfully')
                   }}
-                  updated={async () => {
+                  updatedSemester={async () => {
                     await refreshSemesters()
                     setNotificationMessage('Semester updated successfully')
-                  }}
-                  deleted={async () => {
-                    await refreshProjects()
-                    await refreshSemesters()
-                    setNotificationMessage('Semester deleted successfully')
                   }}
                   handleCreateSemester={handleCreateSemester}
                   handleUpdateSemester={handleUpdateSemester}
                   handleDeleteSemester={handleDeleteSemester}
+                  deletedSemester={async () => {
+                    await refreshProjects()
+                    await refreshSemesters()
+                    setNotificationMessage('Semester deleted successfully')
+                  }}
                   handleGetAllSemesterProjects={handleGetAllSemesterProjects}
                   semesterStatuses={semesterStatuses}
                   onDeleteProject={handleDeleteProject}

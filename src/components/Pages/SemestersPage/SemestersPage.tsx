@@ -11,14 +11,12 @@ import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 
 interface SemestersPageProps {
   semesters: Semester[]
-  created: () => void
-  updated: () => void
-  deleted: () => void
   handleCreateSemester: (formData: FormData) => Promise<void | {
     error?: string
     message?: string
     details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
   }>
+  createdSemester: () => void
   handleUpdateSemester: (
     formData: FormData,
     id: string,
@@ -27,10 +25,12 @@ interface SemestersPageProps {
     message?: string
     details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
   }>
+  updatedSemester: () => void
   handleDeleteSemester: (id: string) => Promise<void | {
     error?: string
     message?: string
   }>
+  deletedSemester: () => void
   onDeleteProject: (projectId: string) => Promise<{
     error?: string
     message?: string
@@ -45,12 +45,12 @@ interface SemestersPageProps {
 
 const SemestersPage: React.FC<SemestersPageProps> = ({
   semesters,
-  created,
-  updated,
-  deleted,
   handleCreateSemester,
+  createdSemester,
   handleUpdateSemester,
+  updatedSemester,
   handleDeleteSemester,
+  deletedSemester,
   handleGetAllSemesterProjects,
   semesterStatuses = {},
   onDeleteProject,
@@ -112,6 +112,8 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
             onEdit={callSemesterForm}
             onDeleteProject={onDeleteProject}
             deletedProject={deletedProject}
+            onDeleteSemester={handleDeleteSemester}
+            deletedSemester={deletedSemester}
           />
         </div>
       ))}
@@ -125,15 +127,15 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
           setEditingSemesterId(null)
         }}
         onCreated={() => {
-          created?.()
+          createdSemester?.()
           setEditingSemesterId(null)
         }}
         onUpdated={() => {
-          updated?.()
+          updatedSemester?.()
           setEditingSemesterId(null)
         }}
         onDeleted={() => {
-          deleted?.()
+          deletedSemester?.()
           setEditingSemesterId(null)
         }}
         handleCreateSemester={handleCreateSemester}
