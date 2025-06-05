@@ -32,9 +32,9 @@ interface SemestersPageProps {
     message?: string
   }>
   handleGetAllSemesterProjects: (semesterId: string) => Promise<void | {
-  error?: string
-  data?: ProjectDetails[]
-}>
+    error?: string
+    data?: ProjectDetails[]
+  }>
   semesterStatuses?: Record<string, 'current' | 'upcoming' | ''>
 }
 

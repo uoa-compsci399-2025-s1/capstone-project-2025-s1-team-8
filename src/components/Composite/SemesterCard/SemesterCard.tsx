@@ -16,7 +16,11 @@ interface SemesterCardProps extends Semester {
   }>
   currentOrUpcoming?: 'current' | 'upcoming' | ''
 }
-const SemesterCard: React.FC<SemesterCardProps> = ({ semester, handleGetAllSemesterProjects, currentOrUpcoming }) => {
+const SemesterCard: React.FC<SemesterCardProps> = ({
+  semester,
+  handleGetAllSemesterProjects,
+  currentOrUpcoming,
+}) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
@@ -32,7 +36,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({ semester, handleGetAllSemes
   }, [isOpen])
 
   const onOpen = async () => {
-    if (!isOpen){
+    if (!isOpen) {
       if (semester.id in semesterProjectRef.current) {
         return setSemesterProjects(semesterProjectRef.current[semester.id])
       }
@@ -51,7 +55,10 @@ const SemesterCard: React.FC<SemesterCardProps> = ({ semester, handleGetAllSemes
     <div className="relative w-full flex flex-col gap-4">
       {/* Semester Card */}
       <div
-        onClick={async () => { await onOpen(); setIsOpen(!isOpen)}} // should load projects
+        onClick={async () => {
+          await onOpen()
+          setIsOpen(!isOpen)
+        }} // should load projects
         className={`
       ${
         currentOrUpcoming === 'upcoming' || currentOrUpcoming === 'current'

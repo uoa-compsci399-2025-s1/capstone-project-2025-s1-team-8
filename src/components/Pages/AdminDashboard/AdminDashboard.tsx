@@ -249,7 +249,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   handleCreateSemester={handleCreateSemester}
                   handleUpdateSemester={handleUpdateSemester}
                   handleDeleteSemester={handleDeleteSemester}
-                  handleGetAllSemesterProjects = {handleGetAllSemesterProjects}
+                  handleGetAllSemesterProjects={handleGetAllSemesterProjects}
                   semesterStatuses={semesterStatuses}
                 />
               </div>

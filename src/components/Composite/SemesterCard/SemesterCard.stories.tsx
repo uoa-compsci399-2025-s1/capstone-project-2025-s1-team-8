@@ -24,7 +24,7 @@ export const CurrentSemester: Story = {
       return {
         data: [{ ...projectMock, semesters: [mockSemesters[1]] }],
       }
-    }
+    },
   },
 }
 
