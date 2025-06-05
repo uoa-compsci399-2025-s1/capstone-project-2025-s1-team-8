@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
+import type { ReactNode } from 'react'
 import ProjectCard from '@/components/Generic/ProjectCard/ProjectCard'
 import type { ProjectDetails } from '@/types/Project'
-import { IconBaseProps } from 'react-icons'
 
 interface ProjectListProps {
   className?: string
