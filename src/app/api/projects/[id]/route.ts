@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 import { NotFound } from 'payload'
 import { z, ZodError } from 'zod'
-import ProjectService from '@/data-layer/services/ProjectService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import { Security } from '@/business-layer/middleware/Security'
 import type { RequestWithUser } from '@/types/Requests'
 import { MediaSchema, UserSchema } from '@/types/Payload'
@@ -10,7 +10,7 @@ import { UserRole } from '@/types/User'
 import type { Semester, User } from '@/payload-types'
 import type { CreateSemesterProjectData } from '@/types/Collections'
 import { ProjectStatus } from '@/types/Project'
-import SemesterService from '@/data-layer/services/SemesterService'
+import SemesterService from '@/data-layer/services/SemesterDataService'
 
 export const UpdateProjectRequestBodySchema = z.object({
   name: z.string().optional(),
@@ -42,9 +42,9 @@ class RouteWrapper {
   @Security('jwt', ['admin', 'client'])
   static async GET(req: RequestWithUser, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    const projectService = new ProjectService()
+    const projectDataService = new ProjectDataService()
     try {
-      const project = await projectService.getProjectById(id)
+      const project = await projectDataService.getProjectById(id)
       if (
         req.user.role !== UserRole.Admin &&
         (project.client as User).id !== req.user.id &&
@@ -87,9 +87,10 @@ class RouteWrapper {
   @Security('jwt', ['admin', 'client'])
   static async PATCH(req: RequestWithUser, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    const projectService = new ProjectService()
+    const projectDataService = new ProjectDataService()
+    const semesterDataService = new SemesterService()
     try {
-      const project = await projectService.getProjectById(id)
+      const project = await projectDataService.getProjectById(id)
       if (
         req.user.role !== UserRole.Admin &&
         (project.client as User).id !== req.user.id &&
@@ -98,12 +99,12 @@ class RouteWrapper {
         return NextResponse.json({ error: 'Unauthorized' }, { status: StatusCodes.UNAUTHORIZED })
       }
       const body = UpdateProjectRequestBodySchema.parse(await req.json())
-      const data = await projectService.updateProject(id, body)
+      const data = await projectDataService.updateProject(id, body)
       // handle creating semester project
       if (body.semesters) {
         // @TODO it created sem proj in a sem that already exists
         // get all semester projects of this project
-        const existingSemesterProjects = await projectService.getSemesterProjectsByProject(id)
+        const existingSemesterProjects = await projectDataService.getSemesterProjectsByProject(id)
         // go through all selected semesters in form data, and create a semester project if it doesn't exist
         for (const selectedSemester of body.semesters) {
           const semesterProjectExists = (existingSemesterProjects || []).some(
@@ -112,9 +113,8 @@ class RouteWrapper {
             },
           )
           if (!semesterProjectExists) {
-            const semesterService = new SemesterService()
-            const semester = await semesterService.getSemester(selectedSemester)
-            const semesterProject = await projectService.createSemesterProject({
+            const semester = await semesterDataService.getSemester(selectedSemester)
+            const semesterProject = await projectDataService.createSemesterProject({
               project: data,
               status: ProjectStatus.Pending,
               published: false,
@@ -157,10 +157,10 @@ class RouteWrapper {
   @Security('jwt', ['admin', 'client'])
   static async DELETE(req: RequestWithUser, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    const projectService = new ProjectService()
-    console.log('deleting project', id)
+    const projectDataService = new ProjectDataService()
+
     try {
-      const project = await projectService.getProjectById(id)
+      const project = await projectDataService.getProjectById(id)
       if (
         req.user.role !== UserRole.Admin &&
         (project.client as User).id !== req.user.id &&
@@ -168,10 +168,10 @@ class RouteWrapper {
       ) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: StatusCodes.UNAUTHORIZED })
       }
-      await projectService.deleteProject(id)
-      const semesterProjects = await projectService.getSemesterProjectsByProject(id)
+      await projectDataService.deleteProject(id)
+      const semesterProjects = await projectDataService.getSemesterProjectsByProject(id)
       for (const semesterProject of semesterProjects) {
-        await projectService.deleteSemesterProject(semesterProject.id)
+        await projectDataService.deleteSemesterProject(semesterProject.id)
       }
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
     } catch (error) {

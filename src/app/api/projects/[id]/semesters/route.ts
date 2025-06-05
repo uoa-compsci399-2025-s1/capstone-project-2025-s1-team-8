@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { NotFound } from 'payload'
 import { z } from 'zod'
 
-import ProjectService from '@/data-layer/services/ProjectService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import type { Semester, SemesterProject, User } from '@/payload-types'
 import { Security } from '@/business-layer/middleware/Security'
 import type { RequestWithUser } from '@/types/Requests'
@@ -26,9 +26,9 @@ class RouteWrapper {
     },
   ) {
     const { id } = await params
-    const projectService = new ProjectService()
+    const projectDataService = new ProjectDataService()
     try {
-      const project = await projectService.getProjectById(id)
+      const project = await projectDataService.getProjectById(id)
       if (
         req.user.role !== UserRole.Admin &&
         (project.client as User).id !== req.user.id &&
@@ -42,7 +42,7 @@ class RouteWrapper {
         )
       }
 
-      const semesterProjects = await projectService.getSemesterProjectsByProject(project.id)
+      const semesterProjects = await projectDataService.getSemesterProjectsByProject(project.id)
       const semestersMap: Map<string, Semester> = new Map()
       semesterProjects.forEach((semesterProject: SemesterProject) => {
         const semester = semesterProject.semester as Semester

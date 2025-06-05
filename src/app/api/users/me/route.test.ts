@@ -8,11 +8,11 @@ import { adminToken, clientToken, studentToken } from '@/test-config/routes-setu
 import { adminMock, clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 import { clientAdditionalInfoCreateMock } from '@/test-config/mocks/User.mock'
 import type { UserCombinedInfo } from '@/types/Collections'
-import UserService from '@/data-layer/services/UserService'
+import UserDataService from '@/data-layer/services/UserDataService'
 
 describe('tests /api/users/me', async () => {
   const cookieStore = await cookies()
-  const userService = new UserService()
+  const userDataService = new UserDataService()
 
   describe('GET /api/users/me', () => {
     it('should return a 401 if no user is authenticated', async () => {
@@ -54,7 +54,7 @@ describe('tests /api/users/me', async () => {
     it("update client user's firstName", async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
 
-      await userService.createClientAdditionalInfo({
+      await userDataService.createClientAdditionalInfo({
         ...clientAdditionalInfoCreateMock,
         client: clientMock.id,
       })
@@ -80,7 +80,7 @@ describe('tests /api/users/me', async () => {
     it('update name, intro, affiliation of client user with no AdditionalClientInfo', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
 
-      await userService.createClientAdditionalInfo({
+      await userDataService.createClientAdditionalInfo({
         ...clientAdditionalInfoCreateMock,
         client: clientMock,
       })

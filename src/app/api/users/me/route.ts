@@ -3,7 +3,7 @@ import type { UserCombinedInfo } from '@/types/Collections'
 import { NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
 import { MediaSchema } from '@/types/Payload'
-import UserService from '@/data-layer/services/UserService'
+import UserDataService from '@/data-layer/services/UserDataService'
 import { UserRole } from '@/types/User'
 import { NotFound } from 'payload'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
@@ -31,9 +31,9 @@ class RouteWrapper {
     const { user } = req
     let clientAdditionalInfo
     if (user.role === UserRole.Client || user.role === UserRole.Admin) {
-      const userService = new UserService()
-      clientAdditionalInfo = await userService.getClientAdditionalInfo(user.id)
-      const userInfo = await userService.getUser(user.id)
+      const userDataService = new UserDataService()
+      clientAdditionalInfo = await userDataService.getClientAdditionalInfo(user.id)
+      const userInfo = await userDataService.getUser(user.id)
       return NextResponse.json({
         data: { ...userInfo, ...clientAdditionalInfo },
       })
@@ -56,18 +56,18 @@ class RouteWrapper {
     try {
       const body = UpdateUserRequestBody.parse(await req.json())
       const { introduction: bodyIntroduction, affiliation: bodyAffiliation } = body
-      const userService = new UserService()
-      const updatedUser = await userService.updateUser(user.id, body)
+      const userDataService = new UserDataService()
+      const updatedUser = await userDataService.updateUser(user.id, body)
       if (user.role === UserRole.Client || user.role === UserRole.Admin) {
-        let clientInfo = await userService.getClientAdditionalInfo(user.id)
+        let clientInfo = await userDataService.getClientAdditionalInfo(user.id)
         if (!clientInfo) {
-          clientInfo = await userService.createClientAdditionalInfo({
+          clientInfo = await userDataService.createClientAdditionalInfo({
             client: updatedUser,
             introduction: bodyIntroduction,
             affiliation: bodyAffiliation,
           })
         } else {
-          clientInfo = await userService.updateClientAdditionalInfo(clientInfo.id, {
+          clientInfo = await userDataService.updateClientAdditionalInfo(clientInfo.id, {
             ...updatedUser,
             introduction: bodyIntroduction,
             affiliation: bodyAffiliation,

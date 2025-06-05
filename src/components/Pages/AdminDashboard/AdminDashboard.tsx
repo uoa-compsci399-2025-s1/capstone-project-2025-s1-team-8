@@ -31,12 +31,14 @@ type AdminDashboardProps = {
   clients: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
   semesters: Semester[]
   projects: SemesterContainerData
+  totalNumPages?: number
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({
   clients: initialClients,
   semesters: initialSemesters,
   projects: initialProjects,
+  totalNumPages = 0,
 }) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
 
@@ -46,6 +48,66 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [clients, setClients] =
     useState<{ client: UserCombinedInfo; projects: ProjectDetails[] }[]>(initialClients)
   const [projects, setProjects] = useState<SemesterContainerData>(initialProjects)
+  const [pageNum, setPageNum] = useState(1)
+  const [isFetching, setIsFetching] = useState(false)
+  const [totalPages, setTotalPages] = useState(totalNumPages)
+  const itemsPerPage = 10
+
+  const searchForClients = async (searchValue: string) => {
+    const query = searchValue.trim().toLowerCase()
+    const res = await getAllClients({ limit: itemsPerPage, page: 1, query })
+    setClients(res?.data || [])
+    setPageNum(1)
+    if (res?.totalPages) {
+      setTotalPages(res.totalPages)
+    } else {
+      setTotalPages(0)
+    }
+  }
+
+  const updatePageCount = async (
+    increment: boolean,
+    firstPage: boolean = false,
+    lastPage: boolean = false,
+    searchValue: string = '',
+  ) => {
+    try {
+      if (isFetching) return
+      setIsFetching(true)
+      const query = searchValue.trim().toLowerCase()
+      if (firstPage) {
+        if (totalPages === 0 || pageNum === 1) {
+          return
+        }
+        setPageNum(1)
+        const res = await getAllClients({ limit: itemsPerPage, page: 1, query })
+        return setClients(res?.data || [])
+      }
+      if (lastPage) {
+        if (totalPages === 0 || pageNum === totalPages) {
+          return
+        }
+        setPageNum(totalPages)
+        const res = await getAllClients({ limit: itemsPerPage, page: totalPages, query })
+        return setClients(res?.data || [])
+      }
+      if (increment) {
+        if (pageNum < totalPages) {
+          const res = await getAllClients({ limit: itemsPerPage, page: pageNum + 1, query })
+          setPageNum(pageNum + 1)
+          setClients(res?.data || [])
+        }
+      } else {
+        if (pageNum > 1) {
+          const res = await getAllClients({ limit: itemsPerPage, page: pageNum - 1, query })
+          setPageNum(pageNum - 1)
+          setClients(res?.data || [])
+        }
+      }
+    } finally {
+      setIsFetching(false)
+    }
+  }
 
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
@@ -148,7 +210,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 tabIndex={activeNav === 1 ? 0 : -1}
               >
                 <ClientsPage
-                  clients={clients}
+                  clientsData={clients}
+                  updatePageCount={updatePageCount}
+                  totalPages={totalPages}
+                  searchForClients={searchForClients}
                   onUpdateClient={handleUpdateClient}
                   onDeleteClient={handleDeleteClient}
                   updatedClient={async () => {
@@ -164,6 +229,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     refreshProjects()
                     setNotificationMessage('Project deleted successfully')
                   }}
+                  isFetching={isFetching}
+                  pageNum={pageNum}
                 />
               </div>
 

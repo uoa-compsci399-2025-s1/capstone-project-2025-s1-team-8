@@ -8,6 +8,8 @@ import type { Project, Semester } from '@/payload-types'
 import { type ProjectDetails, ProjectStatus } from '@/types/Project'
 import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import type { UpdateUserRequestBody } from '@/app/api/admin/users/[id]/route'
+import { UserRole } from '@/types/User'
+
 /**
  * Handles the click event to create semester
  *
@@ -149,10 +151,14 @@ export const isCurrentOrUpcoming = async (id: string): Promise<'current' | 'upco
  *
  * @returns All {@link UserCombinedInfo}'s with their projects
  */
-export const getAllClients = async (): Promise<void | {
+export const getAllClients = async (
+  options: { limit?: number; page?: number; query?: string } = {},
+): Promise<void | {
   data?: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
+  nextPage?: number
+  totalPages?: number
 }> => {
-  const getClientsResponse = await AdminService.getAllUsers()
+  const getClientsResponse = await AdminService.getAllUsers({ ...options, role: UserRole.Client })
   const clientsWithProjects = await Promise.all(
     (getClientsResponse.data ?? []).map(async (client) => {
       const projectsResponse = await AdminService.getProjectsByUserId(client.id)
@@ -162,7 +168,11 @@ export const getAllClients = async (): Promise<void | {
       }
     }),
   )
-  return { data: clientsWithProjects }
+  return {
+    data: clientsWithProjects,
+    nextPage: getClientsResponse.nextPage,
+    totalPages: getClientsResponse.totalPages,
+  }
 }
 
 /**

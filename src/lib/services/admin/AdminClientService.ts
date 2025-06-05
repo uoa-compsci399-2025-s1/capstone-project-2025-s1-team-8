@@ -20,15 +20,16 @@ const AdminClientService = {
   ): Promise<{
     status: StatusCodes
     data?: UserCombinedInfo[]
-    nextPage?: string
+    nextPage?: number
+    totalPages?: number
     error?: string
   }> {
     'use server'
     const url = buildNextRequestURL('/api/admin/users', options)
     const response = await GetUsers(await buildNextRequest(url, { method: 'GET' }))
-    const { data, nextPage, error } = { ...(await response.json()) }
+    const { data, nextPage, totalPages, error } = { ...(await response.json()) }
 
-    return { status: response.status, data, nextPage, error }
+    return { status: response.status, data, nextPage, totalPages, error }
   },
 
   getUserById: async function (userId: string): Promise<{

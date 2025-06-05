@@ -57,7 +57,6 @@ const ProtectedFormView: FC = () => {
 
   const [specialEquipmentRequirements, setSpecialEquipmentRequirements] = useState<string>('')
   const [numberOfTeams, setNumberOfTeams] = useState<string>('')
-  const [futureConsideration, setFutureConsideration] = useState<string>('')
 
   const handleChange = (index: number, field: keyof CreateProjectClient, value: string) => {
     const updated = [...otherClientDetails]
@@ -77,7 +76,6 @@ const ProtectedFormView: FC = () => {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<FormProject>()
 
@@ -102,14 +100,11 @@ const ProtectedFormView: FC = () => {
         setNumberOfTeams(res.projectData.numberOfTeams || '')
         setValue('desiredTeamSkills', res.projectData.desiredTeamSkills || '')
         setValue('availableResources', res.projectData.availableResources || '')
-        setFutureConsideration(res.projectData.futureConsideration ? 'Yes' : 'No')
         setValue('meetingAttendance', true)
         setValue('finalPresentationAttendance', true)
         setValue('projectSupportAndMaintenance', true)
-        if (res.projectData.futureConsideration) {
-          const semesterIds = (res.projectData.semesters || []).map((sem) => sem.id)
-          setValue('semesters', semesterIds || [])
-        }
+        const semesterIds = (res.projectData.semesters || []).map((sem) => sem.id)
+        setValue('semesters', semesterIds || [])
       }
       setUpcomingSemesterOptions(
         res.upcomingSemesters.map((semester) => ({
@@ -129,14 +124,12 @@ const ProtectedFormView: FC = () => {
     })
   }, [])
 
-  const hasFutureConsideration = String(watch('futureConsideration')) === 'Yes'
   const onSubmit: SubmitHandler<FormProject> = async (data) => {
     console.log(data)
     if (nextSemesterOption) {
       data.semesters.push(nextSemesterOption?.value) // Add the next semester to the list of semesters
     }
     data.additionalClients = otherClientDetails
-    data.futureConsideration = hasFutureConsideration
 
     const res = await handleProjectFormSubmission(data as CreateProjectRequestBody)
 
@@ -155,7 +148,6 @@ const ProtectedFormView: FC = () => {
       return
     }
     data.additionalClients = otherClientDetails
-    data.futureConsideration = hasFutureConsideration
     data.semesters = data.semesters || []
     const {
       meetingAttendance: _meetingAttendance,
@@ -504,40 +496,15 @@ const ProtectedFormView: FC = () => {
                 />
               </li>
               <li>
-                <label htmlFor="FutureConsideration">
-                  Future consideration <span className="text-pink-accent">*</span>
-                </label>
-                <p className="form-question-subheading">
-                  If your project is not selected by students in the upcoming semester
-                  {nextSemesterOption ? ', ' + nextSemesterOption.label : ''}, would you like it to
-                  be considered for following semesters?
-                </p>
-                <Radio
-                  values={['Yes', 'No']}
-                  required={false}
-                  error={!!errors.futureConsideration}
-                  errorMessage={errors.futureConsideration?.message}
-                  defaultValue={futureConsideration}
-                  {...register('futureConsideration', {
-                    required: 'Future consideration is required',
-                  })}
-                />
-              </li>
-              <li>
                 <label htmlFor="FutureSemesters">Future Semesters</label>
                 <p className="form-question-subheading">
-                  If you replied yes to the question above, what semesters would you like your
-                  project to be considered for?
+                  If you would like this project to be considered for future semesters, please
+                  select from the list of semesters below:
                 </p>
                 <Checkbox
                   options={upcomingSemesterOptions.slice(0, -2)}
                   error={!!errors.semesters}
                   errorMessage={errors.semesters?.message}
-                  {...register('semesters', {
-                    required: hasFutureConsideration
-                      ? 'Please select at least one semester'
-                      : false,
-                  })}
                 />
               </li>
               <li className={projectId ? 'hidden' : ''}>

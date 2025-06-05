@@ -3,14 +3,14 @@ import type { NextRequest } from 'next/server'
 import { cookies } from 'next/headers'
 
 import { paramsToPromise } from '@/test-config/utils'
-import SemesterService from '@/data-layer/services/SemesterService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 import { GET } from '@/app/api/semesters/[id]/route'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { clientToken, studentToken } from '@/test-config/routes-setup'
 
 describe('/api/admin/semesters/[id]', async () => {
-  const semesterService = new SemesterService()
+  const semesterDataService = new SemesterDataService()
   const cookieStore = await cookies()
 
   describe('GET /api/admin/semesters/[id]', () => {
@@ -25,7 +25,7 @@ describe('/api/admin/semesters/[id]', async () => {
 
     it('should get a semester correctly', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
-      const newSem = await semesterService.createSemester(semesterCreateMock)
+      const newSem = await semesterDataService.createSemester(semesterCreateMock)
       const slug = { id: newSem.id }
       const res = await GET({} as NextRequest, {
         params: paramsToPromise(slug),

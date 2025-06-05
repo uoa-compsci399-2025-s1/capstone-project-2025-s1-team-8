@@ -2,22 +2,22 @@ import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 
 import { createMockNextPostRequest, createMockNextRequest } from '@/test-config/utils'
-import ProjectService from '@/data-layer/services/ProjectService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 import type { CreateProjectRequestBody, CreateProjectResponse } from './route'
 import { GET, POST } from './route'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import { clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
-import UserService from '@/data-layer/services/UserService'
-import SemesterService from '@/data-layer/services/SemesterService'
+import UserDataService from '@/data-layer/services/UserDataService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 import type { Project } from '@/payload-types'
 
 describe('test /api/projects', async () => {
-  const projectService = new ProjectService()
-  const userService = new UserService()
-  const semesterService = new SemesterService()
+  const projectDataService = new ProjectDataService()
+  const userDataService = new UserDataService()
+  const semesterDataService = new SemesterDataService()
   const cookieStore = await cookies()
 
   describe('GET /api/projects', () => {
@@ -43,8 +43,8 @@ describe('test /api/projects', async () => {
 
     it('should return a list of all projects created', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      await projectService.createProject(projectCreateMock)
-      await projectService.createProject(projectCreateMock)
+      await projectDataService.createProject(projectCreateMock)
+      await projectDataService.createProject(projectCreateMock)
       const res = await GET(createMockNextRequest('api/projects'))
       expect(res.status).toBe(StatusCodes.OK)
       const data = await res.json()
@@ -61,9 +61,9 @@ describe('test /api/projects', async () => {
 
     it('should return a list of all projects created with pagination', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      await projectService.createProject(projectCreateMock)
-      await projectService.createProject(projectCreateMock)
-      await projectService.createProject(projectCreateMock)
+      await projectDataService.createProject(projectCreateMock)
+      await projectDataService.createProject(projectCreateMock)
+      await projectDataService.createProject(projectCreateMock)
       const res1 = await GET(createMockNextRequest('api/projects?page=2&limit=2'))
       expect(res1.status).toBe(StatusCodes.OK)
       const data1 = await res1.json()
@@ -79,12 +79,12 @@ describe('test /api/projects', async () => {
 
     it('should only return projects related to the client', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      const relatedProject = await projectService.createProject({
+      const relatedProject = await projectDataService.createProject({
         ...projectCreateMock,
         client: studentMock,
         additionalClients: [clientMock],
       })
-      await projectService.createProject({ ...projectCreateMock, client: studentMock })
+      await projectDataService.createProject({ ...projectCreateMock, client: studentMock })
 
       const res = await GET(createMockNextRequest('api/projects'))
 
@@ -109,7 +109,7 @@ describe('test /api/projects', async () => {
 
     it('should create a project', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      const semester = await semesterService.createSemester(semesterCreateMock)
+      const semester = await semesterDataService.createSemester(semesterCreateMock)
       const payload: CreateProjectRequestBody = {
         ...projectCreateMock,
         additionalClients: undefined,
@@ -123,7 +123,7 @@ describe('test /api/projects', async () => {
       const project = (await res.json()).data
 
       expect(res.status).toBe(StatusCodes.CREATED)
-      const fetchedProject = await projectService.getProjectById(project.id)
+      const fetchedProject = await projectDataService.getProjectById(project.id)
       expect(project).toEqual(fetchedProject)
       expect(fetchedProject.client).toStrictEqual(clientMock)
 
@@ -147,7 +147,7 @@ describe('test /api/projects', async () => {
       const res2 = await POST(req2)
       expect(res2.status).toBe(StatusCodes.CREATED)
       const project2 = await res2.json()
-      expect(project2.data).toEqual(await projectService.getProjectById(project2.data.id))
+      expect(project2.data).toEqual(await projectDataService.getProjectById(project2.data.id))
     })
 
     it('should create a new client if the additional clients are non-existent', async () => {
@@ -158,7 +158,7 @@ describe('test /api/projects', async () => {
         lastName: 'lastname',
         email: 'nonexistent@gmail.com',
       }
-      await expect(userService.getUserByEmail(additionalClientMock.email)).rejects.toThrow(
+      await expect(userDataService.getUserByEmail(additionalClientMock.email)).rejects.toThrow(
         'Not Found',
       )
 
@@ -171,7 +171,7 @@ describe('test /api/projects', async () => {
       )
       const json: CreateProjectResponse = await res.json()
       expect(res.status).toBe(StatusCodes.CREATED)
-      expect([await userService.getUserByEmail(additionalClientMock.email)]).toStrictEqual(
+      expect([await userDataService.getUserByEmail(additionalClientMock.email)]).toStrictEqual(
         json.data?.additionalClients,
       )
     })
@@ -179,8 +179,8 @@ describe('test /api/projects', async () => {
     it('should create corresponding semester projects on project creation', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
 
-      const semester1 = await semesterService.createSemester(semesterCreateMock)
-      const semester2 = await semesterService.createSemester(semesterCreateMock)
+      const semester1 = await semesterDataService.createSemester(semesterCreateMock)
+      const semester2 = await semesterDataService.createSemester(semesterCreateMock)
 
       const res = await POST(
         createMockNextPostRequest('', {
@@ -191,7 +191,7 @@ describe('test /api/projects', async () => {
       expect(res.status).toBe(StatusCodes.CREATED)
 
       const json: CreateProjectResponse = await res.json()
-      const projectsInSemester1 = await projectService.getAllSemesterProjectsBySemester(
+      const projectsInSemester1 = await projectDataService.getAllSemesterProjectsBySemester(
         semester1.id,
       )
       expect(
@@ -200,7 +200,7 @@ describe('test /api/projects', async () => {
         ),
       ).toBeTruthy()
 
-      const projectsInSemester2 = await projectService.getAllSemesterProjectsBySemester(
+      const projectsInSemester2 = await projectDataService.getAllSemesterProjectsBySemester(
         semester2.id,
       )
       expect(

@@ -3,9 +3,9 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { NotFound } from 'payload'
 import { z, ZodError } from 'zod'
-import SemesterService from '@/data-layer/services/SemesterService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { Security } from '@/business-layer/middleware/Security'
-import ProjectService from '@/data-layer/services/ProjectService'
+import ProjectService from '@/data-layer/services/ProjectDataService'
 
 export const UpdateSemesterRequestBody = z.object({
   name: z.string().optional(),
@@ -42,10 +42,10 @@ class RouteWrapper {
     },
   ) {
     const { id } = await params
-    const semesterService = new SemesterService()
+    const semesterDataService = new SemesterDataService()
     try {
       const parsedBody = UpdateSemesterRequestBody.parse(await req.json())
-      const semester = await semesterService.updateSemester(id, parsedBody)
+      const semester = await semesterDataService.updateSemester(id, parsedBody)
       return NextResponse.json({ data: semester })
     } catch (error) {
       if (error instanceof ZodError) {
@@ -71,10 +71,11 @@ class RouteWrapper {
    */
   @Security('jwt', ['admin'])
   static async DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params
+    const semesterDataService = new SemesterDataService()
+
     try {
-      const { id } = await params
-      const semesterService = new SemesterService()
-      await semesterService.deleteSemester(id)
+      await semesterDataService.deleteSemester(id)
       const projectService = new ProjectService()
       const semesterProjects = await projectService.getAllSemesterProjectsBySemester(id)
       for (const semesterProject of semesterProjects.docs) {

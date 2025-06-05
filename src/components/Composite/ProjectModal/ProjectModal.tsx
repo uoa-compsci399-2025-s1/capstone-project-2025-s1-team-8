@@ -171,13 +171,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             text={projectInfo.numberOfTeams}
           />
 
-          <Capsule className="col-start-1" variant="muted_blue" text="Future consideration" />
-          <Capsule
-            className="col-start-1 md:col-start-2 mb-4 md:mb-2"
-            variant="beige"
-            text={projectInfo.futureConsideration ? 'Yes' : 'No'}
-          />
-
           <Capsule className="col-start-1" variant="muted_blue" text="Semesters" />
           <div className="col-start-1 md:col-start-2 flex flex-row flex-wrap gap-2">
             {semesters.map((semester) => (

@@ -4,18 +4,18 @@ import {
   createMockNextRequest,
   paramsToPromise,
 } from '@/test-config/utils'
-import ProjectService from '@/data-layer/services/ProjectService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import { PATCH, DELETE } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
-import SemesterService from '@/data-layer/services/SemesterService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { semesterCreateMock, semesterMock } from '@/test-config/mocks/Semester.mock'
 import { cookies } from 'next/headers'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
 describe('test api/semester/[id]/projects[/projectId]', async () => {
-  const projectService = new ProjectService()
-  const semesterService = new SemesterService()
+  const projectDataService = new ProjectDataService()
+  const semesterDataService = new SemesterDataService()
   const cookieStore = await cookies()
 
   describe('test PATCH /api/semesters/[id]/projects/[projectId]', () => {
@@ -57,7 +57,7 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
 
     it("Should return a 404 error if the project doesn't exist", async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const semester = await semesterService.createSemester(semesterMock)
+      const semester = await semesterDataService.createSemester(semesterMock)
       const res = await PATCH(createMockNextPatchRequest('', { semesterProjectCreateMock }), {
         params: paramsToPromise({ id: semester.id, projectId: '123' }),
       })
@@ -67,8 +67,8 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
 
     it('Should return a 404 error if the project is not in the semester', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const semester = await semesterService.createSemester(semesterMock)
-      const semesterProject = await projectService.createSemesterProject({
+      const semester = await semesterDataService.createSemester(semesterMock)
+      const semesterProject = await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         semester: semester.id,
       })
@@ -87,8 +87,8 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
 
     it('Should return a 200 response with the project if it exists in the semester', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const semester = await semesterService.createSemester(semesterMock)
-      const semesterProject = await projectService.createSemesterProject({
+      const semester = await semesterDataService.createSemester(semesterMock)
+      const semesterProject = await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         semester: semester.id,
       })
@@ -103,7 +103,7 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
       )
       expect(res.status).toBe(StatusCodes.OK)
       expect((await res.json()).data).toEqual(
-        await projectService.getSemesterProject(semesterProject.id),
+        await projectDataService.getSemesterProject(semesterProject.id),
       )
     })
   })
@@ -135,8 +135,8 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
 
     it('not found - delete project by non existent project ID', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const semesterService = new SemesterService()
-      const createdSemester = await semesterService.createSemester(semesterMock)
+      const semesterDataService = new SemesterDataService()
+      const createdSemester = await semesterDataService.createSemester(semesterMock)
       const id = createdSemester.id
       const res = await DELETE(
         createMockNextRequest(`api/semesters/${id}/projects/'non-existent'`),
@@ -151,8 +151,8 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
 
     it('not found - delete project by non existent semester ID', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const createdSemester = await semesterService.createSemester(semesterMock)
-      const createdSemesterProject = await projectService.createSemesterProject({
+      const createdSemester = await semesterDataService.createSemester(semesterMock)
+      const createdSemesterProject = await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         semester: createdSemester.id,
       })
@@ -170,9 +170,9 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
 
     it('delete a semester project with affiliated semester', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const semesterService = new SemesterService()
-      const createdSemester = await semesterService.createSemester(semesterMock)
-      const createdSemesterProject = await projectService.createSemesterProject({
+      const semesterDataService = new SemesterDataService()
+      const createdSemester = await semesterDataService.createSemester(semesterMock)
+      const createdSemesterProject = await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         semester: createdSemester.id,
       })
@@ -189,13 +189,13 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
 
     it('bad request - delete a semester project with not affiliated semester', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const semesterService = new SemesterService()
-      const createdSemester = await semesterService.createSemester(semesterCreateMock)
-      const createdSemesterProject = await projectService.createSemesterProject({
+      const semesterDataService = new SemesterDataService()
+      const createdSemester = await semesterDataService.createSemester(semesterCreateMock)
+      const createdSemesterProject = await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         semester: createdSemester.id,
       })
-      const wrongSemester = await semesterService.createSemester(semesterMock)
+      const wrongSemester = await semesterDataService.createSemester(semesterMock)
       const id = wrongSemester.id
       const projectId = createdSemesterProject.id
       const res = await DELETE(

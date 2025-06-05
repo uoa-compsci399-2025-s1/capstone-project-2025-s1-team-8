@@ -2,6 +2,9 @@ import type { GlobalConfig } from 'payload'
 
 export const Home: GlobalConfig = {
   slug: 'Home',
+  admin: {
+    group: 'Pages',
+  },
   fields: [
     {
       name: 'aboutSection',

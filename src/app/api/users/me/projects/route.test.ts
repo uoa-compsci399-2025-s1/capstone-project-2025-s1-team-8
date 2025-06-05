@@ -6,15 +6,15 @@ import { createMockNextRequest } from '@/test-config/utils'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import { adminMock, clientMock } from '@/test-config/mocks/Auth.mock'
-import ProjectService from '@/data-layer/services/ProjectService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 
 describe('tests /api/users/me/projects', async () => {
-  const projectService = new ProjectService()
+  const projectDataService = new ProjectDataService()
   const cookieStore = await cookies()
 
-  vi.mock('@/data-layer/services/ProjectService', async () => {
-    const actualModule = await vi.importActual('@/data-layer/services/ProjectService')
+  vi.mock('@/data-layer/services/ProjectDataService', async () => {
+    const actualModule = await vi.importActual('@/data-layer/services/ProjectDataService')
     // eslint-disable-next-line
     const actualProjectService = (actualModule as any).default // Access the default export
 
@@ -47,7 +47,7 @@ describe('tests /api/users/me/projects', async () => {
 
     it("should return user's project data", async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      await projectService.createProject(projectCreateMock)
+      await projectDataService.createProject(projectCreateMock)
       const res = await GET(createMockNextRequest('/api/users/me/projects'))
       expect(res.status).toBe(StatusCodes.OK)
       const json = await res.json()
@@ -56,7 +56,7 @@ describe('tests /api/users/me/projects', async () => {
 
     it('should not return projects not related to the user', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      await projectService.createProject(projectCreateMock)
+      await projectDataService.createProject(projectCreateMock)
       const res = await GET(createMockNextRequest('/api/users/me/projects'))
       expect(res.status).toBe(StatusCodes.OK)
       expect((await res.json()).data).toEqual([])

@@ -1,13 +1,20 @@
 'use client'
-import { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/16/solid'
 
 import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
 
+import {
+  MdOutlineNavigateNext,
+  MdOutlineNavigateBefore,
+  MdLastPage,
+  MdFirstPage,
+} from 'react-icons/md'
+
 interface ClientsPageProps {
-  clients: {
+  clientsData: {
     client: UserCombinedInfo
     projects?: ProjectDetails[]
   }[]
@@ -34,18 +41,39 @@ interface ClientsPageProps {
     message?: string
   }>
   deletedProject: () => void
+  pageNum: number
+  updatePageCount: (increment: boolean, firstPage?: boolean, lastPage?: boolean) => void
+  searchForClients: (searchValue: string) => void
+  totalPages?: number
+  isFetching: boolean
 }
 
 const ClientsPage: React.FC<ClientsPageProps> = ({
-  clients,
+  clientsData,
   onUpdateClient,
   onDeleteClient,
   updatedClient,
   deletedClient,
   onDeleteProject,
   deletedProject,
+  pageNum,
+  updatePageCount,
+  searchForClients,
+  totalPages = 0,
+  isFetching,
 }) => {
   const [searchValue, setSearchValue] = useState('')
+
+  function debounce(func: (searchValue: string) => void, delay: number) {
+    let timeout: NodeJS.Timeout
+    return function (searchValue: string) {
+      clearTimeout(timeout)
+      timeout = setTimeout(() => {
+        func(searchValue)
+      }, delay)
+    }
+  }
+  const search = useMemo(() => debounce(searchForClients, 300), [searchForClients])
 
   return (
     <div className="w-full">
@@ -55,7 +83,10 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
         </span>
         <input
           value={searchValue ? searchValue : ''}
-          onChange={(e) => setSearchValue(e.target.value)}
+          onChange={(e) => {
+            setSearchValue(e.target.value)
+            search(e.target.value)
+          }}
           placeholder="Search client..."
           className="pl-11 w-full placeholder-muted-blue text-dark-blue border-[1.5px] border-deeper-blue focus:outline focus:outline-deeper-blue rounded-full px-4 pt-2 pb-1.5 text-sm font-normal bg-light-beige"
         />
@@ -68,7 +99,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
       </div>
       <div className="pt-8">
         <ClientGroup
-          clients={clients.filter((clientInfo) =>
+          clients={clientsData.filter((clientInfo) =>
             `${clientInfo.client.firstName} ${clientInfo.client.lastName ?? ''}`
               .toLowerCase()
               .includes(searchValue.trim().toLowerCase()),
@@ -80,6 +111,41 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
           onDeleteProject={onDeleteProject}
           deletedProject={deletedProject}
         />
+      </div>
+      <div className="flex flex-row justify-center items-center gap-4 mt-8">
+        <button
+          onClick={() => updatePageCount(false, true)}
+          disabled={pageNum === 1 || isFetching}
+          className={pageNum === 1 ? 'opacity-30 cursor-default' : 'cursor-pointer'}
+        >
+          <MdFirstPage size="2em" />
+        </button>
+
+        <button
+          onClick={() => updatePageCount(false)}
+          disabled={pageNum === 1 || isFetching}
+          className={pageNum === 1 ? 'opacity-30 cursor-default' : 'cursor-pointer'}
+        >
+          <MdOutlineNavigateBefore size="2em" />
+        </button>
+
+        <p>{pageNum}</p>
+
+        <button
+          onClick={() => updatePageCount(true)}
+          disabled={pageNum >= totalPages || isFetching}
+          className={pageNum >= totalPages ? 'opacity-30 cursor-default' : 'cursor-pointer'}
+        >
+          <MdOutlineNavigateNext size="2em" />
+        </button>
+
+        <button
+          onClick={() => updatePageCount(true, false, true)}
+          disabled={pageNum >= totalPages || isFetching}
+          className={pageNum >= totalPages ? 'opacity-30 cursor-default' : 'cursor-pointer'}
+        >
+          <MdLastPage size="2em" />
+        </button>
       </div>
     </div>
   )

@@ -60,7 +60,6 @@ const defaultProjectInfo: ProjectDetails = {
   numberOfTeams: '',
   desiredTeamSkills: null,
   availableResources: null,
-  futureConsideration: false,
   questionResponses: null,
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
