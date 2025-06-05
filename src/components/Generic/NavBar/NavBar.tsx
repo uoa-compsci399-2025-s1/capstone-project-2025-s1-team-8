@@ -80,7 +80,7 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
               </div>
             )}
             {user && user.role === UserRole.Admin && (
-              <div className="relative group p-2">
+              <div className="relative group p-2 flex items-center">
                 <NavDropdown
                   items={[
                     { href: '/admin', text: 'Admin Dashboard' },
