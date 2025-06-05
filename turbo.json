@@ -49,11 +49,9 @@
       "inputs": ["$TURBO_DEFAULT$", "**/*.js", "**/*.ts", "**/*.tsx"]
     },
     "generate:importmap": {
-      "inputs": ["./src/payload.config.ts", ".env"],
       "outputs": ["./src/app/payload/admin/importMap.js"]
     },
     "generate:types": {
-      "inputs": ["./src/payload.config.ts", ".env"],
       "outputs": ["./src/payload-types.ts"]
     }
   }
