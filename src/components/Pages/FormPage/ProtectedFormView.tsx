@@ -432,8 +432,8 @@ const ProtectedFormView: FC = () => {
               <li>
                 <label htmlFor="FutureSemesters">Future Semesters</label>
                 <p className="form-question-subheading">
-                  If you'd like your project to be considered for future semesters, please select
-                  from the list below:
+                  If you would like this project to be considered for future semesters, please
+                  select from the list of semesters below:
                 </p>
                 <Checkbox
                   options={upcomingSemesterOptions.slice(0, -2)}
