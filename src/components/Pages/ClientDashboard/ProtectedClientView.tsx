@@ -25,8 +25,8 @@ const ProtectedClientView = async (): Promise<JSX.Element> => {
       <div className="items-center justify-center w-full px-8 sm:px-15 lg:px-30 pt-35 pb-20">
         <Suspense fallback={<div className="text-center">Loading...</div>}>
           <ClientDashboard
-            content={clientDashboardCMS}
             client={user}
+            content={clientDashboardCMS}
             projects={projects}
             onSave={handleClientProfileUpdate}
             onDeleteProject={handleDeleteProject}
