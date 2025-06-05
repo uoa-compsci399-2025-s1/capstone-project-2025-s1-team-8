@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { NotFound } from 'payload'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 
-import ProjectService from '@/data-layer/services/ProjectService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import type {
   Project,
   Semester,
@@ -22,13 +22,17 @@ class RouteWrapper {
   @Security('jwt', ['admin'])
   static async GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    const projectService = new ProjectService()
+    const projectDataService = new ProjectDataService()
     try {
-      let projects = await projectService.getAllSemesterProjectsBySemester(id)
+      let projects = await projectDataService.getAllSemesterProjectsBySemester(id)
       const allSemesterProjects: SemesterProjectType[] = [...projects.docs]
       while (projects.nextPage) {
         allSemesterProjects.push(...projects.docs)
-        projects = await projectService.getAllSemesterProjectsBySemester(id, 100, projects.nextPage)
+        projects = await projectDataService.getAllSemesterProjectsBySemester(
+          id,
+          100,
+          projects.nextPage,
+        )
       }
       // client, additionalClients, deadline, desiredOutput, specialEquipmentRequirements, numberOfTeams, desiredTeamSkills, availableResources, futureConsideration
       const csvHeaders = [

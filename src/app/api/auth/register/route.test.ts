@@ -4,12 +4,12 @@ import type { RegisterRequestBody } from './route'
 import { POST } from './route'
 import { createMockNextPostRequest } from '@/test-config/utils'
 import { UserRole, UserRoleWithoutAdmin } from '@/types/User'
-import UserService from '@/data-layer/services/UserService'
-import AuthService from '@/data-layer/services/AuthService'
+import UserDataService from '@/data-layer/services/UserDataService'
+import AuthDataService from '@/data-layer/services/AuthDataService'
 
 describe('tests /api/auth/register', () => {
-  const userService = new UserService()
-  const authService = new AuthService()
+  const userDataService = new UserDataService()
+  const authDataService = new AuthDataService()
 
   it('should register a new user', async () => {
     const body: RegisterRequestBody = {
@@ -26,13 +26,13 @@ describe('tests /api/auth/register', () => {
     expect(json.message).toBe('User registered successfully')
     expect(json.data).toHaveProperty('id')
 
-    const user = await userService.getUser(json.data.id)
+    const user = await userDataService.getUser(json.data.id)
     expect(user.firstName).toEqual(body.firstName)
     expect(user.lastName).toEqual(body.lastName)
     expect(user.email).toEqual(body.email)
     expect(user.role).toEqual(body.role)
 
-    const auth = await authService.getAuthByEmail(body.email)
+    const auth = await authDataService.getAuthByEmail(body.email)
     expect(auth.password).not.toEqual(body.password)
   })
 
@@ -44,11 +44,11 @@ describe('tests /api/auth/register', () => {
       password: 'password123',
       role: UserRoleWithoutAdmin.Client,
     }
-    await userService.createUser(body)
-    const allUsersBeforeRegister = (await userService.getAllUsers()).docs
+    await userDataService.createUser(body)
+    const allUsersBeforeRegister = (await userDataService.getAllUsers()).docs
 
     await POST(createMockNextPostRequest('/api/auth/register', body))
-    const currentAllUsers = (await userService.getAllUsers()).docs
+    const currentAllUsers = (await userDataService.getAllUsers()).docs
     expect(currentAllUsers.length).toEqual(allUsersBeforeRegister.length)
   })
 

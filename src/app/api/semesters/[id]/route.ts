@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
-import SemesterService from '@/data-layer/services/SemesterService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { Security } from '@/business-layer/middleware/Security'
 import { NotFound } from 'payload'
 
@@ -23,9 +23,9 @@ class RouteWrapper {
     },
   ) {
     const { id } = await params
-    const semesterService = new SemesterService()
+    const semesterDataService = new SemesterDataService()
     try {
-      const semester = await semesterService.getSemester(id)
+      const semester = await semesterDataService.getSemester(id)
       return NextResponse.json({ data: semester })
     } catch (error) {
       if (error instanceof NotFound) {
