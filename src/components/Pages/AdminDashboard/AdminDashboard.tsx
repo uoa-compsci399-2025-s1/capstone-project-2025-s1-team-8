@@ -65,8 +65,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     lastPage: boolean = false,
     searchValue: string = '',
   ) => {
-    //const pageParam = searchParams.get('page')
-    //const pageNum = pageParam ? parseInt(pageParam, 10) : 1
     try {
       if (isFetching) return
       setIsFetching(true)
@@ -94,14 +92,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           const res = await getAllClients({ limit: itemsPerPage, page: pageNum + 1, query })
           setPageNum(pageNum + 1)
           setClientsData(res?.data || [])
-          //return clientsData
         }
       } else {
         if (pageNum > 1) {
           const res = await getAllClients({ limit: itemsPerPage, page: pageNum - 1, query })
           setPageNum(pageNum - 1)
           setClientsData(res?.data || [])
-          //return clientsData
         }
       }
     } finally {
