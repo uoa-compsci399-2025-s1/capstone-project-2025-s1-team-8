@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function Form() {
   return (
     <AuthWrapper scopes={['admin', 'client']}>
-      <Suspense fallback={<div className="text-center">Loading...</div>}>
+      <Suspense fallback={<div className="text-center text-dark-blue text-lg pt-30">Loading...</div>}>
         <ProtectedFormView />
       </Suspense>
     </AuthWrapper>
