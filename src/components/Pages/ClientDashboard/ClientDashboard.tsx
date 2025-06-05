@@ -44,6 +44,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects, onS
         headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
         heading="My projects"
         projects={projects}
+        type="student"
       />
     </div>
   )
