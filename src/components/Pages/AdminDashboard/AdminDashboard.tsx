@@ -18,8 +18,10 @@ import {
   handleGetAllSemesters,
   getAllClients,
   handleDeleteClient,
+  handleUpdateClient,
+  handleDeleteProject,
+  getNextSemesterProjects,
 } from '@/lib/services/admin/Handlers'
-import { handleUpdateClient } from '@/lib/services/admin/Handlers'
 import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
 import Notification from '@/components/Generic/Notification/Notification'
@@ -34,7 +36,7 @@ type AdminDashboardProps = {
 const AdminDashboard: React.FC<AdminDashboardProps> = ({
   clients: initialClients,
   semesters: initialSemesters,
-  projects,
+  projects: initialProjects,
 }) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
 
@@ -43,6 +45,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [semesters, setSemesters] = useState<Semester[]>(initialSemesters)
   const [clients, setClients] =
     useState<{ client: UserCombinedInfo; projects: ProjectDetails[] }[]>(initialClients)
+  const [projects, setProjects] = useState<SemesterContainerData>(initialProjects)
 
   useEffect(() => {
     const saved = localStorage.getItem('adminNav')
@@ -66,6 +69,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     const res = await getAllClients()
     if (res?.data) {
       setClients(res.data)
+    }
+  }
+
+  const refreshProjects = async () => {
+    const res = await getNextSemesterProjects()
+    if (res?.data) {
+      setProjects(res.data)
     }
   }
 
@@ -123,6 +133,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   {...projects}
                   onSaveChanges={updateProjectOrdersAndStatus}
                   onPublishChanges={handlePublishChanges}
+                  onDeleteProject={handleDeleteProject}
+                  deletedProject={async () => {
+                    setNotificationMessage('Project deleted successfully')
+                    await refreshProjects()
+                    // @TODO refresh projects
+                  }}
                 />
               </div>
 
@@ -133,14 +149,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               >
                 <ClientsPage
                   clients={clients}
-                  handleUpdateClient={handleUpdateClient}
-                  handleDeleteClient={handleDeleteClient}
-                  updated={async () => {
+                  onUpdateClient={handleUpdateClient}
+                  onDeleteClient={handleDeleteClient}
+                  updatedClient={async () => {
                     await refreshClients()
                   }}
-                  deleted={async () => {
+                  deletedClient={async () => {
                     await refreshClients()
                     setNotificationMessage('Client deleted successfully')
+                  }}
+                  onDeleteProject={handleDeleteProject}
+                  deletedProject={async () => {
+                    // @TODO refresh projects
+                    refreshProjects()
+                    setNotificationMessage('Project deleted successfully')
                   }}
                 />
               </div>
@@ -163,6 +185,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   }}
                   deleted={async () => {
                     await refreshSemesters()
+                    await refreshProjects()
                     setNotificationMessage('Semester deleted successfully')
                   }}
                   checkStatus={isCurrentOrUpcoming}
@@ -170,6 +193,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   handleCreateSemester={handleCreateSemester}
                   handleUpdateSemester={handleUpdateSemester}
                   handleDeleteSemester={handleDeleteSemester}
+                  onDeleteProject={handleDeleteProject}
+                  deletedProject={async () => {
+                    // @TODO refresh projects
+                    refreshProjects?.()
+                    setNotificationMessage('Project deleted successfully')
+                  }}
                 />
               </div>
             </motion.div>

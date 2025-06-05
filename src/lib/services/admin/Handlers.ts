@@ -266,3 +266,15 @@ export async function handleDeleteClient(clientId: string): Promise<{
     return { error: response.error }
   }
 }
+
+export async function handleDeleteProject(projectId: string): Promise<{
+  error?: string
+  message?: string
+}> {
+  const response = await AdminService.deleteProject(projectId)
+  if (response.status === 204) {
+    return { message: 'Project deleted successfully' }
+  } else {
+    return { error: response.error }
+  }
+}

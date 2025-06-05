@@ -8,7 +8,14 @@ interface ProjectListProps {
   heading: string
   projects: ProjectDetails[]
   type?: 'student' | 'admin'
+  onDelete: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deleted?: () => void
 }
+
+// @TODO add to ClientModal, SemesterModal
 
 const ProjectCardList: React.FC<ProjectListProps> = ({
   className,
@@ -16,6 +23,8 @@ const ProjectCardList: React.FC<ProjectListProps> = ({
   heading,
   projects,
   type = 'admin',
+  onDelete,
+  deleted,
 }) => {
   return (
     <div className={`relative w-full ${className}`}>
@@ -23,7 +32,13 @@ const ProjectCardList: React.FC<ProjectListProps> = ({
 
       <div className="flex flex-col gap-4 overflow-x-visible overflow-y-auto max-h-[490px] p-[1px] pt-0.5 pb-3">
         {projects.map((project, index) => (
-          <ProjectCard key={index} projectInfo={project} type={type} />
+          <ProjectCard
+            key={index}
+            projectInfo={project}
+            type={type}
+            onDelete={onDelete}
+            deleted={deleted}
+          />
         ))}
       </div>
     </div>

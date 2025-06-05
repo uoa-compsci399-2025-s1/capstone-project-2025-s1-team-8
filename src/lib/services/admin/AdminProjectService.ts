@@ -13,6 +13,7 @@ import type { SemesterContainerData } from '@/components/Composite/ProjectDragAn
 import type { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import type { UniqueIdentifier } from '@dnd-kit/core'
 import type { StatusCodes } from 'http-status-codes'
+import { DELETE as DeleteProject } from '@/app/api/projects/[id]/route'
 
 const AdminProjectService = {
   updateSemesterProject: async function (
@@ -152,6 +153,24 @@ const AdminProjectService = {
         semesterProjectId: semesterProject.id,
       },
     }
+  },
+
+  deleteProject: async function (projectId: string): Promise<{
+    status: StatusCodes
+    error?: string
+  }> {
+    'use server'
+    const url = `/api/projects/${projectId}`
+    const response = await DeleteProject(await buildNextRequest(url, { method: 'DELETE' }), {
+      params: Promise.resolve({ id: projectId }),
+    })
+    let error
+    if (response.status !== 204) {
+      const body = await response.json()
+      error = body.error
+    }
+
+    return { status: response.status, error }
   },
 }
 export default AdminProjectService

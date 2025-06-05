@@ -15,6 +15,11 @@ interface ProjectModalProps extends ModalProps {
   projectInfo: Project
   semesters?: Semester[]
   type?: 'student' | 'admin'
+  onDelete: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deleted?: () => void
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({
@@ -24,6 +29,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   projectInfo,
   semesters,
   type = 'admin',
+  onDelete,
+  deleted,
 }) => {
   if (!semesters) semesters = []
   const [copied, setCopied] = useState(false)
@@ -83,7 +90,15 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             style={{ pointerEvents: 'initial' }}
             aria-label="Edit"
           >
-            <EditDeleteDropdown containerWidth={200} onEdit={callForm} />
+            <EditDeleteDropdown
+              containerWidth={200}
+              onEdit={callForm}
+              onDelete={async () => {
+                await onDelete(projectInfo.id)
+                deleted?.()
+                onClose()
+              }}
+            />
           </button>
         )}
 

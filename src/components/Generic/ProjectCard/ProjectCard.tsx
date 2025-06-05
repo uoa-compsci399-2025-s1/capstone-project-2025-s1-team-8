@@ -8,9 +8,19 @@ import type { ProjectDetails } from '@/types/Project'
 interface ProjectCardProps {
   projectInfo: ProjectDetails
   type?: 'student' | 'admin'
+  onDelete: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deleted?: () => void
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo, type = 'admin' }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({
+  projectInfo,
+  type = 'admin',
+  onDelete,
+  deleted,
+}) => {
   const [modalOpen, setModalOpen] = useState(false)
 
   function toggleModal() {
@@ -47,6 +57,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo, type = 'admin' }
         onClose={() => toggleModal()}
         type={type}
         semesters={semesters}
+        onDelete={onDelete}
+        deleted={deleted}
       />
     </div>
   )

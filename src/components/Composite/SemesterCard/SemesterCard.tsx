@@ -15,12 +15,19 @@ interface SemesterCardProps extends Semester {
   }>
   checkStatus?: (id: string) => Promise<'current' | 'upcoming' | ''>
   onEdit?: (id: string) => void
+  onDeleteProject: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deletedProject: () => void
 }
 const SemesterCard: React.FC<SemesterCardProps> = ({
   semester,
   semesterProjects,
   checkStatus,
   onEdit,
+  onDeleteProject,
+  deletedProject,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -162,6 +169,8 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
             headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
             heading="Approved projects"
             projects={approvedProjectsList}
+            onDelete={onDeleteProject}
+            deleted={deletedProject}
           />
         </div>
       </div>

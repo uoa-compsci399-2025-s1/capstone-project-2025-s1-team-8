@@ -11,7 +11,7 @@ interface ClientsPageProps {
     client: UserCombinedInfo
     projects?: ProjectDetails[]
   }[]
-  handleUpdateClient?: (
+  onUpdateClient: (
     clientId: string,
     firstName: string,
     lastName: string,
@@ -23,20 +23,27 @@ interface ClientsPageProps {
     message?: string
     details?: string
   }>
-  handleDeleteClient?: (clientId: string) => Promise<{
+  onDeleteClient: (clientId: string) => Promise<{
     error?: string
     message?: string
   }>
-  updated: () => void
-  deleted: () => void
+  updatedClient: () => void
+  deletedClient: () => void
+  onDeleteProject: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deletedProject: () => void
 }
 
 const ClientsPage: React.FC<ClientsPageProps> = ({
   clients,
-  handleUpdateClient,
-  handleDeleteClient,
-  updated,
-  deleted,
+  onUpdateClient,
+  onDeleteClient,
+  updatedClient,
+  deletedClient,
+  onDeleteProject,
+  deletedProject,
 }) => {
   const [searchValue, setSearchValue] = useState('')
 
@@ -66,10 +73,12 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
               .toLowerCase()
               .includes(searchValue.trim().toLowerCase()),
           )}
-          onSave={handleUpdateClient}
-          onDelete={handleDeleteClient}
-          updated={updated}
-          deleted={deleted}
+          onSave={onUpdateClient}
+          onDeleteClient={onDeleteClient}
+          updatedClient={updatedClient}
+          deletedClient={deletedClient}
+          onDeleteProject={onDeleteProject}
+          deletedProject={deletedProject}
         />
       </div>
     </div>

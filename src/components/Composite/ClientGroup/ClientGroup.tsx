@@ -20,20 +20,27 @@ export interface ClientGroupProps {
     message?: string
     details?: string
   }>
-  onDelete?: (clientId: string) => Promise<{
+  onDeleteClient: (clientId: string) => Promise<{
     error?: string
     message?: string
   }>
-  updated: () => void
-  deleted: () => void
+  updatedClient: () => void
+  deletedClient: () => void
+  onDeleteProject: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deletedProject: () => void
 }
 
 const ClientGroup: React.FC<ClientGroupProps> = ({
   clients,
   onSave,
-  onDelete,
-  updated,
-  deleted,
+  onDeleteClient,
+  updatedClient,
+  deletedClient,
+  onDeleteProject,
+  deletedProject,
 }) => {
   return (
     <div className="w-full rounded-2xl overflow-hidden border border-beige divide-beige divide-y-2">
@@ -43,9 +50,11 @@ const ClientGroup: React.FC<ClientGroupProps> = ({
           clientInfo={clientInfo.client}
           projects={clientInfo.projects}
           onSave={onSave}
-          onDelete={onDelete}
-          updated={updated}
-          deleted={deleted}
+          onDeleteClient={onDeleteClient}
+          updatedClient={updatedClient}
+          deletedClient={deletedClient}
+          onDeleteProject={onDeleteProject}
+          deletedProject={deletedProject}
         />
       ))}
     </div>

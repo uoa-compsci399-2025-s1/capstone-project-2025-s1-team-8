@@ -158,7 +158,7 @@ class RouteWrapper {
   static async DELETE(req: RequestWithUser, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const projectService = new ProjectService()
-
+    console.log('deleting project', id)
     try {
       const project = await projectService.getProjectById(id)
       if (

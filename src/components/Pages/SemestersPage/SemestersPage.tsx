@@ -35,6 +35,11 @@ interface SemestersPageProps {
     error?: string
     message?: string
   }>
+  onDeleteProject: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deletedProject: () => void
 }
 
 const SemestersPage: React.FC<SemestersPageProps> = ({
@@ -47,6 +52,8 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
   handleCreateSemester,
   handleUpdateSemester,
   handleDeleteSemester,
+  onDeleteProject,
+  deletedProject,
 }) => {
   const [modalOpen, setModalOpen] = useState(false)
   const [semesterStatuses, setSemesterStatuses] = useState<
@@ -119,6 +126,8 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
             updatedAt={semester.updatedAt}
             createdAt={semester.createdAt}
             onEdit={callSemesterForm}
+            onDeleteProject={onDeleteProject}
+            deletedProject={deletedProject}
           />
         </div>
       ))}

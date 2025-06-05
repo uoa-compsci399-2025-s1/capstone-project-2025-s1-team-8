@@ -25,12 +25,17 @@ interface ClientModalProps extends ModalProps {
     message?: string
     details?: string
   }>
-  onDelete?: (clientId: string) => Promise<{
+  onDeleteClient: (clientId: string) => Promise<{
     error?: string
     message?: string
   }>
-  onUpdated?: () => void
-  onDeleted?: () => void
+  onDeletedClient?: () => void
+  onUpdatedClient?: () => void
+  onDeleteProject: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deletedProject?: () => void
 }
 
 const ClientModal: React.FC<ClientModalProps> = ({
@@ -41,9 +46,11 @@ const ClientModal: React.FC<ClientModalProps> = ({
   clientEmail,
   projects,
   onSave,
-  onDelete,
-  onUpdated,
-  onDeleted,
+  onDeleteClient,
+  onDeletedClient,
+  onUpdatedClient,
+  onDeleteProject,
+  deletedProject,
 }) => {
   const [copied, setCopied] = useState(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
@@ -96,7 +103,7 @@ const ClientModal: React.FC<ClientModalProps> = ({
     setNotificationType('success')
     setNotificationTitle('Success')
     setNotificationMessage('Client updated successfully')
-    onUpdated?.()
+    onUpdatedClient?.()
   }
 
   const handleCopy = (email: string) => {
@@ -148,8 +155,8 @@ const ClientModal: React.FC<ClientModalProps> = ({
                 setIsEditing(true)
               }}
               onDelete={() => {
-                onDelete?.(clientInfo.id)
-                onDeleted?.()
+                onDeleteClient?.(clientInfo.id)
+                onDeletedClient?.()
               }}
             />
           )}
@@ -233,6 +240,14 @@ const ClientModal: React.FC<ClientModalProps> = ({
           headingClassName="text-3xl pb-3 tracking-wide"
           heading="Projects"
           projects={projects}
+          onDelete={onDeleteProject}
+          deleted={() => {
+            deletedProject?.()
+            setNotificationMessage('Project deleted successfully')
+            setNotificationType('success')
+            setNotificationTitle('Success')
+            // @TODO refresh project & remove deletedProject from props
+          }}
         />
       )}
     </Modal>

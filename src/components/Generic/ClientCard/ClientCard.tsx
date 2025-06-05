@@ -19,21 +19,27 @@ export interface ClientCardProps {
     message?: string
     details?: string
   }>
-  onDelete?: (clientId: string) => Promise<{
+  onDeleteClient: (clientId: string) => Promise<{
     error?: string
     message?: string
   }>
-  updated: () => void
-  deleted: () => void
+  updatedClient: () => void
+  deletedClient: () => void
+  onDeleteProject: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deletedProject: () => void
 }
 
 const ClientCard: React.FC<ClientCardProps> = ({
   clientInfo,
   projects,
   onSave,
-  onDelete,
-  updated,
-  deleted,
+  onDeleteClient,
+  updatedClient,
+  deletedClient,
+  onDeleteProject,
 }) => {
   const [copied, setCopied] = useState(false)
   const [open, setOpen] = useState(false)
@@ -81,14 +87,15 @@ const ClientCard: React.FC<ClientCardProps> = ({
         clientInfo={clientInfo}
         projects={projects}
         onSave={onSave}
-        onDelete={onDelete}
-        onUpdated={() => {
-          updated?.()
+        onUpdatedClient={() => {
+          updatedClient?.()
         }}
-        onDeleted={() => {
-          deleted?.()
+        onDeleteClient={onDeleteClient}
+        onDeletedClient={() => {
+          deletedClient?.()
           handleModal()
         }}
+        onDeleteProject={onDeleteProject}
       />
     </>
   )
