@@ -6,7 +6,7 @@ import {
   paramsToPromise,
   createMockNextPostRequest,
 } from '@/test-config/utils'
-import ProjectService from '@/data-layer/services/ProjectService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import {
   projectMock,
   semesterProjectCreateMock,
@@ -15,13 +15,13 @@ import {
 import { GET, POST } from '@/app/api/semesters/[id]/projects/route'
 import { semesterMock } from '@/test-config/mocks/Semester.mock'
 import { ProjectStatus } from '@/types/Project'
-import SemesterService from '@/data-layer/services/SemesterService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
 describe('tests /api/semesters/[id]/projects', async () => {
-  const projectService = new ProjectService()
-  const semesterService = new SemesterService()
+  const projectDataService = new ProjectDataService()
+  const semesterDataService = new SemesterDataService()
 
   const cookieStore = await cookies()
 
@@ -43,8 +43,11 @@ describe('tests /api/semesters/[id]/projects', async () => {
 
     it('should return published projects only if the user is a student', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
-      await projectService.createSemesterProject(semesterProjectCreateMock)
-      await projectService.createSemesterProject({ ...semesterProjectCreateMock, published: true })
+      await projectDataService.createSemesterProject(semesterProjectCreateMock)
+      await projectDataService.createSemesterProject({
+        ...semesterProjectCreateMock,
+        published: true,
+      })
       const res = await GET(createMockNextRequest(`api/semesters/${semesterMock.id}/projects`), {
         params: paramsToPromise({ id: semesterMock.id }),
       })
@@ -55,8 +58,8 @@ describe('tests /api/semesters/[id]/projects', async () => {
 
     it('should return a list of all semesterprojects for a semester', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      await projectService.createSemesterProject(semesterProjectCreateMock)
-      await projectService.createSemesterProject(semesterProjectCreateMock)
+      await projectDataService.createSemesterProject(semesterProjectCreateMock)
+      await projectDataService.createSemesterProject(semesterProjectCreateMock)
       const res = await GET(createMockNextRequest(`api/semesters/${semesterMock.id}/projects`), {
         params: paramsToPromise({ id: semesterMock.id }),
       })
@@ -67,8 +70,8 @@ describe('tests /api/semesters/[id]/projects', async () => {
 
     it('should return a list of no semesterprojects for a semester which has no projects', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      await projectService.createSemesterProject(semesterProjectCreateMock)
-      await projectService.createSemesterProject(semesterProjectCreateMock)
+      await projectDataService.createSemesterProject(semesterProjectCreateMock)
+      await projectDataService.createSemesterProject(semesterProjectCreateMock)
       const res = await GET(createMockNextRequest('api/semesters/123/projects'), {
         params: paramsToPromise({ id: '123' }),
       })
@@ -90,9 +93,9 @@ describe('tests /api/semesters/[id]/projects', async () => {
 
     it('should return a list of all semesterprojects from a semester with pagination', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      await projectService.createSemesterProject(semesterProjectCreateMock)
-      await projectService.createSemesterProject(semesterProjectCreateMock)
-      await projectService.createSemesterProject(semesterProjectCreateMock)
+      await projectDataService.createSemesterProject(semesterProjectCreateMock)
+      await projectDataService.createSemesterProject(semesterProjectCreateMock)
+      await projectDataService.createSemesterProject(semesterProjectCreateMock)
       const res1 = await GET(
         createMockNextRequest(`api/semesters/${semesterMock.id}/projects?page=2&limit=2`),
         { params: paramsToPromise({ id: semesterMock.id }) },
@@ -114,15 +117,15 @@ describe('tests /api/semesters/[id]/projects', async () => {
 
     it('should return a list of semesterprojects filtered by status', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      await projectService.createSemesterProject({
+      await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         status: ProjectStatus.Approved,
       })
-      await projectService.createSemesterProject({
+      await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         status: ProjectStatus.Rejected,
       })
-      await projectService.createSemesterProject({
+      await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         status: ProjectStatus.Approved,
       })
@@ -138,15 +141,15 @@ describe('tests /api/semesters/[id]/projects', async () => {
 
     it('should return a list of semesterprojects filtered by published status', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      await projectService.createSemesterProject({
+      await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         published: true,
       })
-      await projectService.createSemesterProject({
+      await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         published: false,
       })
-      await projectService.createSemesterProject({
+      await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         published: true,
       })
@@ -180,17 +183,17 @@ describe('tests /api/semesters/[id]/projects', async () => {
 
     it('should return a list of semesterprojects filtered by status and published status', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      await projectService.createSemesterProject({
+      await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         status: ProjectStatus.Approved,
         published: true,
       })
-      await projectService.createSemesterProject({
+      await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         status: ProjectStatus.Rejected,
         published: false,
       })
-      await projectService.createSemesterProject({
+      await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         status: ProjectStatus.Approved,
         published: true,
@@ -224,8 +227,8 @@ describe('tests /api/semesters/[id]/projects', async () => {
 
     it('should create a new semester project', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const semester = await semesterService.createSemester(semesterMock)
-      const project = await projectService.createProject(projectMock)
+      const semester = await semesterDataService.createSemester(semesterMock)
+      const project = await projectDataService.createProject(projectMock)
       const res = await POST(
         createMockNextPostRequest(`api/semesters/${semester.id}/projects`, {
           ...semesterProjectCreateMock2,
@@ -235,12 +238,12 @@ describe('tests /api/semesters/[id]/projects', async () => {
       )
       expect(res.status).toBe(StatusCodes.CREATED)
       const data = await res.json()
-      expect(data.data).toEqual(await projectService.getSemesterProject(data.data.id))
+      expect(data.data).toEqual(await projectDataService.getSemesterProject(data.data.id))
     })
 
     it('should return a 404 if the project is not found', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const semester = await semesterService.createSemester(semesterMock)
+      const semester = await semesterDataService.createSemester(semesterMock)
       const res = await POST(
         createMockNextPostRequest(`api/semesters/${semester.id}/projects`, {
           ...semesterProjectCreateMock2,
@@ -254,8 +257,8 @@ describe('tests /api/semesters/[id]/projects', async () => {
 
     it('should return a 401 if the project is not associated with the client', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      const semester = await semesterService.createSemester(semesterMock)
-      const project = await projectService.createProject(projectMock)
+      const semester = await semesterDataService.createSemester(semesterMock)
+      const project = await projectDataService.createProject(projectMock)
       const res = await POST(
         createMockNextPostRequest(`api/semesters/${semester.id}/projects`, {
           ...semesterProjectCreateMock2,
@@ -269,7 +272,7 @@ describe('tests /api/semesters/[id]/projects', async () => {
 
     it('should fail to create a new semester project if body is invalid', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const semester = await semesterService.createSemester(semesterMock)
+      const semester = await semesterDataService.createSemester(semesterMock)
 
       const res = await POST(
         createMockNextPostRequest(`api/semesters/${semester.id}/projects`, {
