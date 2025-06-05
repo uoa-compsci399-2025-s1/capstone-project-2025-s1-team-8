@@ -40,9 +40,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   semesterProjects = {},
 }) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
-  console.log('AdminDashboard rendered')
-  console.log(semesterStatusList)
-  console.log(semesterProjects)
   const [activeNav, setActiveNav] = useState<number | null>(null)
   const [notificationMessage, setNotificationMessage] = useState('')
   const [semesters, setSemesters] = useState<Semester[]>(initialSemesters)
