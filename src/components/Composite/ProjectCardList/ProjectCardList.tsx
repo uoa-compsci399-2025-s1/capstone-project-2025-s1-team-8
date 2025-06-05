@@ -31,9 +31,9 @@ const ProjectCardList: React.FC<ProjectListProps> = ({
       <h2 className={`text-dark-blue font-inter ${headingClassName}`}>{heading}</h2>
 
       <div className="flex flex-col gap-4 overflow-x-visible overflow-y-auto max-h-[490px] p-[1px] pt-0.5 pb-3">
-        {projects.map((project, index) => (
+        {projects.map((project) => (
           <ProjectCard
-            key={index}
+            key={project.id}
             projectInfo={project}
             type={type}
             onDelete={onDelete}

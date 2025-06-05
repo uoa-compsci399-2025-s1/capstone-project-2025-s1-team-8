@@ -199,7 +199,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   deletedProject={async () => {
                     setNotificationMessage('Project deleted successfully')
                     await refreshProjects()
-                    // @TODO refresh projects
                   }}
                 />
               </div>
@@ -225,8 +224,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   }}
                   onDeleteProject={handleDeleteProject}
                   deletedProject={async () => {
-                    // @TODO refresh projects
-                    refreshProjects()
+                    await refreshProjects()
                     setNotificationMessage('Project deleted successfully')
                   }}
                   isFetching={isFetching}
@@ -247,12 +245,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   }}
                   updated={async () => {
                     await refreshSemesters()
-                    console.log('hello')
                     setNotificationMessage('Semester updated successfully')
                   }}
                   deleted={async () => {
-                    await refreshSemesters()
                     await refreshProjects()
+                    await refreshSemesters()
                     setNotificationMessage('Semester deleted successfully')
                   }}
                   checkStatus={isCurrentOrUpcoming}
@@ -262,8 +259,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   handleDeleteSemester={handleDeleteSemester}
                   onDeleteProject={handleDeleteProject}
                   deletedProject={async () => {
-                    // @TODO refresh projects
-                    refreshProjects?.()
+                    await refreshProjects()
+                    await refreshSemesters()
                     setNotificationMessage('Project deleted successfully')
                   }}
                 />
