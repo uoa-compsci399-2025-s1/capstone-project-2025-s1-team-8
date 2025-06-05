@@ -2,7 +2,7 @@ import type { Authentication } from '@/payload-types'
 import type { CreateAuthenticationData, UpdateAuthenticationData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 
-export default class AuthService {
+export default class AuthDataService {
   /**
    * Method to create an authentication document.
    *

@@ -8,7 +8,7 @@ import type {
 import { payload } from '../adapters/Payload'
 import { NotFound } from 'payload'
 
-export default class FormService {
+export default class FormDataService {
   /**
    * Creates a new form document in the database.
    *
