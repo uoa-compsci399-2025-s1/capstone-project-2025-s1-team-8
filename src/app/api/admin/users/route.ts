@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 
-import UserService from '@/data-layer/services/UserService'
+import UserDataService from '@/data-layer/services/UserDataService'
 import { UserRole } from '@/types/User'
 import { Security } from '@/business-layer/middleware/Security'
 
@@ -33,12 +33,12 @@ class RouteWrapper {
         { status: StatusCodes.BAD_REQUEST },
       )
     }
-    const userService = new UserService()
+    const userDataService = new UserDataService()
     const {
       docs: rawUserData,
       nextPage,
       totalPages,
-    } = await userService.getAllUsers({
+    } = await userDataService.getAllUsers({
       limit,
       page,
       role: (userRole as UserRole) ?? undefined,
@@ -49,7 +49,7 @@ class RouteWrapper {
       rawUserData.map(async (userInfo) => {
         if (userInfo.role === UserRole.Client) {
           const { introduction, affiliation } = {
-            ...(await userService.getClientAdditionalInfo(userInfo.id)),
+            ...(await userDataService.getClientAdditionalInfo(userInfo.id)),
           }
           return { ...userInfo, introduction, affiliation }
         }
