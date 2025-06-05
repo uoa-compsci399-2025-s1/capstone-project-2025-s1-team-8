@@ -3,7 +3,6 @@
 import type { NavLink } from '../NavBar/NavBar'
 import Link from 'next/link'
 import React from 'react'
-import { useState } from 'react'
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5'
 
 interface NavDropdownProps {
