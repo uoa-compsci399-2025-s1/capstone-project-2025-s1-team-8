@@ -6,6 +6,7 @@ import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardL
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import type { Semester } from '@/payload-types'
 import type { ProjectDetails } from '@/types/Project'
+import { FiDownload } from 'react-icons/fi'
 
 interface SemesterCardProps extends Semester {
   semester: Semester
@@ -156,6 +157,8 @@ const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects,
             headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
             heading="Approved projects"
             projects={approvedProjectsList}
+            icon={<FiDownload />}
+            onClick={() => console.log('hello')}
           />
         </div>
       </div>
