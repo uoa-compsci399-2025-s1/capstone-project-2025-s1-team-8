@@ -64,7 +64,6 @@ const ProtectedFormView: FC = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<FormProject>()
 
