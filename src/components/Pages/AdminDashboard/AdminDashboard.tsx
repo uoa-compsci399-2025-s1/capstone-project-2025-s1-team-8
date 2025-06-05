@@ -28,6 +28,7 @@ type AdminDashboardProps = {
   projects: SemesterContainerData
   totalNumPages?: number
   semesterStatusList?: Record<string, 'current' | 'upcoming' | ''>
+  semesterProjects?: Record<string, ProjectDetails[]>
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({
@@ -36,10 +37,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   projects,
   totalNumPages = 0,
   semesterStatusList = {},
+  semesterProjects = {},
 }) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
   console.log('AdminDashboard rendered')
   console.log(semesterStatusList)
+  console.log(semesterProjects)
   const [activeNav, setActiveNav] = useState<number | null>(null)
   const [notificationMessage, setNotificationMessage] = useState('')
   const [semesters, setSemesters] = useState<Semester[]>(initialSemesters)
@@ -223,6 +226,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   handleUpdateSemester={handleUpdateSemester}
                   handleDeleteSemester={handleDeleteSemester}
                   semesterStatuses={semesterStatuses}
+                  semesterProjects={semesterProjects}
                 />
               </div>
             </motion.div>
