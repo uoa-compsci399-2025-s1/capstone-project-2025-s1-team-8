@@ -1,13 +1,11 @@
 'use client'
-import React, { useState, useRef, useEffect, useMemo } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import type { Semester } from '@/payload-types'
 import type { ProjectDetails } from '@/types/Project'
-import { set } from 'zod'
-
 interface SemesterCardProps extends Semester {
   semester: Semester
   handleGetAllSemesterProjects: (semesterId: string) => Promise<void | {
