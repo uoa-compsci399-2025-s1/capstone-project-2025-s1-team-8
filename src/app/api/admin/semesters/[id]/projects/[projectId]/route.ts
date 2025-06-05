@@ -18,9 +18,6 @@ export const PatchSemesterProjectRequestBody = z.object({
   published: z.boolean().optional(),
 })
 
-const projectDataService = new ProjectDataService()
-const semesterDataService = new SemesterDataService()
-
 class RouteWrapper {
   /**
    * Updates a semester project by its ID.
@@ -35,6 +32,8 @@ class RouteWrapper {
     { params }: { params: Promise<{ id: string; projectId: string }> },
   ) {
     const { id, projectId } = await params
+    const projectDataService = new ProjectDataService()
+    const semesterDataService = new SemesterDataService()
 
     try {
       let semesterProject: SemesterProject
@@ -94,6 +93,7 @@ class RouteWrapper {
   ) {
     const { id, projectId } = await params
     const projectDataService = new ProjectDataService()
+    const semesterDataService = new SemesterDataService()
     try {
       let fetchedProject
       const fetchedSemester = await semesterDataService.getSemester(id)

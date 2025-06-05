@@ -14,8 +14,6 @@ export const CreateSemesterRequestBody = z.object({
   endDate: z.string().datetime({ message: 'Invalid date format, should be in ISO 8601 format' }),
 })
 
-const semesterDataService = new SemesterDataService()
-
 class RouteWrapper {
   /**
    * POST Method to create a new semester.
@@ -25,6 +23,7 @@ class RouteWrapper {
    */
   @Security('jwt', ['admin'])
   static async POST(req: NextRequest) {
+    const semesterDataService = new SemesterDataService()
     try {
       const parsedBody = CreateSemesterRequestBody.parse(await req.json())
 

@@ -23,8 +23,6 @@ export const UpdateSemesterRequestBody = z.object({
     .optional(),
 })
 
-const semesterDataService = new SemesterDataService()
-
 class RouteWrapper {
   /**
    * PATCH method to update a semester.
@@ -43,6 +41,7 @@ class RouteWrapper {
     },
   ) {
     const { id } = await params
+    const semesterDataService = new SemesterDataService()
     try {
       const parsedBody = UpdateSemesterRequestBody.parse(await req.json())
       const semester = await semesterDataService.updateSemester(id, parsedBody)
@@ -71,8 +70,10 @@ class RouteWrapper {
    */
   @Security('jwt', ['admin'])
   static async DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params
+    const semesterDataService = new SemesterDataService()
+
     try {
-      const { id } = await params
       await semesterDataService.deleteSemester(id)
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
     } catch (error) {
