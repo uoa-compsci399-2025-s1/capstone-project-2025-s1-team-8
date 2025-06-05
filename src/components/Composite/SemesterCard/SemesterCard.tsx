@@ -12,7 +12,11 @@ interface SemesterCardProps extends Semester {
   semesterProjects: ProjectDetails[]
   currentOrUpcoming?: 'current' | 'upcoming' | ''
 }
-const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects, currentOrUpcoming }) => {
+const SemesterCard: React.FC<SemesterCardProps> = ({
+  semester,
+  semesterProjects,
+  currentOrUpcoming,
+}) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
