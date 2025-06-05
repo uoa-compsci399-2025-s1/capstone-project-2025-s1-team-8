@@ -13,8 +13,8 @@ describe('tests /api/users/me/projects', async () => {
   const projectDataService = new ProjectDataService()
   const cookieStore = await cookies()
 
-  vi.mock('@/data-layer/services/ProjectService', async () => {
-    const actualModule = await vi.importActual('@/data-layer/services/ProjectService')
+  vi.mock('@/data-layer/services/ProjectDataService', async () => {
+    const actualModule = await vi.importActual('@/data-layer/services/ProjectDataService')
     // eslint-disable-next-line
     const actualProjectService = (actualModule as any).default // Access the default export
 
