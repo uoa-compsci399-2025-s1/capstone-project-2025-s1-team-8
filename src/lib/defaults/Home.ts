@@ -1,4 +1,4 @@
-import { Home } from '@/payload-types'
+import type { Home } from '@/payload-types'
 
 const homeContent = {
   aboutSection: {

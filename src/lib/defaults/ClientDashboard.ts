@@ -1,4 +1,4 @@
-import { ClientDashboard } from '@/payload-types'
+import type { ClientDashboard } from '@/payload-types'
 
 const clientDashboardContent = {
   tipTitle: 'Tips for choosing a good project name:',
