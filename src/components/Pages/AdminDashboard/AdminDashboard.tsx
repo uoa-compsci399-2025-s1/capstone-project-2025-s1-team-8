@@ -43,13 +43,18 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [activeNav, setActiveNav] = useState<number | null>(null)
   const [notificationMessage, setNotificationMessage] = useState('')
   const [semesters, setSemesters] = useState<Semester[]>(initialSemesters)
-  const [semesterStatuses, setSemesterStatuses] = useState<
-  Record<string, 'current' | 'upcoming' | ''>>(semesterStatusList)
+  const [semesterStatuses, setSemesterStatuses] =
+    useState<Record<string, 'current' | 'upcoming' | ''>>(semesterStatusList)
   const [clientsData, setClientsData] = useState(clients)
   const [pageNum, setPageNum] = useState(1)
   const [isFetching, setIsFetching] = useState(false)
   const [totalPages, setTotalPages] = useState(totalNumPages)
-  const cachedClientSearchRef = useRef<Record<string, { data: {client: UserCombinedInfo, projects: ProjectDetails[]}[]; totalPages: number }>>({"_1": {data: clients, totalPages: totalNumPages}})
+  const cachedClientSearchRef = useRef<
+    Record<
+      string,
+      { data: { client: UserCombinedInfo; projects: ProjectDetails[] }[]; totalPages: number }
+    >
+  >({ _1: { data: clients, totalPages: totalNumPages } })
   const itemsPerPage = 10
 
   const getClientsCache = async (pageNum: number, query: string) => {
@@ -85,7 +90,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       setTotalPages(0)
     }
     console.log('searchForClients', 'query:', query)
-    cachedClientSearchRef.current[`${query}_1`] = { data: res?.data || [], totalPages: res?.totalPages || 0 }
+    cachedClientSearchRef.current[`${query}_1`] = {
+      data: res?.data || [],
+      totalPages: res?.totalPages || 0,
+    }
   }
 
   const updatePageCount = async (
@@ -143,7 +151,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     const res = await handleGetAllSemesters()
     if (res?.data) {
       setSemesters(res.data)
-    } if (res?.semesterStatuses){
+    }
+    if (res?.semesterStatuses) {
       setSemesterStatuses(res.semesterStatuses)
     }
   }
