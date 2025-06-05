@@ -141,3 +141,6 @@ dist
 .swc/
 
 .DS_Store
+
+# Turbo
+.turbo
