@@ -75,8 +75,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         }
         setPageNum(1)
         const res = await getAllClients({ limit: itemsPerPage, page: 1, query })
-        setClientsData(res?.data || [])
-        return
+        return setClientsData(res?.data || [])
       }
       if (lastPage) {
         if (totalPages === 0 || pageNum === totalPages) {
@@ -84,8 +83,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         }
         setPageNum(totalPages)
         const res = await getAllClients({ limit: itemsPerPage, page: totalPages, query })
-        setClientsData(res?.data || [])
-        return
+        return setClientsData(res?.data || [])
       }
       if (increment) {
         if (pageNum < totalPages) {
