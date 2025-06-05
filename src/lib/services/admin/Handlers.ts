@@ -8,7 +8,6 @@ import type { Project, Semester } from '@/payload-types'
 import { type ProjectDetails, ProjectStatus } from '@/types/Project'
 import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import { UserRole } from '@/types/User'
-import { s } from 'node_modules/framer-motion/dist/types.d-CtuPurYT'
 
 /**
  * Handles the click event to create semester
