@@ -1,4 +1,4 @@
-import { isValidEmail, isValidPassword } from './util'
+import { isValidEmail, isValidPassword } from './AuthUtil'
 
 describe('lib/utils', () => {
   describe('isValidEmail', () => {
