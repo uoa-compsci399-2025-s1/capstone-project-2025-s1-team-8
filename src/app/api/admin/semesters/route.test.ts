@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 
-import SemesterService from '@/data-layer/services/SemesterService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { POST } from './route'
 import { createMockNextPostRequest } from '@/test-config/utils'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
@@ -9,7 +9,7 @@ import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
 describe('tests /api/admin/semesters', async () => {
-  const semesterService = new SemesterService()
+  const semesterService = new SemesterDataService()
   const cookieStore = await cookies()
   describe('POST /api/admin/semesters', () => {
     it('should return a 401 Unauthorized error if not authenticated', async () => {

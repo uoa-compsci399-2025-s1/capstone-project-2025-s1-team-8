@@ -2,8 +2,8 @@ import { cookies } from 'next/headers'
 import { StatusCodes } from 'http-status-codes'
 
 import { createMockNextRequest, paramsToPromise } from '@/test-config/utils'
-import ProjectService from '@/data-layer/services/ProjectService'
-import SemesterService from '@/data-layer/services/SemesterService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import type { GetProjectSemestersResponse } from './route'
@@ -14,8 +14,8 @@ import { clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 
 describe('/api/projects/[id]/semesters', async () => {
   const cookieStore = await cookies()
-  const semesterService = new SemesterService()
-  const projectService = new ProjectService()
+  const semesterDataService = new SemesterDataService()
+  const projectDataService = new ProjectDataService()
 
   describe('GET', () => {
     it('should return a 401 if the requesting user is a student', async () => {
@@ -27,11 +27,11 @@ describe('/api/projects/[id]/semesters', async () => {
 
     it("should return a 401 if the requesting user isn't associated to the project", async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      const project = await projectService.createProject({
+      const project = await projectDataService.createProject({
         ...projectCreateMock,
         client: studentMock,
       })
-      await projectService.createSemesterProject(semesterProjectCreateMock)
+      await projectDataService.createSemesterProject(semesterProjectCreateMock)
 
       const res = await GET(createMockNextRequest(''), {
         params: paramsToPromise({ id: project.id }),
@@ -45,13 +45,13 @@ describe('/api/projects/[id]/semesters', async () => {
 
     it('should return a 200 if the client is an additional client', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      const semester = await semesterService.createSemester(semesterCreateMock)
-      const project = await projectService.createProject({
+      const semester = await semesterDataService.createSemester(semesterCreateMock)
+      const project = await projectDataService.createProject({
         ...projectCreateMock,
         client: studentMock,
         additionalClients: [clientMock],
       })
-      await projectService.createSemesterProject({
+      await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         project,
         semester,
@@ -68,15 +68,15 @@ describe('/api/projects/[id]/semesters', async () => {
 
     it('should return all the semesters that are releated to a project', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const semester = await semesterService.createSemester(semesterCreateMock)
-      const semester2 = await semesterService.createSemester(semesterCreateMock)
-      const project = await projectService.createProject(projectCreateMock)
-      await projectService.createSemesterProject({
+      const semester = await semesterDataService.createSemester(semesterCreateMock)
+      const semester2 = await semesterDataService.createSemester(semesterCreateMock)
+      const project = await projectDataService.createProject(projectCreateMock)
+      await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         semester,
         project,
       })
-      await projectService.createSemesterProject({
+      await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         semester: semester2,
         project,

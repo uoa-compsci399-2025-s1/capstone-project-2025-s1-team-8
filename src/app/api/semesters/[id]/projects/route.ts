@@ -3,8 +3,8 @@ import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 import { z, ZodError } from 'zod'
 import { NotFound } from 'payload'
 
-import ProjectService from '@/data-layer/services/ProjectService'
-import SemesterService from '@/data-layer/services/SemesterService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { ProjectStatus } from '@/types/Project'
 import type { CreateSemesterProjectData } from '@/types/Collections'
 import { Security } from '@/business-layer/middleware/Security'
@@ -34,7 +34,7 @@ class RouterWrapper {
   @Security('jwt', ['student', 'admin'])
   static async GET(req: RequestWithUser, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    const projectService = new ProjectService()
+    const projectDataService = new ProjectDataService()
     const searchParams = req.nextUrl.searchParams
     const status = searchParams.get('status')
     const published = searchParams.get('published')
@@ -64,7 +64,7 @@ class RouterWrapper {
     let docs: SemesterProject[], nextPage: number | null | undefined
 
     if (req.user.role === UserRole.Student) {
-      const paginatedProjects = await projectService.getAllSemesterProjectsBySemester(
+      const paginatedProjects = await projectDataService.getAllSemesterProjectsBySemester(
         id,
         limit,
         page,
@@ -76,7 +76,7 @@ class RouterWrapper {
       docs = paginatedProjects.docs
       nextPage = paginatedProjects.nextPage
     } else {
-      const paginatedProjects = await projectService.getAllSemesterProjectsBySemester(
+      const paginatedProjects = await projectDataService.getAllSemesterProjectsBySemester(
         id,
         limit,
         page,
@@ -101,16 +101,16 @@ class RouterWrapper {
    */
   @Security('jwt', ['admin', 'client'])
   static async POST(req: RequestWithUser, { params }: { params: Promise<{ id: string }> }) {
-    const projectService = new ProjectService()
-    const semesterService = new SemesterService()
+    const projectDataService = new ProjectDataService()
+    const semesterDataService = new SemesterDataService()
     const { id } = await params
 
     try {
-      const semester = await semesterService.getSemester(id)
+      const semester = await semesterDataService.getSemester(id)
       const bodyData = await req.json()
       const body = CreateSemesterProjectRequestBodySchema.parse(bodyData)
       try {
-        const project = await projectService.getProjectById(
+        const project = await projectDataService.getProjectById(
           typeof body.project === 'string' ? body.project : body.project?.id,
         )
         if (
@@ -132,7 +132,7 @@ class RouterWrapper {
         }
       }
 
-      const data = await projectService.createSemesterProject({
+      const data = await projectDataService.createSemesterProject({
         ...body,
         semester: semester,
       } as CreateSemesterProjectData)

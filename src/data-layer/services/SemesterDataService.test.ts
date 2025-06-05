@@ -1,13 +1,13 @@
 import { testPayloadObject } from '@/test-config/utils'
-import SemesterService from './SemesterService'
+import SemesterDataService from './SemesterDataService'
 import { semesterCreateMock, semesterCreateMock2 } from '@/test-config/mocks/Semester.mock'
 import { SemesterType } from '@/types/Semester'
 
 describe('Semester service tests', () => {
-  const semesterService = new SemesterService()
+  const semesterDataService = new SemesterDataService()
 
   it('should create a semester', async () => {
-    const newSemester = await semesterService.createSemester(semesterCreateMock)
+    const newSemester = await semesterDataService.createSemester(semesterCreateMock)
     const fetchedSemester = await testPayloadObject.findByID({
       collection: 'semester',
       id: newSemester.id,
@@ -16,21 +16,21 @@ describe('Semester service tests', () => {
   })
 
   it('should get a semester', async () => {
-    const newSemester = await semesterService.createSemester(semesterCreateMock)
-    const fetchedSemester = await semesterService.getSemester(newSemester.id)
+    const newSemester = await semesterDataService.createSemester(semesterCreateMock)
+    const fetchedSemester = await semesterDataService.getSemester(newSemester.id)
     expect(newSemester).toEqual(fetchedSemester)
   })
 
   it('should get all semesters', async () => {
-    const semester1 = await semesterService.createSemester(semesterCreateMock)
-    const semester2 = await semesterService.createSemester(semesterCreateMock)
-    const fetchedSemester = await semesterService.getAllSemesters()
+    const semester1 = await semesterDataService.createSemester(semesterCreateMock)
+    const semester2 = await semesterDataService.createSemester(semesterCreateMock)
+    const fetchedSemester = await semesterDataService.getAllSemesters()
     expect(fetchedSemester.length).toEqual(2)
     expect(fetchedSemester).toEqual(expect.arrayContaining([semester1, semester2]))
   })
 
   it('should get all semesters with timeframe filtering', async () => {
-    const pastSemester = await semesterService.createSemester({
+    const pastSemester = await semesterDataService.createSemester({
       ...semesterCreateMock,
       startDate: new Date('2023-01-01').toISOString(),
       endDate: new Date('2023-06-30').toISOString(),
@@ -38,75 +38,75 @@ describe('Semester service tests', () => {
 
     const today = new Date()
 
-    const upcomingSemester = await semesterService.createSemester({
+    const upcomingSemester = await semesterDataService.createSemester({
       ...semesterCreateMock,
       startDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString(),
       endDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString(),
     })
 
-    const currentSemester = await semesterService.createSemester({
+    const currentSemester = await semesterDataService.createSemester({
       ...semesterCreateMock,
       startDate: new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()).toISOString(),
       endDate: new Date(today.getFullYear() + 1, today.getMonth(), today.getDate()).toISOString(),
     })
 
-    const past = await semesterService.getAllSemesters(SemesterType.Past)
+    const past = await semesterDataService.getAllSemesters(SemesterType.Past)
     expect(past).toStrictEqual([pastSemester])
 
-    const current = await semesterService.getAllSemesters(SemesterType.Current)
+    const current = await semesterDataService.getAllSemesters(SemesterType.Current)
     expect(current).toStrictEqual([currentSemester])
 
-    const upcoming = await semesterService.getAllSemesters(SemesterType.Upcoming)
+    const upcoming = await semesterDataService.getAllSemesters(SemesterType.Upcoming)
     expect(upcoming).toStrictEqual([upcomingSemester])
   })
 
   it('should get the next upcoming semester', async () => {
     const today = new Date()
 
-    await semesterService.createSemester({
+    await semesterDataService.createSemester({
       ...semesterCreateMock,
       startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2).toISOString(),
       endDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3).toISOString(),
     })
 
-    await semesterService.createSemester({
+    await semesterDataService.createSemester({
       ...semesterCreateMock,
       startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3).toISOString(),
       endDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 4).toISOString(),
     })
 
     // Supposedly this semester is fetched as it is the closest in start date and end date
-    const nextSemester = await semesterService.createSemester({
+    const nextSemester = await semesterDataService.createSemester({
       ...semesterCreateMock,
       startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString(),
       endDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2).toISOString(),
     })
 
-    await semesterService.createSemester({
+    await semesterDataService.createSemester({
       ...semesterCreateMock,
       startDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString(),
       endDate: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3).toISOString(),
     })
 
-    const nextSem = await semesterService.getAllSemesters(SemesterType.Next)
+    const nextSem = await semesterDataService.getAllSemesters(SemesterType.Next)
     expect(nextSem).toStrictEqual([nextSemester])
   })
 
   it('should return undefined if semester does not exist', async () => {
-    await expect(semesterService.getSemester('nonexistent_id')).rejects.toThrow('Not Found')
+    await expect(semesterDataService.getSemester('nonexistent_id')).rejects.toThrow('Not Found')
   })
 
   it('should update a semester', async () => {
-    const newSemester = await semesterService.createSemester(semesterCreateMock)
-    const updatedSemester = await semesterService.updateSemester(newSemester.id, {
+    const newSemester = await semesterDataService.createSemester(semesterCreateMock)
+    const updatedSemester = await semesterDataService.updateSemester(newSemester.id, {
       name: 'Updated Semester',
     })
     expect(updatedSemester.name).toEqual('Updated Semester')
   })
 
   it('should delete a semester', async () => {
-    const newSemester = await semesterService.createSemester(semesterCreateMock)
-    await semesterService.deleteSemester(newSemester.id)
+    const newSemester = await semesterDataService.createSemester(semesterCreateMock)
+    await semesterDataService.deleteSemester(newSemester.id)
     await expect(
       testPayloadObject.findByID({
         collection: 'semester',
@@ -116,18 +116,18 @@ describe('Semester service tests', () => {
   })
 
   it('should throw an error if semester does not exist', async () => {
-    await expect(semesterService.deleteSemester('nonexistent_id')).rejects.toThrow('Not Found')
+    await expect(semesterDataService.deleteSemester('nonexistent_id')).rejects.toThrow('Not Found')
   })
 
   it('should return all the semester documents', async () => {
-    const semester1 = await semesterService.createSemester(semesterCreateMock)
-    const semester2 = await semesterService.createSemester(semesterCreateMock2)
-    const fetchedUsers = await semesterService.getAllSemesters()
+    const semester1 = await semesterDataService.createSemester(semesterCreateMock)
+    const semester2 = await semesterDataService.createSemester(semesterCreateMock2)
+    const fetchedUsers = await semesterDataService.getAllSemesters()
 
     expect(fetchedUsers).toStrictEqual(expect.arrayContaining([semester1, semester2]))
   })
 
   it('not found - find user with nonexistent id', async () => {
-    await expect(semesterService.getSemester('nonexistent_id')).rejects.toThrow('Not Found')
+    await expect(semesterDataService.getSemester('nonexistent_id')).rejects.toThrow('Not Found')
   })
 })

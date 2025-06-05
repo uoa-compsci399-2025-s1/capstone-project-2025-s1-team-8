@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
-import ProjectService from '@/data-layer/services/ProjectService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import type { CreateProjectData } from '@/types/Collections'
 import { z, ZodError } from 'zod'
 import { Security } from '@/business-layer/middleware/Security'
@@ -8,10 +8,10 @@ import { MediaSchema, ProjectSchema } from '@/types/Payload'
 import type { RequestWithUser } from '@/types/Requests'
 import { UserRole, UserRoleWithoutAdmin } from '@/types/User'
 import type { Semester, User } from '@/payload-types'
-import UserService from '@/data-layer/services/UserService'
+import UserDataService from '@/data-layer/services/UserDataService'
 import { NotFound } from 'payload'
 import { CommonResponse } from '@/types/response-models/CommonResponse'
-import SemesterService from '@/data-layer/services/SemesterService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { ProjectStatus } from '@/types/Project'
 
 export const CreateProjectClientSchema = z.object({
@@ -53,7 +53,7 @@ class RouteWrapper {
    */
   @Security('jwt', ['client', 'admin'])
   static async GET(req: RequestWithUser) {
-    const projectService = new ProjectService()
+    const projectDataService = new ProjectDataService()
 
     const searchParams = req.nextUrl.searchParams
     const page = parseInt(searchParams.get('page') || '1')
@@ -67,9 +67,9 @@ class RouteWrapper {
 
     let docs, nextPage
     if (req.user.role === UserRole.Admin) {
-      ;({ docs, nextPage } = await projectService.getAllProjects(limit, page))
+      ;({ docs, nextPage } = await projectDataService.getAllProjects(limit, page))
     } else {
-      ;({ docs, nextPage } = await projectService.getAllProjects(limit, page, {
+      ;({ docs, nextPage } = await projectDataService.getAllProjects(limit, page, {
         clientId: req.user.id,
       }))
     }
@@ -84,9 +84,9 @@ class RouteWrapper {
    */
   @Security('jwt', ['client', 'admin'])
   static async POST(req: RequestWithUser) {
-    const projectService = new ProjectService()
-    const semesterService = new SemesterService()
-    const userService = new UserService()
+    const projectDataService = new ProjectDataService()
+    const semesterDataService = new SemesterDataService()
+    const userService = new UserDataService()
 
     try {
       const body = CreateProjectRequestBodySchema.parse(await req.json())
@@ -113,14 +113,14 @@ class RouteWrapper {
       const semesters: Semester[] = await Promise.all(
         body.semesters?.map(async (semesterID) => {
           try {
-            return await semesterService.getSemester(semesterID)
+            return await semesterDataService.getSemester(semesterID)
           } catch (err) {
             throw err
           }
         }),
       )
 
-      const createdProject = await projectService.createProject({
+      const createdProject = await projectDataService.createProject({
         ...body,
         client: req.user.id,
         additionalClients: clients,
@@ -128,7 +128,7 @@ class RouteWrapper {
 
       await Promise.all(
         semesters.map(async (semester) => {
-          return await projectService.createSemesterProject({
+          return await projectDataService.createSemesterProject({
             project: createdProject,
             semester,
             status: ProjectStatus.Pending,
