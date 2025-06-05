@@ -33,6 +33,7 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
   const [hasShadow, setHasShadow] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
 
   const toggleMenu = () => setIsOpen(!isOpen)
   useEffect(() => {
@@ -79,14 +80,21 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
               </div>
             )}
             {user && user.role === UserRole.Admin && (
-              <NavDropdown
-                items={[
-                  { href: '/admin', text: 'Admin Dashboard' },
-                  { href: '/client', text: 'Client Dashboard' },
-                  { href: '/student', text: 'Student Dashboard' },
-                ]}
-                buttonText="My Dashboards"
-              />
+              <div className="relative group p-2">
+                <NavDropdown
+                  items={[
+                    { href: '/admin', text: 'Admin Dashboard' },
+                    { href: '/client', text: 'Client Dashboard' },
+                    { href: '/student', text: 'Student Dashboard' },
+                  ]}
+                  buttonText="My Dashboards"
+                  dropdownOpen={dropdownOpen}
+                  setDropdownOpen={setDropdownOpen}
+                />
+                {!dropdownOpen && (
+                  <span className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100`} />
+                )}
+              </div>
             )}
             <div className="relative group p-2">
               {
@@ -160,6 +168,8 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
                   { href: '/student', text: 'Student Dashboard' },
                 ]}
                 buttonText="My Dashboards"
+                setDropdownOpen={setDropdownOpen}
+                dropdownOpen={dropdownOpen}
               ></NavDropdown>
             </div>
           )}

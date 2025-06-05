@@ -26,5 +26,9 @@ export const Default: Story = {
       { text: 'Item 3', href: '/item3' },
     ],
     buttonText: 'Dropdown Menu',
+    dropdownOpen: false,
+    setDropdownOpen: (open: boolean) => {
+      console.log('Dropdown open state:', open)
+    },
   },
 }

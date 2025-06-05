@@ -8,12 +8,18 @@ import { IoChevronDown, IoChevronUp } from 'react-icons/io5'
 
 interface NavDropdownProps {
   buttonText: string
+  dropdownOpen: boolean
+  setDropdownOpen: (open: boolean) => void
   items: NavLink[]
 }
 
-const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const toggleMenu = () => setIsOpen(!isOpen)
+const NavDropdown: React.FC<NavDropdownProps> = ({
+  buttonText,
+  items,
+  dropdownOpen = false,
+  setDropdownOpen,
+}) => {
+  const toggleMenu = () => setDropdownOpen(!dropdownOpen)
   return (
     <div className="relative">
       {/* Mobile: render items inline */}
@@ -21,12 +27,12 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
         <div className="pb-2">
           <button className="flex flex-row justify-between w-full nav-link-text">
             {buttonText}
-            {!isOpen && <IoChevronDown aria-hidden="true" className="size-4 text-current" />}
-            {isOpen && <IoChevronUp aria-hidden="true" className="size-4 text-current" />}
+            {!dropdownOpen && <IoChevronDown aria-hidden="true" className="size-4 text-current" />}
+            {dropdownOpen && <IoChevronUp aria-hidden="true" className="size-4 text-current" />}
           </button>
         </div>
 
-        {isOpen && (
+        {dropdownOpen && (
           <div className="">
             {items.map((item) => (
               <div className="py-2 px-4" key={item.href}>
@@ -43,19 +49,11 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ buttonText, items }) => {
 
       {/* Desktop: dropdown menu */}
       <div className="hidden md:flex md:relative">
-        <div className="relative group p-2">
-          <button
-            onClick={toggleMenu}
-            className="nav-link-text flex flex-row justify-center gap-2 mt-1"
-          >
-            {buttonText} {!isOpen && <IoChevronDown className="mt-0.5" />}
-            {isOpen && <IoChevronUp className="mt-0.5" />}
-          </button>
-          {!isOpen && (
-            <span className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100`} />
-          )}
-        </div>
-        {isOpen && (
+        <button onClick={toggleMenu} className="nav-link-text flex flex-row justify-center gap-2">
+          {buttonText} {!dropdownOpen && <IoChevronDown className="mt-0.5" />}
+          {dropdownOpen && <IoChevronUp className="mt-0.5" />}
+        </button>
+        {dropdownOpen && (
           <div className="bg-beige mt-2 absolute inline-block z-75 top-full right-0 w-50 rounded-lg shadow-lg">
             {items.map((item) => (
               <Link
