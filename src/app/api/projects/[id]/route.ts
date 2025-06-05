@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 import { NotFound } from 'payload'
 import { z, ZodError } from 'zod'
-import ProjectService from '@/data-layer/services/ProjectService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import { Security } from '@/business-layer/middleware/Security'
 import type { RequestWithUser } from '@/types/Requests'
 import { MediaSchema, UserSchema } from '@/types/Payload'
@@ -39,9 +39,9 @@ class RouteWrapper {
   @Security('jwt', ['admin', 'client'])
   static async GET(req: RequestWithUser, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    const projectService = new ProjectService()
+    const projectDataService = new ProjectDataService()
     try {
-      const project = await projectService.getProjectById(id)
+      const project = await projectDataService.getProjectById(id)
       if (
         req.user.role !== UserRole.Admin &&
         (project.client as User).id !== req.user.id &&
@@ -84,9 +84,9 @@ class RouteWrapper {
   @Security('jwt', ['admin', 'client'])
   static async PATCH(req: RequestWithUser, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    const projectService = new ProjectService()
+    const projectDataService = new ProjectDataService()
     try {
-      const project = await projectService.getProjectById(id)
+      const project = await projectDataService.getProjectById(id)
       if (
         req.user.role !== UserRole.Admin &&
         (project.client as User).id !== req.user.id &&
@@ -95,7 +95,7 @@ class RouteWrapper {
         return NextResponse.json({ error: 'Unauthorized' }, { status: StatusCodes.UNAUTHORIZED })
       }
       const body = UpdateProjectRequestBody.parse(await req.json())
-      const data = await projectService.updateProject(id, body)
+      const data = await projectDataService.updateProject(id, body)
       return NextResponse.json({ data: data })
     } catch (error) {
       if (error instanceof NotFound) {
@@ -123,10 +123,10 @@ class RouteWrapper {
   @Security('jwt', ['admin', 'client'])
   static async DELETE(req: RequestWithUser, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    const projectService = new ProjectService()
+    const projectDataService = new ProjectDataService()
 
     try {
-      const project = await projectService.getProjectById(id)
+      const project = await projectDataService.getProjectById(id)
       if (
         req.user.role !== UserRole.Admin &&
         (project.client as User).id !== req.user.id &&
@@ -134,7 +134,7 @@ class RouteWrapper {
       ) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: StatusCodes.UNAUTHORIZED })
       }
-      await projectService.deleteProject(id)
+      await projectDataService.deleteProject(id)
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
     } catch (error) {
       if (error instanceof NotFound) {
