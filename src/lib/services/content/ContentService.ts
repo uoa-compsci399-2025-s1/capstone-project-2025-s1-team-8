@@ -33,16 +33,16 @@ const ContentService = {
     isFallback: boolean
   }> {
     'use server'
-    const clientDashoard = await getClientDashboard()
+    const clientDashboard = await getClientDashboard()
 
     let clientDashboardCMS: ClientDashboard = clientDashboardContent
     let isFallback = false
 
-    if (clientDashoard.ok) {
-      const json = await clientDashoard.json()
+    if (clientDashboard.ok) {
+      const json = await clientDashboard.json()
       clientDashboardCMS = json.data
     } else {
-      console.error('Failed to fetch client dashboard content: ', clientDashoard.status)
+      console.error('Failed to fetch client dashboard content: ', clientDashboard.status)
       console.warn('Using fallback content for the client dashboard.')
       isFallback = true
     }
