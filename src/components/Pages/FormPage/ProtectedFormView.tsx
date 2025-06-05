@@ -17,6 +17,7 @@ import Link from 'next/link'
 import type { CreateProjectRequestBody, CreateProjectClient } from '@/app/api/projects/route'
 import { handleFormPageLoad, handleProjectFormSubmission } from '@/lib/services/form/Handlers'
 import Notification from '@/components/Generic/Notification/Notification'
+import { Semester } from '@/payload-types'
 
 interface FormProject extends CreateProjectRequestBody {
   meetingAttendance: boolean
@@ -24,8 +25,10 @@ interface FormProject extends CreateProjectRequestBody {
   projectSupportAndMaintenance: boolean
 }
 
-const returnCalendarDateFromISOString = (isoString: string): string => {
+const returnSubmissionDateFromISOString = (isoString: string): string => {
   const date = new Date(isoString)
+  // want to subtract 1 minute from the date to ensure people submit by 11:59pm the previous day
+  date.setMinutes(date.getMinutes()-1)
   return date.toLocaleDateString('en-NZ', {
     year: 'numeric',
     month: '2-digit',
@@ -38,7 +41,7 @@ const ProtectedFormView: FC = () => {
 
   // id / semester name pairs for the upcoming semesters
   const [upcomingSemesterOptions, setUpcomingSemesterOptions] = useState<CheckboxOptions[]>([])
-  const [nextSemesterOption, setNextSemesterOption] = useState<CheckboxOptions>()
+  const [nextSemesterDetails, setNextSemesterDetails] = useState<Semester>()
 
   // State to manage the additional client details
   const [otherClientDetails, setOtherClientDetails] = useState<CreateProjectClient[]>([])
@@ -52,7 +55,6 @@ const ProtectedFormView: FC = () => {
 
   const [specialEquipmentRequirements, setSpecialEquipmentRequirements] = useState<string>('')
   const [numberOfTeams, setNumberOfTeams] = useState<string>('')
-  const [futureConsideration, setFutureConsideration] = useState<string>('')
 
   const handleChange = (index: number, field: keyof CreateProjectClient, value: string) => {
     const updated = [...otherClientDetails]
@@ -72,14 +74,13 @@ const ProtectedFormView: FC = () => {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<FormProject>()
 
   useEffect(() => {
     handleFormPageLoad(projectId).then((res) => {
-      if (!res.projectData && typeof res.upcomingSemesters === 'undefined') {
-        redirect('/form/not-found')
+      if (!res.projectData && typeof res.projectData === 'undefined') {
+        redirect('/not-found')
       }
 
       if (res.projectData) {
@@ -100,10 +101,11 @@ const ProtectedFormView: FC = () => {
         setValue('description', res.projectData.description || '')
         setValue('desiredOutput', res.projectData.desiredOutput || '')
         setSpecialEquipmentRequirements(res.projectData.specialEquipmentRequirements || '')
+        setValue('specialEquipmentRequirements', res.projectData.specialEquipmentRequirements)
         setNumberOfTeams(res.projectData.numberOfTeams || '')
+        setValue('numberOfTeams', res.projectData.numberOfTeams)
         setValue('desiredTeamSkills', res.projectData.desiredTeamSkills || '')
         setValue('availableResources', res.projectData.availableResources || '')
-        setFutureConsideration(res.projectData.futureConsideration ? 'Yes' : 'No')
         setValue('meetingAttendance', true)
         setValue('finalPresentationAttendance', true)
         setValue('projectSupportAndMaintenance', true)
@@ -119,30 +121,22 @@ const ProtectedFormView: FC = () => {
         res.upcomingSemesters
           .map((semester) => ({
             value: semester.id,
-            label: `${semester.name} (${returnCalendarDateFromISOString(semester.startDate)} - ${returnCalendarDateFromISOString(semester.endDate)})`,
+            label: `${semester.name} (${returnSubmissionDateFromISOString(semester.startDate)} - ${returnSubmissionDateFromISOString(semester.endDate)})`,
           }))
           .reverse(),
       )
       // the closest upcoming semester is the last one in the list
-      setNextSemesterOption(
+      setNextSemesterDetails(
         res.upcomingSemesters.length > 0
-          ? {
-              value: res.upcomingSemesters[res.upcomingSemesters.length - 1].id,
-              label: `${res.upcomingSemesters[res.upcomingSemesters.length - 1].name} (${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].startDate)} - ${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].endDate)})`,
-            }
+          ? res.upcomingSemesters[res.upcomingSemesters.length - 1]
           : undefined,
       )
     })
   }, [])
 
-  const hasFutureConsideration = String(watch('futureConsideration')) === 'Yes'
   const onSubmit: SubmitHandler<FormProject> = async (data) => {
-    console.log(data)
-    if (nextSemesterOption) {
-      data.semesters.push(nextSemesterOption?.value) // Add the next semester to the list of semesters
-    }
     data.additionalClients = otherClientDetails
-    data.futureConsideration = hasFutureConsideration
+    data.futureConsideration = true
 
     const res = await handleProjectFormSubmission(data as CreateProjectRequestBody)
 
@@ -188,8 +182,8 @@ const ProtectedFormView: FC = () => {
             </h2>
             <p className="text-dark-blue font-inter text-sm">
               Please complete this form if you wish to propose a project for the COMPSCI 399
-              Capstone Course in <b>S1 2025</b>. The deadline for form submission is{' '}
-              <b>July 11, 2025, by 11:59 pm</b>.
+              Capstone Course in <b>{nextSemesterDetails?.name}</b>. The deadline for form submission is{' '}
+              <b>{returnSubmissionDateFromISOString(nextSemesterDetails?.deadline ?? "")}, by 11:59 pm</b>.
               <br />
               <br />
               <em>
@@ -483,40 +477,17 @@ const ProtectedFormView: FC = () => {
                 />
               </li>
               <li>
-                <label htmlFor="FutureConsideration">
-                  Future consideration <span className="text-pink-accent">*</span>
-                </label>
-                <p className="form-question-subheading">
-                  If your project is not selected by students in the upcoming semester
-                  {nextSemesterOption ? ', ' + nextSemesterOption.label : ''}, would you like it to
-                  be considered for following semesters?
-                </p>
-                <Radio
-                  values={['Yes', 'No']}
-                  required={false}
-                  error={!!errors.futureConsideration}
-                  errorMessage={errors.futureConsideration?.message}
-                  defaultValue={futureConsideration}
-                  {...register('futureConsideration', {
-                    required: 'Future consideration is required',
-                  })}
-                />
-              </li>
-              <li>
                 <label htmlFor="FutureSemesters">Future Semesters</label>
                 <p className="form-question-subheading">
-                  If you replied yes to the question above, what semesters would you like your
+                  Which semesters would you like your
                   project to be considered for?
                 </p>
                 <Checkbox
-                  // we want all semesters EXCEPT the next one (since it is guaranteed to be selected)
-                  options={upcomingSemesterOptions.slice(1)}
+                  options={upcomingSemesterOptions}
                   error={!!errors.semesters}
                   errorMessage={errors.semesters?.message}
                   {...register('semesters', {
-                    required: hasFutureConsideration
-                      ? 'Please select at least one semester'
-                      : false,
+                    required: 'Please select at least one semester'
                   })}
                 />
               </li>
