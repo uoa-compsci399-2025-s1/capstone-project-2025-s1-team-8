@@ -8,7 +8,6 @@ import type { Semester } from '@/payload-types'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
 import {
-  handleGetAllSemesterProjects,
   handleCreateSemester,
   handleUpdateSemester,
   handleDeleteSemester,
@@ -248,7 +247,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     await refreshSemesters()
                     setNotificationMessage('Semester deleted successfully')
                   }}
-                  getAllSemesterProjects={handleGetAllSemesterProjects}
                   handleCreateSemester={handleCreateSemester}
                   handleUpdateSemester={handleUpdateSemester}
                   handleDeleteSemester={handleDeleteSemester}

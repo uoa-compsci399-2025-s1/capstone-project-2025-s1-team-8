@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useRef, useState } from 'react'
 import SemesterCard from '@/components/Composite/SemesterCard/SemesterCard'
 import Button from '@/components/Generic/Button/Button'
 import SemesterForm from '@/components/Composite/SemesterForm/SemesterForm'
@@ -14,9 +14,6 @@ interface SemestersPageProps {
   created: () => void
   updated: () => void
   deleted: () => void
-  getAllSemesterProjects: (
-    id: string,
-  ) => Promise<void | { error?: string; data?: ProjectDetails[] }>
   handleCreateSemester: (formData: FormData) => Promise<void | {
     error?: string
     message?: string
@@ -43,7 +40,6 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
   created,
   updated,
   deleted,
-  getAllSemesterProjects,
   handleCreateSemester,
   handleUpdateSemester,
   handleDeleteSemester,
