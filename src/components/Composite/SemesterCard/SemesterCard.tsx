@@ -49,6 +49,10 @@ const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects,
     fetchCurrentOrUpcoming()
   }, [checkStatus, semester.id])
 
+  function handleDownloadCsv() {
+    window.open(`/api/admin/export/semesters/${semester.id}`, '_blank')
+  }
+
   return (
     <div className="relative w-full flex flex-col gap-4">
       {/* Semester Card */}
@@ -158,7 +162,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects,
             heading="Approved projects"
             projects={approvedProjectsList}
             icon={<FiDownload />}
-            onClick={() => console.log('hello')}
+            onClick={handleDownloadCsv}
           />
         </div>
       </div>
