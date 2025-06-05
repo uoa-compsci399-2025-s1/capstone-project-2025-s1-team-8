@@ -30,7 +30,7 @@ class RouteWrapper {
         allSemesterProjects.push(...projects.docs)
         projects = await projectService.getAllSemesterProjectsBySemester(id, 100, projects.nextPage)
       }
-      // client, additionalClients, deadline, desiredOutput, specialEquipmentRequirements, numberOfTeams, desiredTeamSkills, availableResources, futureConsideration
+      // client, additionalClients, deadline, desiredOutput, specialEquipmentRequirements, numberOfTeams, desiredTeamSkills, availableResources
       const csvHeaders = [
         'id',
         'number',
@@ -49,7 +49,6 @@ class RouteWrapper {
         'numberOfTeams',
         'desiredTeamSkills',
         'availableResources',
-        'futureConsideration',
       ]
 
       const csvRows = [csvHeaders]

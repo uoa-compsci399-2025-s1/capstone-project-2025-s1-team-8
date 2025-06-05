@@ -88,13 +88,11 @@ const ProtectedFormView: FC = () => {
     })
   }, [])
 
-  const hasFutureConsideration = String(watch('futureConsideration')) === 'Yes'
   const onSubmit: SubmitHandler<FormProject> = async (data) => {
     if (nextSemesterOption) {
       data.semesters.push(nextSemesterOption?.value) // Add the next semester to the list of semesters
     }
     data.additionalClients = otherClientDetails
-    data.futureConsideration = hasFutureConsideration
 
     const res = await handleProjectFormSubmission(data as CreateProjectRequestBody)
 
@@ -433,25 +431,6 @@ const ProtectedFormView: FC = () => {
                 />
               </li>
               <li>
-                <label htmlFor="FutureConsideration">
-                  Future consideration <span className="text-pink-accent">*</span>
-                </label>
-                <p className="form-question-subheading">
-                  If your project is not selected by students in the upcoming semester
-                  {nextSemesterOption ? ', ' + nextSemesterOption.label : ''}, would you like it to
-                  be considered for following semesters?
-                </p>
-                <Radio
-                  values={['Yes', 'No']}
-                  required={false}
-                  error={!!errors.futureConsideration}
-                  errorMessage={errors.futureConsideration?.message}
-                  {...register('futureConsideration', {
-                    required: 'Future consideration is required',
-                  })}
-                />
-              </li>
-              <li>
                 <label htmlFor="FutureSemesters">Future Semesters</label>
                 <p className="form-question-subheading">
                   If you replied yes to the question above, what semesters would you like your
@@ -461,11 +440,6 @@ const ProtectedFormView: FC = () => {
                   options={upcomingSemesterOptions.slice(0, -2)}
                   error={!!errors.semesters}
                   errorMessage={errors.semesters?.message}
-                  {...register('semesters', {
-                    required: hasFutureConsideration
-                      ? 'Please select at least one semester'
-                      : false,
-                  })}
                 />
               </li>
               <li>

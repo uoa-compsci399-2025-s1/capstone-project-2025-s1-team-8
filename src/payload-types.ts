@@ -273,7 +273,6 @@ export interface Project {
   numberOfTeams: string;
   desiredTeamSkills?: string | null;
   availableResources?: string | null;
-  futureConsideration: boolean;
   questionResponses?:
     | {
         question: string | FormQuestion;
@@ -541,7 +540,6 @@ export interface ProjectSelect<T extends boolean = true> {
   numberOfTeams?: T;
   desiredTeamSkills?: T;
   availableResources?: T;
-  futureConsideration?: T;
   questionResponses?:
     | T
     | {

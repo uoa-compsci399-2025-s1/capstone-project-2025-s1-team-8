@@ -92,7 +92,6 @@ export const ProjectSchema = z.object({
   numberOfTeams: z.string(),
   desiredTeamSkills: z.string().optional(),
   availableResources: z.string().optional(),
-  futureConsideration: z.boolean(),
 }) satisfies z.ZodType<Project>
 
 export const SemesterProjectSchema = z.object({
