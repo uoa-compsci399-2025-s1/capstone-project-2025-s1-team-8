@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import SemesterCard from './SemesterCard'
 import { mockSemesters } from '@/test-config/mocks/Semester.mock'
 import type { Semester } from '@/payload-types'
+import { projectMock } from '@/test-config/mocks/Project.mock'
 
 const mockProps: Semester = mockSemesters[0]
 
@@ -18,15 +19,26 @@ export const Default: Story = {}
 export const CurrentSemester: Story = {
   args: {
     ...Default.args,
-    name: 'Current Semester',
-    //currentOrUpcoming: 'current',
+    semester: mockSemesters[1],
+    handleGetAllSemesterProjects: async (semesterId: string) => {
+      console.log('Fetching projects for semester:', semesterId)
+      return {
+        data: [{ ...projectMock, semesters: [mockSemesters[1]] }],
+      }
+    },
   },
 }
 
 export const UpcomingSemester: Story = {
   args: {
     ...Default.args,
-    name: 'Upcoming Semester',
-    //currentOrUpcoming: 'upcoming',
+    semester: mockSemesters[1],
+    handleGetAllSemesterProjects: async (semesterId: string) => {
+      console.log('Fetching projects for semester:', semesterId)
+      return {
+        data: [{ ...projectMock, semesters: [mockSemesters[1]] }],
+      }
+    },
+    currentOrUpcoming: 'upcoming',
   },
 }
