@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import SemesterCard from '@/components/Composite/SemesterCard/SemesterCard'
 import Button from '@/components/Generic/Button/Button'
 import SemesterForm from '@/components/Composite/SemesterForm/SemesterForm'
@@ -35,6 +35,7 @@ interface SemestersPageProps {
     error?: string
     message?: string
   }>
+  semesterStatuses?: Record<string, 'current' | 'upcoming' | ''>
 }
 
 const SemestersPage: React.FC<SemestersPageProps> = ({
@@ -47,30 +48,14 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
   handleCreateSemester,
   handleUpdateSemester,
   handleDeleteSemester,
+  semesterStatuses = {},
 }) => {
   const [modalOpen, setModalOpen] = useState(false)
-  const [semesterStatuses, setSemesterStatuses] = useState<
-    Record<string, 'current' | 'upcoming' | ''>
-  >({})
   const upcomingSemesterRef = useRef<HTMLDivElement>(null)
 
   function toggleModal() {
     setModalOpen(!modalOpen)
   }
-
-  useEffect(() => {
-    const loadStatuses = async () => {
-      const statuses: Record<string, 'current' | 'upcoming' | ''> = {}
-      if (!checkStatus) return
-      for (const semester of semesters) {
-        if (semester.id) {
-          statuses[semester.id] = await checkStatus(semester.id)
-        }
-      }
-      setSemesterStatuses(statuses)
-    }
-    loadStatuses()
-  }, [semesters, checkStatus])
 
   const scrollToCurrentSemester = () => {
     upcomingSemesterRef.current?.scrollIntoView({ behavior: 'smooth' })
