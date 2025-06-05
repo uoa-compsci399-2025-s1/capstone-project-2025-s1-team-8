@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
-import SemesterService from '@/data-layer/services/SemesterService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import type { CreateSemesterData } from '@/types/Collections'
 import { z, ZodError } from 'zod'
 import { Security } from '@/business-layer/middleware/Security'
@@ -13,6 +13,8 @@ export const CreateSemesterRequestBody = z.object({
   startDate: z.string().datetime({ message: 'Invalid date format, should be in ISO 8601 format' }),
   endDate: z.string().datetime({ message: 'Invalid date format, should be in ISO 8601 format' }),
 })
+
+const semesterDataService = new SemesterDataService()
 
 class RouteWrapper {
   /**
@@ -26,8 +28,7 @@ class RouteWrapper {
     try {
       const parsedBody = CreateSemesterRequestBody.parse(await req.json())
 
-      const semesterService = new SemesterService()
-      const newSemester = await semesterService.createSemester(parsedBody as CreateSemesterData)
+      const newSemester = await semesterDataService.createSemester(parsedBody as CreateSemesterData)
 
       return NextResponse.json({ data: newSemester }, { status: StatusCodes.CREATED })
     } catch (error) {
