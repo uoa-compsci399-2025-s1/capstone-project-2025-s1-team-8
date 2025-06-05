@@ -46,6 +46,10 @@ interface ClientsPageProps {
   searchForClients: (searchValue: string) => void
   totalPages?: number
   isFetching: boolean
+  handleGetAllProjects: (clientId: string) => Promise<{
+    error?: string
+    data?: ProjectDetails[]
+  }>
 }
 
 const ClientsPage: React.FC<ClientsPageProps> = ({
@@ -61,6 +65,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
   searchForClients,
   totalPages = 0,
   isFetching,
+  handleGetAllProjects,
 }) => {
   const [searchValue, setSearchValue] = useState('')
 
@@ -113,6 +118,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
           deletedClient={deletedClient}
           onDeleteProject={onDeleteProject}
           deletedProject={deletedProject}
+          handleGetAllProjects={handleGetAllProjects}
         />
       </div>
       <div className="flex flex-row justify-center items-center gap-4 mt-8">

@@ -294,3 +294,19 @@ export async function handleDeleteProject(projectId: string): Promise<{
     return { error: response.error }
   }
 }
+
+export async function handleGetAllProjectsByClient(clientId: string): Promise<{
+  error?: string
+  data?: ProjectDetails[]
+}> {
+  const response = await AdminService.getProjectsByUserId(clientId)
+  if (response.status === 200) {
+    const projects = response.data.map((project) => ({
+      ...project,
+      semesters: project.semesters || [],
+    }))
+    return { data: projects }
+  } else {
+    return { error: response.error }
+  }
+}

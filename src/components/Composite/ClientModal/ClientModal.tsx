@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import type { ModalProps } from '@/components/Generic/Modal/Modal'
 import Modal from '@/components/Generic/Modal/Modal'
@@ -12,7 +12,6 @@ import type { UserCombinedInfo } from '@/types/Collections'
 interface ClientModalProps extends ModalProps {
   clientInfo: UserCombinedInfo
   clientEmail: string
-  projects?: ProjectDetails[]
   onSave?: (
     clientId: string,
     firstName: string,
@@ -36,6 +35,10 @@ interface ClientModalProps extends ModalProps {
     message?: string
   }>
   deletedProject?: () => void
+  handleGetAllProjects: (clientId: string) => Promise<{
+    error?: string
+    data?: ProjectDetails[]
+  }>
 }
 
 const ClientModal: React.FC<ClientModalProps> = ({
@@ -44,13 +47,13 @@ const ClientModal: React.FC<ClientModalProps> = ({
   className = '',
   clientInfo,
   clientEmail,
-  projects,
   onSave,
   onDeleteClient,
   onDeletedClient,
   onUpdatedClient,
   onDeleteProject,
   deletedProject,
+  handleGetAllProjects,
 }) => {
   const [copied, setCopied] = useState(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
@@ -71,6 +74,7 @@ const ClientModal: React.FC<ClientModalProps> = ({
     'warning',
   )
   const [notificationTitle, setNotificationTitle] = useState<string>('')
+  const [projects, setProjects] = useState<ProjectDetails[]>([])
 
   const handleSave = async () => {
     if (!firstName || !lastName) {
@@ -111,6 +115,21 @@ const ClientModal: React.FC<ClientModalProps> = ({
     setCopied(true)
     setTimeout(() => setCopied(false), 1000)
   }
+
+  useEffect(() => {
+    if (open) {
+      const fetchProjects = async () => {
+        const res = await handleGetAllProjects(clientInfo.id)
+        if (res && res.data) {
+          setProjects(res.data)
+        } else {
+          console.error('Failed to fetch projects:', res?.error)
+          setProjects([])
+        }
+      }
+      fetchProjects()
+    }
+  }, [open, clientInfo.id, handleGetAllProjects])
 
   return (
     <Modal
@@ -234,19 +253,22 @@ const ClientModal: React.FC<ClientModalProps> = ({
           </>
         )}
       </div>
-      {projects && (
+      {projects.length !== 0 && (
         <ProjectCardList
           className="bg-transparent-blue border-t-deeper-blue border-t max-w-full flex flex-col p-15 rounded-b-2xl gap-5"
           headingClassName="text-3xl pb-3 tracking-wide"
           heading="Projects"
           projects={projects}
           onDelete={onDeleteProject}
-          deleted={() => {
+          deleted={async () => {
             deletedProject?.()
+            const res = await handleGetAllProjects(clientInfo.id)
+            if (res && res.data) {
+              setProjects(res.data)
+            }
             setNotificationMessage('Project deleted successfully')
             setNotificationType('success')
             setNotificationTitle('Success')
-            // @TODO refresh project & remove deletedProject from props
           }}
         />
       )}

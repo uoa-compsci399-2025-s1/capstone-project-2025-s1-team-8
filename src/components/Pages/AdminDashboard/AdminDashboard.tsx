@@ -20,6 +20,7 @@ import {
   handleUpdateClient,
   handleDeleteProject,
   getNextSemesterProjects,
+  handleGetAllProjectsByClient,
 } from '@/lib/services/admin/Handlers'
 import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
@@ -35,7 +36,7 @@ type AdminDashboardProps = {
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({
-  clients: initialClients,
+  clients,
   semesters: initialSemesters,
   projects: initialProjects,
   totalNumPages = 0,
@@ -47,6 +48,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [notificationMessage, setNotificationMessage] = useState('')
   const [semesters, setSemesters] = useState<Semester[]>(initialSemesters)
   const [clientsData, setClientsData] = useState(clients)
+  const [projects, setProjects] = useState<SemesterContainerData>(initialProjects)
   const [semesterStatuses, setSemesterStatuses] =
     useState<Record<string, 'current' | 'upcoming' | ''>>(semesterStatusList)
   const [pageNum, setPageNum] = useState(1)
@@ -163,7 +165,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const refreshClients = async () => {
     const res = await getAllClients()
     if (res?.data) {
-      setClients(res.data)
+      setClientsData(res.data)
     }
   }
 
@@ -225,6 +227,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 tabIndex={activeNav === 0 ? 0 : -1}
               >
                 <ProjectDnD
+                  key={JSON.stringify(projects)}
                   {...projects}
                   onSaveChanges={updateProjectOrdersAndStatus}
                   onPublishChanges={handlePublishChanges}
@@ -262,6 +265,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     await refreshProjects()
                     setNotificationMessage('Project deleted successfully')
                   }}
+                  handleGetAllProjects={handleGetAllProjectsByClient}
                 />
               </div>
 

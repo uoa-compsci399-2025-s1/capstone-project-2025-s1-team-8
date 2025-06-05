@@ -30,16 +30,20 @@ export interface ClientCardProps {
     message?: string
   }>
   deletedProject: () => void
+  handleGetAllProjects: (clientId: string) => Promise<{
+    error?: string
+    data?: ProjectDetails[]
+  }>
 }
 
 const ClientCard: React.FC<ClientCardProps> = ({
   clientInfo,
-  projects,
   onSave,
   onDeleteClient,
   updatedClient,
   deletedClient,
   onDeleteProject,
+  handleGetAllProjects,
 }) => {
   const [copied, setCopied] = useState(false)
   const [open, setOpen] = useState(false)
@@ -85,7 +89,6 @@ const ClientCard: React.FC<ClientCardProps> = ({
         onClose={() => handleModal()}
         clientEmail={clientInfo.email}
         clientInfo={clientInfo}
-        projects={projects}
         onSave={onSave}
         onUpdatedClient={() => {
           updatedClient?.()
@@ -96,6 +99,7 @@ const ClientCard: React.FC<ClientCardProps> = ({
           handleModal()
         }}
         onDeleteProject={onDeleteProject}
+        handleGetAllProjects={handleGetAllProjects}
       />
     </>
   )

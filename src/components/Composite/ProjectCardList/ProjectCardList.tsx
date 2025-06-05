@@ -15,8 +15,6 @@ interface ProjectListProps {
   deleted?: () => void
 }
 
-// @TODO add to ClientModal, SemesterModal
-
 const ProjectCardList: React.FC<ProjectListProps> = ({
   className,
   headingClassName,

@@ -171,7 +171,14 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
             heading="Approved projects"
             projects={semesterProjects}
             onDelete={onDeleteProject}
-            deleted={deletedProject}
+            deleted={async () => {
+              deletedProject()
+              const res = await handleGetAllSemesterProjects(semester.id)
+              if (res && res.data) {
+                semesterProjectRef.current[semester.id] = res.data
+                setSemesterProjects(res.data)
+              }
+            }}
           />
         </div>
       </div>
