@@ -6,20 +6,24 @@ import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardL
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import type { Semester } from '@/payload-types'
 import type { ProjectDetails } from '@/types/Project'
-
 interface SemesterCardProps extends Semester {
   semester: Semester
-  semesterProjects: ProjectDetails[]
+  handleGetAllSemesterProjects: (semesterId: string) => Promise<void | {
+    error?: string
+    data?: ProjectDetails[]
+  }>
   currentOrUpcoming?: 'current' | 'upcoming' | ''
 }
 const SemesterCard: React.FC<SemesterCardProps> = ({
   semester,
-  semesterProjects,
+  handleGetAllSemesterProjects,
   currentOrUpcoming,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
+  const [semesterProjects, setSemesterProjects] = useState<ProjectDetails[]>([])
+  const semesterProjectRef = useRef<Record<string, ProjectDetails[]>>({})
 
   useEffect(() => {
     if (isOpen && contentRef.current) {
@@ -29,11 +33,30 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
     }
   }, [isOpen])
 
+  const onOpen = async () => {
+    if (!isOpen) {
+      if (semester.id in semesterProjectRef.current) {
+        return setSemesterProjects(semesterProjectRef.current[semester.id])
+      }
+      const res = await handleGetAllSemesterProjects(semester.id)
+      if (res && res.data) {
+        semesterProjectRef.current[semester.id] = res.data
+        setSemesterProjects(res.data)
+      } else {
+        console.error('Failed to fetch semester projects:', res?.error)
+        setSemesterProjects([])
+      }
+    }
+  }
+
   return (
     <div className="relative w-full flex flex-col gap-4">
       {/* Semester Card */}
       <div
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={async () => {
+          await onOpen()
+          setIsOpen(!isOpen)
+        }} // should load projects
         className={`
       ${
         currentOrUpcoming === 'upcoming' || currentOrUpcoming === 'current'

@@ -12,7 +12,6 @@ import type { SemesterContainerData } from '@/components/Composite/ProjectDragAn
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import AdminDashboard from './AdminDashboard'
 import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
-import type { ProjectDetails } from '@/types/Project'
 
 const ProtectedAdminView = async (): Promise<JSX.Element> => {
   const clientInfo = await ClientService.getClientInfo()
@@ -26,8 +25,6 @@ const ProtectedAdminView = async (): Promise<JSX.Element> => {
   const semestersData: Semester[] = fetchAllSemesters?.data || []
   const semesterStatuses: Record<string, 'current' | 'upcoming' | ''> =
     fetchAllSemesters?.semesterStatuses || {}
-  const semesterProjects: Record<string, ProjectDetails[]> =
-    fetchAllSemesters?.semesterProjects || {}
 
   const fetchProjects = await getNextSemesterProjects()
   const projectsData: SemesterContainerData = fetchProjects?.data || {
@@ -44,7 +41,6 @@ const ProtectedAdminView = async (): Promise<JSX.Element> => {
         projects={projectsData}
         totalNumPages={totalPages}
         semesterStatusList={semesterStatuses}
-        semesterProjects={semesterProjects}
       />
     </div>
   )
