@@ -1,9 +1,9 @@
 import type { GlobalConfig } from 'payload'
 
 export const ClientDashboard: GlobalConfig = {
-  slug: 'client-dashboard',
+  slug: 'ClientDashboard',
   admin: {
-    group: 'Dashboard',
+    group: 'Pages',
   },
   access: {
     read: () => true,
