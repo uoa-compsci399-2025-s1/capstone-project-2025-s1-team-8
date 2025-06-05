@@ -9,6 +9,7 @@ import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
 import { handleDeleteProject } from '@/lib/services/admin/Handlers'
 import ContentService from '@/lib/services/content/ContentService'
+import { handleDeleteProject } from '@/lib/services/admin/Handlers'
 
 const ProtectedClientView = async (): Promise<JSX.Element> => {
   const clientInfo = await ClientService.getClientInfo()
