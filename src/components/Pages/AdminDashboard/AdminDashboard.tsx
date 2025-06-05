@@ -1,6 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
@@ -8,8 +8,6 @@ import type { Semester } from '@/payload-types'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
 import {
-  isCurrentOrUpcoming,
-  handleGetAllSemesterProjects,
   handleCreateSemester,
   handleUpdateSemester,
   handleDeleteSemester,
@@ -17,6 +15,7 @@ import {
   updateProjectOrdersAndStatus,
   handleGetAllSemesters,
   getAllClients,
+  handleGetAllSemesterProjects,
   handleDeleteClient,
   handleUpdateClient,
   handleDeleteProject,
@@ -32,6 +31,7 @@ type AdminDashboardProps = {
   semesters: Semester[]
   projects: SemesterContainerData
   totalNumPages?: number
+  semesterStatusList?: Record<string, 'current' | 'upcoming' | ''>
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({
@@ -39,29 +39,63 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   semesters: initialSemesters,
   projects: initialProjects,
   totalNumPages = 0,
+  semesterStatusList = {},
 }) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
 
   const [activeNav, setActiveNav] = useState<number | null>(null)
   const [notificationMessage, setNotificationMessage] = useState('')
   const [semesters, setSemesters] = useState<Semester[]>(initialSemesters)
-  const [clients, setClients] =
-    useState<{ client: UserCombinedInfo; projects: ProjectDetails[] }[]>(initialClients)
-  const [projects, setProjects] = useState<SemesterContainerData>(initialProjects)
+  const [clientsData, setClientsData] = useState(clients)
+  const [semesterStatuses, setSemesterStatuses] =
+    useState<Record<string, 'current' | 'upcoming' | ''>>(semesterStatusList)
   const [pageNum, setPageNum] = useState(1)
   const [isFetching, setIsFetching] = useState(false)
   const [totalPages, setTotalPages] = useState(totalNumPages)
+  const cachedClientSearchRef = useRef<
+    Record<
+      string,
+      { data: { client: UserCombinedInfo; projects: ProjectDetails[] }[]; totalPages: number }
+    >
+  >({ _1: { data: clients, totalPages: totalNumPages } })
   const itemsPerPage = 10
+
+  const getClientsCache = async (pageNum: number, query: string) => {
+    if (`${query}_${pageNum}` in cachedClientSearchRef.current) {
+      setClientsData(cachedClientSearchRef.current[`${query}_${pageNum}`].data || [])
+      console.log('Using cached data for query:', query, 'page:', pageNum)
+      return
+    }
+    const res = await getAllClients({ limit: itemsPerPage, page: pageNum, query })
+    cachedClientSearchRef.current[`${query}_${pageNum}`] = {
+      data: res?.data || [],
+      totalPages: res?.totalPages || 0,
+    }
+    console.log('Fetched new data for query:', query, 'page:', pageNum)
+    setClientsData(res?.data || [])
+  }
 
   const searchForClients = async (searchValue: string) => {
     const query = searchValue.trim().toLowerCase()
+    if (`${query}_1` in cachedClientSearchRef.current) {
+      console.log('Using cached data for query:', query)
+      setClientsData(cachedClientSearchRef.current[`${query}_1`].data)
+      setPageNum(1)
+      setTotalPages(cachedClientSearchRef.current[`${query}_1`].totalPages)
+      return
+    }
     const res = await getAllClients({ limit: itemsPerPage, page: 1, query })
-    setClients(res?.data || [])
+    setClientsData(res?.data || [])
     setPageNum(1)
     if (res?.totalPages) {
       setTotalPages(res.totalPages)
     } else {
       setTotalPages(0)
+    }
+    console.log('searchForClients', 'query:', query)
+    cachedClientSearchRef.current[`${query}_1`] = {
+      data: res?.data || [],
+      totalPages: res?.totalPages || 0,
     }
   }
 
@@ -80,28 +114,24 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           return
         }
         setPageNum(1)
-        const res = await getAllClients({ limit: itemsPerPage, page: 1, query })
-        return setClients(res?.data || [])
+        return await getClientsCache(1, query)
       }
       if (lastPage) {
         if (totalPages === 0 || pageNum === totalPages) {
           return
         }
         setPageNum(totalPages)
-        const res = await getAllClients({ limit: itemsPerPage, page: totalPages, query })
-        return setClients(res?.data || [])
+        return await getClientsCache(totalPages, query)
       }
       if (increment) {
         if (pageNum < totalPages) {
-          const res = await getAllClients({ limit: itemsPerPage, page: pageNum + 1, query })
-          setPageNum(pageNum + 1)
-          setClients(res?.data || [])
+          await getClientsCache(pageNum + 1, query)
+          return setPageNum(pageNum + 1)
         }
       } else {
         if (pageNum > 1) {
-          const res = await getAllClients({ limit: itemsPerPage, page: pageNum - 1, query })
-          setPageNum(pageNum - 1)
-          setClients(res?.data || [])
+          await getClientsCache(pageNum - 1, query)
+          return setPageNum(pageNum - 1)
         }
       }
     } finally {
@@ -124,6 +154,9 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     const res = await handleGetAllSemesters()
     if (res?.data) {
       setSemesters(res.data)
+    }
+    if (res?.semesterStatuses) {
+      setSemesterStatuses(res.semesterStatuses)
     }
   }
 
@@ -209,10 +242,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 tabIndex={activeNav === 1 ? 0 : -1}
               >
                 <ClientsPage
-                  clientsData={clients}
+                  clientsData={clientsData}
+                  pageNum={pageNum}
                   updatePageCount={updatePageCount}
-                  totalPages={totalPages}
                   searchForClients={searchForClients}
+                  totalPages={totalPages}
+                  isFetching={isFetching}
                   onUpdateClient={handleUpdateClient}
                   onDeleteClient={handleDeleteClient}
                   updatedClient={async () => {
@@ -227,8 +262,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     await refreshProjects()
                     setNotificationMessage('Project deleted successfully')
                   }}
-                  isFetching={isFetching}
-                  pageNum={pageNum}
                 />
               </div>
 
@@ -252,11 +285,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     await refreshSemesters()
                     setNotificationMessage('Semester deleted successfully')
                   }}
-                  checkStatus={isCurrentOrUpcoming}
-                  getAllSemesterProjects={handleGetAllSemesterProjects}
                   handleCreateSemester={handleCreateSemester}
                   handleUpdateSemester={handleUpdateSemester}
                   handleDeleteSemester={handleDeleteSemester}
+                  handleGetAllSemesterProjects={handleGetAllSemesterProjects}
+                  semesterStatuses={semesterStatuses}
                   onDeleteProject={handleDeleteProject}
                   deletedProject={async () => {
                     await refreshProjects()

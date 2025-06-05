@@ -23,6 +23,8 @@ const ProtectedAdminView = async (): Promise<JSX.Element> => {
 
   const fetchAllSemesters = await handleGetAllSemesters()
   const semestersData: Semester[] = fetchAllSemesters?.data || []
+  const semesterStatuses: Record<string, 'current' | 'upcoming' | ''> =
+    fetchAllSemesters?.semesterStatuses || {}
 
   const fetchProjects = await getNextSemesterProjects()
   const projectsData: SemesterContainerData = fetchProjects?.data || {
@@ -38,6 +40,7 @@ const ProtectedAdminView = async (): Promise<JSX.Element> => {
         semesters={semestersData}
         projects={projectsData}
         totalNumPages={totalPages}
+        semesterStatusList={semesterStatuses}
       />
     </div>
   )

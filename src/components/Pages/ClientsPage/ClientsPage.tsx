@@ -93,7 +93,10 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
         <span className="absolute right-4 top-1/2 -translate-y-1/2 h-3.5 w-4">
           <XMarkIcon
             className="text-dark-blue hover:text-deeper-blue w-4 h-4 cursor-pointer"
-            onClick={() => setSearchValue('')}
+            onClick={async () => {
+              setSearchValue('')
+              await search('')
+            }}
           />
         </span>
       </div>

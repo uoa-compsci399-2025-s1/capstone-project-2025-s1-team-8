@@ -1,3 +1,5 @@
+import type { Home } from '@/payload-types'
+
 const homeContent = {
   aboutSection: {
     title: 'ABOUT COMPSCI399',
@@ -18,5 +20,5 @@ const homeContent = {
     },
   },
   id: '68345c3c9663f8f1505b33f2',
-}
+} satisfies Home
 export default homeContent
