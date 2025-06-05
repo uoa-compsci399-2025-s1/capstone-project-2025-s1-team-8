@@ -12,7 +12,7 @@ const meta: Meta<typeof ClientsPage> = {
   component: ClientsPage,
   tags: ['autodocs'],
   args: {
-    clients: mockClientsWithProjects,
+    clientsData: mockClientsWithProjects,
   },
 }
 
@@ -29,6 +29,6 @@ export const Default: Story = {
     )
   },
   args: {
-    clients: mockClientsWithProjects,
+    clientsData: mockClientsWithProjects,
   },
 }
