@@ -21,7 +21,6 @@ import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
 import Notification from '@/components/Generic/Notification/Notification'
 import { TeapotCard } from '@/components/Generic/TeapotCard/TeapotCard'
-import { get } from 'http'
 
 type AdminDashboardProps = {
   clients: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
