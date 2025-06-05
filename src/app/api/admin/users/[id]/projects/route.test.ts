@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 
 import { createMockNextRequest, paramsToPromise } from '@/test-config/utils'
-import ProjectService from '@/data-layer/services/ProjectService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET } from './route'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
@@ -10,7 +10,7 @@ import { adminToken, clientToken, studentToken } from '@/test-config/routes-setu
 import { clientMock } from '@/test-config/mocks/Auth.mock'
 
 describe('test /api/admin/users/[id]/projects', async () => {
-  const projectService = new ProjectService()
+  const projectService = new ProjectDataService()
   const cookieStore = await cookies()
 
   describe('GET /api/admin/users/[id]/projects', () => {

@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 
-import SemesterService from '@/data-layer/services/SemesterService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 import { createMockNextPostRequest, paramsToPromise } from '@/test-config/utils'
 import { PATCH, DELETE } from './route'
@@ -10,7 +10,7 @@ import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
 describe('tests /api/admin/semesters/[id]', async () => {
-  const semesterService = new SemesterService()
+  const semesterService = new SemesterDataService()
   const cookieStore = await cookies()
 
   describe('PATCH /api/admin/semesters/[id]', () => {

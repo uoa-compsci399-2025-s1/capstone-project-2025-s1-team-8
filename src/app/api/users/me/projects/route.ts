@@ -1,5 +1,5 @@
 import { Security } from '@/business-layer/middleware/Security'
-import ProjectService from '@/data-layer/services/ProjectService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
@@ -15,8 +15,8 @@ class RouteWrapper {
   static async GET(req: NextRequest & { user: UserCombinedInfo }) {
     const { user } = req
     const userID = user.id
-    const projectService = new ProjectService()
-    const projects = await projectService.getProjectsByClientId(userID)
+    const projectDataService = new ProjectDataService()
+    const projects = await projectDataService.getProjectsByClientId(userID)
     return NextResponse.json({ data: projects.docs })
   }
 }

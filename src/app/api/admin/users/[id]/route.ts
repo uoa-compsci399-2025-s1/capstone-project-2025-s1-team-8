@@ -3,7 +3,7 @@ import { NotFound } from 'payload'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import UserService from '@/data-layer/services/UserService'
+import UserDataService from '@/data-layer/services/UserDataService'
 import { UserRole } from '@/types/User'
 import type { UserCombinedInfo } from '@/types/Collections'
 import { Security } from '@/business-layer/middleware/Security'
@@ -37,11 +37,13 @@ class RouteWrapper {
     },
   ) {
     const { id } = await params
-    const userService = new UserService()
+    const userDataService = new UserDataService()
     try {
-      const user = await userService.getUser(id)
+      const user = await userDataService.getUser(id)
       if (user.role === UserRole.Client) {
-        const { introduction, affiliation } = { ...(await userService.getClientAdditionalInfo(id)) }
+        const { introduction, affiliation } = {
+          ...(await userDataService.getClientAdditionalInfo(id)),
+        }
         return NextResponse.json({ data: { ...user, introduction, affiliation } })
       }
       return NextResponse.json({ data: user })
@@ -73,22 +75,22 @@ class RouteWrapper {
     },
   ) {
     const { id } = await params
-    const userService = new UserService()
+    const userDataService = new UserDataService()
     try {
-      const user = await userService.getUser(id)
+      const user = await userDataService.getUser(id)
       const body = UpdateUserRequestBodySchema.parse(await req.json())
-      const updatedUser = await userService.updateUser(id, body)
+      const updatedUser = await userDataService.updateUser(id, body)
       const { introduction: bodyIntroduction, affiliation: bodyAffiliation } = body
       if (user.role === UserRole.Client || user.role === UserRole.Admin) {
-        let clientInfo = await userService.getClientAdditionalInfo(id)
+        let clientInfo = await userDataService.getClientAdditionalInfo(id)
         if (!clientInfo) {
-          clientInfo = await userService.createClientAdditionalInfo({
+          clientInfo = await userDataService.createClientAdditionalInfo({
             client: updatedUser,
             introduction: bodyIntroduction,
             affiliation: bodyAffiliation,
           })
         } else {
-          clientInfo = await userService.updateClientAdditionalInfo(clientInfo.id, {
+          clientInfo = await userDataService.updateClientAdditionalInfo(clientInfo.id, {
             ...updatedUser,
             introduction: bodyIntroduction,
             affiliation: bodyAffiliation,
@@ -125,10 +127,10 @@ class RouteWrapper {
    */
   @Security('jwt', ['admin'])
   static async DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params
+    const userDataService = new UserDataService()
     try {
-      const { id } = await params
-      const userService = new UserService()
-      await userService.deleteUser(id)
+      await userDataService.deleteUser(id)
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
     } catch (error) {
       if (error instanceof NotFound) {
