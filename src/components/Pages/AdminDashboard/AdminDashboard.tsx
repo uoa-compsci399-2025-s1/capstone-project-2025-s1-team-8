@@ -8,7 +8,6 @@ import type { Semester } from '@/payload-types'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
 import {
-  isCurrentOrUpcoming,
   handleGetAllSemesterProjects,
   handleCreateSemester,
   handleUpdateSemester,
@@ -219,7 +218,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     await refreshSemesters()
                     setNotificationMessage('Semester deleted successfully')
                   }}
-                  checkStatus={isCurrentOrUpcoming}
                   getAllSemesterProjects={handleGetAllSemesterProjects}
                   handleCreateSemester={handleCreateSemester}
                   handleUpdateSemester={handleUpdateSemester}

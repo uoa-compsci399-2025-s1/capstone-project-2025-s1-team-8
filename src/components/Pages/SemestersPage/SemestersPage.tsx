@@ -14,7 +14,6 @@ interface SemestersPageProps {
   created: () => void
   updated: () => void
   deleted: () => void
-  checkStatus?: (id: string) => Promise<'current' | 'upcoming' | ''>
   getAllSemesterProjects: (
     id: string,
   ) => Promise<void | { error?: string; data?: ProjectDetails[] }>
@@ -44,7 +43,6 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
   updated,
   deleted,
   getAllSemesterProjects,
-  checkStatus,
   handleCreateSemester,
   handleUpdateSemester,
   handleDeleteSemester,
@@ -89,7 +87,6 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
         >
           <SemesterCard
             semesterProjects={getAllSemesterProjects}
-            checkStatus={checkStatus}
             semester={semester as Semester}
             id={semester.id}
             name={semester.name}
@@ -98,6 +95,7 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
             endDate={semester.endDate}
             updatedAt={semester.updatedAt}
             createdAt={semester.createdAt}
+            currentOrUpcoming={semesterStatuses[semester.id] || ''}
           />
         </div>
       ))}

@@ -13,14 +13,13 @@ interface SemesterCardProps extends Semester {
     error?: string
     data?: ProjectDetails[]
   }>
-  checkStatus?: (id: string) => Promise<'current' | 'upcoming' | ''>
+  currentOrUpcoming?: 'current' | 'upcoming' | ''
 }
-const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects, checkStatus }) => {
+const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects, currentOrUpcoming }) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
   const [approvedProjectsList, setApprovedProjectsList] = useState<ProjectDetails[]>([])
-  const [currentOrUpcoming, setCurrentOrUpcoming] = useState('')
 
   useEffect(() => {
     if (isOpen && contentRef.current) {
@@ -40,13 +39,6 @@ const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects,
     fetchProjects()
   }, [semesterProjects, semester.id])
 
-  useEffect(() => {
-    const fetchCurrentOrUpcoming = async () => {
-      if (!checkStatus) return
-      setCurrentOrUpcoming(await checkStatus(semester.id))
-    }
-    fetchCurrentOrUpcoming()
-  }, [checkStatus, semester.id])
 
   return (
     <div className="relative w-full flex flex-col gap-4">
