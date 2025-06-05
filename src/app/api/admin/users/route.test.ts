@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 
 import { createMockNextRequest } from '@/test-config/utils'
 import { GET } from './route'
-import UserService from '@/data-layer/services/UserService'
+import UserDataService from '@/data-layer/services/UserDataService'
 import {
   adminCreateMock,
   clientAdditionalInfoCreateMock,
@@ -15,7 +15,7 @@ import { adminToken, clientToken, studentToken } from '@/test-config/routes-setu
 import { adminMock, clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 
 describe('tests /api/admin/users', async () => {
-  const userService = new UserService()
+  const userDataService = new UserDataService()
   const cookieStore = await cookies()
 
   describe('GET /api/admin/users', () => {
@@ -42,8 +42,8 @@ describe('tests /api/admin/users', async () => {
 
     it('should get all users correctly', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const newUser1 = await userService.createUser(clientCreateMock)
-      const newUser2 = await userService.createUser(adminCreateMock)
+      const newUser1 = await userDataService.createUser(clientCreateMock)
+      const newUser2 = await userDataService.createUser(adminCreateMock)
       const req = createMockNextRequest(`/api/admin/users`)
       const res = await GET(req)
       expect(res.status).toBe(StatusCodes.OK)
@@ -59,8 +59,8 @@ describe('tests /api/admin/users', async () => {
 
     it('should get all users correctly with limits', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      await userService.createUser(clientCreateMock)
-      await userService.createUser(adminCreateMock)
+      await userDataService.createUser(clientCreateMock)
+      await userDataService.createUser(adminCreateMock)
       const req = createMockNextRequest(`/api/admin/users?limit=1`)
       const res = await GET(req)
       const json = await res.json()
@@ -97,9 +97,9 @@ describe('tests /api/admin/users', async () => {
 
     it('should still paginate correctly with role param filters', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      await userService.createUser(clientCreateMock)
-      await userService.createUser({ ...clientCreateMock, email: 'pog@gmail.com' })
-      await userService.createUser(studentCreateMock)
+      await userDataService.createUser(clientCreateMock)
+      await userDataService.createUser({ ...clientCreateMock, email: 'pog@gmail.com' })
+      await userDataService.createUser(studentCreateMock)
 
       const req = createMockNextRequest('/api/admin/users?role=client&limit=1')
       const res = await GET(req)
@@ -118,16 +118,16 @@ describe('tests /api/admin/users', async () => {
 
     it('should correctly filter based on name queries', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const userMock = await userService.createUser({
+      const userMock = await userDataService.createUser({
         ...clientCreateMock,
         firstName: 'very',
         lastName: 'cool',
       })
-      const userMock2 = await userService.createUser({
+      const userMock2 = await userDataService.createUser({
         ...clientCreateMock,
         lastName: 'col',
       })
-      await userService.createUser({
+      await userDataService.createUser({
         ...clientCreateMock,
         firstName: 'searchforme2',
         lastName: 'dontfindme',
@@ -157,8 +157,8 @@ describe('tests /api/admin/users', async () => {
 
     it('should return client additional info as well', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const newClient = await userService.createUser(clientCreateMock)
-      const newClientInfo = await userService.createClientAdditionalInfo({
+      const newClient = await userDataService.createUser(clientCreateMock)
+      const newClientInfo = await userDataService.createClientAdditionalInfo({
         ...clientAdditionalInfoCreateMock,
         client: newClient,
       })

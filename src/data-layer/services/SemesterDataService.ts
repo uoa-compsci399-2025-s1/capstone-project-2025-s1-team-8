@@ -4,7 +4,7 @@ import type { Semester } from '@/payload-types'
 import type { Sort, Where } from 'payload'
 import { SemesterType } from '@/types/Semester'
 
-export default class SemesterService {
+export default class SemesterDataService {
   /**
    * Creates a new semester document in the database.
    *

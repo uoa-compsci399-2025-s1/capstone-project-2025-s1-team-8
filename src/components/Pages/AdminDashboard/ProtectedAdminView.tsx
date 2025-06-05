@@ -19,6 +19,7 @@ const ProtectedAdminView = async (): Promise<JSX.Element> => {
 
   const fetchedAllClients = await getAllClients()
   const clientsData = fetchedAllClients?.data || []
+  const totalPages = fetchedAllClients?.totalPages || 0
 
   const fetchAllSemesters = await handleGetAllSemesters()
   const semestersData: Semester[] = fetchAllSemesters?.data || []
@@ -32,7 +33,12 @@ const ProtectedAdminView = async (): Promise<JSX.Element> => {
   return (
     <div>
       <NavBar onclick={handleLoginButtonClick} user={user} />
-      <AdminDashboard clients={clientsData} semesters={semestersData} projects={projectsData} />
+      <AdminDashboard
+        clients={clientsData}
+        semesters={semestersData}
+        projects={projectsData}
+        totalNumPages={totalPages}
+      />
     </div>
   )
 }

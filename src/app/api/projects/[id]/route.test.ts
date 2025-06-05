@@ -6,7 +6,7 @@ import {
   createMockNextRequest,
   paramsToPromise,
 } from '@/test-config/utils'
-import ProjectService from '@/data-layer/services/ProjectService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET, PATCH, DELETE } from '@/app/api/projects/[id]/route'
 import { adminMock, clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
@@ -14,7 +14,7 @@ import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
 describe('tests /api/projects/[id]', async () => {
-  const projectService = new ProjectService()
+  const projectDataService = new ProjectDataService()
   const cookieStore = await cookies()
 
   describe('GET /api/projects/[id]', () => {
@@ -31,7 +31,7 @@ describe('tests /api/projects/[id]', async () => {
     it("should return a 401 if the project isn't associated with the requesting client", async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
 
-      const project = await projectService.createProject({
+      const project = await projectDataService.createProject({
         ...projectCreateMock,
         client: studentMock,
       })
@@ -45,7 +45,7 @@ describe('tests /api/projects/[id]', async () => {
 
     it('should get a project correctly', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const project = await projectService.createProject(projectCreateMock)
+      const project = await projectDataService.createProject(projectCreateMock)
 
       const res = await GET(createMockNextRequest(''), {
         params: paramsToPromise({ id: project.id }),
@@ -76,7 +76,7 @@ describe('tests /api/projects/[id]', async () => {
     })
 
     it('should update a project correctly', async () => {
-      const project = await projectService.createProject({
+      const project = await projectDataService.createProject({
         ...projectCreateMock,
         additionalClients: [adminMock],
       })
@@ -110,7 +110,7 @@ describe('tests /api/projects/[id]', async () => {
     })
 
     it("should 401 if the project client doesn't match", async () => {
-      const project = await projectService.createProject(projectCreateMock)
+      const project = await projectDataService.createProject(projectCreateMock)
       const res = await PATCH(createMockNextPatchRequest('', { name: 'Updated project' }), {
         params: paramsToPromise({ id: project.id }),
       })
@@ -130,7 +130,7 @@ describe('tests /api/projects/[id]', async () => {
 
     it('should delete a project correctly', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      const project = await projectService.createProject({
+      const project = await projectDataService.createProject({
         ...projectCreateMock,
         client: clientMock,
       })
@@ -139,12 +139,12 @@ describe('tests /api/projects/[id]', async () => {
         params: paramsToPromise({ id: project.id }),
       })
       expect(res.status).toBe(StatusCodes.NO_CONTENT)
-      expect((await projectService.getAllProjects()).docs.length).toEqual(0)
+      expect((await projectDataService.getAllProjects()).docs.length).toEqual(0)
     })
 
     it('should return a 401 if the project is not related to the client', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
-      const project = await projectService.createProject({
+      const project = await projectDataService.createProject({
         ...projectCreateMock,
         client: studentMock,
       })
