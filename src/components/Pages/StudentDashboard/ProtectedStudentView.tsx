@@ -27,6 +27,7 @@ export default async function ProtectedStudentView() {
               heading={semesterName}
               projects={projects}
               type="student"
+              onDelete={(_projectId: string) => Promise.resolve({})}
             />
           </div>
         )}
