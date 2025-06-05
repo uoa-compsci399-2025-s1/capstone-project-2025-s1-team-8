@@ -15,6 +15,7 @@ import {
   updateProjectOrdersAndStatus,
   handleGetAllSemesters,
   getAllClients,
+  handleGetAllSemesterProjects,
 } from '@/lib/services/admin/Handlers'
 import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
@@ -27,7 +28,6 @@ type AdminDashboardProps = {
   projects: SemesterContainerData
   totalNumPages?: number
   semesterStatusList?: Record<string, 'current' | 'upcoming' | ''>
-  semesterProjects?: Record<string, ProjectDetails[]>
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({
@@ -36,7 +36,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   projects,
   totalNumPages = 0,
   semesterStatusList = {},
-  semesterProjects = {},
 }) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
   const [activeNav, setActiveNav] = useState<number | null>(null)
@@ -250,8 +249,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   handleCreateSemester={handleCreateSemester}
                   handleUpdateSemester={handleUpdateSemester}
                   handleDeleteSemester={handleDeleteSemester}
+                  handleGetAllSemesterProjects = {handleGetAllSemesterProjects}
                   semesterStatuses={semesterStatuses}
-                  semesterProjects={semesterProjects}
                 />
               </div>
             </motion.div>

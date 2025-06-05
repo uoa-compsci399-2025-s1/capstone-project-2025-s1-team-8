@@ -99,7 +99,6 @@ export const handleGetAllSemesters = async (): Promise<void | {
   error?: string
   data?: Semester[]
   semesterStatuses?: Record<string, 'current' | 'upcoming' | ''>
-  semesterProjects?: Record<string, ProjectDetails[]>
 }> => {
   const { status, error, data } = await AdminService.getAllSemesters()
   if (status === 200) {
@@ -108,10 +107,8 @@ export const handleGetAllSemesters = async (): Promise<void | {
     for (const semester of data || []) {
       const status = await isCurrentOrUpcoming(semester.id)
       semesterStatuses[semester.id] = status
-      const projects = await handleGetAllSemesterProjects(semester.id)
-      semesterProjects[semester.id] = projects?.data || []
     }
-    return { data, semesterStatuses, semesterProjects }
+    return { data, semesterStatuses }
   } else {
     return { error }
   }

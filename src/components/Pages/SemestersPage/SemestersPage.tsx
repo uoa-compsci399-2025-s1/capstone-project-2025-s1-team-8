@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import SemesterCard from '@/components/Composite/SemesterCard/SemesterCard'
 import Button from '@/components/Generic/Button/Button'
 import SemesterForm from '@/components/Composite/SemesterForm/SemesterForm'
-import type { Semester } from '@/payload-types'
+import type { Project, Semester } from '@/payload-types'
 import type { ProjectDetails } from '@/types/Project'
 import type { typeToFlattenedError } from 'zod'
 import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
@@ -31,8 +31,11 @@ interface SemestersPageProps {
     error?: string
     message?: string
   }>
+  handleGetAllSemesterProjects: (semesterId: string) => Promise<void | {
+  error?: string
+  data?: ProjectDetails[]
+}>
   semesterStatuses?: Record<string, 'current' | 'upcoming' | ''>
-  semesterProjects?: Record<string, ProjectDetails[]>
 }
 
 const SemestersPage: React.FC<SemestersPageProps> = ({
@@ -43,8 +46,8 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
   handleCreateSemester,
   handleUpdateSemester,
   handleDeleteSemester,
+  handleGetAllSemesterProjects,
   semesterStatuses = {},
-  semesterProjects = {},
 }) => {
   const [modalOpen, setModalOpen] = useState(false)
   const upcomingSemesterRef = useRef<HTMLDivElement>(null)
@@ -93,7 +96,7 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
             updatedAt={semester.updatedAt}
             createdAt={semester.createdAt}
             currentOrUpcoming={semesterStatuses[semester.id] || ''}
-            semesterProjects={semesterProjects[semester.id] || []}
+            handleGetAllSemesterProjects={handleGetAllSemesterProjects}
           />
         </div>
       ))}
