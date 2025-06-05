@@ -33,6 +33,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({
   client,
   projects,
   onSave,
+  content,
   onDeleteProject,
 }) => {
   return (
@@ -52,8 +53,6 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({
         heading="My projects"
         projects={projects}
         onDelete={onDeleteProject}
-        // deleted={() => {}}
-        // @TODO refresh projects
         type="student"
       />
     </div>

@@ -52,6 +52,5 @@ export const Exemplar: Story = {
       createdAt: '123',
     },
     clientEmail: 'johndoe@gmail.com',
-    projects: projectDetailsListMock,
   },
 }
