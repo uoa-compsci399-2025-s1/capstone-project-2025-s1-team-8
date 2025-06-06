@@ -51,6 +51,7 @@ const ProtectedFormView: FC = () => {
   // State to manage the pairs of names and emails of additional clients
   const searchParams = useSearchParams()
   const projectName = searchParams.get('projectName') || ''
+  const projectId = searchParams.get('projectId') || undefined
 
   const handleChange = (index: number, field: keyof CreateProjectClient, value: string) => {
     const updated = [...otherClientDetails]
@@ -84,9 +85,9 @@ const ProtectedFormView: FC = () => {
       setNextSemesterOption(
         res.upcomingSemesters.length > 0
           ? {
-            value: res.upcomingSemesters[res.upcomingSemesters.length - 1].id,
-            label: `${res.upcomingSemesters[res.upcomingSemesters.length - 1].name} (${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].startDate)} - ${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].endDate)})`,
-          }
+              value: res.upcomingSemesters[res.upcomingSemesters.length - 1].id,
+              label: `${res.upcomingSemesters[res.upcomingSemesters.length - 1].name} (${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].startDate)} - ${returnCalendarDateFromISOString(res.upcomingSemesters[res.upcomingSemesters.length - 1].endDate)})`,
+            }
           : undefined,
       )
     })

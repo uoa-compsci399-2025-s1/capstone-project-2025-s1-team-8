@@ -33,7 +33,6 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({
   client,
   projects,
   onSave,
-  content,
   onDeleteProject,
 }) => {
   return (
