@@ -119,6 +119,7 @@ class RouteWrapper {
               project: id,
               semester: semesterId,
               status: ProjectStatus.Pending,
+              published: false,
             }),
           ),
         )

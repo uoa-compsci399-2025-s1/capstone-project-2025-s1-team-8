@@ -153,7 +153,7 @@ const AdminSemesterService = {
     const response = await DeleteSemester(await buildNextRequest(url, { method: 'DELETE' }), {
       params: Promise.resolve({ id: semesterId }),
     })
-    const { error } = await response.json()
+    const { error } = await response.json().catch(() => ({}))
 
     return { status: response.status, error }
   },
