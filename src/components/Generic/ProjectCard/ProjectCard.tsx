@@ -7,7 +7,7 @@ import type { ProjectDetails } from '@/types/Project'
 
 interface ProjectCardProps {
   projectInfo: ProjectDetails
-  type?: 'student' | 'admin'
+  type?: 'student' | 'admin' | 'client'
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo, type = 'admin' }) => {

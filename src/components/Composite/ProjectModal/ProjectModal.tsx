@@ -13,7 +13,7 @@ import type { UserCombinedInfo } from '@/types/Collections'
 interface ProjectModalProps extends ModalProps {
   projectInfo: Project
   semesters?: Semester[]
-  type?: 'student' | 'admin'
+  type?: 'student' | 'admin' | 'client'
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({
@@ -67,7 +67,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     >
       <div className="relative max-w-full flex flex-col p-15 px-5 sm:px-10 md:px-15 pt-19 rounded-t-2xl gap-5 pointer-events-none wrap-break-word">
         {/* edit button */}
-        {type === 'admin' && (
+        {(type === 'admin' || type === 'client') && (
           <button
             className="absolute top-8 right-16 sm:top-10 sm:right-20 text-dark-blue hover:text-steel-blue cursor-pointer"
             style={{ pointerEvents: 'initial' }}
