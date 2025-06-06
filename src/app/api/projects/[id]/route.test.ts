@@ -8,13 +8,18 @@ import {
 } from '@/test-config/utils'
 import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
-import { GET, PATCH, DELETE } from '@/app/api/projects/[id]/route'
+import { GET, PATCH, DELETE, UpdateProjectRequestBody } from '@/app/api/projects/[id]/route'
 import { adminMock, clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
+import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
+import { ProjectStatus } from '@/types/Project'
+import { Semester } from '@/payload-types'
 
 describe('tests /api/projects/[id]', async () => {
   const projectDataService = new ProjectDataService()
+  const semesterDataService = new SemesterDataService()
   const cookieStore = await cookies()
 
   describe('GET /api/projects/[id]', () => {
@@ -98,6 +103,37 @@ describe('tests /api/projects/[id]', async () => {
       const body1 = await res1.json()
       expect(body1.data.name).toEqual('Updated project 1')
       expect(body1.data.description).toEqual('Hi hi')
+    })
+
+    it('should delete and create semester projects according to the patched semesters', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+
+      const semester1 = await semesterDataService.createSemester(semesterCreateMock)
+      const semester2 = await semesterDataService.createSemester(semesterCreateMock)
+
+      const project = await projectDataService.createProject(projectCreateMock)
+      const semesterProject1 = await projectDataService.createSemesterProject({
+        project,
+        semester: semester1,
+        status: ProjectStatus.Rejected,
+      })
+
+      const res = await PATCH(
+        createMockNextPatchRequest('', {
+          semesters: [semester2.id],
+        } satisfies UpdateProjectRequestBody),
+        {
+          params: paramsToPromise({ id: project.id }),
+        },
+      )
+
+      expect(res.status).toBe(StatusCodes.OK)
+      await expect(projectDataService.getSemesterProject(semesterProject1.id)).rejects.toThrow(
+        'Not Found',
+      )
+      const semesterProjects = await projectDataService.getSemesterProjectsByProject(project.id)
+      expect(semesterProjects.length).toBe(1)
+      expect((semesterProjects[0].semester as Semester).id).toBe(semester2.id)
     })
 
     it('should return a 404 error if the project does not exist', async () => {
