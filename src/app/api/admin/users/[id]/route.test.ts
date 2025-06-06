@@ -20,7 +20,7 @@ import { projectCreateMock, semesterProjectCreateMock } from '@/test-config/mock
 
 describe('test /api/admin/users/[id]', async () => {
   const userDataService = new UserDataService()
-  const projectDataSerive = new ProjectDataService()
+  const projectDataService = new ProjectDataService()
   const cookieStore = await cookies()
 
   describe('test GET /api/admin/users/[id]', () => {
@@ -323,11 +323,11 @@ describe('test /api/admin/users/[id]', async () => {
     it('should delete a user and related projects', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const newUser = await userDataService.createUser(clientCreateMock)
-      const project = await projectDataSerive.createProject({
+      const project = await projectDataService.createProject({
         ...projectCreateMock,
         client: newUser,
       })
-      const project2 = await projectDataSerive.createProject({
+      const project2 = await projectDataService.createProject({
         ...projectCreateMock,
         client: newUser,
       })
@@ -339,26 +339,26 @@ describe('test /api/admin/users/[id]', async () => {
       expect(res.status).toBe(StatusCodes.NO_CONTENT)
       await expect(userDataService.getUser(newUser.id)).rejects.toThrow('Not Found')
       expect(await userDataService.getClientAdditionalInfo(newUser.id)).toBeUndefined()
-      await expect(projectDataSerive.getProjectById(project.id)).rejects.toThrow('Not Found')
-      await expect(projectDataSerive.getProjectById(project2.id)).rejects.toThrow('Not Found')
+      await expect(projectDataService.getProjectById(project.id)).rejects.toThrow('Not Found')
+      await expect(projectDataService.getProjectById(project2.id)).rejects.toThrow('Not Found')
     })
 
     it('should delete a user and related semester projects', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const newUser = await userDataService.createUser(clientCreateMock)
-      const project = await projectDataSerive.createProject({
+      const project = await projectDataService.createProject({
         ...projectCreateMock,
         client: newUser,
       })
-      const project2 = await projectDataSerive.createProject({
+      const project2 = await projectDataService.createProject({
         ...projectCreateMock,
         client: newUser,
       })
-      const semesterProject = await projectDataSerive.createSemesterProject({
+      const semesterProject = await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         project,
       })
-      const semesterProject2 = await projectDataSerive.createSemesterProject({
+      const semesterProject2 = await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         project: project2,
       })
@@ -370,10 +370,10 @@ describe('test /api/admin/users/[id]', async () => {
       expect(res.status).toBe(StatusCodes.NO_CONTENT)
       await expect(userDataService.getUser(newUser.id)).rejects.toThrow('Not Found')
       expect(await userDataService.getClientAdditionalInfo(newUser.id)).toBeUndefined()
-      await expect(projectDataSerive.getSemesterProject(semesterProject.id)).rejects.toThrow(
+      await expect(projectDataService.getSemesterProject(semesterProject.id)).rejects.toThrow(
         'Not Found',
       )
-      await expect(projectDataSerive.getSemesterProject(semesterProject2.id)).rejects.toThrow(
+      await expect(projectDataService.getSemesterProject(semesterProject2.id)).rejects.toThrow(
         'Not Found',
       )
     })
