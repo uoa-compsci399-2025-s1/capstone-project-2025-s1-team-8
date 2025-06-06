@@ -27,7 +27,10 @@ class RouteWrapper {
     try {
       const parsedBody = CreateSemesterRequestBody.parse(await req.json())
 
-      const newSemester = await semesterDataService.createSemester(parsedBody as CreateSemesterData)
+      const newSemester = await semesterDataService.createSemester({
+        ...parsedBody,
+        published: false,
+      })
 
       return NextResponse.json({ data: newSemester }, { status: StatusCodes.CREATED })
     } catch (error) {

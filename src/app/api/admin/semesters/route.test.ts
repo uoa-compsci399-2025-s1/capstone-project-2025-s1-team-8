@@ -11,6 +11,7 @@ import { adminToken, clientToken, studentToken } from '@/test-config/routes-setu
 describe('tests /api/admin/semesters', async () => {
   const semesterService = new SemesterDataService()
   const cookieStore = await cookies()
+
   describe('POST /api/admin/semesters', () => {
     it('should return a 401 Unauthorized error if not authenticated', async () => {
       const res = await POST(createMockNextPostRequest('', semesterCreateMock))
