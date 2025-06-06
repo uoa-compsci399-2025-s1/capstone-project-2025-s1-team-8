@@ -77,7 +77,6 @@ export const semesterProjectMock: SemesterProject = {
   project: '67ff38a56a35e1b6cf43a68c',
   semester: '67ff38a56a35e1b6cf43a68d',
   status: ProjectStatus.Pending,
-  published: false,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 }
@@ -87,7 +86,6 @@ export const semesterProjectCreateMock: CreateSemesterProjectData = {
   project: '67ff38a56a35e1b6cf43a68c',
   semester: semesterMock,
   status: ProjectStatus.Pending,
-  published: false,
 }
 
 export const semesterProjectCreateMock2: CreateSemesterProjectData = {
@@ -95,7 +93,6 @@ export const semesterProjectCreateMock2: CreateSemesterProjectData = {
   project: projectMock,
   semester: semesterMock,
   status: ProjectStatus.Approved,
-  published: false,
 }
 
 /*
