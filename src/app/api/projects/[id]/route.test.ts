@@ -7,7 +7,7 @@ import {
   paramsToPromise,
 } from '@/test-config/utils'
 import ProjectDataService from '@/data-layer/services/ProjectDataService'
-import { projectCreateMock } from '@/test-config/mocks/Project.mock'
+import { projectCreateMock, semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET, PATCH, DELETE, type UpdateProjectRequestBody } from '@/app/api/projects/[id]/route'
 import { adminMock, clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
@@ -164,7 +164,7 @@ describe('tests /api/projects/[id]', async () => {
       expect(res.status).toBe(StatusCodes.UNAUTHORIZED)
     })
 
-    it('should delete a project correctly', async () => {
+    it('should delete a project', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, clientToken)
       const project = await projectDataService.createProject({
         ...projectCreateMock,
@@ -176,6 +176,27 @@ describe('tests /api/projects/[id]', async () => {
       })
       expect(res.status).toBe(StatusCodes.NO_CONTENT)
       expect((await projectDataService.getAllProjects()).docs.length).toEqual(0)
+    })
+
+    it('should delete a project and related semester projects', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, clientToken)
+      const project = await projectDataService.createProject({
+        ...projectCreateMock,
+        client: clientMock,
+      })
+      const semesterProject = await projectDataService.createSemesterProject({
+        ...semesterProjectCreateMock,
+        project,
+      })
+
+      const res = await DELETE(createMockNextRequest(''), {
+        params: paramsToPromise({ id: project.id }),
+      })
+      expect(res.status).toBe(StatusCodes.NO_CONTENT)
+      expect((await projectDataService.getAllProjects()).docs.length).toEqual(0)
+      await expect(projectDataService.getSemesterProject(semesterProject.id)).rejects.toThrow(
+        'Not Found',
+      )
     })
 
     it('should return a 401 if the project is not related to the client', async () => {

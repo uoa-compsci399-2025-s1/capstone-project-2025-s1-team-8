@@ -167,6 +167,14 @@ class RouteWrapper {
       ) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: StatusCodes.UNAUTHORIZED })
       }
+
+      const semesterProjects = await projectDataService.getSemesterProjectsByProject(id)
+      await Promise.all(
+        semesterProjects.map((semesterProject) =>
+          projectDataService.deleteSemesterProject(semesterProject.id),
+        ),
+      )
+
       await projectDataService.deleteProject(id)
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
     } catch (error) {
