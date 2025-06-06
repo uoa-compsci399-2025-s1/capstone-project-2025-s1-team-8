@@ -7,7 +7,6 @@ import { handleClientPageLoad, handleClientProfileUpdate } from '@/lib/services/
 import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
-import { handleDeleteProject } from '@/lib/services/admin/Handlers'
 import ContentService from '@/lib/services/content/ContentService'
 import { handleDeleteProject } from '@/lib/services/admin/Handlers'
 

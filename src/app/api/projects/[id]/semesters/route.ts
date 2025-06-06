@@ -77,7 +77,7 @@ class RouteWrapper {
     },
   ) {
     const { id } = await params
-    const projectService = new ProjectService()
+    const projectService = new ProjectDataService()
     try {
       await projectService.deleteSemesterProject(id)
       return NextResponse.json({ status: StatusCodes.OK })
