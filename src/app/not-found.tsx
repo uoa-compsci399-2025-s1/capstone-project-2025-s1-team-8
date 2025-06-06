@@ -19,7 +19,7 @@ export default function NotFound() {
       setLoggedInUser(res)
       setLoginLoaded(true)
     })
-  }, [])
+  })
 
   if (!loginLoaded) {
     return null
