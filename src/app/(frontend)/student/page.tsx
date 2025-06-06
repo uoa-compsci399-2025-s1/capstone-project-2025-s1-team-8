@@ -11,7 +11,9 @@ export const metadata: Metadata = {
 export default function StudentPage() {
   return (
     <AuthWrapper scopes={['admin', 'student']}>
-      <Suspense fallback={<div className="text-center">Loading...</div>}>
+      <Suspense
+        fallback={<div className="text-center text-dark-blue text-lg pt-30">Loading...</div>}
+      >
         <ProtectedStudentView />
       </Suspense>
     </AuthWrapper>

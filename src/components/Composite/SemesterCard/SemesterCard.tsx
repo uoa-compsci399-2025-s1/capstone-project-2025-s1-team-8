@@ -6,6 +6,8 @@ import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardL
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import type { Semester } from '@/payload-types'
 import type { ProjectDetails } from '@/types/Project'
+import { FiDownload } from 'react-icons/fi'
+
 interface SemesterCardProps extends Semester {
   semester: Semester
   handleGetAllSemesterProjects: (semesterId: string) => Promise<void | {
@@ -47,6 +49,10 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
         setSemesterProjects([])
       }
     }
+  }
+
+  function handleDownloadCsv() {
+    window.open(`/api/admin/export/semesters/${semester.id}`, '_blank')
   }
 
   return (
@@ -160,6 +166,8 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
             headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
             heading="Approved projects"
             projects={semesterProjects}
+            icon={<FiDownload />}
+            onClick={handleDownloadCsv}
           />
         </div>
       </div>
