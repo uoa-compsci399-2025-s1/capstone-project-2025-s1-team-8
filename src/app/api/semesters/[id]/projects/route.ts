@@ -40,7 +40,7 @@ class RouterWrapper {
     const status = searchParams.get('status')
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '100')
-    let studentView = searchParams.get('student') || 'false'
+    const studentView = searchParams.get('student') || 'false'
 
     if (limit > 100 || limit < 1) {
       return NextResponse.json(
