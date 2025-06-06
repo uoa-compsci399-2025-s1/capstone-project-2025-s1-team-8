@@ -8,14 +8,14 @@ import {
 } from '@/test-config/utils'
 import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import { projectCreateMock } from '@/test-config/mocks/Project.mock'
-import { GET, PATCH, DELETE, UpdateProjectRequestBody } from '@/app/api/projects/[id]/route'
+import { GET, PATCH, DELETE, type UpdateProjectRequestBody } from '@/app/api/projects/[id]/route'
 import { adminMock, clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { semesterCreateMock } from '@/test-config/mocks/Semester.mock'
 import { ProjectStatus } from '@/types/Project'
-import { Semester } from '@/payload-types'
+import type { Semester } from '@/payload-types'
 
 describe('tests /api/projects/[id]', async () => {
   const projectDataService = new ProjectDataService()
