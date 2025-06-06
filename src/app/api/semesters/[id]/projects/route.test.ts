@@ -63,7 +63,7 @@ describe('tests /api/semesters/[id]/projects', async () => {
       expect(data.data).toStrictEqual([])
     })
 
-    it('should return all published project is the user is a student', async () => {
+    it('should return all published project if the user is a student', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
       const semester = await semesterDataService.createSemester({
         ...semesterMock,
