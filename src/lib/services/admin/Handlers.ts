@@ -98,11 +98,8 @@ export const handleGetAllSemesters = async (): Promise<void | {
 }> => {
   const { status, error, data } = await AdminService.getAllSemesters()
   if (status === 200) {
-    const semesterStatuses: Record<string, 'current' | 'upcoming' | ''> = {}
-    for (const semester of data || []) {
-      const status = await isCurrentOrUpcoming(semester.id)
-      semesterStatuses[semester.id] = status
-    }
+    const semesterStatuses: Record<string, 'current' | 'upcoming' | ''> =
+      await AdminService.getSemesterStatuses(data || [])
     return { data, semesterStatuses }
   } else {
     return { error }
@@ -140,16 +137,6 @@ export const handleGetAllSemesterProjects = async (
   } else {
     return { error }
   }
-}
-
-/**
- * Determines whether a semester is current or upcoming
- *
- * @param id The id of the semester
- * @returns A string indicating the status of the semester
- */
-export const isCurrentOrUpcoming = async (id: string): Promise<'current' | 'upcoming' | ''> => {
-  return await AdminService.isCurrentOrUpcoming(id)
 }
 
 /**
