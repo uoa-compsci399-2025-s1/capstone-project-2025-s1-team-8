@@ -8,13 +8,9 @@ import { createMockNextPostRequest, paramsToPromise } from '@/test-config/utils'
 import { PATCH, DELETE } from './route'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
-import ProjectDataService from '@/data-layer/services/ProjectDataService'
-import { ProjectStatus } from '@/types/Project'
-import type { CreateSemesterProjectData } from '@/types/Collections'
 
 describe('tests /api/admin/semesters/[id]', async () => {
   const semesterService = new SemesterDataService()
-  const projectService = new ProjectDataService()
   const cookieStore = await cookies()
 
   describe('PATCH /api/admin/semesters/[id]', () => {
@@ -106,22 +102,11 @@ describe('tests /api/admin/semesters/[id]', async () => {
     it('should delete a semester', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const newSemester = await semesterService.createSemester(semesterCreateMock)
-      const semesterProjectData: CreateSemesterProjectData = {
-        number: 1,
-        project: '67ff38a56a35e1b6cf43a68c', // Assuming this is a valid project ID
-        semester: newSemester,
-        status: ProjectStatus.Pending,
-        published: false,
-      }
-      const newSemesterProject = await projectService.createSemesterProject(semesterProjectData)
       const res = await DELETE({} as NextRequest, {
         params: paramsToPromise({ id: newSemester.id }),
       })
       expect(res.status).toBe(StatusCodes.NO_CONTENT)
       await expect(semesterService.getSemester(newSemester.id)).rejects.toThrow('Not Found')
-      await expect(projectService.getSemesterProject(newSemesterProject.id)).rejects.toThrow(
-        'Not Found',
-      )
     })
 
     it('should return a 404 error if the semester does not exist', async () => {
