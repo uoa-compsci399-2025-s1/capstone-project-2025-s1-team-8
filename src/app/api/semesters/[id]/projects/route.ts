@@ -40,6 +40,7 @@ class RouterWrapper {
     const status = searchParams.get('status')
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '100')
+    let studentView = searchParams.get('student') || 'false'
 
     if (limit > 100 || limit < 1) {
       return NextResponse.json(
@@ -47,13 +48,18 @@ class RouterWrapper {
         { status: StatusCodes.BAD_REQUEST },
       )
     }
+    if (!['true', 'false'].includes(studentView))
+      return NextResponse.json(
+        { error: 'Student status parameter is invalid' },
+        { status: StatusCodes.BAD_REQUEST },
+      )
     if (
-      status !== null &&
+      status &&
       (!Object.values(ProjectStatus).includes(status as ProjectStatus) ||
         (req.user.role === UserRole.Student && status !== ProjectStatus.Approved))
     ) {
       return NextResponse.json(
-        { error: 'Status is not valid' },
+        { error: 'Status parameter is invalid' },
         { status: StatusCodes.BAD_REQUEST },
       )
     }
@@ -92,8 +98,10 @@ class RouterWrapper {
           status: status ? (status as ProjectStatus) : undefined,
         },
       )
-      docs = paginatedProjects.docs
-      nextPage = paginatedProjects.nextPage
+      if (studentView === 'false' || (studentView === 'true' && semester.published)) {
+        docs = paginatedProjects.docs
+        nextPage = paginatedProjects.nextPage
+      }
     }
 
     return NextResponse.json({ data: docs, nextPage })

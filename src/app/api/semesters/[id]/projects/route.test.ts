@@ -95,14 +95,14 @@ describe('tests /api/semesters/[id]/projects', async () => {
       })
       expect(res.status).toBe(StatusCodes.BAD_REQUEST)
       const data = await res.json()
-      expect(data).toStrictEqual({ error: 'Status is not valid' })
+      expect(data).toStrictEqual({ error: 'Status parameter is invalid' })
 
       const res2 = await GET(createMockNextRequest(`api/semesters/abc/projects?status=rejected`), {
         params: paramsToPromise({ id: 'abc' }),
       })
       expect(res2.status).toBe(StatusCodes.BAD_REQUEST)
       const data2 = await res2.json()
-      expect(data2).toStrictEqual({ error: 'Status is not valid' })
+      expect(data2).toStrictEqual({ error: 'Status parameter is invalid' })
     })
 
     it('should return a list of all semesterprojects for a semester', async () => {
