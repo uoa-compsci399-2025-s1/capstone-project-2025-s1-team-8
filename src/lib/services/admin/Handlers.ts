@@ -237,6 +237,9 @@ export async function updateProjectOrdersAndStatus({
  */
 export async function handlePublishChanges(semesterId: string): Promise<void> {
   const semester = await AdminSemesterService.getSemester(semesterId)
-  const data = semester.data
-  await AdminSemesterService.updateSemester(semesterId, { published: !!data?.published })
+  console.log(semester.data)
+  const data = semester.data as Semester
+  const lol = await AdminSemesterService.updateSemester(semesterId, { published: !data.published })
+  console.log(lol)
+  return
 }
