@@ -92,7 +92,9 @@ const NavBar: React.FC<NavBarProps> = memo(({ navElements, hasBg = true, user, o
                   setDropdownOpen={setDropdownOpen}
                 />
 
-                <span className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100`} />
+                <span
+                  className={`nav-link-text-underline scale-x-0 group-hover:scale-x-100 ${dropdownOpen ? 'scale-x-100' : ''}`}
+                />
               </div>
             )}
             <div className="relative group p-2">

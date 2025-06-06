@@ -53,7 +53,7 @@ const NavDropdown: React.FC<NavDropdownProps> = ({
           {dropdownOpen && <IoChevronUp className="mt-0.5" />}
         </button>
         {dropdownOpen && (
-          <div className="bg-beige mt-2 absolute inline-block z-75 top-7 right-2 w-54 rounded-lg shadow-lg">
+          <div className="bg-beige mt-2 absolute inline-block z-75 top-7 -right-2 w-54 rounded-lg shadow-lg">
             {items.map((item) => (
               <Link
                 key={item.href}
