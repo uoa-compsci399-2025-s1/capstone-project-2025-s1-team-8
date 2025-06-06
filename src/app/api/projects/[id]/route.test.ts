@@ -12,7 +12,7 @@ import { GET, PATCH, DELETE } from '@/app/api/projects/[id]/route'
 import { adminMock, clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
-import { CreateSemesterProjectData } from '@/types/Collections'
+import type { CreateSemesterProjectData } from '@/types/Collections'
 import { ProjectStatus } from '@/types/Project'
 
 describe('tests /api/projects/[id]', async () => {

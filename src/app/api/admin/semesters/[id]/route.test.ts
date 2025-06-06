@@ -9,9 +9,8 @@ import { PATCH, DELETE } from './route'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import ProjectDataService from '@/data-layer/services/ProjectDataService'
-import { semesterProjectCreateMock2 } from '@/test-config/mocks/Project.mock'
 import { ProjectStatus } from '@/types/Project'
-import { CreateSemesterProjectData } from '@/types/Collections'
+import type { CreateSemesterProjectData } from '@/types/Collections'
 
 describe('tests /api/admin/semesters/[id]', async () => {
   const semesterService = new SemesterDataService()
