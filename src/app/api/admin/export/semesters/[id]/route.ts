@@ -41,7 +41,6 @@ class RouteWrapper {
         'semester',
         'project',
         'status',
-        'published',
         'updatedAt',
         'createdAt',
         // Project related fields
@@ -68,8 +67,6 @@ class RouteWrapper {
               return JSON.stringify((value as Project)?.name) || 'Project not found'
             case 'semester':
               return JSON.stringify((value as Semester)?.name) || 'Semester not found'
-            case 'published':
-              return value ? 'yes' : 'no'
             case 'id':
               return JSON.stringify(`UUID: ${value}`)
             case 'updatedAt':

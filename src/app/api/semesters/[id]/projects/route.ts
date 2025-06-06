@@ -10,14 +10,13 @@ import type { CreateSemesterProjectData } from '@/types/Collections'
 import { Security } from '@/business-layer/middleware/Security'
 import type { RequestWithUser } from '@/types/Requests'
 import { UserRole } from '@/types/User'
-import type { SemesterProject } from '@/payload-types'
+import type { Semester, SemesterProject } from '@/payload-types'
 import { ProjectSchema } from '@/types/Payload'
 
 export const CreateSemesterProjectRequestBodySchema = z.object({
   number: z.number().min(1).nullable().optional(),
   project: z.union([z.string(), ProjectSchema]),
   status: z.nativeEnum(ProjectStatus),
-  published: z.boolean(),
 })
 export type CreateSemesterProjectRequestBody = z.infer<
   typeof CreateSemesterProjectRequestBodySchema
@@ -35,9 +34,10 @@ class RouterWrapper {
   static async GET(req: RequestWithUser, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const projectDataService = new ProjectDataService()
+    const semesterDataService = new SemesterDataService()
+
     const searchParams = req.nextUrl.searchParams
     const status = searchParams.get('status')
-    const published = searchParams.get('published')
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '100')
 
@@ -54,14 +54,17 @@ class RouterWrapper {
       )
     }
 
-    if (published !== null && published !== 'true' && published !== 'false') {
-      return NextResponse.json(
-        { error: 'Published must be true or false' },
-        { status: StatusCodes.BAD_REQUEST },
-      )
+    let docs: SemesterProject[] = []
+    let nextPage: number | null | undefined = undefined
+    let semester: Semester
+    try {
+      semester = await semesterDataService.getSemester(id)
+    } catch (error) {
+      if (error instanceof NotFound) {
+        return NextResponse.json({ error: 'Semester not found' }, { status: StatusCodes.NOT_FOUND })
+      }
+      throw error
     }
-
-    let docs: SemesterProject[], nextPage: number | null | undefined
 
     if (req.user.role === UserRole.Student) {
       const paginatedProjects = await projectDataService.getAllSemesterProjectsBySemester(
@@ -69,19 +72,19 @@ class RouterWrapper {
         limit,
         page,
         {
-          published: true,
           status: status ? (status as ProjectStatus) : undefined,
         },
       )
-      docs = paginatedProjects.docs
-      nextPage = paginatedProjects.nextPage
+      if (semester.published) {
+        docs = paginatedProjects.docs
+        nextPage = paginatedProjects.nextPage
+      }
     } else {
       const paginatedProjects = await projectDataService.getAllSemesterProjectsBySemester(
         id,
         limit,
         page,
         {
-          published: !!published ? JSON.parse(published) : undefined,
           status: status ? (status as ProjectStatus) : undefined,
         },
       )
