@@ -31,6 +31,7 @@ interface ClientDashboardProps {
 
 const ClientDashboard: React.FC<ClientDashboardProps> = ({
   client,
+  content,
   projects,
   onSave,
   onDeleteProject,
@@ -52,7 +53,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({
         heading="My projects"
         projects={projects}
         onDelete={onDeleteProject}
-        type="student"
+        type="client"
       />
     </div>
   )
