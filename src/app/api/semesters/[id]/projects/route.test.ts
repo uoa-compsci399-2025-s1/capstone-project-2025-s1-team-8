@@ -63,7 +63,7 @@ describe('tests /api/semesters/[id]/projects', async () => {
       expect(data.data).toStrictEqual([])
     })
 
-    it('should return all published project if the user is a student', async () => {
+    it('should return all published and approved projects if the user is a student', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
       const semester = await semesterDataService.createSemester({
         ...semesterMock,
@@ -72,6 +72,12 @@ describe('tests /api/semesters/[id]/projects', async () => {
       const project = await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         semester,
+        status: ProjectStatus.Approved,
+      })
+      await projectDataService.createSemesterProject({
+        ...semesterProjectCreateMock,
+        semester,
+        status: ProjectStatus.Rejected,
       })
 
       const res = await GET(createMockNextRequest(`api/semesters/${semester.id}/projects`), {
@@ -80,6 +86,23 @@ describe('tests /api/semesters/[id]/projects', async () => {
       expect(res.status).toBe(StatusCodes.OK)
       const data = await res.json()
       expect(data.data).toStrictEqual([project])
+    })
+
+    it('should return 400 if the student tries to fetch pending or rejected projects', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, studentToken)
+      const res = await GET(createMockNextRequest(`api/semesters/abc/projects?status=pending`), {
+        params: paramsToPromise({ id: 'abc' }),
+      })
+      expect(res.status).toBe(StatusCodes.BAD_REQUEST)
+      const data = await res.json()
+      expect(data).toStrictEqual({ error: 'Status is not valid' })
+
+      const res2 = await GET(createMockNextRequest(`api/semesters/abc/projects?status=rejected`), {
+        params: paramsToPromise({ id: 'abc' }),
+      })
+      expect(res2.status).toBe(StatusCodes.BAD_REQUEST)
+      const data2 = await res2.json()
+      expect(data2).toStrictEqual({ error: 'Status is not valid' })
     })
 
     it('should return a list of all semesterprojects for a semester', async () => {

@@ -47,7 +47,11 @@ class RouterWrapper {
         { status: StatusCodes.BAD_REQUEST },
       )
     }
-    if (status !== null && !Object.values(ProjectStatus).includes(status as ProjectStatus)) {
+    if (
+      status !== null &&
+      (!Object.values(ProjectStatus).includes(status as ProjectStatus) ||
+        (req.user.role === UserRole.Student && status !== ProjectStatus.Approved))
+    ) {
       return NextResponse.json(
         { error: 'Status is not valid' },
         { status: StatusCodes.BAD_REQUEST },
@@ -72,7 +76,7 @@ class RouterWrapper {
         limit,
         page,
         {
-          status: status ? (status as ProjectStatus) : undefined,
+          status: ProjectStatus.Approved,
         },
       )
       if (semester.published) {
