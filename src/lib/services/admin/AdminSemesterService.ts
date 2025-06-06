@@ -14,7 +14,6 @@ import type { UpdateSemesterData } from '@/types/Collections'
 import type { ProjectStatus } from '@/types/Project'
 import type { typeToFlattenedError } from 'zod'
 import type { StatusCodes } from 'http-status-codes'
-import { SemesterType } from '@/types/Semester'
 
 const AdminSemesterService = {
   /**
@@ -139,30 +138,41 @@ const AdminSemesterService = {
   },
 
   /**
-   * Check if a target semester is current or upcoming
-   *
-   * @param semesterId The ID of the semester to check
-   * @returns a string indicating if the semester is current, upcoming, or empty
+   * Returns all semester Statuses
+   * @param semesters an array of semesters to check
+   * @returns a record mapping semester IDs to their statuses
    */
-  isCurrentOrUpcoming: async function (semesterId: string): Promise<'current' | 'upcoming' | ''> {
-    'use server'
-    const urlCurrent = buildNextRequestURL('/api/semesters', { timeframe: SemesterType.Current })
-    const responseCurrent = await GetSemesters(
-      await buildNextRequest(urlCurrent, { method: 'GET' }),
-    )
-    const dataCurrent = await responseCurrent.json()
 
-    const urlNext = buildNextRequestURL('/api/semesters', { timeframe: SemesterType.Next })
-    const responseNext = await GetSemesters(await buildNextRequest(urlNext, { method: 'GET' }))
-    const dataNext = await responseNext.json()
+  getSemesterStatuses: async function (
+    semesters: Semester[],
+  ): Promise<Record<string, '' | 'current' | 'upcoming'>> {
+    const semesterStatuses: Record<string, '' | 'current' | 'upcoming'> = {}
+    const currentDate = new Date()
+    let earliestUpcomingDateIndex = -1
 
-    if (dataCurrent.data?.length && dataCurrent.data[0].id === semesterId) {
-      return 'current'
+    for (let i = 0; i < semesters.length; i++) {
+      const semester = semesters[i]
+      const startDate = new Date(semester.startDate)
+      const endDate = new Date(semester.endDate)
+      if (startDate <= currentDate && endDate >= currentDate) {
+        semesterStatuses[semester.id] = 'current'
+      } else if (startDate > currentDate) {
+        if (
+          earliestUpcomingDateIndex === -1 ||
+          startDate < new Date(semesters[earliestUpcomingDateIndex].startDate)
+        ) {
+          if (earliestUpcomingDateIndex !== -1) {
+            semesterStatuses[semesters[earliestUpcomingDateIndex].id] = ''
+          }
+          earliestUpcomingDateIndex = i
+          semesterStatuses[semester.id] = 'upcoming'
+        }
+      } else {
+        semesterStatuses[semester.id] = ''
+      }
     }
-    if (dataNext.data?.length && dataNext.data[0].id === semesterId) {
-      return 'upcoming'
-    }
-    return ''
+
+    return semesterStatuses
   },
 
   /**
