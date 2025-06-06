@@ -17,12 +17,14 @@ import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProj
 import { FilterProvider } from '@/contexts/FilterContext'
 import type { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import type { ProjectDetails, ProjectStatus } from '@/types/Project'
-import { FiSave, FiPrinter } from 'react-icons/fi'
+import { FiSave } from 'react-icons/fi'
 import Notification from '@/components/Generic/Notification/Notification'
 import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
 import type { User } from '@/payload-types'
 import useUnsavedChangesWarning from './UnsavedChangesHandler'
+import { LuEyeOff, LuEye } from 'react-icons/lu'
+import { IconType } from 'react-icons'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -39,7 +41,7 @@ export interface SemesterContainerData {
 
 export type DndComponentProps = SemesterContainerData & {
   onSaveChanges: (params: SemesterContainerData) => Promise<void>
-  onPublishChanges: (params: SemesterContainerData) => Promise<void>
+  onPublishChanges: (params: SemesterContainerData, publish: boolean) => Promise<void>
 }
 
 const defaultProjectInfo: ProjectDetails = {
@@ -73,12 +75,52 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
   const [showNotification, setShowNotification] = useState<boolean>(false)
   const [successNotification, setSuccessNotification] = useState<string | null>(null)
+  // TODO: need to set the publish / unpublish toggle using a service method not just setting to false everytime
+  const [toPublishToggle, setToPublishToggle] = useState(true) // if true, projects are unpublished and need publishing, if false, projects are published and can be unpublished
+  
+  const [buttonItems, setButtonItems] = useState<
+    {
+      Icon: IconType
+      value: string
+      label: string
+      isLoading: boolean
+    }[]
+  >([
+    { Icon: FiSave, value: 'save', label: 'Save', isLoading: false },
+    {
+      Icon: toPublishToggle ? LuEye : LuEyeOff,
+      value: toPublishToggle ? 'publish' : 'unpublish',
+      label: toPublishToggle ? 'Publish' : 'Unpublish',
+      isLoading: false,
+    },
+    {
+      Icon: HiOutlineDocumentDownload,
+      value: 'downloadcsv',
+      label: 'Download CSV',
+      isLoading: false,
+    },
+  ])
 
-  const buttonItems = [
-    { Icon: FiSave, value: 'save', label: 'Save' },
-    { Icon: FiPrinter, value: 'publish', label: 'Publish' },
-    { Icon: HiOutlineDocumentDownload, value: 'downloadcsv', label: 'Download CSV' },
-  ]
+  useEffect(() => {
+    // Update buttonItems when toPublishToggle changes
+    setButtonItems([
+      { Icon: FiSave, value: 'save', label: 'Save', isLoading: false },
+      {
+        Icon: toPublishToggle ? LuEye : LuEyeOff,
+        value: toPublishToggle ? 'publish' : 'unpublish',
+        label: toPublishToggle ? 'Publish' : 'Unpublish',
+        isLoading: false,
+      },
+      {
+        Icon: HiOutlineDocumentDownload,
+        value: 'downloadcsv',
+        label: 'Download CSV',
+        isLoading: false,
+      },
+    ])
+  }, [toPublishToggle])
+
+
   useEffect(() => {
     if (hasChanges) {
       setShowNotification(true)
@@ -116,33 +158,55 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }
   }
 
-  async function handleSaveChanges() {
-    setHasChanges(false)
-    setShowNotification(false)
-    setSuccessNotification('Your changes have been saved successfully!')
 
-    setTimeout(() => {
-      setSuccessNotification(null)
-    }, 5000)
-    //TODO: have some error handling in case changes aren't saved
-    await onSaveChanges({ presetContainers: containers, semesterId })
-
-    setContainers((prev) =>
-      prev.map((container) => ({
-        ...container,
-        originalItems: [...container.currentItems],
-      })),
+  function setButtonLoading(value: string, isLoading: boolean) {
+    setButtonItems((prevItems) =>
+      prevItems.map((item) => (item.value === value ? { ...item, isLoading } : item)),
     )
   }
 
-  async function handlePublishChanges() {
-    // send changes to the backend
-    await onPublishChanges({ presetContainers: containers, semesterId })
-    setSuccessNotification('The approved projects have been published!')
+  async function handleSaveChanges() {
+    setButtonLoading('save', true)
 
-    setTimeout(() => {
-      setSuccessNotification(null)
-    }, 5000)
+    try {
+      await onSaveChanges({ presetContainers: containers, semesterId })
+
+      setContainers((prev) =>
+        prev.map((container) => ({
+          ...container,
+          originalItems: [...container.currentItems],
+        })),
+      )
+      setSuccessNotification('Your changes have been saved successfully!')
+      setHasChanges(false)
+      setShowNotification(false)
+    } catch (error) {
+      console.error('Save failed', error)
+      setSuccessNotification('Failed to save changes.')
+    } finally {
+      setTimeout(() => setSuccessNotification(null), 5000)
+      setButtonLoading('save', false) // 👈 Unset loading
+    }
+  }
+
+  async function handlePublishChanges() {
+    const buttonName = toPublishToggle ? 'publish' : 'unpublish'
+    setButtonLoading(buttonName, true) // 👈 Set loading
+
+    try {
+      await onPublishChanges({ presetContainers: containers, semesterId }, toPublishToggle)
+      const message = toPublishToggle
+        ? 'The approved projects have been published!'
+        : 'All projects are now unpublished'
+      setSuccessNotification(message)
+      setToPublishToggle(!toPublishToggle)
+    } catch (error) {
+      console.error('Publish failed', error)
+      setSuccessNotification('Failed to publish/unpublish.')
+    } finally {
+      setTimeout(() => setSuccessNotification(null), 5000)
+      setButtonLoading(buttonName, false) // 👈 Unset loading
+    }
   }
 
   function handleDownloadCsv() {
@@ -513,7 +577,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
               if (value === 'save') {
                 handleSaveChanges()
               }
-              if (value === 'publish') {
+              if (value === 'publish' || value === 'unpublish') {
                 handlePublishChanges()
               }
               if (value === 'downloadcsv') {
