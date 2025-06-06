@@ -7,7 +7,7 @@ interface ProjectListProps {
   headingClassName?: string
   heading: string
   projects: ProjectDetails[]
-  type?: 'student' | 'admin'
+  type?: 'student' | 'admin' | 'client'
 }
 
 const ProjectCardList: React.FC<ProjectListProps> = ({
