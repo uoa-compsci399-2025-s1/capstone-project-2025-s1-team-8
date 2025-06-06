@@ -230,13 +230,15 @@ export async function updateProjectOrdersAndStatus({
         project.projectInfo.semesterProjectId ?? '',
         updatedOrderAndStatus,
       )
-      if (statusCode == 200) {
-        return { message: 'Semester updated successfully' }
-      } else {
-        return { error, details }
+      if (statusCode != 200) {
+        errors.push({ error, details })
       }
     }
   }
+  if (errors.length > 0) {
+    return errors[0] // Return the first error encountered
+  }
+  return { message: 'Semester updated successfully' }
 }
 
 /**
