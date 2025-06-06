@@ -15,7 +15,6 @@ export const PatchSemesterProjectRequestBody = z.object({
   project: z.union([z.string(), ProjectSchema]).optional(),
   semester: z.union([z.string(), SemesterSchema]).optional(),
   status: z.nativeEnum(ProjectStatus).optional(),
-  published: z.boolean().optional(),
 })
 
 class RouteWrapper {

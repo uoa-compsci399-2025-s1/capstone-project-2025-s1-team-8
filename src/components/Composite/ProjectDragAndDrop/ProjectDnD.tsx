@@ -39,7 +39,7 @@ export interface SemesterContainerData {
 
 export type DndComponentProps = SemesterContainerData & {
   onSaveChanges: (params: SemesterContainerData) => Promise<void>
-  onPublishChanges: (params: SemesterContainerData) => Promise<void>
+  onPublishChanges: (semesterId: string) => Promise<void>
   onDeleteProject: (projectId: string) => Promise<{
     error?: string
     message?: string
@@ -144,7 +144,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
   async function handlePublishChanges() {
     // send changes to the backend
-    await onPublishChanges({ presetContainers: containers, semesterId })
+    await onPublishChanges(semesterId)
     setSuccessNotification('The approved projects have been published!')
 
     setTimeout(() => {

@@ -52,8 +52,8 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({
         headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
         heading="My projects"
         projects={projects}
-        onDelete={onDeleteProject}
         type="client"
+        onDelete={onDeleteProject}
       />
     </div>
   )

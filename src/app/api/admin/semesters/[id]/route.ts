@@ -5,10 +5,12 @@ import { NotFound } from 'payload'
 import { z, ZodError } from 'zod'
 import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { Security } from '@/business-layer/middleware/Security'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 
 export const UpdateSemesterRequestBody = z.object({
   name: z.string().optional(),
   description: z.string().optional(),
+  published: z.boolean().optional(),
   deadline: z
     .string()
     .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
@@ -72,9 +74,18 @@ class RouteWrapper {
   static async DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const semesterDataService = new SemesterDataService()
+    const projectDataService = new ProjectDataService()
 
     try {
       await semesterDataService.deleteSemester(id)
+
+      const relatedProjects = await projectDataService.getAllSemesterProjectsBySemester(id)
+      await Promise.all(
+        relatedProjects.docs.map((semesterProject) =>
+          projectDataService.deleteSemesterProject(semesterProject.id),
+        ),
+      )
+
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
     } catch (error) {
       if (error instanceof NotFound)

@@ -8,9 +8,12 @@ import { createMockNextPostRequest, paramsToPromise } from '@/test-config/utils'
 import { PATCH, DELETE } from './route'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
+import { semesterProjectMock } from '@/test-config/mocks/Project.mock'
 
 describe('tests /api/admin/semesters/[id]', async () => {
-  const semesterService = new SemesterDataService()
+  const semesterDataService = new SemesterDataService()
+  const projectDataService = new ProjectDataService()
   const cookieStore = await cookies()
 
   describe('PATCH /api/admin/semesters/[id]', () => {
@@ -36,13 +39,13 @@ describe('tests /api/admin/semesters/[id]', async () => {
 
     it('should update a semester correctly', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const newSem = await semesterService.createSemester(semesterCreateMock)
+      const newSem = await semesterDataService.createSemester(semesterCreateMock)
       const updatedSem = { name: 'Updated Semester' }
 
       const res = await PATCH(createMockNextPostRequest('', updatedSem), {
         params: paramsToPromise({ id: newSem.id }),
       })
-      const fetchedSem = await semesterService.getSemester(newSem.id)
+      const fetchedSem = await semesterDataService.getSemester(newSem.id)
       expect(res.status).toBe(StatusCodes.OK)
       expect(fetchedSem.name).toEqual(updatedSem.name)
       expect(fetchedSem.updatedAt).not.toEqual(newSem.updatedAt)
@@ -51,7 +54,7 @@ describe('tests /api/admin/semesters/[id]', async () => {
 
     it('should return a 400 error if the request body is invalid', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const newSem = await semesterService.createSemester(semesterCreateMock)
+      const newSem = await semesterDataService.createSemester(semesterCreateMock)
       const updatedSem = { deadline: 1 }
 
       const res = await PATCH(createMockNextPostRequest('', updatedSem), {
@@ -101,12 +104,29 @@ describe('tests /api/admin/semesters/[id]', async () => {
 
     it('should delete a semester', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const newSemester = await semesterService.createSemester(semesterCreateMock)
+      const newSemester = await semesterDataService.createSemester(semesterCreateMock)
       const res = await DELETE({} as NextRequest, {
         params: paramsToPromise({ id: newSemester.id }),
       })
       expect(res.status).toBe(StatusCodes.NO_CONTENT)
-      await expect(semesterService.getSemester(newSemester.id)).rejects.toThrow('Not Found')
+      await expect(semesterDataService.getSemester(newSemester.id)).rejects.toThrow('Not Found')
+    })
+
+    it('should delete a semester and related semester projects', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const newSemester = await semesterDataService.createSemester(semesterCreateMock)
+      const semesterProject = await projectDataService.createSemesterProject({
+        ...semesterProjectMock,
+        semester: newSemester,
+      })
+      const res = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: newSemester.id }),
+      })
+      expect(res.status).toBe(StatusCodes.NO_CONTENT)
+      await expect(semesterDataService.getSemester(newSemester.id)).rejects.toThrow('Not Found')
+      await expect(projectDataService.getSemesterProject(semesterProject.id)).rejects.toThrow(
+        'Not Found',
+      )
     })
 
     it('should return a 404 error if the semester does not exist', async () => {

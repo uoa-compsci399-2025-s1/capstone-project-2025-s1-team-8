@@ -107,6 +107,7 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
             endDate={semester.endDate}
             updatedAt={semester.updatedAt}
             createdAt={semester.createdAt}
+            published={semester.published}
             currentOrUpcoming={semesterStatuses[semester.id] || ''}
             handleGetAllSemesterProjects={handleGetAllSemesterProjects}
             onEdit={callSemesterForm}

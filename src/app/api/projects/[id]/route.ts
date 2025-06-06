@@ -7,16 +7,13 @@ import { Security } from '@/business-layer/middleware/Security'
 import type { RequestWithUser } from '@/types/Requests'
 import { MediaSchema, UserSchema } from '@/types/Payload'
 import { UserRole } from '@/types/User'
-import type { User } from '@/payload-types'
+import type { Semester, User } from '@/payload-types'
+import { ProjectStatus } from '@/types/Project'
 
-export const UpdateProjectRequestBody = z.object({
+export const UpdateProjectRequestBodySchema = z.object({
   name: z.string().optional(),
   description: z.string().optional(),
   deadline: z
-    .string()
-    .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
-    .optional(),
-  timestamp: z
     .string()
     .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
     .optional(),
@@ -27,7 +24,15 @@ export const UpdateProjectRequestBody = z.object({
     ])
     .optional(),
   attachments: z.array(MediaSchema).max(5).optional(),
+  desiredOutput: z.string().optional(),
+  desiredTeamSkills: z.string().optional(),
+  availableResources: z.string().optional(),
+  specialEquipmentRequirements: z.string().optional(),
+  numberOfTeams: z.string().optional(),
+  futureConsideration: z.boolean().optional(),
+  semesters: z.array(z.string()).optional(),
 })
+export type UpdateProjectRequestBody = z.infer<typeof UpdateProjectRequestBodySchema>
 
 class RouteWrapper {
   /**
@@ -85,6 +90,7 @@ class RouteWrapper {
   static async PATCH(req: RequestWithUser, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const projectDataService = new ProjectDataService()
+
     try {
       const project = await projectDataService.getProjectById(id)
       if (
@@ -94,8 +100,35 @@ class RouteWrapper {
       ) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: StatusCodes.UNAUTHORIZED })
       }
-      const body = UpdateProjectRequestBody.parse(await req.json())
+
+      const body = UpdateProjectRequestBodySchema.parse(await req.json())
+
       const data = await projectDataService.updateProject(id, body)
+      if (body.semesters) {
+        const semesterProjects = await projectDataService.getSemesterProjectsByProject(id)
+        const existingSemesterIds = semesterProjects.map((sp) => (sp.semester as Semester).id)
+
+        const semestersToAdd = body.semesters.filter((id) => !existingSemesterIds.includes(id))
+        const semesterProjectsToRemove = semesterProjects.filter(
+          (semesterProject) => !body.semesters?.includes((semesterProject.semester as Semester).id),
+        )
+
+        await Promise.all(
+          semestersToAdd.map((semesterId) =>
+            projectDataService.createSemesterProject({
+              project: id,
+              semester: semesterId,
+              status: ProjectStatus.Pending,
+            }),
+          ),
+        )
+        await Promise.all(
+          semesterProjectsToRemove.map((semesterProject) =>
+            projectDataService.deleteSemesterProject(semesterProject.id),
+          ),
+        )
+      }
+
       return NextResponse.json({ data: data })
     } catch (error) {
       if (error instanceof NotFound) {
@@ -134,6 +167,14 @@ class RouteWrapper {
       ) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: StatusCodes.UNAUTHORIZED })
       }
+
+      const semesterProjects = await projectDataService.getSemesterProjectsByProject(id)
+      await Promise.all(
+        semesterProjects.map((semesterProject) =>
+          projectDataService.deleteSemesterProject(semesterProject.id),
+        ),
+      )
+
       await projectDataService.deleteProject(id)
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
     } catch (error) {
