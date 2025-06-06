@@ -28,11 +28,5 @@ export const SemesterProject: CollectionConfig = {
       options: Object.values(ProjectStatus),
       required: true,
     },
-    {
-      name: 'published',
-      type: 'checkbox',
-      defaultValue: false,
-      required: true,
-    },
   ],
 }
