@@ -99,11 +99,6 @@ export const Project: CollectionConfig = {
       required: false,
     },
     {
-      name: 'futureConsideration',
-      type: 'checkbox',
-      required: true,
-    },
-    {
       name: 'questionResponses',
       type: 'array',
       required: false,

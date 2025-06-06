@@ -31,5 +31,14 @@ export const Semester: CollectionConfig = {
       type: 'date',
       required: true,
     },
+    {
+      name: 'published',
+      type: 'checkbox',
+      defaultValue: false,
+      required: true,
+      admin: {
+        description: 'A state if all the approved projects are published or not. ',
+      },
+    },
   ],
 }

@@ -1,6 +1,6 @@
 import AuthService from '@/business-layer/services/AuthService'
-import UserService from '@/data-layer/services/UserService'
-import AuthDataService from '@/data-layer/services/AuthService'
+import UserDataService from '@/data-layer/services/UserDataService'
+import AuthDataService from '@/data-layer/services/AuthDataService'
 import type { CreateUserData } from '@/types/Collections'
 import { UserRoleWithoutAdmin } from '@/types/User'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
@@ -19,7 +19,7 @@ export const RegisterRequestBodySchema = z.object({
 export type RegisterRequestBody = z.infer<typeof RegisterRequestBodySchema>
 
 export const POST = async (req: NextRequest) => {
-  const userService = new UserService()
+  const userDataService = new UserDataService()
   const authService = new AuthService()
   const authDataService = new AuthDataService()
 
@@ -35,13 +35,13 @@ export const POST = async (req: NextRequest) => {
       )
 
     try {
-      user = await userService.getUserByEmail(body.email)
-      user = await userService.updateUser(user.id, {
+      user = await userDataService.getUserByEmail(body.email)
+      user = await userDataService.updateUser(user.id, {
         firstName: body.firstName,
         lastName: body.lastName,
       })
     } catch {
-      user = await userService.createUser(body as CreateUserData)
+      user = await userDataService.createUser(body as CreateUserData)
     }
 
     const hash = await authService.hashPassword(body.password)

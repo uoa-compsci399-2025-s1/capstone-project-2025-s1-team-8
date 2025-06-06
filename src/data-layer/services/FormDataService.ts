@@ -2,7 +2,7 @@ import type { FormQuestion } from '@/payload-types'
 import type { UpdateFormQuestionData, CreateFormQuestionData } from '@/types/Collections'
 import { payload } from '../adapters/Payload'
 
-export default class FormService {
+export default class FormDataService {
   /**
    * Creates a new formQuestion
    *

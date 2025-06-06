@@ -5,8 +5,10 @@ import AdminService from 'src/lib/services/admin/index'
 import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 import type { typeToFlattenedError } from 'zod'
 import type { Project, Semester } from '@/payload-types'
-import { type ProjectDetails, ProjectStatus } from '@/types/Project'
+import type { ProjectDetails, ProjectStatus } from '@/types/Project'
 import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
+import { UserRole } from '@/types/User'
+import AdminSemesterService from './AdminSemesterService'
 
 /**
  * Handles the click event to create semester
@@ -26,6 +28,7 @@ export const handleCreateSemester = async (
     startDate: new Date(formData.get('startDate') as string).toISOString(),
     endDate: new Date(formData.get('endDate') as string).toISOString(),
     deadline: new Date(formData.get('submissionDeadline') as string).toISOString(),
+    published: false,
   })
 
   if (status === 201) {
@@ -97,10 +100,13 @@ export const handleDeleteSemester = async (
 export const handleGetAllSemesters = async (): Promise<void | {
   error?: string
   data?: Semester[]
+  semesterStatuses?: Record<string, 'current' | 'upcoming' | ''>
 }> => {
   const { status, error, data } = await AdminService.getAllSemesters()
   if (status === 200) {
-    return { data }
+    const semesterStatuses: Record<string, 'current' | 'upcoming' | ''> =
+      await AdminService.getSemesterStatuses(data || [])
+    return { data, semesterStatuses }
   } else {
     return { error }
   }
@@ -140,24 +146,18 @@ export const handleGetAllSemesterProjects = async (
 }
 
 /**
- * Determines whether a semester is current or upcoming
- *
- * @param id The id of the semester
- * @returns A string indicating the status of the semester
- */
-export const isCurrentOrUpcoming = async (id: string): Promise<'current' | 'upcoming' | ''> => {
-  return await AdminService.isCurrentOrUpcoming(id)
-}
-
-/**
  * Gets all clients and their projects
  *
  * @returns All {@link UserCombinedInfo}'s with their projects
  */
-export const getAllClients = async (): Promise<void | {
+export const getAllClients = async (
+  options: { limit?: number; page?: number; query?: string } = {},
+): Promise<void | {
   data?: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
+  nextPage?: number
+  totalPages?: number
 }> => {
-  const getClientsResponse = await AdminService.getAllUsers()
+  const getClientsResponse = await AdminService.getAllUsers({ ...options, role: UserRole.Client })
   const clientsWithProjects = await Promise.all(
     (getClientsResponse.data ?? []).map(async (client) => {
       const projectsResponse = await AdminService.getProjectsByUserId(client.id)
@@ -167,7 +167,11 @@ export const getAllClients = async (): Promise<void | {
       }
     }),
   )
-  return { data: clientsWithProjects }
+  return {
+    data: clientsWithProjects,
+    nextPage: getClientsResponse.nextPage,
+    totalPages: getClientsResponse.totalPages,
+  }
 }
 
 /**
@@ -195,15 +199,12 @@ export async function updateProjectOrdersAndStatus({
 }: SemesterContainerData): Promise<void> {
   for (const container of presetContainers) {
     const status = container.title as ProjectStatus
-    const shouldSetUnpublished =
-      status === ProjectStatus.Rejected || status === ProjectStatus.Pending
 
     for (let i = 0; i < container.currentItems.length; i++) {
       const project = container.currentItems[i]
       const updatedOrderAndStatus = {
         number: container.currentItems.length - i,
         status,
-        ...(shouldSetUnpublished && { published: false }),
       }
 
       await AdminService.updateSemesterProject(
@@ -218,22 +219,11 @@ export async function updateProjectOrdersAndStatus({
 /**
  * Handles the publishing of approved projects
  *
- * @param presetContainers The list of {@link DNDType} containers from the Project Drag and Drop
  * @param semesterId The id of the upcoming semester
  * @returns Error or success message
  */
-export async function handlePublishChanges({
-  presetContainers,
-  semesterId,
-}: SemesterContainerData): Promise<void> {
-  const container = presetContainers[2]
-  for (let i = 0; i < container.currentItems.length; i++) {
-    const project = container.currentItems[i]
-    await AdminService.updateSemesterProject(
-      semesterId,
-      project.projectInfo.semesterProjectId ?? '',
-      { published: true },
-    )
-  }
-  await updateProjectOrdersAndStatus({ presetContainers, semesterId })
+export async function handlePublishChanges(semesterId: string): Promise<void> {
+  const semester = await AdminSemesterService.getSemester(semesterId)
+  const data = semester.data as Semester
+  await AdminSemesterService.updateSemester(semesterId, { published: !data.published })
 }

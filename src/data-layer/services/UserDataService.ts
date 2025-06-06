@@ -11,7 +11,7 @@ import type {
 } from '@/types/Collections'
 import type { UserRole } from '@/types/User'
 
-export default class UserService {
+export default class UserDataService {
   /**
    * Creates a new user document in the database.
    *

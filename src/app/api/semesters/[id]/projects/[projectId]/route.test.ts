@@ -4,16 +4,16 @@ import { cookies } from 'next/headers'
 import { createMockNextRequest, paramsToPromise } from '@/test-config/utils'
 import { semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 import { GET } from '@/app/api/semesters/[id]/projects/[projectId]/route'
-import ProjectService from '@/data-layer/services/ProjectService'
-import SemesterService from '@/data-layer/services/SemesterService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { semesterMock } from '@/test-config/mocks/Semester.mock'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 
 describe('tests /api/semesters/[id]/projects/[projectId]', async () => {
   const cookieStore = await cookies()
-  const projectService = new ProjectService()
-  const semesterService = new SemesterService()
+  const projectDataService = new ProjectDataService()
+  const semesterDataService = new SemesterDataService()
 
   describe('GET /api/semesters/[id]/projects/[projectId]', () => {
     it('should return a 401 if the user is not authenticated', async () => {
@@ -50,7 +50,7 @@ describe('tests /api/semesters/[id]/projects/[projectId]', async () => {
 
     it("should return a 404 error if the project doesn't exist", async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
-      const semester = await semesterService.createSemester(semesterMock)
+      const semester = await semesterDataService.createSemester(semesterMock)
       const res = await GET(createMockNextRequest(`api/semesters/${semester.id}/projects/123`), {
         params: paramsToPromise({ id: semester.id, projectId: '123' }),
       })
@@ -60,8 +60,8 @@ describe('tests /api/semesters/[id]/projects/[projectId]', async () => {
 
     it('should return a 404 error if the project is not in the semester', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const semester = await semesterService.createSemester(semesterMock)
-      const semesterProject = await projectService.createSemesterProject({
+      const semester = await semesterDataService.createSemester(semesterMock)
+      const semesterProject = await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         semester: semester.id,
       })
@@ -77,8 +77,11 @@ describe('tests /api/semesters/[id]/projects/[projectId]', async () => {
 
     it('should return a 401 if the student requested an unpublished project', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
-      const semester = await semesterService.createSemester(semesterMock)
-      const semesterProject = await projectService.createSemesterProject({
+      const semester = await semesterDataService.createSemester({
+        ...semesterMock,
+        published: false,
+      })
+      const semesterProject = await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         semester: semester.id,
       })
@@ -94,8 +97,8 @@ describe('tests /api/semesters/[id]/projects/[projectId]', async () => {
 
     it('should return a 200 response with the project if it exists in the semester', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const semester = await semesterService.createSemester(semesterMock)
-      const semesterProject = await projectService.createSemesterProject({
+      const semester = await semesterDataService.createSemester(semesterMock)
+      const semesterProject = await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         semester: semester.id,
       })

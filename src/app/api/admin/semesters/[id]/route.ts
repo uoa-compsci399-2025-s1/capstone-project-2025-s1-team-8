@@ -3,12 +3,13 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { NotFound } from 'payload'
 import { z, ZodError } from 'zod'
-import SemesterService from '@/data-layer/services/SemesterService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { Security } from '@/business-layer/middleware/Security'
 
 export const UpdateSemesterRequestBody = z.object({
   name: z.string().optional(),
   description: z.string().optional(),
+  published: z.boolean().optional(),
   deadline: z
     .string()
     .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })
@@ -41,10 +42,10 @@ class RouteWrapper {
     },
   ) {
     const { id } = await params
-    const semesterService = new SemesterService()
+    const semesterDataService = new SemesterDataService()
     try {
       const parsedBody = UpdateSemesterRequestBody.parse(await req.json())
-      const semester = await semesterService.updateSemester(id, parsedBody)
+      const semester = await semesterDataService.updateSemester(id, parsedBody)
       return NextResponse.json({ data: semester })
     } catch (error) {
       if (error instanceof ZodError) {
@@ -70,10 +71,11 @@ class RouteWrapper {
    */
   @Security('jwt', ['admin'])
   static async DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params
+    const semesterDataService = new SemesterDataService()
+
     try {
-      const { id } = await params
-      const semesterService = new SemesterService()
-      await semesterService.deleteSemester(id)
+      await semesterDataService.deleteSemester(id)
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
     } catch (error) {
       if (error instanceof NotFound)

@@ -11,6 +11,7 @@ export const semesterCreateMock: CreateSemesterData = {
   deadline: new Date().toISOString(),
   startDate: new Date().toISOString(),
   endDate: new Date().toISOString(),
+  published: false,
 }
 
 export const semesterMock: Semester = {
@@ -22,6 +23,7 @@ export const semesterMock: Semester = {
   endDate: new Date().toISOString(),
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
+  published: false,
 }
 
 export const semesterCreateMock2: CreateSemesterData = {
@@ -30,6 +32,7 @@ export const semesterCreateMock2: CreateSemesterData = {
   deadline: new Date().toISOString(),
   startDate: new Date().toISOString(),
   endDate: new Date().toISOString(),
+  published: false,
 }
 
 export const mockSemesters: Semester[] = [

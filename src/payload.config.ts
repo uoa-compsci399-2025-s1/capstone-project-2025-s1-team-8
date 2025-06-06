@@ -17,6 +17,7 @@ import { Admin } from './data-layer/collections/Admin'
 import { Home } from './data-layer/globals/Home'
 import { s3Storage } from '@payloadcms/storage-s3'
 import { Form } from './data-layer/globals/Form'
+import { ClientDashboard } from './data-layer/globals/ClientDashboard'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -40,7 +41,7 @@ export default buildConfig({
     Semester,
     FormQuestion,
   ],
-  globals: [Home, Form],
+  globals: [Home, Form, ClientDashboard],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
