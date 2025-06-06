@@ -130,6 +130,10 @@ class RouteWrapper {
     const { id } = await params
     const userDataService = new UserDataService()
     try {
+      const clientAdditionalInfo = await userDataService.getClientAdditionalInfo(id)
+      if (clientAdditionalInfo)
+        await userDataService.deleteClientAdditionalInfo(clientAdditionalInfo.id)
+
       await userDataService.deleteUser(id)
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
     } catch (error) {

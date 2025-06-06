@@ -299,6 +299,24 @@ describe('test /api/admin/users/[id]', async () => {
       await expect(userDataService.getUser(newUser.id)).rejects.toThrow('Not Found')
     })
 
+    it('should delete a user and the related client additional info', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const newUser = await userDataService.createUser(clientCreateMock)
+      const additionalInfo = await userDataService.createClientAdditionalInfo({
+        ...clientAdditionalInfoCreateMock,
+        client: newUser,
+      })
+      expect(await userDataService.getClientAdditionalInfo(newUser.id)).toStrictEqual(
+        additionalInfo,
+      )
+      const res = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: newUser.id }),
+      })
+      expect(res.status).toBe(StatusCodes.NO_CONTENT)
+      await expect(userDataService.getUser(newUser.id)).rejects.toThrow('Not Found')
+      expect(await userDataService.getClientAdditionalInfo(newUser.id)).toBeUndefined()
+    })
+
     it('should return a 404 error if the user does not exist', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const res = await DELETE({} as NextRequest, { params: paramsToPromise({ id: 'noid' }) })
