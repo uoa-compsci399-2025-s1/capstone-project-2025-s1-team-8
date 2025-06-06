@@ -122,6 +122,45 @@ describe('tests /api/semesters/[id]/projects', async () => {
       expect(data.data.length).toEqual(2)
     })
 
+    it('should only return approved and published projects if student view is enabled and user is admin', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const semester = await semesterDataService.createSemester({
+        ...semesterCreateMock,
+        published: true,
+      })
+      const proj1 = await projectDataService.createSemesterProject({
+        ...semesterProjectCreateMock,
+        semester,
+      })
+      const proj2 = await projectDataService.createSemesterProject({
+        ...semesterProjectCreateMock,
+        semester,
+      })
+      const res = await GET(createMockNextRequest(`api/semesters/${semester.id}/projects`), {
+        params: paramsToPromise({ id: semester.id }),
+      })
+      const json = await res.json()
+      expect(json.data.length).toBe(2)
+      expect(json.data).toStrictEqual(expect.arrayContaining([proj1, proj2]))
+
+      const semester2 = await semesterDataService.createSemester({
+        ...semesterCreateMock,
+        published: false,
+      })
+      await projectDataService.createSemesterProject({
+        ...semesterProjectCreateMock,
+        semester: semester2,
+      })
+
+      const res2 = await GET(
+        createMockNextRequest(`api/semesters/${semester2.id}/projects?student=true`),
+        {
+          params: paramsToPromise({ id: semester2.id }),
+        },
+      )
+      expect(await res2.json()).toStrictEqual({ data: [] })
+    })
+
     it('should return a list of no semesterprojects for a semester which has no projects', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       await projectDataService.createSemesterProject(semesterProjectCreateMock)
