@@ -8,7 +8,7 @@ interface ProjectListProps {
   heading: string
   projects: ProjectDetails[]
   type?: 'student' | 'admin'
-  onDelete: (projectId: string) => Promise<{
+  onDelete?: (projectId: string) => Promise<{
     error?: string
     message?: string
   }>

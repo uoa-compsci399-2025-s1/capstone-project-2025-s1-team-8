@@ -12,6 +12,8 @@ import { GET, PATCH, DELETE } from '@/app/api/projects/[id]/route'
 import { adminMock, clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
+import { CreateSemesterProjectData } from '@/types/Collections'
+import { ProjectStatus } from '@/types/Project'
 
 describe('tests /api/projects/[id]', async () => {
   const projectDataService = new ProjectDataService()
@@ -135,11 +137,22 @@ describe('tests /api/projects/[id]', async () => {
         client: clientMock,
       })
 
+      const semesterProjectData: CreateSemesterProjectData = {
+        number: 1,
+        project: project,
+        semester: '67ff38a56a35e1b6cf43a68c',
+        status: ProjectStatus.Pending,
+        published: false,
+      }
+      const newSemesterProject = await projectDataService.createSemesterProject(semesterProjectData)
       const res = await DELETE(createMockNextRequest(''), {
         params: paramsToPromise({ id: project.id }),
       })
       expect(res.status).toBe(StatusCodes.NO_CONTENT)
       expect((await projectDataService.getAllProjects()).docs.length).toEqual(0)
+      await expect(projectDataService.getSemesterProject(newSemesterProject.id)).rejects.toThrow(
+        'Not Found',
+      )
     })
 
     it('should return a 401 if the project is not related to the client', async () => {

@@ -15,7 +15,7 @@ interface ProjectModalProps extends ModalProps {
   projectInfo: Project
   semesters?: Semester[]
   type?: 'student' | 'admin'
-  onDelete: (projectId: string) => Promise<{
+  onDelete?: (projectId: string) => Promise<{
     error?: string
     message?: string
   }>
@@ -94,7 +94,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
               containerWidth={200}
               onEdit={callForm}
               onDelete={async () => {
-                await onDelete(projectInfo.id)
+                await onDelete?.(projectInfo.id)
                 deleted?.()
                 onClose()
               }}

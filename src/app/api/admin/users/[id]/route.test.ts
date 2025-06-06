@@ -10,14 +10,16 @@ import {
   clientCreateMock,
 } from '@/test-config/mocks/User.mock'
 import { GET, PATCH, DELETE } from '@/app/api/admin/users/[id]/route'
-import type { UserCombinedInfo } from '@/types/Collections'
+import type { CreateProjectData, UserCombinedInfo } from '@/types/Collections'
 import { cookies } from 'next/headers'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import type { User } from '@/payload-types'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 
 describe('test /api/admin/users/[id]', async () => {
   const userDataService = new UserDataService()
+  const projectService = new ProjectDataService()
   const cookieStore = await cookies()
 
   describe('test GET /api/admin/users/[id]', () => {
@@ -292,11 +294,22 @@ describe('test /api/admin/users/[id]', async () => {
     it('should delete a user', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const newUser = await userDataService.createUser(clientCreateMock)
+      const projectData: CreateProjectData = {
+        name: 'Test Project',
+        description: 'This is a test project',
+        client: newUser.id,
+        desiredOutput: 'abc',
+        specialEquipmentRequirements: 'abc',
+        numberOfTeams: '1',
+      }
+      const newProject = await projectService.createProject(projectData)
+      expect((await projectService.getProjectsByClientId(newUser.id)).docs.length).toBe(1)
       const res = await DELETE({} as NextRequest, {
         params: paramsToPromise({ id: newUser.id }),
       })
       expect(res.status).toBe(StatusCodes.NO_CONTENT)
       await expect(userDataService.getUser(newUser.id)).rejects.toThrow('Not Found')
+      await expect(projectService.getProjectById(newProject.id)).rejects.toThrow('Not Found')
     })
 
     it('should return a 404 error if the user does not exist', async () => {
