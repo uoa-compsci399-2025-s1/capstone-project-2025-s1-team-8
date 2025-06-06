@@ -324,7 +324,6 @@ export interface SemesterProject {
   project: string | Project;
   semester: string | Semester;
   status: 'pending' | 'approved' | 'rejected';
-  published: boolean;
   updatedAt: string;
   createdAt: string;
 }
@@ -342,6 +341,10 @@ export interface Semester {
   deadline: string;
   startDate: string;
   endDate: string;
+  /**
+   * A state if all the approved projects are published or not.
+   */
+  published: boolean;
   updatedAt: string;
   createdAt: string;
 }
@@ -561,7 +564,6 @@ export interface SemesterProjectSelect<T extends boolean = true> {
   project?: T;
   semester?: T;
   status?: T;
-  published?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -575,6 +577,7 @@ export interface SemesterSelect<T extends boolean = true> {
   deadline?: T;
   startDate?: T;
   endDate?: T;
+  published?: T;
   updatedAt?: T;
   createdAt?: T;
 }

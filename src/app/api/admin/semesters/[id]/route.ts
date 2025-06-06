@@ -9,6 +9,7 @@ import { Security } from '@/business-layer/middleware/Security'
 export const UpdateSemesterRequestBody = z.object({
   name: z.string().optional(),
   description: z.string().optional(),
+  published: z.boolean().optional(),
   deadline: z
     .string()
     .datetime({ message: 'Invalid date format, should be in ISO 8601 format' })

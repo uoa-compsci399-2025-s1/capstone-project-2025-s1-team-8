@@ -1,5 +1,6 @@
 import type { Semester, SemesterProject } from '@/payload-types'
 import { GET as GetSemesters } from '@/app/api/semesters/route'
+import { GET as GetSemester } from '@/app/api/semesters/[id]/route'
 import { GET as GetProjects } from '@/app/api/semesters/[id]/projects/route'
 import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 import { POST as CreateSemester } from '@/app/api/admin/semesters/route'
@@ -47,7 +48,6 @@ const AdminSemesterService = {
       page?: number
       limit?: number
       status?: ProjectStatus
-      published?: 'true' | 'false'
     } = {},
   ): Promise<{
     status: StatusCodes
@@ -63,6 +63,27 @@ const AdminSemesterService = {
     const { data, nextPage, error } = { ...(await response.json()) }
 
     return { status: response.status, data, nextPage, error }
+  },
+
+  /**
+   * Gets a semester by ID
+   *
+   * @param semesterID The ID of the semester to retrieve
+   * @returns an object containing the status, data, and error
+   */
+  getSemester: async function (semesterID: string): Promise<{
+    status: StatusCodes
+    data?: Semester
+    error?: string
+  }> {
+    'use server'
+    const url = buildNextRequestURL(`/app/semesters/${semesterID}`, {})
+    const res = await GetSemester(await buildNextRequest(url, { method: 'GET' }), {
+      params: Promise.resolve({ id: semesterID }),
+    })
+
+    const { error, data } = await res.json()
+    return { status: res.status, data, error }
   },
 
   /**

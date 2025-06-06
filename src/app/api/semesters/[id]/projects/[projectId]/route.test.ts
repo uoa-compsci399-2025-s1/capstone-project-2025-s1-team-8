@@ -77,7 +77,10 @@ describe('tests /api/semesters/[id]/projects/[projectId]', async () => {
 
     it('should return a 401 if the student requested an unpublished project', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, studentToken)
-      const semester = await semesterDataService.createSemester(semesterMock)
+      const semester = await semesterDataService.createSemester({
+        ...semesterMock,
+        published: false,
+      })
       const semesterProject = await projectDataService.createSemesterProject({
         ...semesterProjectCreateMock,
         semester: semester.id,
