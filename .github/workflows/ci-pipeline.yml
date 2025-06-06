@@ -8,6 +8,8 @@ on:
 
 env:
   CI: 'true'
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -43,27 +45,42 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
-          run_install: false
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      # Cache the node_modules directory
       - name: Cache node_modules
         uses: actions/cache@v4
         id: cache-node-modules
         with:
           path: node_modules
           key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            node-modules-
+          lookup-only: true
+
+      - name: Setup Node.js
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Setup pnpm
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+          run_install: false
+
+      - name: Restore only if cache missed
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            node-modules-
+          lookup-only: true
+
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: pnpm install --frozen-lockfile
 
   style:
     needs: [check_changes, setup]
@@ -92,7 +109,7 @@ jobs:
           key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Check formatting
-        run: pnpm prettier --check .
+        run: pnpm turbo:prettier
 
   lint:
     needs: [check_changes, setup]
@@ -124,12 +141,12 @@ jobs:
           key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Run linting
-        run: pnpm lint
+        run: pnpm turbo:lint
 
-  build:
+  check-types:
     needs: [check_changes, setup]
     if: ${{ needs.check_changes.outputs.exists == 'true' }}
-    name: Build
+    name: Check types
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -156,13 +173,52 @@ jobs:
           key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Run typescript compile
-        run: pnpm tsc --noEmit
+        run: pnpm turbo:check-types
+
+  build:
+    needs: [check_changes, setup]
+    if: ${{ needs.check_changes.outputs.exists == 'true' }}
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+          run_install: false
+
+      # Restore cached node_modules
+      - name: Restore node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Prune developer dependencies
         run: pnpm prune --prod
 
+      - name: Download Next build cache
+        uses: actions/cache@v4
+        with:
+           path: |
+             .next/cache
+           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/*.ts', '**/*.tsx') }}
+           restore-keys: |
+             ${{ runner.os }}-nextjs-
+
       - name: Run Next build
-        run: pnpm build
+        run: pnpm turbo:build
 
   test:
     needs: [check_changes, setup]
@@ -194,7 +250,7 @@ jobs:
           key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Test
-        run: pnpm test
+        run: pnpm turbo:test
 
   codegen:
     needs: [check_changes, setup]
@@ -226,7 +282,7 @@ jobs:
           key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Generate typing
-        run: pnpm generate:types
+        run: pnpm turbo:generate:types
 
       - name: Write git diff
         run: |
@@ -244,7 +300,7 @@ jobs:
             core.setFailed('Your code generation for typings are not up to date. Run pnpm generate:types')
 
       - name: Generate import mapping
-        run: pnpm generate:importmap
+        run: pnpm turbo:generate:importmap
 
       - name: Write git diff
         run: |
@@ -261,10 +317,9 @@ jobs:
           script: |
             core.setFailed('Your code generation for maps are not up to date. Run pnpm generate:importmap')
 
-
   verify:
     name: Verify
-    needs: [check_changes, build, lint, style, test, codegen]
+    needs: [check_changes, check-types, build, lint, style, test, codegen]
     runs-on: ubuntu-latest
     if: ${{ always() && (needs.check_changes.outputs.exists != 'true' || (needs.build.result == 'success' && needs.lint.result == 'success' && needs.style.result == 'success' && needs.test.result == 'success' && needs.codegen.result == 'success')) }}
     steps:

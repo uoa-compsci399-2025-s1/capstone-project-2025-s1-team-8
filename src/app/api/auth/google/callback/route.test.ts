@@ -13,9 +13,9 @@ import {
 } from '@/test-config/mocks/Auth.mock'
 import { createMockNextRequest } from '@/test-config/utils'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
-import AuthService from '@/data-layer/services/AuthService'
+import AuthDataService from '@/data-layer/services/AuthDataService'
 import { GET as callback } from '@/app/api/auth/google/callback/route'
-import UserService from '@/data-layer/services/UserService'
+import UserDataService from '@/data-layer/services/UserDataService'
 import { UserRoleWithoutAdmin } from '@/types/User'
 
 let mockCookies: Record<string, string> = {}
@@ -24,8 +24,8 @@ const mockSet = vi.fn((key, value, _extra) => {
 })
 
 describe('GET /api/auth/google/callback', async () => {
-  const authDataService = new AuthService()
-  const userService = new UserService()
+  const authDataService = new AuthDataService()
+  const userDataService = new UserDataService()
   const cookieStore = await cookies()
 
   beforeAll(() => {
@@ -94,7 +94,7 @@ describe('GET /api/auth/google/callback', async () => {
     await callback(req)
     const auth = await authDataService.getAuthByEmail(googleUserResponseMock.email)
     expect(auth.email).toBe(googleUserResponseMock.email)
-    const user = await userService.getUserByEmail(googleUserResponseMock.email)
+    const user = await userDataService.getUserByEmail(googleUserResponseMock.email)
     expect(user.email).toBe(googleUserResponseMock.email)
     expect(user.role).toBe(UserRoleWithoutAdmin.Client)
   })
@@ -108,7 +108,7 @@ describe('GET /api/auth/google/callback', async () => {
     await callback(req)
     const auth = await authDataService.getAuthByEmail(googleUserResponseMock.email)
     expect(auth.email).toBe(googleUserResponseMock.email)
-    const user = await userService.getUserByEmail(googleUserResponseMock.email)
+    const user = await userDataService.getUserByEmail(googleUserResponseMock.email)
     expect(user.email).toBe(googleUserResponseMock.email)
     expect(user.role).toBe(UserRoleWithoutAdmin.Student)
   })
@@ -119,7 +119,7 @@ describe('GET /api/auth/google/callback', async () => {
     )
     cookieStore.set('state', CLIENT_STATE_MOCK)
 
-    const createdUser = await userService.createUser({
+    const createdUser = await userDataService.createUser({
       firstName: 'lol',
       lastName: 'lolol',
       role: 'client',
@@ -128,7 +128,7 @@ describe('GET /api/auth/google/callback', async () => {
 
     await callback(req)
 
-    const user = await userService.getUserByEmail(googleUserResponseMock.email)
+    const user = await userDataService.getUserByEmail(googleUserResponseMock.email)
     expect(user).toStrictEqual({
       ...createdUser,
       firstName: googleUserResponseMock.given_name,

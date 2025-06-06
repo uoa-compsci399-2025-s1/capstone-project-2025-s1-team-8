@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 
 import { createMockNextRequest } from '@/test-config/utils'
 import { GET } from './route'
-import UserService from '@/data-layer/services/UserService'
+import UserDataService from '@/data-layer/services/UserDataService'
 import {
   adminCreateMock,
   clientAdditionalInfoCreateMock,
@@ -15,7 +15,7 @@ import { adminToken, clientToken, studentToken } from '@/test-config/routes-setu
 import { adminMock, clientMock, studentMock } from '@/test-config/mocks/Auth.mock'
 
 describe('tests /api/admin/users', async () => {
-  const userService = new UserService()
+  const userDataService = new UserDataService()
   const cookieStore = await cookies()
 
   describe('GET /api/admin/users', () => {
@@ -42,8 +42,8 @@ describe('tests /api/admin/users', async () => {
 
     it('should get all users correctly', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const newUser1 = await userService.createUser(clientCreateMock)
-      const newUser2 = await userService.createUser(adminCreateMock)
+      const newUser1 = await userDataService.createUser(clientCreateMock)
+      const newUser2 = await userDataService.createUser(adminCreateMock)
       const req = createMockNextRequest(`/api/admin/users`)
       const res = await GET(req)
       expect(res.status).toBe(StatusCodes.OK)
@@ -59,8 +59,8 @@ describe('tests /api/admin/users', async () => {
 
     it('should get all users correctly with limits', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      await userService.createUser(clientCreateMock)
-      await userService.createUser(adminCreateMock)
+      await userDataService.createUser(clientCreateMock)
+      await userDataService.createUser(adminCreateMock)
       const req = createMockNextRequest(`/api/admin/users?limit=1`)
       const res = await GET(req)
       const json = await res.json()
@@ -69,9 +69,9 @@ describe('tests /api/admin/users', async () => {
       expect(json.nextPage).toBeDefined()
     })
 
-    it('should get all users correctly with limits and cursor', async () => {
+    it('should get all users correctly with limits and page', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const req = createMockNextRequest(`/api/admin/users?limit=3&cursor=1`)
+      const req = createMockNextRequest(`/api/admin/users?limit=3&page=1`)
       const res = await GET(req)
       const json = await res.json()
       expect(res.status).toBe(StatusCodes.OK)
@@ -97,9 +97,9 @@ describe('tests /api/admin/users', async () => {
 
     it('should still paginate correctly with role param filters', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      await userService.createUser(clientCreateMock)
-      await userService.createUser({ ...clientCreateMock, email: 'pog@gmail.com' })
-      await userService.createUser(studentCreateMock)
+      await userDataService.createUser(clientCreateMock)
+      await userDataService.createUser({ ...clientCreateMock, email: 'pog@gmail.com' })
+      await userDataService.createUser(studentCreateMock)
 
       const req = createMockNextRequest('/api/admin/users?role=client&limit=1')
       const res = await GET(req)
@@ -108,7 +108,7 @@ describe('tests /api/admin/users', async () => {
       expect(json.nextPage).toBe(2)
 
       const req2 = createMockNextRequest(
-        `/api/admin/users?role=client&limit=1&cursor=${json.nextPage}`,
+        `/api/admin/users?role=client&limit=1&page=${json.nextPage}`,
       )
       const res2 = await GET(req2)
       const json2 = await res2.json()
@@ -116,10 +116,49 @@ describe('tests /api/admin/users', async () => {
       expect(json2.nextPage).toBe(3)
     })
 
+    it('should correctly filter based on name queries', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const userMock = await userDataService.createUser({
+        ...clientCreateMock,
+        firstName: 'very',
+        lastName: 'cool',
+      })
+      const userMock2 = await userDataService.createUser({
+        ...clientCreateMock,
+        lastName: 'col',
+      })
+      await userDataService.createUser({
+        ...clientCreateMock,
+        firstName: 'searchforme2',
+        lastName: 'dontfindme',
+      })
+
+      const res = await GET(createMockNextRequest('/api/admin/users?query=cool'))
+      const json = await res.json()
+
+      expect(json.data.length).toBe(1)
+      expect(json.data).toStrictEqual([userMock])
+
+      const res2 = await GET(createMockNextRequest('/api/admin/users?query=very'))
+      const json2 = await res2.json()
+
+      expect(json2.data.length).toBe(1)
+      expect(json2.data).toStrictEqual([userMock])
+
+      const res3 = await GET(createMockNextRequest('/api/admin/users?query=co'))
+      const json3 = await res3.json()
+      expect(json3.data.length).toBe(2)
+      expect(json3.data).toEqual(expect.arrayContaining([userMock, userMock2]))
+
+      const res4 = await GET(createMockNextRequest('/api/admin/users?query=very+cool'))
+      const json4 = await res4.json()
+      expect(json4.data).toStrictEqual([userMock])
+    })
+
     it('should return client additional info as well', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const newClient = await userService.createUser(clientCreateMock)
-      const newClientInfo = await userService.createClientAdditionalInfo({
+      const newClient = await userDataService.createUser(clientCreateMock)
+      const newClientInfo = await userDataService.createClientAdditionalInfo({
         ...clientAdditionalInfoCreateMock,
         client: newClient,
       })
@@ -135,16 +174,16 @@ describe('tests /api/admin/users', async () => {
       })
     })
 
-    it('should return a valid response if the cursor is invalid or out of range', async () => {
+    it('should return a valid response if the page is invalid or out of range', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const invalidCursorReq = createMockNextRequest(`/api/admin/users?cursor=invalid`)
-      const res = await GET(invalidCursorReq)
+      const invalidPageReq = createMockNextRequest(`/api/admin/users?page=invalid`)
+      const res = await GET(invalidPageReq)
       const json = await res.json()
       expect(res.status).toBe(StatusCodes.OK)
       expect(json.data.length).toBe(3)
       expect(json.nextPage).toBeNull()
 
-      const outOfRangeReq = createMockNextRequest(`/api/admin/users?cursor=100`)
+      const outOfRangeReq = createMockNextRequest(`/api/admin/users?page=100`)
       const res2 = await GET(outOfRangeReq)
       const json2 = await res2.json()
       expect(json2.data).toEqual([])

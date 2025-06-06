@@ -19,7 +19,6 @@ export const projectMock: Project = {
   specialEquipmentRequirements: 'computer',
   numberOfTeams: '5',
   availableResources: 'nothing',
-  futureConsideration: false,
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
   additionalClients: [
@@ -42,7 +41,6 @@ export const projectMock2: Project = {
   specialEquipmentRequirements: 'computer',
   numberOfTeams: '5',
   availableResources: 'nothing',
-  futureConsideration: false,
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
 }
@@ -56,7 +54,6 @@ export const projectCreateMock: CreateProjectData = {
   specialEquipmentRequirements: 'computer',
   numberOfTeams: '5',
   availableResources: 'nothing',
-  futureConsideration: false,
 }
 
 export const projectCreateMock2: CreateProjectData = {
@@ -68,7 +65,6 @@ export const projectCreateMock2: CreateProjectData = {
   specialEquipmentRequirements: 'computer',
   numberOfTeams: '5',
   availableResources: 'nothing',
-  futureConsideration: false,
 }
 
 /*

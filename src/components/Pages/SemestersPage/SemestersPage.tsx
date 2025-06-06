@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import SemesterCard from '@/components/Composite/SemesterCard/SemesterCard'
 import Button from '@/components/Generic/Button/Button'
 import SemesterForm from '@/components/Composite/SemesterForm/SemesterForm'
@@ -14,10 +14,6 @@ interface SemestersPageProps {
   created: () => void
   updated: () => void
   deleted: () => void
-  checkStatus?: (id: string) => Promise<'current' | 'upcoming' | ''>
-  getAllSemesterProjects: (
-    id: string,
-  ) => Promise<void | { error?: string; data?: ProjectDetails[] }>
   handleCreateSemester: (formData: FormData) => Promise<void | {
     error?: string
     message?: string
@@ -35,6 +31,11 @@ interface SemestersPageProps {
     error?: string
     message?: string
   }>
+  handleGetAllSemesterProjects: (semesterId: string) => Promise<void | {
+    error?: string
+    data?: ProjectDetails[]
+  }>
+  semesterStatuses?: Record<string, 'current' | 'upcoming' | ''>
 }
 
 const SemestersPage: React.FC<SemestersPageProps> = ({
@@ -42,35 +43,18 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
   created,
   updated,
   deleted,
-  getAllSemesterProjects,
-  checkStatus,
   handleCreateSemester,
   handleUpdateSemester,
   handleDeleteSemester,
+  handleGetAllSemesterProjects,
+  semesterStatuses = {},
 }) => {
   const [modalOpen, setModalOpen] = useState(false)
-  const [semesterStatuses, setSemesterStatuses] = useState<
-    Record<string, 'current' | 'upcoming' | ''>
-  >({})
   const upcomingSemesterRef = useRef<HTMLDivElement>(null)
 
   function toggleModal() {
     setModalOpen(!modalOpen)
   }
-
-  useEffect(() => {
-    const loadStatuses = async () => {
-      const statuses: Record<string, 'current' | 'upcoming' | ''> = {}
-      if (!checkStatus) return
-      for (const semester of semesters) {
-        if (semester.id) {
-          statuses[semester.id] = await checkStatus(semester.id)
-        }
-      }
-      setSemesterStatuses(statuses)
-    }
-    loadStatuses()
-  }, [semesters, checkStatus])
 
   const scrollToCurrentSemester = () => {
     upcomingSemesterRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -103,8 +87,6 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
           }
         >
           <SemesterCard
-            semesterProjects={getAllSemesterProjects}
-            checkStatus={checkStatus}
             semester={semester as Semester}
             id={semester.id}
             name={semester.name}
@@ -113,6 +95,8 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
             endDate={semester.endDate}
             updatedAt={semester.updatedAt}
             createdAt={semester.createdAt}
+            currentOrUpcoming={semesterStatuses[semester.id] || ''}
+            handleGetAllSemesterProjects={handleGetAllSemesterProjects}
           />
         </div>
       ))}

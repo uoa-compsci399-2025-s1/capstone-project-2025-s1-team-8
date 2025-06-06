@@ -110,11 +110,8 @@ const ProtectedFormView: FC = () => {
         setValue('finalPresentationAttendance', true)
         setValue('projectSupportAndMaintenance', true)
 
-        // for updating future semesters, we want to check which semesters are provided that we can select
-        if (res.projectData.futureConsideration) {
-          const semesterIds = (res.projectData.semesters || []).map((sem) => sem.id)
-          setValue('semesters', semesterIds || [])
-        }
+        const semesterIds = (res.projectData.semesters || []).map((sem) => sem.id)
+        setValue('semesters', semesterIds || [])
       }
       // sets upcoming semester options from earliest -> latest
       setUpcomingSemesterOptions(
@@ -136,7 +133,6 @@ const ProtectedFormView: FC = () => {
 
   const onSubmit: SubmitHandler<FormProject> = async (data) => {
     data.additionalClients = otherClientDetails
-    data.futureConsideration = true
 
     const res = await handleProjectFormSubmission(data as CreateProjectRequestBody)
 
@@ -479,8 +475,8 @@ const ProtectedFormView: FC = () => {
               <li>
                 <label htmlFor="FutureSemesters">Future Semesters</label>
                 <p className="form-question-subheading">
-                  Which semesters would you like your
-                  project to be considered for?
+                  If you would like this project to be considered for future semesters, please
+                  select from the list of semesters below:
                 </p>
                 <Checkbox
                   options={upcomingSemesterOptions}

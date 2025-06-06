@@ -17,6 +17,7 @@ import { ClientAdditionalInfo } from './data-layer/collections/ClientAdditionalI
 import { Admin } from './data-layer/collections/Admin'
 import { Home } from './data-layer/globals/Home'
 import { s3Storage } from '@payloadcms/storage-s3'
+import { ClientDashboard } from './data-layer/globals/ClientDashboard'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -41,7 +42,7 @@ export default buildConfig({
     FormQuestion,
     Form,
   ],
-  globals: [Home],
+  globals: [Home, ClientDashboard],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
