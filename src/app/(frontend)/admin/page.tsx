@@ -11,9 +11,7 @@ export const metadata: Metadata = {
 const AdminPage = () => {
   return (
     <AuthWrapper scopes={['admin']}>
-      <Suspense
-        fallback={<div className="text-center text-dark-blue text-lg pt-30">Loading...</div>}
-      >
+      <Suspense fallback={<div className="text-center">Loading...</div>}>
         <ProtectedAdminView />
       </Suspense>
     </AuthWrapper>

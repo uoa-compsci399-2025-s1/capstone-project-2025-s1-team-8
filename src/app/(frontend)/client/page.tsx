@@ -11,9 +11,7 @@ export const metadata: Metadata = {
 export default async function ClientPage() {
   return (
     <AuthWrapper scopes={['admin', 'client']}>
-      <Suspense
-        fallback={<div className="text-center text-dark-blue text-lg pt-30">Loading...</div>}
-      >
+      <Suspense fallback={<div className="text-center">Loading...</div>}>
         <ProtectedClientView />
       </Suspense>
     </AuthWrapper>
