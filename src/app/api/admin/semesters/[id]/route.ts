@@ -80,7 +80,6 @@ class RouteWrapper {
       await semesterDataService.deleteSemester(id)
 
       const relatedProjects = await projectDataService.getAllSemesterProjectsBySemester(id)
-      console.log(relatedProjects)
       await Promise.all(
         relatedProjects.docs.map((semesterProject) =>
           projectDataService.deleteSemesterProject(semesterProject.id),
