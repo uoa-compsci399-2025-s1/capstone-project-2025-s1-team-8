@@ -127,7 +127,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
           disabled={pageNum === 1 || isFetching}
           className={pageNum === 1 ? 'opacity-30 cursor-default' : 'cursor-pointer'}
         >
-          <MdFirstPage size="2em" />
+          <MdFirstPage size="1.5em" />
         </button>
 
         <button
@@ -135,17 +135,17 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
           disabled={pageNum === 1 || isFetching}
           className={pageNum === 1 ? 'opacity-30 cursor-default' : 'cursor-pointer'}
         >
-          <MdOutlineNavigateBefore size="2em" />
+          <MdOutlineNavigateBefore size="1.5em" />
         </button>
 
-        <p>{pageNum}</p>
+        <p className="text-dark-blue">{pageNum}</p>
 
         <button
           onClick={() => updatePageCount(true)}
           disabled={pageNum >= totalPages || isFetching}
           className={pageNum >= totalPages ? 'opacity-30 cursor-default' : 'cursor-pointer'}
         >
-          <MdOutlineNavigateNext size="2em" />
+          <MdOutlineNavigateNext size="1.5em" />
         </button>
 
         <button
@@ -153,7 +153,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
           disabled={pageNum >= totalPages || isFetching}
           className={pageNum >= totalPages ? 'opacity-30 cursor-default' : 'cursor-pointer'}
         >
-          <MdLastPage size="2em" />
+          <MdLastPage size="1.5em" />
         </button>
       </div>
     </div>
