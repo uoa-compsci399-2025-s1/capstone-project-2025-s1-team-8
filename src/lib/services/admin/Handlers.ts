@@ -102,7 +102,8 @@ export const handleGetAllSemesters = async (): Promise<void | {
 }> => {
   const { status, error, data } = await AdminService.getAllSemesters()
   if (status === 200) {
-    const semesterStatuses: Record<string, 'current' | 'upcoming' | ''> = await AdminService.getSemesterStatuses(data || [])
+    const semesterStatuses: Record<string, 'current' | 'upcoming' | ''> =
+      await AdminService.getSemesterStatuses(data || [])
     return { data, semesterStatuses }
   } else {
     return { error }

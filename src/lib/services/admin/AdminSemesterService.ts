@@ -145,8 +145,8 @@ const AdminSemesterService = {
 
   getSemesterStatuses: async function (
     semesters: Semester[],
-  ): Promise<Record<string, "" | "current" | "upcoming">> {
-    const semesterStatuses: Record<string, "" | "current" | "upcoming"> = {}
+  ): Promise<Record<string, '' | 'current' | 'upcoming'>> {
+    const semesterStatuses: Record<string, '' | 'current' | 'upcoming'> = {}
     const currentDate = new Date()
     let earliestUpcomingDateIndex = -1
 
@@ -155,15 +155,20 @@ const AdminSemesterService = {
       const startDate = new Date(semester.startDate)
       const endDate = new Date(semester.endDate)
       if (startDate <= currentDate && endDate >= currentDate) {
-        semesterStatuses[semester.id] = "current"
-      } else if (startDate > currentDate){
-        if (earliestUpcomingDateIndex === -1 || startDate < new Date(semesters[earliestUpcomingDateIndex].startDate)) {
-          if (earliestUpcomingDateIndex !== -1) {semesterStatuses[semesters[earliestUpcomingDateIndex].id] = ""}
+        semesterStatuses[semester.id] = 'current'
+      } else if (startDate > currentDate) {
+        if (
+          earliestUpcomingDateIndex === -1 ||
+          startDate < new Date(semesters[earliestUpcomingDateIndex].startDate)
+        ) {
+          if (earliestUpcomingDateIndex !== -1) {
+            semesterStatuses[semesters[earliestUpcomingDateIndex].id] = ''
+          }
           earliestUpcomingDateIndex = i
-          semesterStatuses[semester.id] = "upcoming"
+          semesterStatuses[semester.id] = 'upcoming'
         }
-      } else{
-        semesterStatuses[semester.id] = ""
+      } else {
+        semesterStatuses[semester.id] = ''
       }
     }
 
