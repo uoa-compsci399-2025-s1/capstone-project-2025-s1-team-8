@@ -23,7 +23,7 @@ export const ClientDashboard: GlobalConfig = {
       type: 'textarea',
       required: true,
       defaultValue:
-        '• Keep it short and straight to the point!\n\n• Please use the description if you would like to say more!',
+        '• Keep it short and straight to the point!\n• Please use the description if you would like to say more!',
       admin: {
         description: 'The content for the tips section on Client Dashboard.',
       },
