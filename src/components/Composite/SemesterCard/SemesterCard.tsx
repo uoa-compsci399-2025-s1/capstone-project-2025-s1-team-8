@@ -12,22 +12,17 @@ import { useSemesterProjects } from '@/lib/hooks/useSemesterProjects'
 
 interface SemesterCardProps extends Semester {
   semester: Semester
-  handleGetAllSemesterProjects: (semesterId: string) => Promise<void | {
-    error?: string
-    data?: ProjectDetails[]
-  }>
   currentOrUpcoming?: 'current' | 'upcoming' | ''
 }
 const SemesterCard: React.FC<SemesterCardProps> = ({
   semester,
-  handleGetAllSemesterProjects,
   currentOrUpcoming,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
 
-  const {data: semesterProjectsData, isLoading } = useSemesterProjects(semester.id)
+  const {data: semesterProjectsData, isLoading, refetch } = useSemesterProjects(semester.id)
 
   useEffect(() => {
     if (isOpen && contentRef.current) {
@@ -45,6 +40,9 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
       {/* Semester Card */}
       <div
         onClick={async () => {
+          if (!isOpen){
+            refetch()
+          }
           setIsOpen(!isOpen)
         }} // should load projects
         className={`

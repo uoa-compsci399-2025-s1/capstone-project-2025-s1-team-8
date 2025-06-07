@@ -31,10 +31,6 @@ interface SemestersPageProps {
     error?: string
     message?: string
   }>
-  handleGetAllSemesterProjects: (semesterId: string) => Promise<void | {
-    error?: string
-    data?: ProjectDetails[]
-  }>
   semesterStatuses?: Record<string, 'current' | 'upcoming' | ''>
 }
 
@@ -46,7 +42,6 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
   handleCreateSemester,
   handleUpdateSemester,
   handleDeleteSemester,
-  handleGetAllSemesterProjects,
   semesterStatuses = {},
 }) => {
   const [modalOpen, setModalOpen] = useState(false)
@@ -97,7 +92,6 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
             createdAt={semester.createdAt}
             published={semester.published}
             currentOrUpcoming={semesterStatuses[semester.id] || ''}
-            handleGetAllSemesterProjects={handleGetAllSemesterProjects}
           />
         </div>
       ))}

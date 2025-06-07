@@ -13,7 +13,6 @@ import {
   handleDeleteSemester,
   handlePublishChanges,
   updateProjectOrdersAndStatus,
-  handleGetAllSemesterProjects,
 } from '@/lib/services/admin/Handlers'
 import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
@@ -157,7 +156,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                     handleCreateSemester={handleCreateSemester}
                     handleUpdateSemester={handleUpdateSemester}
                     handleDeleteSemester={handleDeleteSemester}
-                    handleGetAllSemesterProjects={handleGetAllSemesterProjects}
                     semesterStatuses={semestersData?.semesterStatuses || {}}
                   />
                 )}
