@@ -2,7 +2,7 @@
 
 import { useEffect, type FC } from 'react'
 import { memo } from 'react'
-import { FiAlertCircle } from 'react-icons/fi'
+import { FiAlertCircle, FiX } from 'react-icons/fi'
 
 interface NotificationProps {
   isVisible: boolean
@@ -46,8 +46,22 @@ const Notification: FC<NotificationProps> = memo(
       warning: 'text-dark-pink text-sm',
     }
 
+    const closeButton = {
+      success: 'text-dark-green',
+      warning: 'hover:text-dark-pink text-pink-accent',
+    }
+
     return (
       <div className={bgRoot[type]}>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className={`absolute top-2 right-2 text-md transition-colors cursor-pointer ${closeButton[type]}`}
+            aria-label="Close notification"
+          >
+            <FiX className="w-4 h-4" />
+          </button>
+        )}
         <div className="flex items-center gap-2">
           <FiAlertCircle className={alertRoot[type]} />
           <p className={alertTitle[type]}>{title}</p>
