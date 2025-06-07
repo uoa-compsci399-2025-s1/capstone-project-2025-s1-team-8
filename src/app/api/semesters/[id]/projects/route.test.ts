@@ -159,6 +159,28 @@ describe('tests /api/semesters/[id]/projects', async () => {
         },
       )
       expect(await res2.json()).toStrictEqual({ data: [] })
+
+      const semester3 = await semesterDataService.createSemester({
+        ...semesterCreateMock,
+        published: true,
+      })
+      await projectDataService.createSemesterProject({
+        ...semesterProjectCreateMock,
+        semester: semester3,
+      })
+      const proj3 = await projectDataService.createSemesterProject({
+        ...semesterProjectCreateMock2,
+        semester: semester3,
+      })
+      const res3 = await GET(
+        createMockNextRequest(`api/semesters/${semester3.id}/projects?student=true`),
+        {
+          params: paramsToPromise({ id: semester3.id }),
+        },
+      )
+      const json2 = await res3.json()
+      expect(json2.data.length).toBe(1)
+      expect(json2.data).toStrictEqual(expect.arrayContaining([proj3]))
     })
 
     it('should return a list of no semesterprojects for a semester which has no projects', async () => {
