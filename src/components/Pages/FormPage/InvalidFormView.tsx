@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useState, useRef } from 'react'
+import React from 'react'
 import type { FC } from 'react'
-import { HiX, HiExclamation } from 'react-icons/hi'
+import { HiX } from 'react-icons/hi'
 import Link from 'next/link'
 
 const InvalidFormView: FC = () => {

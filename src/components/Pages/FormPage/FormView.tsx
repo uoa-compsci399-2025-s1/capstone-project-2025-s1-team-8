@@ -18,7 +18,7 @@ import type { CreateProjectRequestBody, CreateProjectClient } from '@/app/api/pr
 import type { ProjectDetails } from '@/types/Project'
 import { handleProjectFormSubmission } from '@/lib/services/form/Handlers'
 import Notification from '@/components/Generic/Notification/Notification'
-import { Semester } from '@/payload-types'
+import type { Semester } from '@/payload-types'
 
 interface FormProject extends CreateProjectRequestBody {
   meetingAttendance: boolean

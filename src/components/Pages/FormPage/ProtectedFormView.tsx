@@ -11,7 +11,7 @@ const ProtectedFormView = async ({ projectId }: { projectId?: string }): Promise
     limit: 10,
   })
 
-  let { data: project } = await ProjectFormService.getProjectById(projectId as string)
+  const { data: project } = await ProjectFormService.getProjectById(projectId as string)
 
   return projectId && !project ? (
     <InvalidFormView />
