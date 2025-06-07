@@ -21,12 +21,14 @@ import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
 import Notification from '@/components/Generic/Notification/Notification'
 import { TeapotCard } from '@/components/Generic/TeapotCard/TeapotCard'
+import { set } from 'zod'
 
 type AdminDashboardProps = {
   clients: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
   semesters: Semester[]
   projects: SemesterContainerData
   totalNumPages?: number
+  totalUsers?: number
   semesterStatusList?: Record<string, 'current' | 'upcoming' | ''>
 }
 
@@ -35,6 +37,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   semesters: initialSemesters,
   projects,
   totalNumPages = 0,
+  totalUsers = 0,
   semesterStatusList = {},
 }) => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -47,12 +50,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [pageNum, setPageNum] = useState(1)
   const [isFetching, setIsFetching] = useState(false)
   const [totalPages, setTotalPages] = useState(totalNumPages)
+  const [totalUsersCount, setTotalUsersCount] = useState(totalUsers)
   const cachedClientSearchRef = useRef<
     Record<
       string,
-      { data: { client: UserCombinedInfo; projects: ProjectDetails[] }[]; totalPages: number }
+      { data: { client: UserCombinedInfo; projects: ProjectDetails[] }[]; totalPages: number, totalUsers: number }
     >
-  >({ _1: { data: clients, totalPages: totalNumPages } })
+  >({ _1: { data: clients, totalPages: totalNumPages, totalUsers } })
   const itemsPerPage = 10
 
   const getClientsCache = async (pageNum: number, query: string) => {
@@ -65,6 +69,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     cachedClientSearchRef.current[`${query}_${pageNum}`] = {
       data: res?.data || [],
       totalPages: res?.totalPages || 0,
+      totalUsers: res?.totalDocs || 0,
     }
     console.log('Fetched new data for query:', query, 'page:', pageNum)
     setClientsData(res?.data || [])
@@ -77,6 +82,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       setClientsData(cachedClientSearchRef.current[`${query}_1`].data)
       setPageNum(1)
       setTotalPages(cachedClientSearchRef.current[`${query}_1`].totalPages)
+      setTotalUsersCount(cachedClientSearchRef.current[`${query}_1`].totalUsers)
       return
     }
     const res = await getAllClients({ limit: itemsPerPage, page: 1, query })
@@ -87,10 +93,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     } else {
       setTotalPages(0)
     }
+    setTotalUsersCount(res?.totalDocs || 0)
     console.log('searchForClients', 'query:', query)
     cachedClientSearchRef.current[`${query}_1`] = {
       data: res?.data || [],
       totalPages: res?.totalPages || 0,
+      totalUsers: res?.totalDocs || 0,
     }
   }
 
@@ -223,6 +231,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   updatePageCount={updatePageCount}
                   searchForClients={searchForClients}
                   totalPages={totalPages}
+                  totalUsersCount={totalUsersCount}
                   isFetching={isFetching}
                 />
               </div>

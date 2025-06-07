@@ -38,6 +38,7 @@ class RouteWrapper {
       docs: rawUserData,
       nextPage,
       totalPages,
+      totalDocs
     } = await userDataService.getAllUsers({
       limit,
       page,
@@ -57,7 +58,7 @@ class RouteWrapper {
       }),
     )
 
-    return NextResponse.json({ data: combinedUserData, nextPage, totalPages })
+    return NextResponse.json({ data: combinedUserData, nextPage, totalPages, totalDocs })
   }
 }
 

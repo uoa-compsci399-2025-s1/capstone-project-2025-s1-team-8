@@ -22,6 +22,7 @@ interface ClientsPageProps {
   updatePageCount: (increment: boolean, firstPage?: boolean, lastPage?: boolean) => void
   searchForClients: (searchValue: string) => void
   totalPages?: number
+  totalUsersCount?: number
   isFetching: boolean
 }
 
@@ -31,6 +32,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
   updatePageCount,
   searchForClients,
   totalPages = 0,
+  totalUsersCount = 0,
   isFetching,
 }) => {
   const [searchValue, setSearchValue] = useState('')
@@ -80,6 +82,9 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
           )}
         />
       </div>
+      {clientsData.length === 0 && (<div className="flex justify-center mt-4">
+          <p className="text-dark-blue">No Results found for {searchValue}</p>
+      </div>)}
       <div className="flex flex-row justify-center items-center gap-4 mt-8">
         <button
           onClick={async () => await updatePageCount(false, true)}
@@ -97,7 +102,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
           <MdOutlineNavigateBefore size="1.5em" />
         </button>
 
-        <p className="text-dark-blue">{pageNum}</p>
+        <p className="text-dark-blue">{pageNum} of {totalPages}</p>
 
         <button
           onClick={async () => await updatePageCount(true)}
@@ -115,6 +120,9 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
           <MdLastPage size="1.5em" />
         </button>
       </div>
+      {totalUsersCount !== 0 && (<div className="flex justify-center mt-4">
+          <p className="text-dark-blue">{(pageNum - 1) * 10 + 1} - {pageNum === totalPages ? totalUsersCount : pageNum * 10} of {totalUsersCount} results</p>
+      </div>)}
     </div>
   )
 }
