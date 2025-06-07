@@ -8,7 +8,7 @@ import { buildNextRequest } from '@/utils/buildNextRequest'
 import type { typeToFlattenedError } from 'zod'
 import type { UpdateUserRequestBody } from '@/app/api/admin/users/[id]/route'
 import type { UserCombinedInfo } from '@/types/Collections'
-import type { StatusCodes } from 'http-status-codes'
+import { StatusCodes } from 'http-status-codes'
 import type { UserRole } from '@/types/User'
 import type { ProjectDetails } from '@/types/Project'
 import type { Project } from '@/payload-types'
@@ -79,7 +79,7 @@ const AdminClientService = {
       params: Promise.resolve({ id: userId }),
     })
     let error
-    if (response.status !== 204) {
+    if (response.status !== StatusCodes.NO_CONTENT) {
       const body = await response.json()
       error = body.error
     }
