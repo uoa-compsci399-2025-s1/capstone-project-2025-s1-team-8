@@ -98,9 +98,8 @@ class RouterWrapper {
           status: status ? (status as ProjectStatus) : undefined,
         },
       )
-        docs = paginatedProjects.docs
-        nextPage = paginatedProjects.nextPage
-  
+      docs = paginatedProjects.docs
+      nextPage = paginatedProjects.nextPage
     }
 
     return NextResponse.json({ data: docs, nextPage })
