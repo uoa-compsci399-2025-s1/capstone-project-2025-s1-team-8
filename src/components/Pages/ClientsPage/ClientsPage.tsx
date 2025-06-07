@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useMemo, useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/16/solid'
 
 import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
