@@ -4,7 +4,7 @@ import { GET as GetSemesters } from '@/app/api/semesters/route'
 import { GET as GetProjects } from '@/app/api/semesters/[id]/projects/route'
 import { SemesterType } from '@/types/Semester'
 import type { Project, Semester, SemesterProject } from '@/payload-types'
-import { ProjectStatus, type ProjectDetails } from '@/types/Project'
+import { type ProjectDetails } from '@/types/Project'
 
 export const StudentService = {
   getCurrentSemester: async function (): Promise<{ id: string; name: string } | null> {
@@ -44,7 +44,6 @@ export const StudentService = {
     const semesterId = res.id
     const url = buildNextRequestURL(`/api/semesters/${semesterId}/projects`, {
       student: 'true',
-      status: ProjectStatus.Approved,
     })
     const response = await GetProjects(await buildNextRequest(url, { method: 'GET' }), {
       params: Promise.resolve({ id: semesterId }),

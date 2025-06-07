@@ -76,7 +76,7 @@ class RouterWrapper {
       throw error
     }
 
-    if (req.user.role === UserRole.Student) {
+    if (req.user.role === UserRole.Student || studentView === 'true') {
       const paginatedProjects = await projectDataService.getAllSemesterProjectsBySemester(
         id,
         limit,
@@ -98,10 +98,9 @@ class RouterWrapper {
           status: status ? (status as ProjectStatus) : undefined,
         },
       )
-      if (studentView === 'false' || (studentView === 'true' && semester.published)) {
         docs = paginatedProjects.docs
         nextPage = paginatedProjects.nextPage
-      }
+  
     }
 
     return NextResponse.json({ data: docs, nextPage })
