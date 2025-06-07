@@ -240,7 +240,6 @@ export default class ProjectDataService {
     limit: number = 100,
     page: number = 1,
     options?: {
-      published?: boolean
       status?: ProjectStatus
     },
   ): Promise<PaginatedDocs<SemesterProject>> {
@@ -251,7 +250,6 @@ export default class ProjectDataService {
       page: page,
       where: {
         semester: { equals: id },
-        ...(!!options?.published ? { published: { equals: options.published } } : {}),
         ...(!!options?.status ? { status: { equals: options.status } } : {}),
       },
     })

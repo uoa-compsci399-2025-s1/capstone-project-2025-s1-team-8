@@ -33,7 +33,7 @@ class RouteWrapper {
       try {
         semesterProject = await projectDataService.getSemesterProject(projectId)
         if (req.user.role === UserRole.Student) {
-          if (!semesterProject.published) {
+          if (!fetchedSemester.published) {
             return NextResponse.json({ error: 'No scope' }, { status: StatusCodes.UNAUTHORIZED })
           }
         }

@@ -2,7 +2,6 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 import SemesterDataService from '@/data-layer/services/SemesterDataService'
-import type { CreateSemesterData } from '@/types/Collections'
 import { z, ZodError } from 'zod'
 import { Security } from '@/business-layer/middleware/Security'
 
@@ -27,7 +26,10 @@ class RouteWrapper {
     try {
       const parsedBody = CreateSemesterRequestBody.parse(await req.json())
 
-      const newSemester = await semesterDataService.createSemester(parsedBody as CreateSemesterData)
+      const newSemester = await semesterDataService.createSemester({
+        ...parsedBody,
+        published: false,
+      })
 
       return NextResponse.json({ data: newSemester }, { status: StatusCodes.CREATED })
     } catch (error) {

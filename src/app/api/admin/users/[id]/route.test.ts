@@ -15,9 +15,12 @@ import { cookies } from 'next/headers'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import type { User } from '@/payload-types'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
+import { projectCreateMock, semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 
 describe('test /api/admin/users/[id]', async () => {
   const userDataService = new UserDataService()
+  const projectDataService = new ProjectDataService()
   const cookieStore = await cookies()
 
   describe('test GET /api/admin/users/[id]', () => {
@@ -297,6 +300,82 @@ describe('test /api/admin/users/[id]', async () => {
       })
       expect(res.status).toBe(StatusCodes.NO_CONTENT)
       await expect(userDataService.getUser(newUser.id)).rejects.toThrow('Not Found')
+    })
+
+    it('should delete a user and the related client additional info', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const newUser = await userDataService.createUser(clientCreateMock)
+      const additionalInfo = await userDataService.createClientAdditionalInfo({
+        ...clientAdditionalInfoCreateMock,
+        client: newUser,
+      })
+      expect(await userDataService.getClientAdditionalInfo(newUser.id)).toStrictEqual(
+        additionalInfo,
+      )
+      const res = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: newUser.id }),
+      })
+      expect(res.status).toBe(StatusCodes.NO_CONTENT)
+      await expect(userDataService.getUser(newUser.id)).rejects.toThrow('Not Found')
+      expect(await userDataService.getClientAdditionalInfo(newUser.id)).toBeUndefined()
+    })
+
+    it('should delete a user and related projects', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const newUser = await userDataService.createUser(clientCreateMock)
+      const project = await projectDataService.createProject({
+        ...projectCreateMock,
+        client: newUser,
+      })
+      const project2 = await projectDataService.createProject({
+        ...projectCreateMock,
+        client: newUser,
+      })
+
+      const res = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: newUser.id }),
+      })
+
+      expect(res.status).toBe(StatusCodes.NO_CONTENT)
+      await expect(userDataService.getUser(newUser.id)).rejects.toThrow('Not Found')
+      expect(await userDataService.getClientAdditionalInfo(newUser.id)).toBeUndefined()
+      await expect(projectDataService.getProjectById(project.id)).rejects.toThrow('Not Found')
+      await expect(projectDataService.getProjectById(project2.id)).rejects.toThrow('Not Found')
+    })
+
+    it('should delete a user and related semester projects', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const newUser = await userDataService.createUser(clientCreateMock)
+      const project = await projectDataService.createProject({
+        ...projectCreateMock,
+        client: newUser,
+      })
+      const project2 = await projectDataService.createProject({
+        ...projectCreateMock,
+        client: newUser,
+      })
+      const semesterProject = await projectDataService.createSemesterProject({
+        ...semesterProjectCreateMock,
+        project,
+      })
+      const semesterProject2 = await projectDataService.createSemesterProject({
+        ...semesterProjectCreateMock,
+        project: project2,
+      })
+
+      const res = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: newUser.id }),
+      })
+
+      expect(res.status).toBe(StatusCodes.NO_CONTENT)
+      await expect(userDataService.getUser(newUser.id)).rejects.toThrow('Not Found')
+      expect(await userDataService.getClientAdditionalInfo(newUser.id)).toBeUndefined()
+      await expect(projectDataService.getSemesterProject(semesterProject.id)).rejects.toThrow(
+        'Not Found',
+      )
+      await expect(projectDataService.getSemesterProject(semesterProject2.id)).rejects.toThrow(
+        'Not Found',
+      )
     })
 
     it('should return a 404 error if the user does not exist', async () => {

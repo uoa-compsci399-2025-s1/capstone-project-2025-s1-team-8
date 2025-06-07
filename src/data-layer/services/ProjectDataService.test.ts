@@ -187,10 +187,10 @@ describe('Project service methods test', () => {
       const updatedSemester = await projectDataService.updateSemesterProject(
         newSemesterProject.id,
         {
-          published: true,
+          number: 200,
         },
       )
-      expect(updatedSemester.published).toEqual(true)
+      expect(updatedSemester.number).toEqual(200)
     })
 
     it('should delete a semesterProject', async () => {
@@ -251,45 +251,6 @@ describe('Project service methods test', () => {
     expect(res.nextPage).toBeNull()
   })
 
-  it('Should get all semesterProjects by semesterId and publish status with pagination', async () => {
-    const semester1 = await semesterDataService.createSemester(semesterCreateMock)
-    const semester2 = await semesterDataService.createSemester({
-      ...semesterCreateMock,
-      name: 'Semester 2',
-    })
-    await projectDataService.createSemesterProject({
-      ...semesterProjectCreateMock,
-      semester: semester1.id,
-      published: true,
-    })
-    await projectDataService.createSemesterProject({
-      ...semesterProjectCreateMock,
-      semester: semester1.id,
-      published: false,
-    })
-    await projectDataService.createSemesterProject({
-      ...semesterProjectCreateMock,
-      semester: semester2.id,
-      published: true,
-    })
-
-    const res = await projectDataService.getAllSemesterProjectsBySemester(semester1.id, 100, 1, {
-      published: true,
-    })
-    expect(res.docs.length).toEqual(1)
-    expect(res.nextPage).toBeNull()
-    const res2 = await projectDataService.getAllSemesterProjectsBySemester(semester1.id, 2, 1, {
-      published: true,
-    })
-    expect(res2.docs.length).toEqual(1)
-    expect(res2.nextPage).toBe(null)
-    const res3 = await projectDataService.getAllSemesterProjectsBySemester(semester1.id, 2, 1, {
-      published: false,
-    })
-    expect(res3.docs.length).toEqual(2)
-    expect(res3.nextPage).toBe(null)
-  })
-
   it('Should get all semesterProjects by semesterId and status with pagination', async () => {
     const semester1 = await semesterDataService.createSemester(semesterCreateMock)
     const semester2 = await semesterDataService.createSemester({
@@ -326,46 +287,6 @@ describe('Project service methods test', () => {
     })
     expect(res3.docs.length).toEqual(1)
     expect(res3.nextPage).toBeNull()
-  })
-
-  it('Should get all semesterProjects by semesterId and status and publish status', async () => {
-    const semester1 = await semesterDataService.createSemester(semesterCreateMock)
-    const semester2 = await semesterDataService.createSemester({
-      ...semesterCreateMock,
-      name: 'Semester 2',
-    })
-    await projectDataService.createSemesterProject({
-      ...semesterProjectCreateMock,
-      semester: semester1.id,
-      status: ProjectStatus.Approved,
-      published: true,
-    })
-    await projectDataService.createSemesterProject({
-      ...semesterProjectCreateMock,
-      semester: semester1.id,
-      status: ProjectStatus.Rejected,
-      published: false,
-    })
-    await projectDataService.createSemesterProject({
-      ...semesterProjectCreateMock,
-      semester: semester2.id,
-      status: ProjectStatus.Approved,
-      published: true,
-    })
-
-    const res = await projectDataService.getAllSemesterProjectsBySemester(semester1.id, 100, 1, {
-      published: true,
-      status: ProjectStatus.Approved,
-    })
-    expect(res.docs.length).toEqual(1)
-    expect(res.nextPage).toBeNull()
-
-    const res2 = await projectDataService.getAllSemesterProjectsBySemester(semester1.id, 2, 1, {
-      published: false,
-      status: ProjectStatus.Rejected,
-    })
-    expect(res2.docs.length).toEqual(1)
-    expect(res2.nextPage).toBeNull()
   })
 
   it('should get all semester projects by project ID', async () => {

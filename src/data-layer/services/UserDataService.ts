@@ -153,6 +153,7 @@ export default class UserDataService {
     return (
       await payload.find({
         collection: 'clientAdditionalInfo',
+        limit: 1,
         where: { client: { equals: clientID } },
       })
     ).docs[0]
