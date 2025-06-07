@@ -8,13 +8,19 @@ export const metadata: Metadata = {
   description: 'Create and manage projects with ease',
 }
 
-export default function Form() {
+export default function Form({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined }
+}) {
   return (
     <AuthWrapper scopes={['admin', 'client']}>
       <Suspense
         fallback={<div className="text-center text-dark-blue text-lg pt-30">Loading...</div>}
       >
-        <ProtectedFormView />
+        <ProtectedFormView 
+          searchParams={searchParams}
+        />
       </Suspense>
     </AuthWrapper>
   )
