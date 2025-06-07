@@ -42,7 +42,10 @@ export const StudentService = {
       return []
     }
     const semesterId = res.id
-    const url = buildNextRequestURL(`/api/semesters/${semesterId}/projects`, {student: "true", status: ProjectStatus.Approved})
+    const url = buildNextRequestURL(`/api/semesters/${semesterId}/projects`, {
+      student: 'true',
+      status: ProjectStatus.Approved,
+    })
     const response = await GetProjects(await buildNextRequest(url, { method: 'GET' }), {
       params: Promise.resolve({ id: semesterId }),
     })
