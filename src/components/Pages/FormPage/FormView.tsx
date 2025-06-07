@@ -16,7 +16,7 @@ import { redirect, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import type { CreateProjectRequestBody, CreateProjectClient } from '@/app/api/projects/route'
 import type { ProjectDetails } from '@/types/Project'
-import { handleFormPageLoad, handleProjectFormSubmission } from '@/lib/services/form/Handlers'
+import { handleProjectFormSubmission } from '@/lib/services/form/Handlers'
 import Notification from '@/components/Generic/Notification/Notification'
 import { Semester } from '@/payload-types'
 
@@ -29,7 +29,7 @@ interface FormProject extends CreateProjectRequestBody {
 const returnSubmissionDateFromISOString = (isoString: string): string => {
   const date = new Date(isoString)
   // want to subtract 1 minute from the date to ensure people submit by 11:59pm the previous day
-  date.setMinutes(date.getMinutes()-1)
+  date.setMinutes(date.getMinutes() - 1)
   return date.toLocaleDateString('en-NZ', {
     year: 'numeric',
     month: '2-digit',
@@ -42,10 +42,7 @@ type FormViewProps = {
   upcomingSemesters: Semester[]
 }
 
-const ProtectedFormView: FC<FormViewProps> = ({
-  projectData,
-  upcomingSemesters,
-}) => {
+const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
   const [showNotification, setShowNotification] = useState<boolean>(false)
 
   // id / semester name pairs for the upcoming semesters
@@ -61,9 +58,6 @@ const ProtectedFormView: FC<FormViewProps> = ({
 
   // check if trying to edit an existing project
   const projectId = searchParams.get('projectId') || undefined
-
-  const [specialEquipmentRequirements, setSpecialEquipmentRequirements] = useState<string>('')
-  const [numberOfTeams, setNumberOfTeams] = useState<string>('')
 
   const handleChange = (index: number, field: keyof CreateProjectClient, value: string) => {
     const updated = [...otherClientDetails]
@@ -106,9 +100,7 @@ const ProtectedFormView: FC<FormViewProps> = ({
     setValue('name', projectData.name || '')
     setValue('description', projectData.description || '')
     setValue('desiredOutput', projectData.desiredOutput || '')
-    setSpecialEquipmentRequirements(projectData.specialEquipmentRequirements || '')
     setValue('specialEquipmentRequirements', projectData.specialEquipmentRequirements)
-    setNumberOfTeams(projectData.numberOfTeams || '')
     setValue('numberOfTeams', projectData.numberOfTeams)
     setValue('desiredTeamSkills', projectData.desiredTeamSkills || '')
     setValue('availableResources', projectData.availableResources || '')
@@ -131,9 +123,7 @@ const ProtectedFormView: FC<FormViewProps> = ({
     )
     // the closest upcoming semester is the last one in the list
     setNextSemesterDetails(
-      upcomingSemesters.length > 0
-        ? upcomingSemesters[upcomingSemesters.length - 1]
-        : undefined,
+      upcomingSemesters.length > 0 ? upcomingSemesters[upcomingSemesters.length - 1] : undefined,
     )
 
     hasInitialized.current = true
@@ -186,8 +176,13 @@ const ProtectedFormView: FC<FormViewProps> = ({
             </h2>
             <p className="text-dark-blue font-inter text-sm">
               Please complete this form if you wish to propose a project for the COMPSCI 399
-              Capstone Course in <b>{nextSemesterDetails?.name}</b>. The deadline for form submission is{' '}
-              <b>{returnSubmissionDateFromISOString(nextSemesterDetails?.deadline ?? "")}, by 11:59 pm</b>.
+              Capstone Course in <b>{nextSemesterDetails?.name}</b>. The deadline for form
+              submission is{' '}
+              <b>
+                {returnSubmissionDateFromISOString(nextSemesterDetails?.deadline ?? '')}, by 11:59
+                pm
+              </b>
+              .
               <br />
               <br />
               <em>
@@ -413,7 +408,7 @@ const ProtectedFormView: FC<FormViewProps> = ({
                   customInput={true}
                   error={!!errors.specialEquipmentRequirements}
                   errorMessage={errors.specialEquipmentRequirements?.message}
-                  defaultValue={specialEquipmentRequirements}
+                  defaultValue={projectData?.specialEquipmentRequirements ?? ''}
                   {...register('specialEquipmentRequirements', {
                     required: 'Please select one option',
                     validate: (value) => value !== '' || 'Input field must not be empty',
@@ -446,7 +441,7 @@ const ProtectedFormView: FC<FormViewProps> = ({
                   customInput={true}
                   error={!!errors.numberOfTeams}
                   errorMessage={errors.numberOfTeams?.message}
-                  defaultValue={numberOfTeams}
+                  defaultValue={projectData?.numberOfTeams ?? ''}
                   {...register('numberOfTeams', {
                     required: 'Number of teams is required',
                     validate: (value) => value !== '' || 'Number of teams is required',
@@ -491,7 +486,7 @@ const ProtectedFormView: FC<FormViewProps> = ({
                   error={!!errors.semesters}
                   errorMessage={errors.semesters?.message}
                   {...register('semesters', {
-                    required: 'Please select at least one semester'
+                    required: 'Please select at least one semester',
                   })}
                 />
               </li>
@@ -619,4 +614,4 @@ const ProtectedFormView: FC<FormViewProps> = ({
     </div>
   )
 }
-export default ProtectedFormView
+export default FormView

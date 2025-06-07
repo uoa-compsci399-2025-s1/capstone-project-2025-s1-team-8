@@ -18,9 +18,7 @@ export default function Form({
       <Suspense
         fallback={<div className="text-center text-dark-blue text-lg pt-30">Loading...</div>}
       >
-        <ProtectedFormView 
-          searchParams={searchParams}
-        />
+        <ProtectedFormView searchParams={searchParams} />
       </Suspense>
     </AuthWrapper>
   )

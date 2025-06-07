@@ -2,57 +2,54 @@
 
 import ProjectFormService from './projectFormService'
 import { StatusCodes } from 'http-status-codes'
-import { SemesterType } from '@/types/Semester'
-import type { Semester } from '@/payload-types'
 import type { CreateProjectRequestBody } from '@/app/api/projects/route'
-import type { ProjectDetails } from '@/types/Project'
 
-/**
- * Handles loading upcoming semesters for the form submission page
- * @returns An object containing upcoming semesters or an error
- */
-export const handleFormPageLoad = async (
-  projectId?: string,
-): Promise<{
-  upcomingSemesters: Semester[]
-  projectData?: ProjectDetails | undefined
-  error?: string
-}> => {
-  const {
-    data: semesters,
-    status,
-    error,
-  } = await ProjectFormService.getUpcomingSemesters({
-    timeframe: SemesterType.Upcoming,
-    limit: 10,
-  })
+// /**
+//  * Handles loading upcoming semesters for the form submission page
+//  * @returns An object containing upcoming semesters or an error
+//  */
+// export const handleFormPageLoad = async (
+//   projectId?: string,
+// ): Promise<{
+//   upcomingSemesters: Semester[]
+//   projectData?: ProjectDetails | undefined
+//   error?: string
+// }> => {
+//   const {
+//     data: semesters,
+//     status,
+//     error,
+//   } = await ProjectFormService.getUpcomingSemesters({
+//     timeframe: SemesterType.Upcoming,
+//     limit: 10,
+//   })
 
-  if (status !== StatusCodes.OK) {
-    console.error('Error fetching upcoming semesters:', error)
-    return {
-      upcomingSemesters: [],
-      projectData: undefined,
-      error: error || 'Failed to load upcoming semesters',
-    }
-  }
+//   if (status !== StatusCodes.OK) {
+//     console.error('Error fetching upcoming semesters:', error)
+//     return {
+//       upcomingSemesters: [],
+//       projectData: undefined,
+//       error: error || 'Failed to load upcoming semesters',
+//     }
+//   }
 
-  if (projectId) {
-    const { data: project, status, error } = await ProjectFormService.getProjectById(projectId)
+//   if (projectId) {
+//     const { data: project, status, error } = await ProjectFormService.getProjectById(projectId)
 
-    if (status !== StatusCodes.OK) {
-      console.error('Error fetching project by ID:', error)
-      return {
-        upcomingSemesters: [],
-        projectData: undefined,
-        error: error || 'Failed to load project data',
-      }
-    }
+//     if (status !== StatusCodes.OK) {
+//       console.error('Error fetching project by ID:', error)
+//       return {
+//         upcomingSemesters: [],
+//         projectData: undefined,
+//         error: error || 'Failed to load project data',
+//       }
+//     }
 
-    return { upcomingSemesters: semesters || [], projectData: project || undefined }
-  }
+//     return { upcomingSemesters: semesters || [], projectData: project || undefined }
+//   }
 
-  return { upcomingSemesters: semesters || [], projectData: undefined }
-}
+//   return { upcomingSemesters: semesters || [], projectData: undefined }
+// }
 
 export async function handleProjectFormSubmission(formData: CreateProjectRequestBody): Promise<{
   success: boolean
