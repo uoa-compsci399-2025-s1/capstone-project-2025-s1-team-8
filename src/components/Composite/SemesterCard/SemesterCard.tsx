@@ -27,7 +27,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
 
-  const {data: semesterProjectsData } = useSemesterProjects(semester.id)
+  const {data: semesterProjectsData, isLoading } = useSemesterProjects(semester.id)
 
   useEffect(() => {
     if (isOpen && contentRef.current) {
@@ -35,12 +35,11 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
     } else {
       setHeight('0px')
     }
-  }, [isOpen])
+  }, [isOpen, isLoading])
 
   function handleDownloadCsv() {
     window.open(`/api/admin/export/semesters/${semester.id}`, '_blank')
   }
-
   return (
     <div className="relative w-full flex flex-col gap-4">
       {/* Semester Card */}
@@ -146,14 +145,19 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
           </div>
 
           {/* Projects Section */}
-          <ProjectCardList
+          {(!isLoading && <ProjectCardList
             className="pb-1"
             headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
             heading="Approved projects"
             projects={semesterProjectsData || []}
             icon={<FiDownload />}
             onClick={handleDownloadCsv}
-          />
+          />)}
+          {isLoading && (
+            <div className="flex justify-center items-center h-24">
+              <p className="text-dark-blue">Loading projects...</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

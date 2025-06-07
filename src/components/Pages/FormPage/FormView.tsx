@@ -19,6 +19,7 @@ import type { ProjectDetails } from '@/types/Project'
 import { handleProjectFormSubmission } from '@/lib/services/form/Handlers'
 import Notification from '@/components/Generic/Notification/Notification'
 import type { Semester } from '@/payload-types'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface FormProject extends CreateProjectRequestBody {
   meetingAttendance: boolean
@@ -44,6 +45,8 @@ type FormViewProps = {
 }
 
 const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
+
+  const queryClient = useQueryClient()
   const [showNotification, setShowNotification] = useState<boolean>(false)
 
   // id / semester name pairs for the upcoming semesters
@@ -153,6 +156,9 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
     // Handle the response as needed
     // For example, you can check for errors or success messages
     if (res?.success) {
+      for (const semester of data.semesters){
+        queryClient.invalidateQueries({queryKey: ['semesterProjects', semester]})
+      }
       redirect('/client')
     } else {
       console.error('Error submitting form:', res?.error)
