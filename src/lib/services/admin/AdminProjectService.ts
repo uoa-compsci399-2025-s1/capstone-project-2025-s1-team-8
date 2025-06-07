@@ -12,7 +12,7 @@ import { ProjectStatus } from '@/types/Project'
 import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import type { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import type { UniqueIdentifier } from '@dnd-kit/core'
-import type { StatusCodes } from 'http-status-codes'
+import { StatusCodes } from 'http-status-codes'
 import { DELETE as DeleteProject } from '@/app/api/projects/[id]/route'
 
 const AdminProjectService = {
@@ -165,7 +165,7 @@ const AdminProjectService = {
       params: Promise.resolve({ id: projectId }),
     })
     let error
-    if (response.status !== 204) {
+    if (response.status !== StatusCodes.NO_CONTENT) {
       const body = await response.json()
       error = body.error
     }
