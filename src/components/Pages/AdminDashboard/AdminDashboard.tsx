@@ -53,7 +53,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const cachedClientSearchRef = useRef<
     Record<
       string,
-      { data: { client: UserCombinedInfo; projects: ProjectDetails[] }[]; totalPages: number, totalUsers: number }
+      {
+        data: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
+        totalPages: number
+        totalUsers: number
+      }
     >
   >({ _1: { data: clients, totalPages: totalNumPages, totalUsers } })
   const itemsPerPage = 10

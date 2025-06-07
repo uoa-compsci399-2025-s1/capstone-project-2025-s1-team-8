@@ -77,13 +77,15 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
           clients={clientsData.filter((clientInfo) =>
             `${clientInfo.client.firstName} ${clientInfo.client.lastName ?? ''}`
               .toLowerCase()
-              .includes((searchRef.current?.value || "").trim().toLowerCase()),
+              .includes((searchRef.current?.value || '').trim().toLowerCase()),
           )}
         />
       </div>
-      {clientsData.length === 0 && (<div className="flex justify-center mt-4">
-          <p className="text-dark-blue">No Results found for {searchRef.current?.value || ""}</p>
-      </div>)}
+      {clientsData.length === 0 && (
+        <div className="flex justify-center mt-4">
+          <p className="text-dark-blue">No Results found for {searchRef.current?.value || ''}</p>
+        </div>
+      )}
       <div className="flex flex-row justify-center items-center gap-4 mt-8">
         <button
           onClick={async () => await updatePageCount(false, true)}
@@ -101,7 +103,9 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
           <MdOutlineNavigateBefore size="1.5em" />
         </button>
 
-        <p className="text-dark-blue">{pageNum} of {totalPages}</p>
+        <p className="text-dark-blue">
+          {pageNum} of {totalPages}
+        </p>
 
         <button
           onClick={async () => await updatePageCount(true)}
@@ -119,9 +123,14 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
           <MdLastPage size="1.5em" />
         </button>
       </div>
-      {totalUsersCount !== 0 && (<div className="flex justify-center mt-4">
-          <p className="text-dark-blue">{(pageNum - 1) * 10 + 1} - {pageNum === totalPages ? totalUsersCount : pageNum * 10} of {totalUsersCount} results</p>
-      </div>)}
+      {totalUsersCount !== 0 && (
+        <div className="flex justify-center mt-4">
+          <p className="text-dark-blue">
+            {(pageNum - 1) * 10 + 1} - {pageNum === totalPages ? totalUsersCount : pageNum * 10} of{' '}
+            {totalUsersCount} results
+          </p>
+        </div>
+      )}
     </div>
   )
 }

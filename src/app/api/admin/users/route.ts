@@ -38,7 +38,7 @@ class RouteWrapper {
       docs: rawUserData,
       nextPage,
       totalPages,
-      totalDocs
+      totalDocs,
     } = await userDataService.getAllUsers({
       limit,
       page,
