@@ -1,5 +1,5 @@
 import type { FC, InputHTMLAttributes } from 'react'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import Input from '../Input/InputField'
 import { HiExclamation } from 'react-icons/hi'
 
@@ -26,22 +26,21 @@ const Radio: FC<RadioProps> = ({
   const [selectedValue, setSelectedValue] = useState('')
   const [customValue, setCustomValue] = useState('')
 
-  useEffect(() => {
-    const initialValue = defaultValue || ''
+  const hasInitialized = useRef(false)
 
-    if (initialValue) {
-      // Check if the initial value exists in the predefined values
-      if (values.includes(initialValue)) {
-        setSelectedValue(initialValue)
-        setCustomValue('')
-      } else if (customInput) {
-        // If value doesn't exist in predefined options and customInput is enabled,
-        // select the custom input and prefill it
-        setSelectedValue(initialValue)
-        setCustomValue(initialValue)
-      }
+  if (defaultValue && !hasInitialized.current) {
+    // Check if the initial value exists in the predefined values
+    if (values.includes(defaultValue)) {
+      setSelectedValue(defaultValue)
+      setCustomValue('')
+    } else if (customInput) {
+      // If value doesn't exist in predefined options and customInput is enabled,
+      // select the custom input and prefill it
+      setSelectedValue(defaultValue)
+      setCustomValue(defaultValue)
     }
-  }, [defaultValue, values, customInput])
+    hasInitialized.current = true
+  }
 
   const handleChange = (e: React.MouseEvent<HTMLInputElement>) => {
     const input = e.target as HTMLInputElement

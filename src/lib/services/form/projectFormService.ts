@@ -54,6 +54,9 @@ const ProjectFormService = {
       params: Promise.resolve({ id }),
     })
     const { data: project, error } = { ...(await response.json()) }
+    if (error) {
+      return { status: response.status, data: undefined, error }
+    }
 
     const semesterResult = await AdminProjectService.getProjectSemesters(project.id)
 
