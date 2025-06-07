@@ -19,7 +19,7 @@ export default async function ProtectedStudentView() {
     <div>
       <NavBar user={studentInfo} onclick={handleLoginButtonClick} />
       <div>
-        {projects.length > 0 && (
+        {projects.length && (
           <div className="pt-35 pb-20 items-center justify-center w-full px-8 sm:px-15 lg:px-30">
             <ProjectCardList
               className="bg-muted-blue-op-45 px-7 md:px-15 pt-8 pb-12 rounded-2xl border-deeper-blue border"
@@ -30,7 +30,7 @@ export default async function ProtectedStudentView() {
             />
           </div>
         )}
-        {projects.length == 0 && (
+        {!projects && (
           <TeapotCard
             title="Projects haven't been published yet"
             description="Please check back at a later date!"
