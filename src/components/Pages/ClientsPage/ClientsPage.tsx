@@ -56,7 +56,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
         </span>
         <input
           ref={searchRef}
-          onChange={async (e) => {
+          onChange={async () => {
             await search(searchRef.current?.value || '')
           }}
           placeholder="Search client..."
@@ -66,6 +66,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
           <XMarkIcon
             className="text-dark-blue hover:text-deeper-blue w-4 h-4 cursor-pointer"
             onClick={async () => {
+              searchRef.current!.value = ''
               await search('')
             }}
           />
