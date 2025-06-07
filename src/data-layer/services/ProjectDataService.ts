@@ -7,9 +7,9 @@ import { payload } from '../adapters/Payload'
 import type { CreateSemesterProjectData, UpdateSemesterProjectData } from '@/types/Collections'
 import type { SemesterProject } from '@/payload-types'
 import type { ProjectStatus } from '@/types/Project'
-import UserService from './UserService'
+import UserDataService from './UserDataService'
 
-export default class ProjectService {
+export default class ProjectDataService {
   /**
    * This function returns a paginated doc of all projects
    *
@@ -101,9 +101,9 @@ export default class ProjectService {
       status?: ProjectStatus
     },
   ): Promise<PaginatedDocs<Project>> {
-    const userService = new UserService()
+    const userDataService = new UserDataService()
     try {
-      await userService.getUser(clientId)
+      await userDataService.getUser(clientId)
     } catch (error) {
       if (error instanceof NotFound) {
         throw new NotFound(() => {
@@ -240,7 +240,6 @@ export default class ProjectService {
     limit: number = 100,
     page: number = 1,
     options?: {
-      published?: boolean
       status?: ProjectStatus
     },
   ): Promise<PaginatedDocs<SemesterProject>> {
@@ -251,7 +250,6 @@ export default class ProjectService {
       page: page,
       where: {
         semester: { equals: id },
-        ...(!!options?.published ? { published: { equals: options.published } } : {}),
         ...(!!options?.status ? { status: { equals: options.status } } : {}),
       },
     })

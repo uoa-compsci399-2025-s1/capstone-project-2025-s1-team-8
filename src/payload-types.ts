@@ -102,9 +102,11 @@ export interface Config {
   };
   globals: {
     Home: Home;
+    ClientDashboard: ClientDashboard;
   };
   globalsSelect: {
     Home: HomeSelect<false> | HomeSelect<true>;
+    ClientDashboard: ClientDashboardSelect<false> | ClientDashboardSelect<true>;
   };
   locale: null;
   user: Admin & {
@@ -273,7 +275,6 @@ export interface Project {
   numberOfTeams: string;
   desiredTeamSkills?: string | null;
   availableResources?: string | null;
-  futureConsideration: boolean;
   questionResponses?:
     | {
         question: string | FormQuestion;
@@ -323,7 +324,6 @@ export interface SemesterProject {
   project: string | Project;
   semester: string | Semester;
   status: 'pending' | 'approved' | 'rejected';
-  published: boolean;
   updatedAt: string;
   createdAt: string;
 }
@@ -341,6 +341,10 @@ export interface Semester {
   deadline: string;
   startDate: string;
   endDate: string;
+  /**
+   * A state if all the approved projects are published or not.
+   */
+  published: boolean;
   updatedAt: string;
   createdAt: string;
 }
@@ -541,7 +545,6 @@ export interface ProjectSelect<T extends boolean = true> {
   numberOfTeams?: T;
   desiredTeamSkills?: T;
   availableResources?: T;
-  futureConsideration?: T;
   questionResponses?:
     | T
     | {
@@ -561,7 +564,6 @@ export interface SemesterProjectSelect<T extends boolean = true> {
   project?: T;
   semester?: T;
   status?: T;
-  published?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -575,6 +577,7 @@ export interface SemesterSelect<T extends boolean = true> {
   deadline?: T;
   startDate?: T;
   endDate?: T;
+  published?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -711,6 +714,23 @@ export interface StudentDemo {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ClientDashboard".
+ */
+export interface ClientDashboard {
+  id: string;
+  /**
+   * The title for the tips section on Client Dashboard.
+   */
+  tipTitle: string;
+  /**
+   * The content for the tips section on Client Dashboard.
+   */
+  tipContent: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "Home_select".
  */
 export interface HomeSelect<T extends boolean = true> {
@@ -760,6 +780,17 @@ export interface ClientDemoSelect<T extends boolean = true> {
 export interface StudentDemoSelect<T extends boolean = true> {
   title?: T;
   description?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ClientDashboard_select".
+ */
+export interface ClientDashboardSelect<T extends boolean = true> {
+  tipTitle?: T;
+  tipContent?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -5,8 +5,8 @@ import { redirect } from 'next/navigation'
 
 import { googleAuthScopes, oauth2Client } from '@/business-layer/security/google'
 import { UserRole } from '@/types/User'
-import UserService from '@/data-layer/services/UserService'
-import AuthService from '@/data-layer/services/AuthService'
+import UserDataService from '@/data-layer/services/UserDataService'
+import AuthDataService from '@/data-layer/services/AuthDataService'
 import BusinessAuthService from '@/business-layer/services/AuthService'
 import type { UserInfoResponse } from '@/types/Auth'
 import { AUTH_COOKIE_NAME, UserInfoResponseSchema } from '@/types/Auth'
@@ -60,15 +60,15 @@ export const GET = async (req: NextRequest) => {
     given_name: firstName,
   }: UserInfoResponse = UserInfoResponseSchema.parse(await userInfoResponse.json())
 
-  const userService = new UserService()
-  const authService = new AuthService()
+  const userDataService = new UserDataService()
+  const authDataService = new AuthDataService()
 
-  const fetchedAuth = await authService.getAuthByEmail(email)
+  const fetchedAuth = await authDataService.getAuthByEmail(email)
   let user: User
   try {
-    user = await userService.getUserByEmail(email)
+    user = await userDataService.getUserByEmail(email)
     if (!fetchedAuth) {
-      user = await userService.updateUser(user.id, {
+      user = await userDataService.updateUser(user.id, {
         firstName,
         lastName,
       })
@@ -76,7 +76,7 @@ export const GET = async (req: NextRequest) => {
   } catch {
     // Redirects to register if the user attempts to login with a Google account that is not registered
     if (!role) return redirect('/auth/register')
-    user = await userService.createUser({
+    user = await userDataService.createUser({
       email,
       firstName,
       lastName,
@@ -85,7 +85,7 @@ export const GET = async (req: NextRequest) => {
   }
 
   if (fetchedAuth) {
-    await authService.updateAuth(fetchedAuth.id, {
+    await authDataService.updateAuth(fetchedAuth.id, {
       provider: 'google',
       providerAccountId: sub,
       accessToken: tokens.access_token,
@@ -94,7 +94,7 @@ export const GET = async (req: NextRequest) => {
       idToken: tokens.id_token,
     })
   } else {
-    await authService.createAuth({
+    await authDataService.createAuth({
       email,
       provider: 'google',
       providerAccountId: sub,

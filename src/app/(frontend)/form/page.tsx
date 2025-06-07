@@ -8,11 +8,21 @@ export const metadata: Metadata = {
   description: 'Create and manage projects with ease',
 }
 
-export default function Form() {
+export default async function Form({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined }
+}) {
+  const resolvedSearchParams = await searchParams
+  const projectId =
+    typeof resolvedSearchParams?.projectId === 'string' ? resolvedSearchParams?.projectId : ''
+
   return (
     <AuthWrapper scopes={['admin', 'client']}>
-      <Suspense fallback={<div className="text-center">Loading...</div>}>
-        <ProtectedFormView />
+      <Suspense
+        fallback={<div className="text-center text-dark-blue text-lg pt-30">Loading...</div>}
+      >
+        <ProtectedFormView projectId={projectId} />
       </Suspense>
     </AuthWrapper>
   )

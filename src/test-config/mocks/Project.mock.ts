@@ -19,7 +19,6 @@ export const projectMock: Project = {
   specialEquipmentRequirements: 'computer',
   numberOfTeams: '5',
   availableResources: 'nothing',
-  futureConsideration: false,
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
   additionalClients: [
@@ -42,7 +41,6 @@ export const projectMock2: Project = {
   specialEquipmentRequirements: 'computer',
   numberOfTeams: '5',
   availableResources: 'nothing',
-  futureConsideration: false,
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
 }
@@ -56,7 +54,6 @@ export const projectCreateMock: CreateProjectData = {
   specialEquipmentRequirements: 'computer',
   numberOfTeams: '5',
   availableResources: 'nothing',
-  futureConsideration: false,
 }
 
 export const projectCreateMock2: CreateProjectData = {
@@ -68,7 +65,6 @@ export const projectCreateMock2: CreateProjectData = {
   specialEquipmentRequirements: 'computer',
   numberOfTeams: '5',
   availableResources: 'nothing',
-  futureConsideration: false,
 }
 
 /*
@@ -81,7 +77,6 @@ export const semesterProjectMock: SemesterProject = {
   project: '67ff38a56a35e1b6cf43a68c',
   semester: '67ff38a56a35e1b6cf43a68d',
   status: ProjectStatus.Pending,
-  published: false,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 }
@@ -91,7 +86,6 @@ export const semesterProjectCreateMock: CreateSemesterProjectData = {
   project: '67ff38a56a35e1b6cf43a68c',
   semester: semesterMock,
   status: ProjectStatus.Pending,
-  published: false,
 }
 
 export const semesterProjectCreateMock2: CreateSemesterProjectData = {
@@ -99,7 +93,6 @@ export const semesterProjectCreateMock2: CreateSemesterProjectData = {
   project: projectMock,
   semester: semesterMock,
   status: ProjectStatus.Approved,
-  published: false,
 }
 
 /*

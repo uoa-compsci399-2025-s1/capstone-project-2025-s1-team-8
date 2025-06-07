@@ -23,12 +23,15 @@ const ProtectedAdminView = async (): Promise<JSX.Element> => {
       throw new Error('Failed to fetch clients')
     }
     const clientsData = fetchedAllClients.data
+    const totalPages = fetchedAllClients?.totalPages || 0
 
     const fetchAllSemesters = await handleGetAllSemesters()
     if (!fetchAllSemesters || fetchAllSemesters.error || !fetchAllSemesters.data) {
       throw new Error('Failed to fetch semesters')
     }
     const semestersData: Semester[] = fetchAllSemesters.data
+    const semesterStatuses: Record<string, 'current' | 'upcoming' | ''> =
+      fetchAllSemesters?.semesterStatuses || {}
 
     const fetchProjects = await getNextSemesterProjects()
     if (!fetchProjects || fetchProjects.error || !fetchProjects.data) {
@@ -39,7 +42,13 @@ const ProtectedAdminView = async (): Promise<JSX.Element> => {
     return (
       <div>
         <NavBar onclick={handleLoginButtonClick} user={user} />
-        <AdminDashboard clients={clientsData} semesters={semestersData} projects={projectsData} />
+        <AdminDashboard
+          clients={clientsData}
+          semesters={semestersData}
+          projects={projectsData}
+          totalNumPages={totalPages}
+          semesterStatusList={semesterStatuses}
+        />
       </div>
     )
   } catch (err: unknown) {

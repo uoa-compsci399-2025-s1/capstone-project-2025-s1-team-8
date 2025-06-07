@@ -6,12 +6,12 @@ import { adminToken, clientToken, studentToken } from '@/test-config/routes-setu
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { GET } from './route'
 import { paramsToPromise } from '@/test-config/utils'
-import SemesterService from '@/data-layer/services/SemesterService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { semesterMock } from '@/test-config/mocks/Semester.mock'
 
 describe('tests /api/admin/export/semesters/[id]', async () => {
   const cookieStore = await cookies()
-  const semesterService = new SemesterService()
+  const semesterService = new SemesterDataService()
 
   describe('GET', () => {
     it('should return a 401 if the user is not authenticated', async () => {

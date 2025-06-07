@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-import ProjectService from '@/data-layer/services/ProjectService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 import { Security } from '@/business-layer/middleware/Security'
 import { NotFound } from 'payload'
@@ -15,7 +15,6 @@ class RouteWrapper {
   @Security('jwt', ['admin'])
   static async GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    const projectService = new ProjectService()
     const searchParams = req.nextUrl.searchParams
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '100')
@@ -25,8 +24,11 @@ class RouteWrapper {
         { status: StatusCodes.BAD_REQUEST },
       )
     }
+
+    const projectDataService = new ProjectDataService()
+
     try {
-      const { docs: projects, nextPage } = await projectService.getProjectsByClientId(
+      const { docs: projects, nextPage } = await projectDataService.getProjectsByClientId(
         id,
         limit,
         page,

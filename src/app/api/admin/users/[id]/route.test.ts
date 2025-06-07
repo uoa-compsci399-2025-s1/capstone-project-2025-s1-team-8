@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 import type { NextRequest } from 'next/server'
 
 import { createMockNextPatchRequest, paramsToPromise } from '@/test-config/utils'
-import UserService from '@/data-layer/services/UserService'
+import UserDataService from '@/data-layer/services/UserDataService'
 import {
   adminCreateMock,
   studentCreateMock,
@@ -15,9 +15,12 @@ import { cookies } from 'next/headers'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'
 import { adminToken, clientToken, studentToken } from '@/test-config/routes-setup'
 import type { User } from '@/payload-types'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
+import { projectCreateMock, semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
 
 describe('test /api/admin/users/[id]', async () => {
-  const userService = new UserService()
+  const userDataService = new UserDataService()
+  const projectDataService = new ProjectDataService()
   const cookieStore = await cookies()
 
   describe('test GET /api/admin/users/[id]', () => {
@@ -47,8 +50,8 @@ describe('test /api/admin/users/[id]', async () => {
 
     it('fetch client by Id', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const clientMock = await userService.createUser(clientCreateMock)
-      const clientAdditionalInfoMock = await userService.createClientAdditionalInfo({
+      const clientMock = await userDataService.createUser(clientCreateMock)
+      const clientAdditionalInfoMock = await userDataService.createClientAdditionalInfo({
         ...clientAdditionalInfoCreateMock,
         client: clientMock,
       })
@@ -68,8 +71,8 @@ describe('test /api/admin/users/[id]', async () => {
     })
 
     it('fetch generic user by Id', async () => {
-      const newClient = await userService.createUser(adminCreateMock)
-      const newClientInfo = await userService.createClientAdditionalInfo({
+      const newClient = await userDataService.createUser(adminCreateMock)
+      const newClientInfo = await userDataService.createClientAdditionalInfo({
         ...adminCreateMock,
         client: newClient,
       })
@@ -126,8 +129,8 @@ describe('test /api/admin/users/[id]', async () => {
     it("update client user's firstName by Id", async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
 
-      const clientMock = await userService.createUser(clientCreateMock)
-      const clientAdditionalInfoMock = await userService.createClientAdditionalInfo({
+      const clientMock = await userDataService.createUser(clientCreateMock)
+      const clientAdditionalInfoMock = await userDataService.createClientAdditionalInfo({
         ...clientAdditionalInfoCreateMock,
         client: clientMock,
       })
@@ -156,8 +159,8 @@ describe('test /api/admin/users/[id]', async () => {
     it('update client user by Id with existing introduction and affiliation', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
 
-      const clientMock = await userService.createUser(clientCreateMock)
-      const clientAdditionalInfoMock = await userService.createClientAdditionalInfo({
+      const clientMock = await userDataService.createUser(clientCreateMock)
+      const clientAdditionalInfoMock = await userDataService.createClientAdditionalInfo({
         ...clientAdditionalInfoCreateMock,
         client: clientMock,
       })
@@ -186,7 +189,7 @@ describe('test /api/admin/users/[id]', async () => {
 
     it('update client user by Id with no AdditionalClientInfo', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const clientMock = await userService.createUser(clientCreateMock)
+      const clientMock = await userDataService.createUser(clientCreateMock)
       const id = clientMock.id
 
       const res = await PATCH(
@@ -208,7 +211,7 @@ describe('test /api/admin/users/[id]', async () => {
 
     it('update name, intro, affiliation of client user by Id with no AdditionalClientInfo', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const clientMock = await userService.createUser(clientCreateMock)
+      const clientMock = await userDataService.createUser(clientCreateMock)
       const id = clientMock.id
       const payload = {
         firstName: 'Sheenaaaaaa',
@@ -234,8 +237,8 @@ describe('test /api/admin/users/[id]', async () => {
 
     it('update student user by Id', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const userService = new UserService()
-      const newStudent = await userService.createUser(studentCreateMock)
+      const userDataService = new UserDataService()
+      const newStudent = await userDataService.createUser(studentCreateMock)
       const id = newStudent.id
 
       const res = await PATCH(
@@ -291,12 +294,88 @@ describe('test /api/admin/users/[id]', async () => {
 
     it('should delete a user', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const newUser = await userService.createUser(clientCreateMock)
+      const newUser = await userDataService.createUser(clientCreateMock)
       const res = await DELETE({} as NextRequest, {
         params: paramsToPromise({ id: newUser.id }),
       })
       expect(res.status).toBe(StatusCodes.NO_CONTENT)
-      await expect(userService.getUser(newUser.id)).rejects.toThrow('Not Found')
+      await expect(userDataService.getUser(newUser.id)).rejects.toThrow('Not Found')
+    })
+
+    it('should delete a user and the related client additional info', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const newUser = await userDataService.createUser(clientCreateMock)
+      const additionalInfo = await userDataService.createClientAdditionalInfo({
+        ...clientAdditionalInfoCreateMock,
+        client: newUser,
+      })
+      expect(await userDataService.getClientAdditionalInfo(newUser.id)).toStrictEqual(
+        additionalInfo,
+      )
+      const res = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: newUser.id }),
+      })
+      expect(res.status).toBe(StatusCodes.NO_CONTENT)
+      await expect(userDataService.getUser(newUser.id)).rejects.toThrow('Not Found')
+      expect(await userDataService.getClientAdditionalInfo(newUser.id)).toBeUndefined()
+    })
+
+    it('should delete a user and related projects', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const newUser = await userDataService.createUser(clientCreateMock)
+      const project = await projectDataService.createProject({
+        ...projectCreateMock,
+        client: newUser,
+      })
+      const project2 = await projectDataService.createProject({
+        ...projectCreateMock,
+        client: newUser,
+      })
+
+      const res = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: newUser.id }),
+      })
+
+      expect(res.status).toBe(StatusCodes.NO_CONTENT)
+      await expect(userDataService.getUser(newUser.id)).rejects.toThrow('Not Found')
+      expect(await userDataService.getClientAdditionalInfo(newUser.id)).toBeUndefined()
+      await expect(projectDataService.getProjectById(project.id)).rejects.toThrow('Not Found')
+      await expect(projectDataService.getProjectById(project2.id)).rejects.toThrow('Not Found')
+    })
+
+    it('should delete a user and related semester projects', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const newUser = await userDataService.createUser(clientCreateMock)
+      const project = await projectDataService.createProject({
+        ...projectCreateMock,
+        client: newUser,
+      })
+      const project2 = await projectDataService.createProject({
+        ...projectCreateMock,
+        client: newUser,
+      })
+      const semesterProject = await projectDataService.createSemesterProject({
+        ...semesterProjectCreateMock,
+        project,
+      })
+      const semesterProject2 = await projectDataService.createSemesterProject({
+        ...semesterProjectCreateMock,
+        project: project2,
+      })
+
+      const res = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: newUser.id }),
+      })
+
+      expect(res.status).toBe(StatusCodes.NO_CONTENT)
+      await expect(userDataService.getUser(newUser.id)).rejects.toThrow('Not Found')
+      expect(await userDataService.getClientAdditionalInfo(newUser.id)).toBeUndefined()
+      await expect(projectDataService.getSemesterProject(semesterProject.id)).rejects.toThrow(
+        'Not Found',
+      )
+      await expect(projectDataService.getSemesterProject(semesterProject2.id)).rejects.toThrow(
+        'Not Found',
+      )
     })
 
     it('should return a 404 error if the user does not exist', async () => {

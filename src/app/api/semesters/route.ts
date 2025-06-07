@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 import { StatusCodes } from 'http-status-codes'
 
-import SemesterService from '@/data-layer/services/SemesterService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { Security } from '@/business-layer/middleware/Security'
 import { SemesterType } from '@/types/Semester'
 
@@ -23,8 +23,8 @@ class RouteWrapper {
         { status: StatusCodes.BAD_REQUEST },
       )
     }
-    const semesterService = new SemesterService()
-    const semesters = await semesterService.getAllSemesters(timeframe)
+    const semesterDataService = new SemesterDataService()
+    const semesters = await semesterDataService.getAllSemesters(timeframe)
     return NextResponse.json({ data: semesters })
   }
 }

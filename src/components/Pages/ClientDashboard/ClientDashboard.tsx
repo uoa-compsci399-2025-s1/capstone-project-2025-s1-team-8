@@ -6,10 +6,12 @@ import ClientProfile from '@/components/Composite/ClientProfile/ClientProfile'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
+import type { ClientDashboard } from '@/payload-types'
 
 interface ClientDashboardProps {
   client: UserCombinedInfo
   projects: ProjectDetails[]
+  content: ClientDashboard
   onSave?: (
     firstName: string,
     lastName: string,
@@ -23,17 +25,13 @@ interface ClientDashboardProps {
   }>
 }
 
-const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects, onSave }) => {
+const ClientDashboard: React.FC<ClientDashboardProps> = ({ content, client, projects, onSave }) => {
   return (
     <div>
       <div className="grid grid-cols-1 xl:grid-cols-2 xl:grid-rows-[auto_1fr] gap-20 sm:gap-16 xl:gap-10 pb-12 items-stretch">
         <CreateProjectCard />
         <div className="row-start-2 -ml-5">
-          <GradientTextArea
-            heading="Tips for choosing a good project name:"
-            text={`• Keep it short and straight to the point!
-            • Please use the description if you would like to say more!`}
-          />
+          <GradientTextArea heading={content.tipTitle} text={content.tipContent} />
         </div>
         <div className="xl:col-start-2 xl:row-span-2">
           <ClientProfile clientInfo={client} onSave={onSave} />
@@ -44,6 +42,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ client, projects, onS
         headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
         heading="My projects"
         projects={projects}
+        type="client"
       />
     </div>
   )

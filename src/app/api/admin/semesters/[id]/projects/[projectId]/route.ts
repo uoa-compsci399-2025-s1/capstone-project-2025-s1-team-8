@@ -3,8 +3,8 @@ import { NextResponse } from 'next/server'
 import { z, ZodError } from 'zod'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 import { NotFound } from 'payload'
-import ProjectService from '@/data-layer/services/ProjectService'
-import SemesterService from '@/data-layer/services/SemesterService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import { Security } from '@/business-layer/middleware/Security'
 import type { SemesterProject } from '@/payload-types'
 import { ProjectSchema, SemesterSchema } from '@/types/Payload'
@@ -15,7 +15,6 @@ export const PatchSemesterProjectRequestBody = z.object({
   project: z.union([z.string(), ProjectSchema]).optional(),
   semester: z.union([z.string(), SemesterSchema]).optional(),
   status: z.nativeEnum(ProjectStatus).optional(),
-  published: z.boolean().optional(),
 })
 
 class RouteWrapper {
@@ -32,15 +31,15 @@ class RouteWrapper {
     { params }: { params: Promise<{ id: string; projectId: string }> },
   ) {
     const { id, projectId } = await params
-    const projectService = new ProjectService()
-    const semesterService = new SemesterService()
+    const projectDataService = new ProjectDataService()
+    const semesterDataService = new SemesterDataService()
 
     try {
       let semesterProject: SemesterProject
-      const fetchedSemester = await semesterService.getSemester(id)
+      const fetchedSemester = await semesterDataService.getSemester(id)
 
       try {
-        semesterProject = await projectService.getSemesterProject(projectId)
+        semesterProject = await projectDataService.getSemesterProject(projectId)
       } catch (error) {
         if (error instanceof NotFound) {
           return NextResponse.json(
@@ -59,7 +58,7 @@ class RouteWrapper {
         )
       }
 
-      const updatedProject = await projectService.updateSemesterProject(projectId, data)
+      const updatedProject = await projectDataService.updateSemesterProject(projectId, data)
       return NextResponse.json({ data: updatedProject })
     } catch (error) {
       if (error instanceof NotFound) {
@@ -92,14 +91,13 @@ class RouteWrapper {
     { params }: { params: Promise<{ id: string; projectId: string }> },
   ) {
     const { id, projectId } = await params
-    const projectService = new ProjectService()
+    const projectDataService = new ProjectDataService()
+    const semesterDataService = new SemesterDataService()
     try {
       let fetchedProject
-      const semesterService = new SemesterService()
-      const fetchedSemester = await semesterService.getSemester(id)
+      const fetchedSemester = await semesterDataService.getSemester(id)
       try {
-        const projectService = new ProjectService()
-        fetchedProject = await projectService.getSemesterProject(projectId)
+        fetchedProject = await projectDataService.getSemesterProject(projectId)
       } catch (error) {
         if (error instanceof NotFound) {
           return NextResponse.json(
@@ -109,7 +107,7 @@ class RouteWrapper {
         }
       }
       if (JSON.stringify(fetchedProject?.semester) === JSON.stringify(fetchedSemester)) {
-        await projectService.deleteSemesterProject(projectId)
+        await projectDataService.deleteSemesterProject(projectId)
         return NextResponse.json({ status: StatusCodes.OK })
       } else {
         return NextResponse.json(

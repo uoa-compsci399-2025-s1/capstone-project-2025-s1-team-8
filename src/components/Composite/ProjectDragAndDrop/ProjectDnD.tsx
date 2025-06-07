@@ -45,7 +45,7 @@ export type DndComponentProps = SemesterContainerData & {
     message?: string
     details?: typeToFlattenedError<typeof PatchSemesterProjectRequestBody>
   }>
-  onPublishChanges: (params: SemesterContainerData) => Promise<void | {
+  onPublishChanges: (semesterId: string) => Promise<void | {
     error?: string
     message?: string
   }>
@@ -70,7 +70,6 @@ const defaultProjectInfo: ProjectDetails = {
   numberOfTeams: '',
   desiredTeamSkills: null,
   availableResources: null,
-  futureConsideration: false,
   questionResponses: null,
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
@@ -150,7 +149,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   }
 
   async function handlePublishChanges() {
-    const publishMessage = await onPublishChanges({ presetContainers: containers, semesterId })
+    const publishMessage = await onPublishChanges(semesterId)
     if (publishMessage && 'error' in publishMessage) {
       setNotification({
         title: 'Error',

@@ -11,7 +11,7 @@ import type {
 } from '@/types/Collections'
 import type { UserRole } from '@/types/User'
 
-export default class UserService {
+export default class UserDataService {
   /**
    * Creates a new user document in the database.
    *
@@ -153,6 +153,7 @@ export default class UserService {
     return (
       await payload.find({
         collection: 'clientAdditionalInfo',
+        limit: 1,
         where: { client: { equals: clientID } },
       })
     ).docs[0]

@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 
-import ProjectService from '@/data-layer/services/ProjectService'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import { NotFound } from 'payload'
-import SemesterService from '@/data-layer/services/SemesterService'
+import SemesterDataService from '@/data-layer/services/SemesterDataService'
 import type { SemesterProject } from '@/payload-types'
 import { Security } from '@/business-layer/middleware/Security'
 import type { RequestWithUser } from '@/types/Requests'
@@ -23,17 +23,17 @@ class RouteWrapper {
     { params }: { params: Promise<{ id: string; projectId: string }> },
   ) {
     const { id, projectId } = await params
-    const projectService = new ProjectService()
-    const semesterService = new SemesterService()
+    const projectDataService = new ProjectDataService()
+    const semesterDataService = new SemesterDataService()
 
     try {
       let semesterProject: SemesterProject
-      const fetchedSemester = await semesterService.getSemester(id)
+      const fetchedSemester = await semesterDataService.getSemester(id)
 
       try {
-        semesterProject = await projectService.getSemesterProject(projectId)
+        semesterProject = await projectDataService.getSemesterProject(projectId)
         if (req.user.role === UserRole.Student) {
-          if (!semesterProject.published) {
+          if (!fetchedSemester.published) {
             return NextResponse.json({ error: 'No scope' }, { status: StatusCodes.UNAUTHORIZED })
           }
         }
