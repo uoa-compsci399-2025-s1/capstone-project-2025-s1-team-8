@@ -47,7 +47,7 @@ const ProjectFormService = {
     'use server'
     const url = buildNextRequestURL(`/api/projects/${id}`, {})
     const response = await GetProjectById(await buildNextRequest(url, { method: 'GET' }), {
-      params: { id },
+      params: Promise.resolve({ id }),
     })
     const { data: project, error } = { ...(await response.json()) }
     if (error) {
