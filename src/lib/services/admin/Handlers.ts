@@ -212,7 +212,7 @@ export async function updateProjectOrdersAndStatus({
   message?: string
   details?: typeToFlattenedError<typeof PatchSemesterProjectRequestBody>
 }> {
-  let errors = []
+  const errors = []
   for (const container of presetContainers) {
     const status = container.title as ProjectStatus
 
