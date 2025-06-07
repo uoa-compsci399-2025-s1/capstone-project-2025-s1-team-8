@@ -24,14 +24,13 @@ const ClientsPage: React.FC = () => {
   })
   const queryClient = useQueryClient()
 
-  // Debounce the search value
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (localSearch !== search) {
         setSearch(localSearch || null)
         setPage('1')
       }
-    }, 300)
+    }, 500)
 
     return () => clearTimeout(timeoutId)
   }, [localSearch, search, setSearch, setPage])
@@ -49,13 +48,13 @@ const ClientsPage: React.FC = () => {
   const { data, isFetching, isLoading } = useClients(currentPage, search ?? '')
 
   useEffect(() => {
-    if (data?.totalPages && currentPage < data.totalPages) {
+    if (data?.totalPages && currentPage < data.totalPages && !isFetching) {
       queryClient.prefetchQuery({
         queryKey: clientsQueryKey(currentPage + 1, search ?? ''),
         queryFn: () => fetchClients(currentPage + 1, search ?? ''),
       })
     }
-  }, [data?.totalPages, currentPage, search, queryClient])
+  }, [data?.totalPages, currentPage, search, queryClient, isFetching])
 
   const { totalPages, totalUsers, startIndex, endIndex } = useMemo(() => {
     const totalPages = Math.max(1, data?.totalPages || 0)
