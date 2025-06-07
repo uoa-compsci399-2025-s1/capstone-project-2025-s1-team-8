@@ -22,7 +22,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
 
-  const {data: semesterProjectsData, isLoading, refetch } = useSemesterProjects(semester.id)
+  const {data: semesterProjectsData, isLoading } = useSemesterProjects(semester.id)
 
   useEffect(() => {
     if (isOpen && contentRef.current) {
@@ -40,9 +40,6 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
       {/* Semester Card */}
       <div
         onClick={async () => {
-          if (!isOpen){
-            refetch()
-          }
           setIsOpen(!isOpen)
         }} // should load projects
         className={`
