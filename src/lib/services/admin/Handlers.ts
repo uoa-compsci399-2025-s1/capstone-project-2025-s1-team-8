@@ -10,6 +10,7 @@ import type { SemesterContainerData } from '@/components/Composite/ProjectDragAn
 import type { UpdateUserRequestBody } from '@/app/api/admin/users/[id]/route'
 import { UserRole } from '@/types/User'
 import AdminSemesterService from './AdminSemesterService'
+import { StatusCodes } from 'http-status-codes'
 
 /**
  * Handles the click event to create semester
@@ -32,7 +33,7 @@ export const handleCreateSemester = async (
     published: false,
   })
 
-  if (status === 201) {
+  if (status === StatusCodes.CREATED) {
     return { message: 'Semester created successfully' }
   } else {
     return { error, details }
@@ -61,7 +62,7 @@ export const handleUpdateSemester = async (
     deadline: new Date(formData.get('submissionDeadline') as string).toISOString(),
   })
 
-  if (status === 200) {
+  if (status === StatusCodes.OK) {
     return { message: 'Semester updated successfully' }
   } else {
     return { error, details }
@@ -81,7 +82,7 @@ export const handleDeleteSemester = async (
   error?: string
 }> => {
   const { status, error } = await AdminService.deleteSemester(id)
-  if (status === 204) {
+  if (status === StatusCodes.NO_CONTENT) {
     return { message: 'Semester deleted successfully' }
   } else {
     return { error }
@@ -99,7 +100,7 @@ export const handleGetAllSemesters = async (): Promise<void | {
   semesterStatuses?: Record<string, 'current' | 'upcoming' | ''>
 }> => {
   const { status, error, data } = await AdminService.getAllSemesters()
-  if (status === 200) {
+  if (status === StatusCodes.OK) {
     const semesterStatuses: Record<string, 'current' | 'upcoming' | ''> =
       await AdminService.getSemesterStatuses(data || [])
     return { data, semesterStatuses }
@@ -121,7 +122,7 @@ export const handleGetAllSemesterProjects = async (
   data?: ProjectDetails[]
 }> => {
   const { status, error, data } = await AdminService.getAllPaginatedProjectsBySemesterId(id)
-  if (status === 200) {
+  if (status === StatusCodes.OK) {
     const projectPromises =
       data?.map(async (semesterProject) => {
         const project = semesterProject.project as Project
@@ -251,7 +252,7 @@ export async function handleDeleteClient(clientId: string): Promise<{
   message?: string
 }> {
   const response = await AdminService.deleteUser(clientId)
-  if (response.status === 204) {
+  if (response.status === StatusCodes.NO_CONTENT) {
     return { message: 'Client deleted successfully' }
   } else {
     return { error: response.error }
@@ -263,7 +264,7 @@ export async function handleDeleteProject(projectId: string): Promise<{
   message?: string
 }> {
   const response = await AdminService.deleteProject(projectId)
-  if (response.status === 204) {
+  if (response.status === StatusCodes.NO_CONTENT) {
     return { message: 'Project deleted successfully' }
   } else {
     return { error: response.error }
@@ -275,7 +276,7 @@ export async function handleGetAllProjectsByClient(clientId: string): Promise<{
   data?: ProjectDetails[]
 }> {
   const response = await AdminService.getProjectsByUserId(clientId)
-  if (response.status === 200) {
+  if (response.status === StatusCodes.OK) {
     const projects = response.data.map((project) => ({
       ...project,
       semesters: project.semesters || [],
