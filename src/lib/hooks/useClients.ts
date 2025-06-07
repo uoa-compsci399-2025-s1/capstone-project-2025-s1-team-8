@@ -32,15 +32,53 @@ export const useClients = (page: number, search: string) => {
   return useQuery({
     queryKey: clientsQueryKey(page, search),
     queryFn: async () => {
-      const currentData = await fetchClients(page, search)
-      if (currentData.totalPages > page) {
-        queryClient.prefetchQuery({
-          queryKey: clientsQueryKey(page + 1, search),
-          queryFn: () => fetchClients(page + 1, search),
-        })
+      if (!search) {
+        return fetchClients(page, search)
       }
 
-      return currentData
+      const cachedQueries = queryClient.getQueryCache().findAll({
+        queryKey: ['clients'],
+      })
+
+      if (cachedQueries.length > 0) {
+        const clientMap = new Map<
+          string,
+          { client: UserCombinedInfo; projects: ProjectDetails[] }
+        >()
+
+        cachedQueries.forEach((query) => {
+          const data = (query.state.data as ClientsData)?.clients || []
+          data.forEach((item) => {
+            if (!clientMap.has(item.client.id)) {
+              clientMap.set(item.client.id, item)
+            }
+          })
+        })
+
+        const allCachedClients = Array.from(clientMap.values())
+
+        const filteredClients = allCachedClients.filter(({ client }) => {
+          const fullName = `${client.firstName} ${client.lastName || ''}`.toLowerCase()
+          return (
+            fullName.includes(search.toLowerCase()) ||
+            client.email.toLowerCase().includes(search.toLowerCase())
+          )
+        })
+
+        if (filteredClients.length > 0) {
+          const startIndex = (page - 1) * ITEMS_PER_PAGE
+          const endIndex = startIndex + ITEMS_PER_PAGE
+          const paginatedClients = filteredClients.slice(startIndex, endIndex)
+
+          return {
+            clients: paginatedClients,
+            totalPages: Math.ceil(filteredClients.length / ITEMS_PER_PAGE),
+            totalUsers: filteredClients.length,
+          }
+        }
+      }
+
+      return fetchClients(page, search)
     },
     staleTime: 5 * 60 * 1000,
     gcTime: 10 * 60 * 1000,
