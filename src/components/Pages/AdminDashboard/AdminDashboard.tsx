@@ -88,11 +88,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     const res = await getAllClients({ limit: itemsPerPage, page: 1, query })
     setClientsData(res?.data || [])
     setPageNum(1)
-    if (res?.totalPages) {
-      setTotalPages(res.totalPages)
-    } else {
-      setTotalPages(0)
-    }
+    setTotalPages(res?.totalPages || 0)
     setTotalUsersCount(res?.totalDocs || 0)
     console.log('searchForClients', 'query:', query)
     cachedClientSearchRef.current[`${query}_1`] = {
