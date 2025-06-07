@@ -85,18 +85,18 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         {/* client details */}
         <div className="flex flex-col md:flex-row gap-3">
           <h2 className="flex text-lg font-normal text-steel-blue font-inter">
-            {projectClient.firstName + ' ' + projectClient.lastName}
+            {projectClient?.firstName + ' ' + projectClient?.lastName}
           </h2>
           {type === 'admin' && (
             <>
               <h2 className="flex text-lg font-normal text-deeper-blue font-inter">|</h2>
               <h2 className="flex text-lg font-normal text-deeper-blue font-inter">
-                {projectClient.email}
+                {projectClient?.email}
               </h2>
               <button
                 className="flex"
                 style={{ pointerEvents: 'initial' }}
-                onClick={() => handleCopy(projectClient.email)}
+                onClick={() => handleCopy(projectClient?.email)}
               >
                 {copied ? (
                   <FiCheck className="self-center size-5.5 text-dark-blue" />
