@@ -94,22 +94,6 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     { Icon: FiPrinter, value: 'publish', label: 'Publish' },
     { Icon: HiOutlineDocumentDownload, value: 'downloadcsv', label: 'Download CSV' },
   ]
-  let timeoutId: ReturnType<typeof setTimeout> | null = null
-
-  // const showNotification = (title: string, message: string, type: 'success' | 'warning') => {
-  //   if (timeoutId) {
-  //     clearTimeout(timeoutId)
-  //   }
-
-  //   // Show the new notification
-  //   setNotification({ title, message, type })
-
-  //   // Set a new timeout
-  //   timeoutId = setTimeout(() => {
-  //     setNotification(null)
-  //     timeoutId = null // Reset the ID
-  //   }, 6000)
-  // }
 
   useEffect(() => {
     if (hasChanges) {
@@ -186,7 +170,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     window.open(`/api/admin/export/semesters/${semesterId}`, '_blank')
     setNotification({
       title: 'Success',
-      message: 'You have successfully downloaded the list of projects',
+      message: 'You have successfully downloaded the list of projects.',
       type: 'success',
     })
   }
@@ -498,7 +482,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
           isVisible={notification != null}
           title={notification?.title ?? ''}
           message={notification?.message ?? ''}
-          type={notification?.type}
+          type={notification?.type ?? 'warning'}
           onClose={() => setNotification(null)}
         />
       </div>

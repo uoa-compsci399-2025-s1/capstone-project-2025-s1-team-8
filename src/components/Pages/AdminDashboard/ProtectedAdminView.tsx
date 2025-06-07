@@ -42,8 +42,12 @@ const ProtectedAdminView = async (): Promise<JSX.Element> => {
         <AdminDashboard clients={clientsData} semesters={semestersData} projects={projectsData} />
       </div>
     )
-  } catch (err) {
-    throw new Error(`Something went wrong while fetching admin data: ${err.message}`);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      throw new Error(`Something went wrong while fetching admin data: ${err.message}`)
+    } else {
+      throw new Error(`Something went wrong while fetching admin data: ${String(err)}`)
+    }
   }
 }
 

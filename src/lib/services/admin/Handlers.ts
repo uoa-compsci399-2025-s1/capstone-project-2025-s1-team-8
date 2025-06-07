@@ -208,6 +208,7 @@ export async function updateProjectOrdersAndStatus({
   message?: string
   details?: typeToFlattenedError<typeof PatchSemesterProjectRequestBody>
 }> {
+  let errors = []
   for (const container of presetContainers) {
     const status = container.title as ProjectStatus
     const shouldSetUnpublished =
