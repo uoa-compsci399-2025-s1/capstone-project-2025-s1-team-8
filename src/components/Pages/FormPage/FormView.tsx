@@ -40,6 +40,7 @@ const returnSubmissionDateFromISOString = (isoString: string): string => {
 type FormViewProps = {
   projectData?: ProjectDetails
   upcomingSemesters: Semester[]
+  disabled?: boolean
 }
 
 const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
@@ -80,9 +81,27 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
     formState: { errors },
   } = useForm<FormProject>()
 
-  const hasInitialized = useRef(false)
+  const hasInitialized = useRef({ semester: false, project: false })
 
-  if (projectData && projectId && !hasInitialized.current) {
+  if (!hasInitialized.current.semester) {
+    //sets upcoming semester options from earliest -> latest
+    setUpcomingSemesterOptions(
+      upcomingSemesters
+        .map((semester) => ({
+          value: semester.id,
+          label: `${semester.name} (${returnSubmissionDateFromISOString(semester.startDate)} - ${returnSubmissionDateFromISOString(semester.endDate)})`,
+        }))
+        .reverse(),
+    )
+    // the closest upcoming semester is the last one in the list
+    setNextSemesterDetails(
+      upcomingSemesters.length > 0 ? upcomingSemesters[upcomingSemesters.length - 1] : undefined,
+    )
+
+    hasInitialized.current.semester = true
+  }
+
+  if (projectData && projectId && !hasInitialized.current.project) {
     // filling out the additional clients
     if (projectData.additionalClients) {
       const clients = projectData.additionalClients
@@ -118,15 +137,12 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
         .map((semester) => ({
           value: semester.id,
           label: `${semester.name} (${returnSubmissionDateFromISOString(semester.startDate)} - ${returnSubmissionDateFromISOString(semester.endDate)})`,
+          disabled: semesterIds.includes(semester.id),
         }))
         .reverse(),
     )
-    // the closest upcoming semester is the last one in the list
-    setNextSemesterDetails(
-      upcomingSemesters.length > 0 ? upcomingSemesters[upcomingSemesters.length - 1] : undefined,
-    )
 
-    hasInitialized.current = true
+    hasInitialized.current.project = true
   }
 
   const onSubmit: SubmitHandler<FormProject> = async (data) => {
@@ -489,6 +505,15 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
                     required: 'Please select at least one semester',
                   })}
                 />
+                {projectData && projectId ? (
+                  <p className="form-question-subheading">
+                    <br />
+                    <b>Note:</b> semesters that are greyed out have already been selected and{' '}
+                    <b>cannot be removed directly</b>.
+                    <br />
+                    If you would like to remove a semester, please contact the course coordinators.
+                  </p>
+                ) : null}
               </li>
               <li>
                 <label htmlFor="MeetingAttendance">

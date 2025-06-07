@@ -19,7 +19,7 @@ const InvalidFormView: FC = () => {
             Computer Science Capstone: Project Proposal Form
           </h1>
           <div>
-            <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
+            <h2 className="text-dark-blue font-inter font-bold text-3xl whitespace-pre-wrap pb-4">
               Error
             </h2>
             <p className="text-dark-blue font-inter text-sm">
