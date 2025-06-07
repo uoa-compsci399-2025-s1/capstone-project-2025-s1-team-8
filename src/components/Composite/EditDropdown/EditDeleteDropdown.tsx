@@ -6,15 +6,16 @@ import FilterInner from '@/components/Generic/Filter/FilterInner'
 import { FiEdit } from 'react-icons/fi'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import { BsThreeDots } from 'react-icons/bs'
+import ConfirmModal from '@/components/Composite/ConfirmModal/ConfirmModal'
 
-interface ProjectFilterProps {
+interface EditDeleteDropdownProps {
   className?: string
   containerWidth?: number
   onEdit?: (e: React.MouseEvent<HTMLDivElement>) => void
-  onDelete?: (e: React.MouseEvent<HTMLDivElement>) => void
+  onDelete?: () => void
 }
 
-const EditDropdownOptions: DropdownOptionType[] = [
+const EditDeleteDropdownOptions: DropdownOptionType[] = [
   {
     text: 'Edit',
     icon: <FiEdit className="w-4 h-4" />,
@@ -29,13 +30,14 @@ const EditDropdownOptions: DropdownOptionType[] = [
   },
 ]
 
-const ProjectFilter: React.FC<ProjectFilterProps> = ({
+const EditDeleteDropdown: React.FC<EditDeleteDropdownProps> = ({
   className,
   containerWidth,
   onEdit,
   onDelete,
 }) => {
   const [showDropdown, setShowDropdown] = useState(false)
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false)
   const wrapperRef = useRef<HTMLDivElement>(null)
   const newMaxWidth = containerWidth ? containerWidth / 1.5 : undefined
 
@@ -63,14 +65,14 @@ const ProjectFilter: React.FC<ProjectFilterProps> = ({
           style={{ width: newMaxWidth }}
         >
           <div className={`bg-dark-blue rounded-lg flex flex-col gap-1 p-1.5 ${className}`}>
-            {EditDropdownOptions.map((option, index) => (
+            {EditDeleteDropdownOptions.map((option, index) => (
               <div
                 key={index}
                 onClick={(e) => {
                   if (index === 0) {
                     onEdit?.(e)
                   } else if (index === 1) {
-                    onDelete?.(e)
+                    setDeleteConfirmation(true)
                   }
                 }}
                 className="cursor-pointer"
@@ -87,8 +89,21 @@ const ProjectFilter: React.FC<ProjectFilterProps> = ({
           </div>
         </div>
       )}
+      <ConfirmModal
+        open={deleteConfirmation}
+        onCancel={() => {
+          setDeleteConfirmation(false)
+        }}
+        onConfirm={() => {
+          onDelete?.()
+          setDeleteConfirmation(false)
+        }}
+        onClose={() => {
+          setDeleteConfirmation(false)
+        }}
+      />
     </div>
   )
 }
 
-export default ProjectFilter
+export default EditDeleteDropdown

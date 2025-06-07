@@ -40,6 +40,11 @@ export interface SemesterContainerData {
 export type DndComponentProps = SemesterContainerData & {
   onSaveChanges: (params: SemesterContainerData) => Promise<void>
   onPublishChanges: (semesterId: string) => Promise<void>
+  onDeleteProject: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deletedProject: () => void
 }
 
 const defaultProjectInfo: ProjectDetails = {
@@ -67,6 +72,8 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   semesterId,
   onSaveChanges,
   onPublishChanges,
+  onDeleteProject,
+  deletedProject,
 }) => {
   const [containers, setContainers] = useState<DNDType[]>(presetContainers)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
@@ -495,6 +502,8 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
                 projects={container.currentItems}
                 onChange={(newFilter) => handleFilterChange(container.id, newFilter)}
                 containerColor={container.containerColor}
+                onDelete={onDeleteProject}
+                deleted={deletedProject}
               />
             </FilterProvider>
           ))}

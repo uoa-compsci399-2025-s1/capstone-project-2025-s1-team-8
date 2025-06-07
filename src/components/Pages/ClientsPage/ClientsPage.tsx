@@ -18,20 +18,54 @@ interface ClientsPageProps {
     client: UserCombinedInfo
     projects?: ProjectDetails[]
   }[]
+  onUpdateClient: (
+    clientId: string,
+    firstName: string,
+    lastName: string,
+    affiliation: string,
+    introduction: string,
+  ) => Promise<{
+    data?: UserCombinedInfo
+    error?: string
+    message?: string
+    details?: string
+  }>
+  onDeleteClient: (clientId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  updatedClient: () => void
+  deletedClient: () => void
+  onDeleteProject: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deletedProject: () => void
   pageNum: number
   updatePageCount: (increment: boolean, firstPage?: boolean, lastPage?: boolean) => void
   searchForClients: (searchValue: string) => void
   totalPages?: number
   isFetching: boolean
+  handleGetAllProjects: (clientId: string) => Promise<{
+    error?: string
+    data?: ProjectDetails[]
+  }>
 }
 
 const ClientsPage: React.FC<ClientsPageProps> = ({
   clientsData,
+  onUpdateClient,
+  onDeleteClient,
+  updatedClient,
+  deletedClient,
+  onDeleteProject,
+  deletedProject,
   pageNum,
   updatePageCount,
   searchForClients,
   totalPages = 0,
   isFetching,
+  handleGetAllProjects,
 }) => {
   const [searchValue, setSearchValue] = useState('')
 
@@ -54,9 +88,9 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
         </span>
         <input
           value={searchValue ? searchValue : ''}
-          onChange={async (e) => {
+          onChange={(e) => {
             setSearchValue(e.target.value)
-            await search(e.target.value)
+            search(e.target.value)
           }}
           placeholder="Search client..."
           className="pl-11 w-full placeholder-muted-blue text-dark-blue border-[1.5px] border-deeper-blue focus:outline focus:outline-deeper-blue rounded-full px-4 pt-2 pb-1.5 text-sm font-normal bg-light-beige"
@@ -78,11 +112,18 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
               .toLowerCase()
               .includes(searchValue.trim().toLowerCase()),
           )}
+          onSave={onUpdateClient}
+          onDeleteClient={onDeleteClient}
+          updatedClient={updatedClient}
+          deletedClient={deletedClient}
+          onDeleteProject={onDeleteProject}
+          deletedProject={deletedProject}
+          handleGetAllProjects={handleGetAllProjects}
         />
       </div>
       <div className="flex flex-row justify-center items-center gap-4 mt-8">
         <button
-          onClick={async () => await updatePageCount(false, true)}
+          onClick={() => updatePageCount(false, true)}
           disabled={pageNum === 1 || isFetching}
           className={pageNum === 1 ? 'opacity-30 cursor-default' : 'cursor-pointer'}
         >
@@ -90,7 +131,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
         </button>
 
         <button
-          onClick={async () => await updatePageCount(false)}
+          onClick={() => updatePageCount(false)}
           disabled={pageNum === 1 || isFetching}
           className={pageNum === 1 ? 'opacity-30 cursor-default' : 'cursor-pointer'}
         >
@@ -100,7 +141,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
         <p className="text-dark-blue">{pageNum}</p>
 
         <button
-          onClick={async () => await updatePageCount(true)}
+          onClick={() => updatePageCount(true)}
           disabled={pageNum >= totalPages || isFetching}
           className={pageNum >= totalPages ? 'opacity-30 cursor-default' : 'cursor-pointer'}
         >
@@ -108,7 +149,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
         </button>
 
         <button
-          onClick={async () => await updatePageCount(true, false, true)}
+          onClick={() => updatePageCount(true, false, true)}
           disabled={pageNum >= totalPages || isFetching}
           className={pageNum >= totalPages ? 'opacity-30 cursor-default' : 'cursor-pointer'}
         >

@@ -8,6 +8,7 @@ import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
 import ContentService from '@/lib/services/content/ContentService'
+import { handleDeleteProject } from '@/lib/services/admin/Handlers'
 
 const ProtectedClientView = async (): Promise<JSX.Element> => {
   const clientInfo = await ClientService.getClientInfo()
@@ -26,10 +27,11 @@ const ProtectedClientView = async (): Promise<JSX.Element> => {
           fallback={<div className="text-center text-dark-blue text-lg pt-30">Loading...</div>}
         >
           <ClientDashboard
-            content={clientDashboardCMS}
             client={user}
+            content={clientDashboardCMS}
             projects={projects}
             onSave={handleClientProfileUpdate}
+            onDeleteProject={handleDeleteProject}
           />
         </Suspense>
       </div>

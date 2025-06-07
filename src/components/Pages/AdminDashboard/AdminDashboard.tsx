@@ -16,6 +16,11 @@ import {
   handleGetAllSemesters,
   getAllClients,
   handleGetAllSemesterProjects,
+  handleDeleteClient,
+  handleUpdateClient,
+  handleDeleteProject,
+  getNextSemesterProjects,
+  handleGetAllProjectsByClient,
 } from '@/lib/services/admin/Handlers'
 import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
@@ -31,9 +36,9 @@ type AdminDashboardProps = {
 }
 
 const AdminDashboard: React.FC<AdminDashboardProps> = ({
-  clients,
+  clients: initialClients,
   semesters: initialSemesters,
-  projects,
+  projects: initialProjects,
   totalNumPages = 0,
   semesterStatusList = {},
 }) => {
@@ -41,9 +46,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [activeNav, setActiveNav] = useState<number | null>(null)
   const [notificationMessage, setNotificationMessage] = useState('')
   const [semesters, setSemesters] = useState<Semester[]>(initialSemesters)
+  const [clientsData, setClientsData] = useState(initialClients)
+  const [projects, setProjects] = useState<SemesterContainerData>(initialProjects)
   const [semesterStatuses, setSemesterStatuses] =
     useState<Record<string, 'current' | 'upcoming' | ''>>(semesterStatusList)
-  const [clientsData, setClientsData] = useState(clients)
   const [pageNum, setPageNum] = useState(1)
   const [isFetching, setIsFetching] = useState(false)
   const [totalPages, setTotalPages] = useState(totalNumPages)
@@ -52,7 +58,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
       string,
       { data: { client: UserCombinedInfo; projects: ProjectDetails[] }[]; totalPages: number }
     >
-  >({ _1: { data: clients, totalPages: totalNumPages } })
+  >({ _1: { data: initialClients, totalPages: totalNumPages } })
   const itemsPerPage = 10
 
   const getClientsCache = async (pageNum: number, query: string) => {
@@ -155,6 +161,20 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
     }
   }
 
+  const refreshClients = async () => {
+    const res = await getAllClients()
+    if (res?.data) {
+      setClientsData(res.data)
+    }
+  }
+
+  const refreshProjects = async () => {
+    const res = await getNextSemesterProjects()
+    if (res?.data) {
+      setProjects(res.data)
+    }
+  }
+
   if (activeNav === null) return null // Wait for nav to be loaded
 
   return (
@@ -206,9 +226,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 tabIndex={activeNav === 0 ? 0 : -1}
               >
                 <ProjectDnD
+                  key={JSON.stringify(projects)}
                   {...projects}
                   onSaveChanges={updateProjectOrdersAndStatus}
                   onPublishChanges={handlePublishChanges}
+                  onDeleteProject={handleDeleteProject}
+                  deletedProject={async () => {
+                    setNotificationMessage('Project deleted successfully')
+                    await refreshProjects()
+                  }}
                 />
               </div>
 
@@ -224,6 +250,21 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   searchForClients={searchForClients}
                   totalPages={totalPages}
                   isFetching={isFetching}
+                  onUpdateClient={handleUpdateClient}
+                  onDeleteClient={handleDeleteClient}
+                  updatedClient={async () => {
+                    await refreshClients()
+                  }}
+                  deletedClient={async () => {
+                    await refreshClients()
+                    setNotificationMessage('Client deleted successfully')
+                  }}
+                  onDeleteProject={handleDeleteProject}
+                  deletedProject={async () => {
+                    await refreshProjects()
+                    setNotificationMessage('Project deleted successfully')
+                  }}
+                  handleGetAllProjects={handleGetAllProjectsByClient}
                 />
               </div>
 
@@ -234,23 +275,30 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               >
                 <SemestersPage
                   semesters={semesters}
-                  created={async () => {
+                  createdSemester={async () => {
                     await refreshSemesters()
                     setNotificationMessage('Semester created successfully')
                   }}
-                  updated={async () => {
+                  updatedSemester={async () => {
                     await refreshSemesters()
                     setNotificationMessage('Semester updated successfully')
-                  }}
-                  deleted={async () => {
-                    await refreshSemesters()
-                    setNotificationMessage('Semester deleted successfully')
                   }}
                   handleCreateSemester={handleCreateSemester}
                   handleUpdateSemester={handleUpdateSemester}
                   handleDeleteSemester={handleDeleteSemester}
+                  deletedSemester={async () => {
+                    await refreshProjects()
+                    await refreshSemesters()
+                    setNotificationMessage('Semester deleted successfully')
+                  }}
                   handleGetAllSemesterProjects={handleGetAllSemesterProjects}
                   semesterStatuses={semesterStatuses}
+                  onDeleteProject={handleDeleteProject}
+                  deletedProject={async () => {
+                    await refreshProjects()
+                    await refreshSemesters()
+                    setNotificationMessage('Project deleted successfully')
+                  }}
                 />
               </div>
             </motion.div>

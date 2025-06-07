@@ -11,14 +11,12 @@ import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 
 interface SemestersPageProps {
   semesters: Semester[]
-  created: () => void
-  updated: () => void
-  deleted: () => void
   handleCreateSemester: (formData: FormData) => Promise<void | {
     error?: string
     message?: string
     details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
   }>
+  createdSemester: () => void
   handleUpdateSemester: (
     formData: FormData,
     id: string,
@@ -27,10 +25,17 @@ interface SemestersPageProps {
     message?: string
     details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
   }>
+  updatedSemester: () => void
   handleDeleteSemester: (id: string) => Promise<void | {
     error?: string
     message?: string
   }>
+  deletedSemester: () => void
+  onDeleteProject: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deletedProject: () => void
   handleGetAllSemesterProjects: (semesterId: string) => Promise<void | {
     error?: string
     data?: ProjectDetails[]
@@ -40,17 +45,24 @@ interface SemestersPageProps {
 
 const SemestersPage: React.FC<SemestersPageProps> = ({
   semesters,
-  created,
-  updated,
-  deleted,
   handleCreateSemester,
+  createdSemester,
   handleUpdateSemester,
+  updatedSemester,
   handleDeleteSemester,
+  deletedSemester,
   handleGetAllSemesterProjects,
   semesterStatuses = {},
+  onDeleteProject,
+  deletedProject,
 }) => {
   const [modalOpen, setModalOpen] = useState(false)
   const upcomingSemesterRef = useRef<HTMLDivElement>(null)
+  const [editingSemesterId, setEditingSemesterId] = useState<string | null>(null)
+
+  const callSemesterForm = (semesterId: string) => {
+    setEditingSemesterId(semesterId)
+  }
 
   function toggleModal() {
     setModalOpen(!modalOpen)
@@ -98,25 +110,56 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
             published={semester.published}
             currentOrUpcoming={semesterStatuses[semester.id] || ''}
             handleGetAllSemesterProjects={handleGetAllSemesterProjects}
+            onEdit={callSemesterForm}
+            onDeleteProject={onDeleteProject}
+            deletedProject={deletedProject}
+            onDeleteSemester={handleDeleteSemester}
+            deletedSemester={deletedSemester}
           />
         </div>
       ))}
+
       <SemesterForm
-        open={modalOpen}
-        semesterId="-1"
-        onClose={() => toggleModal()}
+        edit={editingSemesterId !== null}
+        open={modalOpen || editingSemesterId !== null}
+        semesterId={editingSemesterId || '-1'}
+        onClose={() => {
+          if (modalOpen) toggleModal()
+          setEditingSemesterId(null)
+        }}
         onCreated={() => {
-          created?.()
+          createdSemester?.()
+          setEditingSemesterId(null)
         }}
         onUpdated={() => {
-          updated?.()
+          updatedSemester?.()
+          setEditingSemesterId(null)
         }}
         onDeleted={() => {
-          deleted?.()
+          deletedSemester?.()
+          setEditingSemesterId(null)
         }}
         handleCreateSemester={handleCreateSemester}
         handleUpdateSemester={handleUpdateSemester}
         handleDeleteSemester={handleDeleteSemester}
+        semesterName={
+          editingSemesterId ? semesters.find((s) => s.id === editingSemesterId)?.name : ''
+        }
+        startDate={
+          editingSemesterId
+            ? new Date(semesters.find((s) => s.id === editingSemesterId)?.startDate || '')
+            : undefined
+        }
+        endDate={
+          editingSemesterId
+            ? new Date(semesters.find((s) => s.id === editingSemesterId)?.endDate || '')
+            : undefined
+        }
+        submissionDeadline={
+          editingSemesterId
+            ? new Date(semesters.find((s) => s.id === editingSemesterId)?.deadline || '')
+            : undefined
+        }
       />
     </div>
   )

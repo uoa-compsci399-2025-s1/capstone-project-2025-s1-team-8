@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useRef, useEffect } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
-import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
+import EditDeleteDropdown from '@/components/Composite/EditDropdown/EditDeleteDropdown'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import type { Semester } from '@/payload-types'
@@ -15,11 +15,27 @@ interface SemesterCardProps extends Semester {
     data?: ProjectDetails[]
   }>
   currentOrUpcoming?: 'current' | 'upcoming' | ''
+  onEdit?: (id: string) => void
+  onDeleteProject: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deletedProject: () => void
+  onDeleteSemester: (semesterId: string) => Promise<void | {
+    error?: string
+    message?: string
+  }>
+  deletedSemester?: () => void
 }
 const SemesterCard: React.FC<SemesterCardProps> = ({
   semester,
   handleGetAllSemesterProjects,
   currentOrUpcoming,
+  onEdit,
+  onDeleteProject,
+  deletedProject,
+  onDeleteSemester,
+  deletedSemester,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -125,7 +141,14 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
             className="absolute top-8.25 right-19 text-steel-blue hover:text-deep-teal cursor-pointer"
             aria-label="Edit"
           >
-            <EditDropdown containerWidth={200} />
+            <EditDeleteDropdown
+              containerWidth={200}
+              onEdit={() => onEdit?.(semester.id)}
+              onDelete={() => {
+                onDeleteSemester?.(semester.id)
+                deletedSemester?.()
+              }}
+            />
           </button>
 
           {/* Details Section */}
@@ -166,6 +189,15 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
             headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
             heading="Approved projects"
             projects={semesterProjects}
+            onDelete={onDeleteProject}
+            deleted={async () => {
+              deletedProject()
+              const res = await handleGetAllSemesterProjects(semester.id)
+              if (res && res.data) {
+                semesterProjectRef.current[semester.id] = res.data
+                setSemesterProjects(res.data)
+              }
+            }}
             icon={<FiDownload />}
             onClick={handleDownloadCsv}
           />

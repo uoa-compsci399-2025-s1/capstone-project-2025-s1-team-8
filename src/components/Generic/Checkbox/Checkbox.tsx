@@ -40,13 +40,19 @@ const Checkbox: FC<CheckboxProps> = ({
   return (
     <div className={`flex flex-col`}>
       {options.map((option, index) => (
-        <label key={index} className="flex mb-3">
+        <label
+          key={index}
+          className="flex mb-3"
+          onClick={(e) => {
+            if (option.disabled) e.preventDefault()
+          }}
+        >
           <input
             type="checkbox"
             style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
-            className="opacity-0 peer"
+            className={`opacity-0 peer`}
+            tabIndex={option.disabled ? -1 : 0}
             value={option.value}
-            disabled={option.disabled}
             {...props}
           />
           <span
@@ -54,7 +60,7 @@ const Checkbox: FC<CheckboxProps> = ({
                 ${getCheckboxStyle(option.disabled || false)}
                 w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] rounded-sm 
                 [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
-                transition-colors duration-150`}
+                transition-colors duration-150 `}
           >
             <FiCheck className="stroke-4 w-[12px] h-[12px] text-white self-center m-auto" />
           </span>

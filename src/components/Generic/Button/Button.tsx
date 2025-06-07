@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react'
 import React from 'react'
+import type { ButtonHTMLAttributes } from 'react'
 
-interface ButtonProps {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode // Button text or content
   size?: 'sm' | 'md' | 'custom' // Button size
   variant?: 'light' | 'dark' | 'muted_blue' | 'outline' | 'custom' // Button variant
-  onClick?: () => void // Click handler
   startIcon?: ReactNode
   endIcon?: ReactNode
   className?: string // Additional classes (for custom width and custom colours)
@@ -16,11 +16,11 @@ const Button: React.FC<ButtonProps> = ({
   children,
   size = 'custom',
   variant = 'custom',
-  onClick,
   className = '',
   startIcon,
   endIcon,
   type = 'button',
+  ...props
 }) => {
   // Responsive Size Classes
   const sizeClasses = {
@@ -45,8 +45,8 @@ const Button: React.FC<ButtonProps> = ({
       className={`flex items-center justify-center gap-2 rounded-lg hover:cursor-pointer ${className} ${
         sizeClasses[size]
       } ${variantClasses[variant]}`}
-      onClick={onClick}
       type={type}
+      {...props}
     >
       {startIcon && <span className="flex items-center">{startIcon}</span>}
       {children}

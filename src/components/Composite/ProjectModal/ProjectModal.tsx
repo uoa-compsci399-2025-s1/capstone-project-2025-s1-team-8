@@ -6,14 +6,20 @@ import Capsule from '@/components/Generic/Capsule/Capsule'
 import type { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'
 import Button from '@/components/Generic/Button/Button'
-import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
+import EditDeleteDropdown from '@/components/Composite/EditDropdown/EditDeleteDropdown'
 import type { Project, Semester } from '@/payload-types'
 import type { UserCombinedInfo } from '@/types/Collections'
+import { useRouter } from 'next/navigation'
 
 interface ProjectModalProps extends ModalProps {
   projectInfo: Project
   semesters?: Semester[]
   type?: 'student' | 'admin' | 'client'
+  onDelete?: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deleted?: () => void
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({
@@ -23,6 +29,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   projectInfo,
   semesters,
   type = 'admin',
+  onDelete,
+  deleted,
 }) => {
   if (!semesters) semesters = []
   const [copied, setCopied] = useState(false)
@@ -59,6 +67,15 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     ? (projectInfo.additionalClients as UserCombinedInfo[])
     : []
 
+  const router = useRouter()
+
+  const callForm = () => {
+    const queryParams = new URLSearchParams({
+      projectId: projectInfo.id,
+    }).toString()
+    router.push(`/form?${queryParams}`)
+  }
+
   return (
     <Modal
       open={open}
@@ -73,7 +90,15 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             style={{ pointerEvents: 'initial' }}
             aria-label="Edit"
           >
-            <EditDropdown containerWidth={200} />
+            <EditDeleteDropdown
+              containerWidth={200}
+              onEdit={callForm}
+              onDelete={async () => {
+                await onDelete?.(projectInfo.id)
+                deleted?.()
+                onClose()
+              }}
+            />
           </button>
         )}
 

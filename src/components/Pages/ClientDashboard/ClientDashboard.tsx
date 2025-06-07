@@ -23,9 +23,19 @@ interface ClientDashboardProps {
     error?: string
     details?: string
   }>
+  onDeleteProject: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
 }
 
-const ClientDashboard: React.FC<ClientDashboardProps> = ({ content, client, projects, onSave }) => {
+const ClientDashboard: React.FC<ClientDashboardProps> = ({
+  client,
+  content,
+  projects,
+  onSave,
+  onDeleteProject,
+}) => {
   return (
     <div>
       <div className="grid grid-cols-1 xl:grid-cols-2 xl:grid-rows-[auto_1fr] gap-20 sm:gap-16 xl:gap-10 pb-12 items-stretch">
@@ -43,6 +53,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({ content, client, proj
         heading="My projects"
         projects={projects}
         type="client"
+        onDelete={onDeleteProject}
       />
     </div>
   )

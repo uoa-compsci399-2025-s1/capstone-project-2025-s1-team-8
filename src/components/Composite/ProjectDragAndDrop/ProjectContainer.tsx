@@ -15,6 +15,11 @@ export interface ProjectContainerType {
   projects: ProjectCardType[]
   onChange?: (val?: string) => void
   containerColor: 'light' | 'medium' | 'dark'
+  onDelete: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deleted: () => void
 }
 
 const ProjectContainer = ({
@@ -23,6 +28,8 @@ const ProjectContainer = ({
   projects,
   onChange,
   containerColor,
+  onDelete,
+  deleted,
 }: ProjectContainerType) => {
   const { attributes, setNodeRef, transform, isDragging } = useSortable({
     id: id,
@@ -121,6 +128,9 @@ const ProjectContainer = ({
           open={!!openProject}
           onClose={() => setOpenProject(null)}
           projectInfo={openProject}
+          semesters={openProject.semesters}
+          onDelete={onDelete}
+          deleted={deleted}
         >
           Open Project
         </ProjectModal>
