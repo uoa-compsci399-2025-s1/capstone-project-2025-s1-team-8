@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useRef } from 'react'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/16/solid'
 
 import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
@@ -35,7 +35,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
   totalUsersCount = 0,
   isFetching,
 }) => {
-  const [searchValue, setSearchValue] = useState('')
+  const searchRef = useRef<HTMLInputElement>(null)
 
   function debounce(func: (searchValue: string) => void, delay: number) {
     let timeout: NodeJS.Timeout
@@ -55,10 +55,9 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
           <MagnifyingGlassIcon className="text-dark-blue w-4 h-4" />
         </span>
         <input
-          value={searchValue ? searchValue : ''}
+          ref={searchRef}
           onChange={async (e) => {
-            setSearchValue(e.target.value)
-            await search(e.target.value)
+            await search(searchRef.current?.value || '')
           }}
           placeholder="Search client..."
           className="pl-11 w-full placeholder-muted-blue text-dark-blue border-[1.5px] border-deeper-blue focus:outline focus:outline-deeper-blue rounded-full px-4 pt-2 pb-1.5 text-sm font-normal bg-light-beige"
@@ -67,7 +66,6 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
           <XMarkIcon
             className="text-dark-blue hover:text-deeper-blue w-4 h-4 cursor-pointer"
             onClick={async () => {
-              setSearchValue('')
               await search('')
             }}
           />
@@ -78,12 +76,12 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
           clients={clientsData.filter((clientInfo) =>
             `${clientInfo.client.firstName} ${clientInfo.client.lastName ?? ''}`
               .toLowerCase()
-              .includes(searchValue.trim().toLowerCase()),
+              .includes((searchRef.current?.value || "").trim().toLowerCase()),
           )}
         />
       </div>
       {clientsData.length === 0 && (<div className="flex justify-center mt-4">
-          <p className="text-dark-blue">No Results found for {searchValue}</p>
+          <p className="text-dark-blue">No Results found for {searchRef.current?.value || ""}</p>
       </div>)}
       <div className="flex flex-row justify-center items-center gap-4 mt-8">
         <button
