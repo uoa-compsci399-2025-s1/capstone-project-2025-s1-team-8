@@ -1,5 +1,5 @@
 'use client'
-import React, { useMemo, useCallback, useState, useEffect } from 'react'
+import React, { useMemo, useCallback, useState, useRef } from 'react'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/16/solid'
 import {
   MdOutlineNavigateNext,
@@ -9,11 +9,10 @@ import {
 } from 'react-icons/md'
 import { useQueryState } from 'nuqs'
 import { FiLoader } from 'react-icons/fi'
-import { useQueryClient } from '@tanstack/react-query'
 
 import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
 import ClientGroupSkeleton from '@/components/Generic/ClientGroupSkeleton/ClientGroupSkeleton'
-import { useClients, clientsQueryKey, fetchClients } from '@/lib/hooks/useClients'
+import { useClients } from '@/lib/hooks/useClients'
 
 const ClientsPage: React.FC = () => {
   const [search, setSearch] = useQueryState('search')
@@ -22,39 +21,27 @@ const ClientsPage: React.FC = () => {
   const [page, setPage] = useQueryState('page', {
     defaultValue: '1',
   })
-  const queryClient = useQueryClient()
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (localSearch !== search) {
-        setSearch(localSearch || null)
-        setPage('1')
-      }
-    }, 500)
-
-    return () => clearTimeout(timeoutId)
-  }, [localSearch, search, setSearch, setPage])
+  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
 
   const handleSearch = useCallback((value: string) => {
     setIsTyping(true)
     setLocalSearch(value)
-    const timeoutId = setTimeout(() => {
+    
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+    
+    timeoutRef.current = setTimeout(() => {
       setIsTyping(false)
+      if (value !== search) {
+        setSearch(value || null)
+        setPage('1')
+      }
     }, 500)
-    return () => clearTimeout(timeoutId)
-  }, [])
+  }, [search, setSearch, setPage])
 
   const currentPage = Number(page)
   const { data, isFetching, isLoading } = useClients(currentPage, search ?? '')
-
-  useEffect(() => {
-    if (data?.totalPages && currentPage < data.totalPages && !isFetching) {
-      queryClient.prefetchQuery({
-        queryKey: clientsQueryKey(currentPage + 1, search ?? ''),
-        queryFn: () => fetchClients(currentPage + 1, search ?? ''),
-      })
-    }
-  }, [data?.totalPages, currentPage, search, queryClient, isFetching])
 
   const { totalPages, totalUsers, startIndex, endIndex } = useMemo(() => {
     const totalPages = Math.max(1, data?.totalPages || 0)
