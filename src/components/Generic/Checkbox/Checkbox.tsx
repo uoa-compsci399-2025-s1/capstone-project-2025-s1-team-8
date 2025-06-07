@@ -40,10 +40,12 @@ const Checkbox: FC<CheckboxProps> = ({
   return (
     <div className={`flex flex-col`}>
       {options.map((option, index) => (
-        <label key={index} className="flex mb-3"
-            onClick={(e) => {
-              if (option.disabled) e.preventDefault();
-            }}
+        <label
+          key={index}
+          className="flex mb-3"
+          onClick={(e) => {
+            if (option.disabled) e.preventDefault()
+          }}
         >
           <input
             type="checkbox"

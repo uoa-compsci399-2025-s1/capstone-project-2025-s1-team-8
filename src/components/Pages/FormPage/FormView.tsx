@@ -57,7 +57,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
   // State to manage the pairs of names and emails of additional clients
   const searchParams = useSearchParams()
   const projectName = searchParams.get('projectName') || ''
-  
+
   // check if trying to edit an existing project
   const projectId = searchParams.get('projectId') || undefined
 
@@ -216,7 +216,9 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
             </button>
           </Link>
           <h1 className="text-4xl font-normal m-0 text-dark-blue font-dm-serif-display mb-3">
-            {projectId ? 'Edit Project Proposal' : 'Computer Science Capstone: Project Proposal Form'}
+            {projectId
+              ? 'Edit Project Proposal'
+              : 'Computer Science Capstone: Project Proposal Form'}
           </h1>
           <div className={projectId ? 'hidden' : ''}>
             <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
