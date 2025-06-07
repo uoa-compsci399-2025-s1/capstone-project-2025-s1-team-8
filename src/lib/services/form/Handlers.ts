@@ -2,34 +2,7 @@
 
 import ProjectFormService from './projectFormService'
 import { StatusCodes } from 'http-status-codes'
-import { SemesterType } from '@/types/Semester'
-import type { Semester } from '@/payload-types'
 import type { CreateProjectRequestBody } from '@/app/api/projects/route'
-
-/**
- * Handles loading upcoming semesters for the form submission page
- * @returns An object containing upcoming semesters or an error
- */
-export const handleFormPageLoad = async (): Promise<{
-  upcomingSemesters: Semester[]
-  error?: string
-}> => {
-  const {
-    data: semesters,
-    status,
-    error,
-  } = await ProjectFormService.getUpcomingSemesters({
-    timeframe: SemesterType.Upcoming,
-    limit: 10,
-  })
-
-  if (status !== StatusCodes.OK) {
-    console.error('Error fetching upcoming semesters:', error)
-    return { upcomingSemesters: [], error: error || 'Failed to load upcoming semesters' }
-  }
-
-  return { upcomingSemesters: semesters || [] }
-}
 
 export async function handleProjectFormSubmission(formData: CreateProjectRequestBody): Promise<{
   success: boolean
