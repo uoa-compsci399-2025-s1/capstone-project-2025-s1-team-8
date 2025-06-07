@@ -167,7 +167,7 @@ describe('tests /api/admin/users', async () => {
       const json = await res.json()
       expect(res.status).toBe(StatusCodes.OK)
       expect(json.data.length).toEqual(4) // includes the 3 mocked users in the database
-      expect(json.data[0]).toStrictEqual({
+      expect(json.data[json.data.length - 1]).toStrictEqual({
         ...newClient,
         introduction: newClientInfo.introduction,
         affiliation: newClientInfo.affiliation,

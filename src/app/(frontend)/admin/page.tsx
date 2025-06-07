@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { AuthWrapper } from '@/components/Middleware/AuthWrapper'
 import ProtectedAdminView from '@/components/Pages/AdminDashboard/ProtectedAdminView'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   description: 'Admin dashboard - manage users, projects, semesters, and more.',
@@ -10,7 +11,11 @@ export const metadata: Metadata = {
 const AdminPage = () => {
   return (
     <AuthWrapper scopes={['admin']}>
-      <ProtectedAdminView />
+      <Suspense
+        fallback={<div className="text-center text-dark-blue text-lg pt-30">Loading...</div>}
+      >
+        <ProtectedAdminView />
+      </Suspense>
     </AuthWrapper>
   )
 }

@@ -9,7 +9,6 @@ import Button from '@/components/Generic/Button/Button'
 import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
 import type { Project, Semester } from '@/payload-types'
 import type { UserCombinedInfo } from '@/types/Collections'
-import { formatDate } from '@/utils/date'
 
 interface ProjectModalProps extends ModalProps {
   projectInfo: Project
@@ -46,6 +45,13 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     navigator.clipboard.writeText(allEmails)
     setCopiedAll(true)
     setTimeout(() => setCopiedAll(false), 1000)
+  }
+
+  const convertDatetoddmmYYYY = (date: Date) => {
+    const dd = String(date.getDate()).padStart(2, '0')
+    const mm = String(date.getMonth() + 1).padStart(2, '0') // January is 0!
+    const yyyy = date.getFullYear()
+    return `${dd}/${mm}/${yyyy}`
   }
 
   const projectClient = projectInfo.client as UserCombinedInfo
@@ -130,7 +136,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           <Capsule
             className="col-start-1 md:col-start-2 mb-4 md:mb-2"
             variant="gradient"
-            text={formatDate(projectInfo.createdAt)}
+            text={convertDatetoddmmYYYY(new Date(projectInfo.createdAt))}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Number of teams" />

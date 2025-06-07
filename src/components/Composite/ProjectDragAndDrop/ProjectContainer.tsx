@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSortable, SortableContext } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import ProjectFilter from '@/components/Composite/Filter/ProjectFilter'
@@ -63,9 +63,6 @@ const ProjectContainer = ({
       : containerColor == 'medium'
         ? 'bg-deeper-blue'
         : 'bg-dark-blue'
-
-  const sortableItems = useMemo(() => projects.map((i) => i.id), [projects])
-
   return (
     <div
       {...attributes}
@@ -106,7 +103,7 @@ const ProjectContainer = ({
       </div>
 
       <div ref={contentRef} className="flex items-center justify-between mx-[20px] mb-4">
-        <SortableContext id={`sortable-context-${id}`} items={sortableItems}>
+        <SortableContext items={projects.map((i) => i.id)}>
           <div className="flex items-start flex-col gap-y-[15px] w-full">
             {projects.map((i) => (
               <DraggableProjectCard

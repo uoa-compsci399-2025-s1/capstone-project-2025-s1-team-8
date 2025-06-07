@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 import React from 'react'
 import '@/app/globals.css'
-import { NuqsAdapter } from 'nuqs/adapters/next/app'
-import { Providers } from './providers'
 
 export const metadata: Metadata = {
   description: 'Connecting Computer Science Students with Innovative Projects',
@@ -52,11 +50,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   return (
     <html lang="en">
-      <body suppressHydrationWarning>
-        <NuqsAdapter>
-          <Providers>{children}</Providers>
-        </NuqsAdapter>
-      </body>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   )
 }
