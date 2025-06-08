@@ -188,6 +188,7 @@ const AdminDashboard: React.FC = () => {
                       queryClient.invalidateQueries({ queryKey: ['semesters'] })
                       queryClient.invalidateQueries({ queryKey: ['projects'] })
                       queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) // refresh for only current semester
+                      queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
                       setNotificationMessage('Semester deleted successfully')
                     }}
                     semesterStatuses={semestersData?.semesterStatuses || {}}
