@@ -40,12 +40,6 @@ interface ClientsPageProps {
     message?: string
   }>
   deletedProject: () => void
-  pageNum: number
-  updatePageCount: (increment: boolean, firstPage?: boolean, lastPage?: boolean) => void
-  searchForClients: (searchValue: string) => void
-  totalPages?: number
-  totalUsersCount?: number
-  isFetching: boolean
   handleGetAllProjects: (clientId: string) => Promise<{
     error?: string
     data?: ProjectDetails[]

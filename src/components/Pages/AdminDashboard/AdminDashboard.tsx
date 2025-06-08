@@ -251,13 +251,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 tabIndex={activeNav === 1 ? 0 : -1}
               >
                 <ClientsPage
-                  clientsData={clientsData}
-                  pageNum={pageNum}
-                  updatePageCount={updatePageCount}
-                  searchForClients={searchForClients}
-                  totalPages={totalPages}
-                  totalUsersCount={totalUsersCount}
-                  isFetching={isFetching}
                   onUpdateClient={handleUpdateClient}
                   onDeleteClient={handleDeleteClient}
                   updatedClient={async () => {
