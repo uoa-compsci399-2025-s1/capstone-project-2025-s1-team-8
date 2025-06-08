@@ -8,6 +8,8 @@ import type { Semester } from '@/payload-types'
 import type { ProjectDetails } from '@/types/Project'
 import { FiDownload } from 'react-icons/fi'
 import { formatDate } from '@/utils/date'
+import { useSemesterProjects } from '@/lib/hooks/useSemesterProjects'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface SemesterCardProps extends Semester {
   semester: Semester
@@ -41,9 +43,9 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
-  const [projects, setProjects] = useState<ProjectDetails[]>([])
-  const semesterProjectRef = useRef<Record<string, ProjectDetails[]>>({})
-  const [isLoading, setIsLoading] = useState(false)
+  const {data: semesterProjectsData, isLoading } = useSemesterProjects(semester.id)
+
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     if (isOpen && contentRef.current) {
@@ -52,27 +54,6 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
       setHeight('0px')
     }
   }, [isOpen, isLoading])
-
-  const onOpen = async () => {
-    if (!isOpen) {
-      setIsOpen(true)
-      setIsLoading(true)
-      if (semester.id in semesterProjectRef.current) {
-        setProjects(semesterProjectRef.current[semester.id])
-        return setIsLoading(false)
-      }
-      const res = await handleGetAllSemesterProjects(semester.id)
-      if (res && res.data) {
-        semesterProjectRef.current[semester.id] = res.data
-        setProjects(res.data)
-      } else {
-        console.error('Failed to fetch semester projects:', res?.error)
-        setProjects([])
-      }
-      return setIsLoading(false)
-    }
-    setIsOpen(false)
-  }
 
   function handleDownloadCsv() {
     window.open(`/api/admin/export/semesters/${semester.id}`, '_blank')
@@ -83,7 +64,6 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
       {/* Semester Card */}
       <div
         onClick={async () => {
-          await onOpen()
           setIsOpen(!isOpen)
         }} // should load projects
         className={`
@@ -195,15 +175,11 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
             className="pb-1"
             headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
             heading="Approved projects"
-            projects={projects}
+            projects={semesterProjectsData || []}
             onDelete={onDeleteProject}
             deleted={async () => {
               deletedProject()
-              const res = await handleGetAllSemesterProjects(semester.id)
-              if (res && res.data) {
-                semesterProjectRef.current[semester.id] = res.data
-                setProjects(res.data)
-              }
+              queryClient.invalidateQueries({ queryKey: ['semesterProjects', semester.id] })
             }}
             icon={<FiDownload />}
             loading={isLoading}

@@ -124,6 +124,7 @@ const AdminDashboard: React.FC = () => {
                     deletedProject={async () => {
                       setNotificationMessage('Project deleted successfully')
                       await queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
                     }}
                   />
                 )}
@@ -140,15 +141,21 @@ const AdminDashboard: React.FC = () => {
                     onDeleteClient={handleDeleteClient}
                     updatedClient={async () => {
                       queryClient.invalidateQueries({ queryKey: ['clients'] })
+                      queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
                       setNotificationMessage('Client updated successfully')
                     }}
                     deletedClient={async () => {
                       queryClient.invalidateQueries({ queryKey: ['clients'] })
+                      queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
                       setNotificationMessage('Client deleted successfully')
                     }}
                     onDeleteProject={handleDeleteProject}
                     deletedProject={async () => {
                       queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
+                      await prefetchProjects(queryClient)
                       setNotificationMessage('Project deleted successfully')
                     }}
                     handleGetAllProjects={handleGetAllProjectsByClient}
@@ -176,6 +183,7 @@ const AdminDashboard: React.FC = () => {
                     }}
                     updatedSemester={async () => {
                       await queryClient.invalidateQueries({ queryKey: ['semesters'] })
+                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
                       setNotificationMessage('Semester updated successfully')
                     }}
                     handleCreateSemester={handleCreateSemester}
@@ -191,6 +199,7 @@ const AdminDashboard: React.FC = () => {
                     onDeleteProject={handleDeleteProject}
                     deletedProject={async () => {
                       queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
                       queryClient.invalidateQueries({ queryKey: ['semesters'] })
                       setNotificationMessage('Project deleted successfully')
                     }}
