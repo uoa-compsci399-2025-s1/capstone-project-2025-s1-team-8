@@ -145,6 +145,7 @@ const AdminDashboard: React.FC = () => {
                     }}
                     onDeleteProject={handleDeleteProject}
                     deletedProject={async () => {
+                      //done
                       queryClient.invalidateQueries({ queryKey: ['projects'] })
                       queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
                       setNotificationMessage('Project deleted successfully')
@@ -171,7 +172,8 @@ const AdminDashboard: React.FC = () => {
                       queryClient.invalidateQueries({ queryKey: ['semesters'] })
                       setNotificationMessage('Semester created successfully')
                     }}
-                    updatedSemester={async () => { //done
+                    updatedSemester={async () => {
+                      //done
                       await queryClient.invalidateQueries({ queryKey: ['semesters'] })
                       await queryClient.invalidateQueries({ queryKey: ['projects'] })
                       await queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
@@ -180,7 +182,8 @@ const AdminDashboard: React.FC = () => {
                     handleCreateSemester={handleCreateSemester}
                     handleUpdateSemester={handleUpdateSemester}
                     handleDeleteSemester={handleDeleteSemester}
-                    deletedSemester={async () => { //done
+                    deletedSemester={async () => {
+                      //done
                       queryClient.invalidateQueries({ queryKey: ['semesters'] })
                       queryClient.invalidateQueries({ queryKey: ['projects'] })
                       queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
@@ -188,7 +191,8 @@ const AdminDashboard: React.FC = () => {
                     }}
                     semesterStatuses={semestersData?.semesterStatuses || {}}
                     onDeleteProject={handleDeleteProject}
-                    deletedProject={async () => { //done
+                    deletedProject={async () => {
+                      //done
                       queryClient.invalidateQueries({ queryKey: ['projects'] })
                       queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
                       setNotificationMessage('Project deleted successfully')
