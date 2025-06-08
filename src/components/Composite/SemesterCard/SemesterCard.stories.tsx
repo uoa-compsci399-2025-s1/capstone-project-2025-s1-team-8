@@ -20,12 +20,6 @@ export const CurrentSemester: Story = {
   args: {
     ...Default.args,
     semester: mockSemesters[1],
-    handleGetAllSemesterProjects: async (semesterId: string) => {
-      console.log('Fetching projects for semester:', semesterId)
-      return {
-        data: [{ ...projectMock, semesters: [mockSemesters[1]] }],
-      }
-    },
   },
 }
 
@@ -33,12 +27,6 @@ export const UpcomingSemester: Story = {
   args: {
     ...Default.args,
     semester: mockSemesters[1],
-    handleGetAllSemesterProjects: async (semesterId: string) => {
-      console.log('Fetching projects for semester:', semesterId)
-      return {
-        data: [{ ...projectMock, semesters: [mockSemesters[1]] }],
-      }
-    },
     currentOrUpcoming: 'upcoming',
   },
 }

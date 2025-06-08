@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { handleGetAllSemesterProjects } from '../services/admin/Handlers'
-import { ProjectDetails } from '@/types/Project'
+import type { ProjectDetails } from '@/types/Project'
 
 export const semesterProjectsQueryKey = (semesterId: string) => ['semesterProjects', semesterId]
 

@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import ClientsPage from './ClientsPage'
-import { mockClients } from '@/test-config/mocks/User.mock'
+/*import { mockClients } from '@/test-config/mocks/User.mock'
 
 const mockClientsWithProjects = mockClients.map((c) => ({
   client: c,
   projects: [],
-}))
+}))*/
 
 const meta: Meta<typeof ClientsPage> = {
   title: 'Pages/ClientsPage',

@@ -1,4 +1,5 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
+import type { useQueryClient } from '@tanstack/react-query'
 import { getNextSemesterProjects } from '@/lib/services/admin/Handlers'
 
 export const projectsQueryKey = () => ['projects']
