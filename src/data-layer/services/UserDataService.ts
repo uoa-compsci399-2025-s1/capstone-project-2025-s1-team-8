@@ -92,7 +92,6 @@ export default class UserDataService {
       limit: options.limit,
       pagination: true,
       page: options.page,
-      sort: 'createdAt',
     })
   }
 

@@ -184,7 +184,7 @@ const SemesterForm: React.FC<SemesterFormProps> = memo(
 
           <div className="flex flex-row gap-5">
             <Button variant="dark" size="sm" type="submit">
-              Confirm
+              {edit ? 'Submit' : 'Create'}
             </Button>
             <Button variant="muted_blue" size="sm" onClick={onClose}>
               Cancel
