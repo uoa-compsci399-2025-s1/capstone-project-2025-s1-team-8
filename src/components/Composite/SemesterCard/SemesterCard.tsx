@@ -7,6 +7,7 @@ import { XMarkIcon } from '@heroicons/react/24/solid'
 import type { Semester } from '@/payload-types'
 import type { ProjectDetails } from '@/types/Project'
 import { FiDownload } from 'react-icons/fi'
+import { formatDate } from '@/utils/date'
 
 interface SemesterCardProps extends Semester {
   semester: Semester
@@ -115,12 +116,12 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
 
         <div className="flex flex-wrap sm:flex-nowrap gap-2">
           <Capsule
-            text={new Date(semester.startDate).toLocaleDateString()}
+            text={formatDate(semester.startDate)}
             variant="muted_blue"
             className="small-info-tag"
           />
           <Capsule
-            text={new Date(semester.endDate).toLocaleDateString()}
+            text={formatDate(semester.endDate)}
             variant="muted_blue"
             className="small-info-tag"
           />
@@ -166,13 +167,13 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
             <div className="grid grid-cols-[auto_1fr] grid-rows-3 gap-3 py-3 text-sm sm:text-base">
               <Capsule text="Starts" variant="muted_blue" className="small-info-tag pb-0.5" />
               <Capsule
-                text={new Date(semester.startDate).toLocaleDateString()}
+                text={formatDate(semester.startDate)}
                 variant="beige"
                 className="small-info-tag pb-0.5"
               />
               <Capsule text="Ends" variant="muted_blue" className="small-info-tag pb-0.5" />
               <Capsule
-                text={new Date(semester.endDate).toLocaleDateString()}
+                text={formatDate(semester.endDate)}
                 variant="beige"
                 className="small-info-tag pb-0.5"
               />
@@ -182,7 +183,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
                 className="small-info-tag pb-0.5"
               />
               <Capsule
-                text={new Date(semester.deadline).toLocaleDateString()}
+                text={formatDate(semester.deadline)}
                 variant="beige"
                 className="small-info-tag pb-0.5"
               />
