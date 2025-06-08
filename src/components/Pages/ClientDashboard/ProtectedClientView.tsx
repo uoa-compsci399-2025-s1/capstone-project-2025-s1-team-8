@@ -3,17 +3,15 @@ import { type JSX, Suspense } from 'react'
 import NavBar from '@/components/Generic/NavBar/NavBar'
 import ClientDashboard from '@/components/Pages/ClientDashboard/ClientDashboard'
 import ClientService from '@/lib/services/client/ClientService'
-import { handleClientPageLoad, handleClientProfileUpdate } from '@/lib/services/client/Handlers'
+import { handleClientProfileUpdate } from '@/lib/services/client/Handlers'
 import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 import type { UserCombinedInfo } from '@/types/Collections'
-import type { ProjectDetails } from '@/types/Project'
 import ContentService from '@/lib/services/content/ContentService'
 import { handleDeleteProject } from '@/lib/services/admin/Handlers'
 
 const ProtectedClientView = async (): Promise<JSX.Element> => {
   const clientInfo = await ClientService.getClientInfo()
   const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
-  const projects: ProjectDetails[] = (await handleClientPageLoad()).projects
 
   const { content: clientDashboardCMS } = await ContentService.getClientDashboard()
 
@@ -29,7 +27,6 @@ const ProtectedClientView = async (): Promise<JSX.Element> => {
           <ClientDashboard
             client={user}
             content={clientDashboardCMS}
-            projects={projects}
             onSave={handleClientProfileUpdate}
             onDeleteProject={handleDeleteProject}
           />
