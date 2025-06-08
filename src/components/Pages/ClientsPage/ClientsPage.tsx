@@ -40,10 +40,6 @@ interface ClientsPageProps {
     message?: string
   }>
   deletedProject: () => void
-  handleGetAllProjects: (clientId: string) => Promise<{
-    error?: string
-    data?: ProjectDetails[]
-  }>
 }
 
 const ClientsPage: React.FC<ClientsPageProps> = ({
@@ -53,7 +49,6 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
   deletedClient,
   onDeleteProject,
   deletedProject,
-  handleGetAllProjects,
 }) => {
   const [search, setSearch] = useQueryState('search')
   const [localSearch, setLocalSearch] = useState(search ?? '')
@@ -139,7 +134,6 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
               deletedClient={deletedClient}
               onDeleteProject={onDeleteProject}
               deletedProject={deletedProject}
-              handleGetAllProjects={handleGetAllProjects}
             />
           </>
         )}

@@ -31,10 +31,6 @@ export interface ClientGroupProps {
     message?: string
   }>
   deletedProject: () => void
-  handleGetAllProjects: (clientId: string) => Promise<{
-    error?: string
-    data?: ProjectDetails[]
-  }>
 }
 
 const ClientGroup: React.FC<ClientGroupProps> = ({
@@ -45,7 +41,6 @@ const ClientGroup: React.FC<ClientGroupProps> = ({
   deletedClient,
   onDeleteProject,
   deletedProject,
-  handleGetAllProjects,
 }) => {
   return (
     <div className="w-full rounded-2xl overflow-hidden border border-beige divide-beige divide-y-2">
@@ -59,7 +54,6 @@ const ClientGroup: React.FC<ClientGroupProps> = ({
           deletedClient={deletedClient}
           onDeleteProject={onDeleteProject}
           deletedProject={deletedProject}
-          handleGetAllProjects={handleGetAllProjects}
         />
       ))}
     </div>
