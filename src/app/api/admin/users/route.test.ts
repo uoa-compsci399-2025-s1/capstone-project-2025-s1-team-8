@@ -167,11 +167,15 @@ describe('tests /api/admin/users', async () => {
       const json = await res.json()
       expect(res.status).toBe(StatusCodes.OK)
       expect(json.data.length).toEqual(4) // includes the 3 mocked users in the database
-      expect(json.data).toEqual(expect.arrayContaining([{
-        ...newClient,
-        introduction: newClientInfo.introduction,
-        affiliation: newClientInfo.affiliation,
-      }]))
+      expect(json.data).toEqual(
+        expect.arrayContaining([
+          {
+            ...newClient,
+            introduction: newClientInfo.introduction,
+            affiliation: newClientInfo.affiliation,
+          },
+        ]),
+      )
     })
 
     it('should return a valid response if the page is invalid or out of range', async () => {
