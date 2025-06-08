@@ -128,6 +128,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
               onDelete={() => {
                 onDeleteSemester?.(semester.id)
                 deletedSemester?.()
+                queryClient.invalidateQueries({ queryKey: ['semesterProjects', semester.id] })
               }}
             />
           </button>
