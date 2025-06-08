@@ -40,8 +40,9 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
-  const [semesterProjects, setSemesterProjects] = useState<ProjectDetails[]>([])
+  const [projects, setProjects] = useState<ProjectDetails[]>([])
   const semesterProjectRef = useRef<Record<string, ProjectDetails[]>>({})
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     if (isOpen && contentRef.current) {
@@ -49,22 +50,26 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
     } else {
       setHeight('0px')
     }
-  }, [isOpen])
+  }, [isOpen, isLoading])
 
   const onOpen = async () => {
     if (!isOpen) {
+      setIsOpen(true)
+      setIsLoading(true)
       if (semester.id in semesterProjectRef.current) {
-        return setSemesterProjects(semesterProjectRef.current[semester.id])
+        setProjects(semesterProjectRef.current[semester.id])
+        return setIsLoading(false)
       }
       const res = await handleGetAllSemesterProjects(semester.id)
       if (res && res.data) {
         semesterProjectRef.current[semester.id] = res.data
-        setSemesterProjects(res.data)
+        setProjects(res.data)
       } else {
         console.error('Failed to fetch semester projects:', res?.error)
-        setSemesterProjects([])
+        setProjects([])
       }
-    }
+      return setIsLoading(false)
+    } setIsOpen(false)
   }
 
   function handleDownloadCsv() {
@@ -188,17 +193,18 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
             className="pb-1"
             headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
             heading="Approved projects"
-            projects={semesterProjects}
+            projects={projects}
             onDelete={onDeleteProject}
             deleted={async () => {
               deletedProject()
               const res = await handleGetAllSemesterProjects(semester.id)
               if (res && res.data) {
                 semesterProjectRef.current[semester.id] = res.data
-                setSemesterProjects(res.data)
+                setProjects(res.data)
               }
             }}
             icon={<FiDownload />}
+            loading={isLoading}
             onClick={handleDownloadCsv}
           />
         </div>
