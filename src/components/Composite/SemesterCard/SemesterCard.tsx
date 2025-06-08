@@ -13,10 +13,6 @@ import { useQueryClient } from '@tanstack/react-query'
 
 interface SemesterCardProps extends Semester {
   semester: Semester
-  handleGetAllSemesterProjects: (semesterId: string) => Promise<void | {
-    error?: string
-    data?: ProjectDetails[]
-  }>
   currentOrUpcoming?: 'current' | 'upcoming' | ''
   onEdit?: (id: string) => void
   onDeleteProject: (projectId: string) => Promise<{
@@ -32,7 +28,6 @@ interface SemesterCardProps extends Semester {
 }
 const SemesterCard: React.FC<SemesterCardProps> = ({
   semester,
-  handleGetAllSemesterProjects,
   currentOrUpcoming,
   onEdit,
   onDeleteProject,

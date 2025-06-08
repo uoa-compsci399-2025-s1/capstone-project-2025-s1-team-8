@@ -1,24 +1,15 @@
 'use client'
 import { motion } from 'framer-motion'
-
-import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
-import type { Semester } from '@/payload-types'
-import type { UserCombinedInfo } from '@/types/Collections'
-import type { ProjectDetails } from '@/types/Project'
 import {
   handleCreateSemester,
   handleUpdateSemester,
   handleDeleteSemester,
   handlePublishChanges,
   updateProjectOrdersAndStatus,
-  handleGetAllSemesters,
-  getAllClients,
-  handleGetAllSemesterProjects,
   handleDeleteClient,
   handleUpdateClient,
   handleDeleteProject,
-  getNextSemesterProjects,
   handleGetAllProjectsByClient,
 } from '@/lib/services/admin/Handlers'
 import SemestersPage from '../SemestersPage/SemestersPage'
@@ -195,7 +186,6 @@ const AdminDashboard: React.FC = () => {
                       queryClient.invalidateQueries({ queryKey: ['projects'] })
                       setNotificationMessage('Semester deleted successfully')
                     }}
-                    handleGetAllSemesterProjects={handleGetAllSemesterProjects}
                     semesterStatuses={semestersData?.semesterStatuses || {}}
                     onDeleteProject={handleDeleteProject}
                     deletedProject={async () => {

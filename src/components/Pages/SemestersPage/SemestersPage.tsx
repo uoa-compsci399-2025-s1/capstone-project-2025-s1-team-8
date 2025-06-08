@@ -36,10 +36,6 @@ interface SemestersPageProps {
     message?: string
   }>
   deletedProject: () => void
-  handleGetAllSemesterProjects: (semesterId: string) => Promise<void | {
-    error?: string
-    data?: ProjectDetails[]
-  }>
   semesterStatuses?: Record<string, 'current' | 'upcoming' | ''>
 }
 
@@ -51,7 +47,6 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
   updatedSemester,
   handleDeleteSemester,
   deletedSemester,
-  handleGetAllSemesterProjects,
   semesterStatuses = {},
   onDeleteProject,
   deletedProject,
@@ -109,7 +104,6 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
             createdAt={semester.createdAt}
             published={semester.published}
             currentOrUpcoming={semesterStatuses[semester.id] || ''}
-            handleGetAllSemesterProjects={handleGetAllSemesterProjects}
             onEdit={callSemesterForm}
             onDeleteProject={onDeleteProject}
             deletedProject={deletedProject}
