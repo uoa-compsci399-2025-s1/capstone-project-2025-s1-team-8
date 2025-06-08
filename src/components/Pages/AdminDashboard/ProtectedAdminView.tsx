@@ -12,10 +12,13 @@ const UserInfo = async (): Promise<JSX.Element> => {
   return <NavBar onclick={handleLoginButtonClick} user={user} />
 }
 
-const ProtectedAdminView = (): JSX.Element => {
+const ProtectedAdminView = async (): Promise<JSX.Element> => {
+  const clientInfo = await ClientService.getClientInfo()
+  const user: UserCombinedInfo = clientInfo.userInfo as UserCombinedInfo
+
   return (
     <div>
-      <UserInfo />
+      <NavBar onclick={handleLoginButtonClick} user={user} />
       <AdminDashboard />
     </div>
   )
