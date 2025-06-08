@@ -104,6 +104,10 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }
   }, [showNotification])
 
+  useEffect(() => {
+    setContainers(presetContainers)
+  }, [presetContainers])
+
   useUnsavedChangesWarning(hasChanges)
 
   //TODO: when items are moved around, remove the active filter styles
@@ -482,6 +486,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
       <div className="flex gap-6 flex-wrap md:flex-nowrap">
         <DndContext
+          id="project-dnd-context"
           sensors={sensors}
           collisionDetection={closestCorners}
           onDragStart={handleDragStart}

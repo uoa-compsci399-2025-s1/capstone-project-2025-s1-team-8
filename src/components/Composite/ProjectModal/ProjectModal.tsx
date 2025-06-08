@@ -10,6 +10,8 @@ import EditDeleteDropdown from '@/components/Composite/EditDropdown/EditDeleteDr
 import type { Project, Semester } from '@/payload-types'
 import type { UserCombinedInfo } from '@/types/Collections'
 import { useRouter } from 'next/navigation'
+import { formatDate } from '@/utils/date'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface ProjectModalProps extends ModalProps {
   projectInfo: Project
@@ -32,6 +34,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   onDelete,
   deleted,
 }) => {
+  const queryClient = useQueryClient()
+
   if (!semesters) semesters = []
   const [copied, setCopied] = useState(false)
   const [copiedAll, setCopiedAll] = useState(false)
@@ -53,13 +57,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     navigator.clipboard.writeText(allEmails)
     setCopiedAll(true)
     setTimeout(() => setCopiedAll(false), 1000)
-  }
-
-  const convertDatetoddmmYYYY = (date: Date) => {
-    const dd = String(date.getDate()).padStart(2, '0')
-    const mm = String(date.getMonth() + 1).padStart(2, '0') // January is 0!
-    const yyyy = date.getFullYear()
-    return `${dd}/${mm}/${yyyy}`
   }
 
   const projectClient = projectInfo.client as UserCombinedInfo
@@ -96,6 +93,15 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
               onDelete={async () => {
                 await onDelete?.(projectInfo.id)
                 deleted?.()
+                await queryClient.invalidateQueries({ queryKey: ['clientPage'] })
+                await queryClient.invalidateQueries({
+                  queryKey: ['clientProjects', projectClient.id],
+                })
+                for (const client of otherClientDetails) {
+                  queryClient.invalidateQueries({
+                    queryKey: ['clientProjects', client.id],
+                  })
+                }
                 onClose()
               }}
             />
@@ -161,7 +167,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           <Capsule
             className="col-start-1 md:col-start-2 mb-4 md:mb-2"
             variant="gradient"
-            text={convertDatetoddmmYYYY(new Date(projectInfo.createdAt))}
+            text={formatDate(projectInfo.createdAt)}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Number of teams" />

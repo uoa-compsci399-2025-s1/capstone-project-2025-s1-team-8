@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import type { ModalProps } from '@/components/Generic/Modal/Modal'
 import Modal from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy, FiSave } from 'react-icons/fi'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import EditDeleteDropdown from '@/components/Composite/EditDropdown/EditDeleteDropdown'
-import type { ProjectDetails } from '@/types/Project'
 import Notification from '@/components/Generic/Notification/Notification'
 import type { UserCombinedInfo } from '@/types/Collections'
+import { useClientProjects } from '@/lib/hooks/useClientProjects'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface ClientModalProps extends ModalProps {
   clientInfo: UserCombinedInfo
@@ -35,10 +36,6 @@ interface ClientModalProps extends ModalProps {
     message?: string
   }>
   deletedProject?: () => void
-  handleGetAllProjects: (clientId: string) => Promise<{
-    error?: string
-    data?: ProjectDetails[]
-  }>
 }
 
 const ClientModal: React.FC<ClientModalProps> = ({
@@ -53,7 +50,6 @@ const ClientModal: React.FC<ClientModalProps> = ({
   onUpdatedClient,
   onDeleteProject,
   deletedProject,
-  handleGetAllProjects,
 }) => {
   const [copied, setCopied] = useState(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
@@ -74,7 +70,9 @@ const ClientModal: React.FC<ClientModalProps> = ({
     'warning',
   )
   const [notificationTitle, setNotificationTitle] = useState<string>('')
-  const [projects, setProjects] = useState<ProjectDetails[]>([])
+
+  const { data: projects, isLoading } = useClientProjects(clientInfo.id)
+  const queryClient = useQueryClient()
 
   const handleSave = async () => {
     if (!firstName || !lastName) {
@@ -108,6 +106,7 @@ const ClientModal: React.FC<ClientModalProps> = ({
     setNotificationTitle('Success')
     setNotificationMessage('Client updated successfully')
     onUpdatedClient?.()
+    await queryClient.invalidateQueries({ queryKey: ['clientProjects', clientInfo.id] })
   }
 
   const handleCopy = (email: string) => {
@@ -115,21 +114,6 @@ const ClientModal: React.FC<ClientModalProps> = ({
     setCopied(true)
     setTimeout(() => setCopied(false), 1000)
   }
-
-  useEffect(() => {
-    if (open) {
-      const fetchProjects = async () => {
-        const res = await handleGetAllProjects(clientInfo.id)
-        if (res && res.data) {
-          setProjects(res.data)
-        } else {
-          console.error('Failed to fetch projects:', res?.error)
-          setProjects([])
-        }
-      }
-      fetchProjects()
-    }
-  }, [open, clientInfo.id, handleGetAllProjects])
 
   return (
     <Modal
@@ -253,18 +237,31 @@ const ClientModal: React.FC<ClientModalProps> = ({
           </>
         )}
       </div>
-      {projects.length !== 0 && (
+      {isLoading && (
+        <div className="flex justify-center items-center h-32">
+          <p className="text-dark-blue">Loading projects...</p>
+        </div>
+      )}
+      {projects?.length !== 0 && !isLoading && (
         <ProjectCardList
           className="bg-transparent-blue border-t-deeper-blue border-t max-w-full flex flex-col p-15 rounded-b-2xl gap-5"
           headingClassName="text-3xl pb-3 tracking-wide"
           heading="Projects"
-          projects={projects}
+          projects={projects || []}
           onDelete={onDeleteProject}
           deleted={async () => {
             deletedProject?.()
-            const res = await handleGetAllProjects(clientInfo.id)
-            if (res && res.data) {
-              setProjects(res.data)
+            await queryClient.invalidateQueries({ queryKey: ['clientProjects', clientInfo.id] })
+
+            for (const project of projects || []) {
+              for (const client of project.additionalClients || []) {
+                await queryClient.invalidateQueries({
+                  queryKey: ['clientProjects', (client as UserCombinedInfo).id],
+                })
+              }
+              for (const semester of project.semesters || []) {
+                await queryClient.invalidateQueries({ queryKey: ['semesterProjects', semester.id] })
+              }
             }
             setNotificationMessage('Project deleted successfully')
             setNotificationType('success')

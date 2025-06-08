@@ -5,7 +5,6 @@ import SemesterCard from '@/components/Composite/SemesterCard/SemesterCard'
 import Button from '@/components/Generic/Button/Button'
 import SemesterForm from '@/components/Composite/SemesterForm/SemesterForm'
 import type { Semester } from '@/payload-types'
-import type { ProjectDetails } from '@/types/Project'
 import type { typeToFlattenedError } from 'zod'
 import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 
@@ -36,10 +35,6 @@ interface SemestersPageProps {
     message?: string
   }>
   deletedProject: () => void
-  handleGetAllSemesterProjects: (semesterId: string) => Promise<void | {
-    error?: string
-    data?: ProjectDetails[]
-  }>
   semesterStatuses?: Record<string, 'current' | 'upcoming' | ''>
 }
 
@@ -51,7 +46,6 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
   updatedSemester,
   handleDeleteSemester,
   deletedSemester,
-  handleGetAllSemesterProjects,
   semesterStatuses = {},
   onDeleteProject,
   deletedProject,
@@ -109,7 +103,6 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
             createdAt={semester.createdAt}
             published={semester.published}
             currentOrUpcoming={semesterStatuses[semester.id] || ''}
-            handleGetAllSemesterProjects={handleGetAllSemesterProjects}
             onEdit={callSemesterForm}
             onDeleteProject={onDeleteProject}
             deletedProject={deletedProject}
