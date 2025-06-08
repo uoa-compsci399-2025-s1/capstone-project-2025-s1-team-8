@@ -7,11 +7,7 @@ import { TeapotCard } from '@/components/Generic/TeapotCard/TeapotCard'
 export const StudentPage: React.FC = () => {
   const { data: res, isLoading } = useStudentPage()
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="text-dark-blue text-lg">Loading...</div>
-      </div>
-    )
+    return <div className="text-center text-dark-blue text-lg pt-30">Loading...</div>
   }
 
   return (
