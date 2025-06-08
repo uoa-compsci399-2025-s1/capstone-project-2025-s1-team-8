@@ -153,6 +153,7 @@ export const getAllClients = async (
   data?: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
   nextPage?: number
   totalPages?: number
+  totalDocs?: number
 }> => {
   const getClientsResponse = await AdminService.getAllUsers({ ...options, role: UserRole.Client })
   const clientsWithProjects = await Promise.all(
@@ -168,6 +169,7 @@ export const getAllClients = async (
     data: clientsWithProjects,
     nextPage: getClientsResponse.nextPage,
     totalPages: getClientsResponse.totalPages,
+    totalDocs: getClientsResponse.totalDocs,
   }
 }
 
