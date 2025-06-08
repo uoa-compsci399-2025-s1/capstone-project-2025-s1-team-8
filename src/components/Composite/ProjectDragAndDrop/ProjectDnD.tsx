@@ -482,6 +482,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
       <div className="flex gap-6 flex-wrap md:flex-nowrap">
         <DndContext
+          id="project-dnd-context"
           sensors={sensors}
           collisionDetection={closestCorners}
           onDragStart={handleDragStart}
