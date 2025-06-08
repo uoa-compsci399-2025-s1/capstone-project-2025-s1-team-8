@@ -106,7 +106,7 @@ const ClientModal: React.FC<ClientModalProps> = ({
     setNotificationTitle('Success')
     setNotificationMessage('Client updated successfully')
     onUpdatedClient?.()
-    queryClient.invalidateQueries({ queryKey: ['clientProjects', clientInfo.id] })
+    await queryClient.invalidateQueries({ queryKey: ['clientProjects', clientInfo.id] })
   }
 
   const handleCopy = (email: string) => {
@@ -251,16 +251,16 @@ const ClientModal: React.FC<ClientModalProps> = ({
           onDelete={onDeleteProject}
           deleted={async () => {
             deletedProject?.()
-            queryClient.invalidateQueries({ queryKey: ['clientProjects', clientInfo.id] })
+            await queryClient.invalidateQueries({ queryKey: ['clientProjects', clientInfo.id] })
 
             for (const project of projects || []) {
               for (const client of project.additionalClients || []) {
-                queryClient.invalidateQueries({
+                await queryClient.invalidateQueries({
                   queryKey: ['clientProjects', (client as UserCombinedInfo).id],
                 })
               }
               for (const semester of project.semesters || []) {
-                queryClient.invalidateQueries({ queryKey: ['semesterProjects', semester.id] })
+                await queryClient.invalidateQueries({ queryKey: ['semesterProjects', semester.id] })
               }
             }
             setNotificationMessage('Project deleted successfully')

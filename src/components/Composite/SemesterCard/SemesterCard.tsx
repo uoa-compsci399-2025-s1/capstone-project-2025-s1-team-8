@@ -125,10 +125,10 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
             <EditDeleteDropdown
               containerWidth={200}
               onEdit={() => onEdit?.(semester.id)}
-              onDelete={() => {
+              onDelete={async () => {
                 onDeleteSemester?.(semester.id)
                 deletedSemester?.()
-                queryClient.invalidateQueries({ queryKey: ['semesterProjects', semester.id] })
+                await queryClient.invalidateQueries({ queryKey: ['semesterProjects', semester.id] })
               }}
             />
           </button>
@@ -174,7 +174,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
             onDelete={onDeleteProject}
             deleted={async () => {
               deletedProject()
-              queryClient.invalidateQueries({ queryKey: ['semesterProjects', semester.id] })
+              await queryClient.invalidateQueries({ queryKey: ['semesterProjects', semester.id] })
             }}
             icon={<FiDownload />}
             loading={isLoading}

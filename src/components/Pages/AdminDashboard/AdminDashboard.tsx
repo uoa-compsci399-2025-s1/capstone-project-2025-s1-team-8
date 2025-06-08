@@ -130,24 +130,24 @@ const AdminDashboard: React.FC = () => {
                     onUpdateClient={handleUpdateClient}
                     onDeleteClient={handleDeleteClient}
                     updatedClient={async () => {
-                      queryClient.invalidateQueries({ queryKey: ['clients'] })
-                      queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) // do this for every semester the project is in
-                      queryClient.invalidateQueries({ queryKey: ['clientProjects'] }) // invalidate for current client + additonal clients
+                      await queryClient.invalidateQueries({ queryKey: ['clients'] })
+                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) // do this for every semester the project is in
+                      await queryClient.invalidateQueries({ queryKey: ['clientProjects'] }) // invalidate for current client + additonal clients
                       setNotificationMessage('Client updated successfully')
                     }}
                     deletedClient={async () => {
-                      queryClient.invalidateQueries({ queryKey: ['clients'] })
-                      queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) //invalidate for every semester the clients proproject is in if no need for backend call
-                      queryClient.invalidateQueries({ queryKey: ['clientProjects'] }) //invalidate for current client + additional clients
+                      await queryClient.invalidateQueries({ queryKey: ['clients'] })
+                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) //invalidate for every semester the clients proproject is in if no need for backend call
+                      await queryClient.invalidateQueries({ queryKey: ['clientProjects'] }) //invalidate for current client + additional clients
                       setNotificationMessage('Client deleted successfully')
                     }}
                     onDeleteProject={handleDeleteProject}
                     deletedProject={async () => {
                       //done
-                      queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
                       setNotificationMessage('Project deleted successfully')
                     }}
                   />
@@ -169,7 +169,7 @@ const AdminDashboard: React.FC = () => {
                   <SemestersPage
                     semesters={semestersData?.data || []}
                     createdSemester={async () => {
-                      queryClient.invalidateQueries({ queryKey: ['semesters'] })
+                      await queryClient.invalidateQueries({ queryKey: ['semesters'] })
                       setNotificationMessage('Semester created successfully')
                     }}
                     updatedSemester={async () => {
@@ -184,17 +184,17 @@ const AdminDashboard: React.FC = () => {
                     handleDeleteSemester={handleDeleteSemester}
                     deletedSemester={async () => {
                       //done
-                      queryClient.invalidateQueries({ queryKey: ['semesters'] })
-                      queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['semesters'] })
+                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
                       setNotificationMessage('Semester deleted successfully')
                     }}
                     semesterStatuses={semestersData?.semesterStatuses || {}}
                     onDeleteProject={handleDeleteProject}
                     deletedProject={async () => {
                       //done
-                      queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
                       setNotificationMessage('Project deleted successfully')
                     }}
                   />

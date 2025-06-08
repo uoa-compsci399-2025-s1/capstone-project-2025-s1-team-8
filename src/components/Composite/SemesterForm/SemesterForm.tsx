@@ -93,7 +93,7 @@ const SemesterForm: React.FC<SemesterFormProps> = memo(
           setErrorState(true)
         } else if (res?.message) {
           onUpdated?.()
-          queryClient.invalidateQueries({ queryKey: ['semesterProjects', semesterId] })
+          await queryClient.invalidateQueries({ queryKey: ['semesterProjects', semesterId] })
           onClose()
         }
       },
