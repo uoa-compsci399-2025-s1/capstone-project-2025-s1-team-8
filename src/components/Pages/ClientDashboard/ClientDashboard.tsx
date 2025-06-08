@@ -8,7 +8,6 @@ import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardL
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ClientDashboard } from '@/payload-types'
 import { useClientPage } from '@/lib/hooks/useClientPage'
-import { useQueryClient } from '@tanstack/react-query'
 
 interface ClientDashboardProps {
   client: UserCombinedInfo
@@ -37,7 +36,6 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({
   onDeleteProject,
 }) => {
   const { data: projects, isLoading } = useClientPage()
-  const queryClient = useQueryClient()
 
   if (isLoading) {
     return <div className="text-center text-lg">Loading...</div>
