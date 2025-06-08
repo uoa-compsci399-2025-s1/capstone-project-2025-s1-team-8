@@ -105,8 +105,8 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   }, [showNotification])
 
   useEffect(() => {
-  setContainers(presetContainers)
-}, [presetContainers])
+    setContainers(presetContainers)
+  }, [presetContainers])
 
   useUnsavedChangesWarning(hasChanges)
 
