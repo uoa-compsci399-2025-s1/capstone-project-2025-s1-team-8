@@ -104,6 +104,10 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }
   }, [showNotification])
 
+  useEffect(() => {
+  setContainers(presetContainers)
+}, [presetContainers])
+
   useUnsavedChangesWarning(hasChanges)
 
   //TODO: when items are moved around, remove the active filter styles
