@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default async function ClientPage() {
   return (
     <AuthWrapper scopes={['admin', 'client']}>
-        <ProtectedClientView />
+      <ProtectedClientView />
     </AuthWrapper>
   )
 }
