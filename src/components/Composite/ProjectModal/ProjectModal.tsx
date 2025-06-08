@@ -11,6 +11,7 @@ import type { Project, Semester } from '@/payload-types'
 import type { UserCombinedInfo } from '@/types/Collections'
 import { useRouter } from 'next/navigation'
 import { formatDate } from '@/utils/date'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface ProjectModalProps extends ModalProps {
   projectInfo: Project
@@ -33,6 +34,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   onDelete,
   deleted,
 }) => {
+
+  const queryClient = useQueryClient()
+
   if (!semesters) semesters = []
   const [copied, setCopied] = useState(false)
   const [copiedAll, setCopiedAll] = useState(false)
@@ -90,6 +94,12 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
               onDelete={async () => {
                 await onDelete?.(projectInfo.id)
                 deleted?.()
+                queryClient.invalidateQueries({queryKey: ["clientProjects", projectClient.id]})
+                for (const client of otherClientDetails) {
+                  queryClient.invalidateQueries({
+                    queryKey: ['clientProjects', client.id],
+                  })
+                }
                 onClose()
               }}
             />

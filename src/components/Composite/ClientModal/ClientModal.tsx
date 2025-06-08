@@ -106,6 +106,7 @@ const ClientModal: React.FC<ClientModalProps> = ({
     setNotificationTitle('Success')
     setNotificationMessage('Client updated successfully')
     onUpdatedClient?.()
+    queryClient.invalidateQueries({ queryKey: ['clientProjects', clientInfo.id] })
   }
 
   const handleCopy = (email: string) => {

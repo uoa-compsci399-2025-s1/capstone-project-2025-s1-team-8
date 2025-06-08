@@ -114,8 +114,7 @@ const AdminDashboard: React.FC = () => {
                     deletedProject={async () => {
                       setNotificationMessage('Project deleted successfully')
                       await queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) // get current sem id and pass into function
-                      await queryClient.invalidateQueries({ queryKey: ['clientProjects'] }) // get project client and invalidate that query
+                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) // get current sem id and only do this form current sem
                     }}
                   />
                 )}
@@ -173,8 +172,7 @@ const AdminDashboard: React.FC = () => {
                     }}
                     updatedSemester={async () => {
                       await queryClient.invalidateQueries({ queryKey: ['semesters'] })
-                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) // refresh for only current semester
+                      await queryClient.invalidateQueries({ queryKey: ['projects'] }) // only do this if the semester is the current one
                       await queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
                       setNotificationMessage('Semester updated successfully')
                     }}
