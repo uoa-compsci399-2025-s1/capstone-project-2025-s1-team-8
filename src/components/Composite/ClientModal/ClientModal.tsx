@@ -251,6 +251,15 @@ const ClientModal: React.FC<ClientModalProps> = ({
           deleted={async () => {
             deletedProject?.()
             queryClient.invalidateQueries({ queryKey: ['clientProjects', clientInfo.id] })
+
+            for (const project of projects || []) {
+              for (const client of project.additionalClients || []){
+              queryClient.invalidateQueries({queryKey: ['clientProjects', (client as UserCombinedInfo).id] })
+              }
+              for (const semester of project.semesters || []) {
+                queryClient.invalidateQueries({ queryKey: ['semesterProjects', semester.id] })
+              }
+            }
             setNotificationMessage('Project deleted successfully')
             setNotificationType('success')
             setNotificationTitle('Success')

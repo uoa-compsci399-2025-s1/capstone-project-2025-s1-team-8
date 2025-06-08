@@ -147,9 +147,6 @@ const AdminDashboard: React.FC = () => {
                     onDeleteProject={handleDeleteProject}
                     deletedProject={async () => {
                       queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) // refresh for all semesters project is in
-                      queryClient.invalidateQueries({ queryKey: ['clientProjects'] }) // refresh for all clients
-                      await prefetchProjects(queryClient)
                       setNotificationMessage('Project deleted successfully')
                     }}
                   />
