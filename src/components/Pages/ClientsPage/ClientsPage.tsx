@@ -14,7 +14,6 @@ import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
 import ClientGroupSkeleton from '@/components/Generic/ClientGroupSkeleton/ClientGroupSkeleton'
 import { useClients } from '@/lib/hooks/useClients'
 import type { UserCombinedInfo } from '@/types/Collections'
-import type { ProjectDetails } from '@/types/Project'
 
 interface ClientsPageProps {
   onUpdateClient: (

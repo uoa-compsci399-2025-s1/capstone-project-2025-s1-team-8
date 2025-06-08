@@ -10,7 +10,6 @@ import {
   handleDeleteClient,
   handleUpdateClient,
   handleDeleteProject,
-  handleGetAllProjectsByClient,
 } from '@/lib/services/admin/Handlers'
 import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'

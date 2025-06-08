@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
 import type { ModalProps } from '@/components/Generic/Modal/Modal'
 import Modal from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy, FiSave } from 'react-icons/fi'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import EditDeleteDropdown from '@/components/Composite/EditDropdown/EditDeleteDropdown'
-import type { ProjectDetails } from '@/types/Project'
 import Notification from '@/components/Generic/Notification/Notification'
 import type { UserCombinedInfo } from '@/types/Collections'
 import { useClientProjects } from '@/lib/hooks/useClientProjects'
@@ -71,8 +70,8 @@ const ClientModal: React.FC<ClientModalProps> = ({
     'warning',
   )
   const [notificationTitle, setNotificationTitle] = useState<string>('')
-  
-  const {data: projects, isLoading } = useClientProjects(clientInfo.id)
+
+  const { data: projects, isLoading } = useClientProjects(clientInfo.id)
   const queryClient = useQueryClient()
 
   const handleSave = async () => {
@@ -237,7 +236,12 @@ const ClientModal: React.FC<ClientModalProps> = ({
           </>
         )}
       </div>
-      {projects?.length !== 0 && (
+      {isLoading && (
+        <div className="flex justify-center items-center h-32">
+          <p className="text-dark-blue">Loading projects...</p>
+        </div>
+      )}
+      {projects?.length !== 0 && !isLoading && (
         <ProjectCardList
           className="bg-transparent-blue border-t-deeper-blue border-t max-w-full flex flex-col p-15 rounded-b-2xl gap-5"
           headingClassName="text-3xl pb-3 tracking-wide"
@@ -246,7 +250,7 @@ const ClientModal: React.FC<ClientModalProps> = ({
           onDelete={onDeleteProject}
           deleted={async () => {
             deletedProject?.()
-            queryClient.invalidateQueries({"queryKey": ['clientProjects', clientInfo.id]})
+            queryClient.invalidateQueries({ queryKey: ['clientProjects', clientInfo.id] })
             setNotificationMessage('Project deleted successfully')
             setNotificationType('success')
             setNotificationTitle('Success')
