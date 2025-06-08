@@ -47,4 +47,4 @@ const ProjectDnDSkeleton: React.FC = () => {
   )
 }
 
-export default ProjectDnDSkeleton 
+export default ProjectDnDSkeleton

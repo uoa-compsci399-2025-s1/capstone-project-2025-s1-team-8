@@ -34,4 +34,4 @@ const SemesterCardSkeleton: React.FC = () => {
   )
 }
 
-export default SemesterCardSkeleton 
+export default SemesterCardSkeleton

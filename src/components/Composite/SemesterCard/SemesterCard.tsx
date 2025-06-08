@@ -69,7 +69,8 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
         setProjects([])
       }
       return setIsLoading(false)
-    } setIsOpen(false)
+    }
+    setIsOpen(false)
   }
 
   function handleDownloadCsv() {
