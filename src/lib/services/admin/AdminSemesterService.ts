@@ -153,9 +153,12 @@ const AdminSemesterService = {
     const response = await DeleteSemester(await buildNextRequest(url, { method: 'DELETE' }), {
       params: Promise.resolve({ id: semesterId }),
     })
-    const { error } = await response.json()
-
-    return { status: response.status, error }
+    try{
+        const { error } = await response.json()
+        return { status: response.status, error }
+    } catch{
+      return { status: response.status, error: 'Failed to parse response' }
+    }
   },
 
   /**
