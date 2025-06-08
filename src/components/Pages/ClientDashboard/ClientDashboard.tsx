@@ -61,10 +61,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({
         heading="My projects"
         projects={projects || []}
         type="client"
-        onDelete={async (projectId: string) => {
-          await queryClient.invalidateQueries({ queryKey: ['clientPage'] })
-          return await onDeleteProject(projectId)
-        }}
+        onDelete={onDeleteProject}
       />
     </div>
   )
