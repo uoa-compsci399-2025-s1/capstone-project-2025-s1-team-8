@@ -36,8 +36,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({
   onSave,
   onDeleteProject,
 }) => {
-
-  const {data: projects, isLoading } = useClientPage()
+  const { data: projects, isLoading } = useClientPage()
   const queryClient = useQueryClient()
 
   if (isLoading) {

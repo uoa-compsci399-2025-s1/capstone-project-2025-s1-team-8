@@ -94,7 +94,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
                 await onDelete?.(projectInfo.id)
                 deleted?.()
                 await queryClient.invalidateQueries({ queryKey: ['clientPage'] })
-                await queryClient.invalidateQueries({ queryKey: ['clientProjects', projectClient.id] })
+                await queryClient.invalidateQueries({
+                  queryKey: ['clientProjects', projectClient.id],
+                })
                 for (const client of otherClientDetails) {
                   queryClient.invalidateQueries({
                     queryKey: ['clientProjects', client.id],
