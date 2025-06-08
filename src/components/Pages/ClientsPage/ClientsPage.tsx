@@ -53,17 +53,13 @@ interface ClientsPageProps {
 }
 
 const ClientsPage: React.FC<ClientsPageProps> = ({
-  clientsData,
   onUpdateClient,
   onDeleteClient,
   updatedClient,
   deletedClient,
   onDeleteProject,
   deletedProject,
-  pageNum,
-  updatePageCount,
-  searchForClients,
-  totalPages 
+  handleGetAllProjects,
 }) => {
   const [search, setSearch] = useQueryState('search')
   const [localSearch, setLocalSearch] = useState(search ?? '')
@@ -198,17 +194,6 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
       </div>
       {totalUsers > 0 && (
         <div className="flex justify-center mt-4">
-          <p className="text-dark-blue">
-            {startIndex} - {endIndex} of {totalUsers} results
-          </p>
-        </div>
-      )}
-    </div>
-  )
-}
-
-export default ClientsPage
-r mt-4">
           <p className="text-dark-blue">
             {startIndex} - {endIndex} of {totalUsers} results
           </p>
