@@ -12,10 +12,10 @@ const meta: Meta<typeof ClientsPage> = {
   component: ClientsPage,
   tags: ['autodocs'],
   args: {
-onDeleteClient: async (clientId: string) => {
-        console.log('Update client:', clientId)
-        return {}
-      },
+    onDeleteClient: async (clientId: string) => {
+      console.log('Update client:', clientId)
+      return {}
+    },
   },
 }
 
@@ -33,8 +33,8 @@ export const Default: Story = {
   },
   args: {
     onDeleteClient: async (clientId: string) => {
-        console.log('Update client:', clientId)
-        return {}
-      },
+      console.log('Update client:', clientId)
+      return {}
+    },
   },
 }

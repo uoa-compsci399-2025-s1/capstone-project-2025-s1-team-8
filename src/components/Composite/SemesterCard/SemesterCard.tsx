@@ -43,7 +43,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
-  const {data: semesterProjectsData, isLoading } = useSemesterProjects(semester.id)
+  const { data: semesterProjectsData, isLoading } = useSemesterProjects(semester.id)
 
   const queryClient = useQueryClient()
 
