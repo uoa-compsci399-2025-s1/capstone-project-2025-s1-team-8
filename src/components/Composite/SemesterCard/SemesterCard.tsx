@@ -5,7 +5,6 @@ import EditDeleteDropdown from '@/components/Composite/EditDropdown/EditDeleteDr
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import type { Semester } from '@/payload-types'
-import type { ProjectDetails } from '@/types/Project'
 import { FiDownload } from 'react-icons/fi'
 import { formatDate } from '@/utils/date'
 import { useSemesterProjects } from '@/lib/hooks/useSemesterProjects'
