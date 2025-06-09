@@ -65,8 +65,7 @@ const checkForEquality = (a: DNDType[], b: DNDType[]) => {
     }
 
     for (let j = 0; j < a[i].originalItems.length; j++) {
-      if (a[i].originalItems[j].id !== b[i].originalItems[j].id)
-        return false
+      if (a[i].originalItems[j].id !== b[i].originalItems[j].id) return false
     }
   }
   return true
@@ -129,20 +128,20 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }
   }, [showNotification])
 
-const prevPresetContainers = useRef<DNDType[] | null>(null)
-const queryClient = useQueryClient()
+  const prevPresetContainers = useRef<DNDType[] | null>(null)
+  const queryClient = useQueryClient()
 
-useEffect(() => {
-  if (!prevPresetContainers.current) {
-    setContainers(presetContainers)
-    prevPresetContainers.current = presetContainers
-    return
-  }
-  if (!checkForEquality(presetContainers, prevPresetContainers.current)) {
-    setContainers(presetContainers)
-    prevPresetContainers.current = presetContainers
-  }
-}, [presetContainers])
+  useEffect(() => {
+    if (!prevPresetContainers.current) {
+      setContainers(presetContainers)
+      prevPresetContainers.current = presetContainers
+      return
+    }
+    if (!checkForEquality(presetContainers, prevPresetContainers.current)) {
+      setContainers(presetContainers)
+      prevPresetContainers.current = presetContainers
+    }
+  }, [presetContainers])
 
   useUnsavedChangesWarning(hasChanges)
 
