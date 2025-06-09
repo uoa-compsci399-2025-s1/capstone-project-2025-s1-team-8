@@ -62,11 +62,11 @@ const checkForEquality = (a: DNDType[], b: DNDType[]) => {
       return false
     }
     for (let j = 0; j < a[i].currentItems.length; j++) {
-      if (JSON.stringify(a[i].currentItems[j]) !== JSON.stringify(b[i].currentItems[j])) return false
+      if (a[i].currentItems[j].id !== b[i].currentItems[j].id) return false
     }
 
     for (let j = 0; j < a[i].originalItems.length; j++) {
-      if (JSON.stringify(a[i].originalItems[j]) !== JSON.stringify(b[i].originalItems[j]))
+      if (a[i].originalItems[j].id !== b[i].originalItems[j].id)
         return false
     }
   }
@@ -173,11 +173,11 @@ useEffect(() => {
       setSuccessNotification(null)
     }, 5000)
     //TODO: have some error handling in case changes aren't saved
+
+    await onSaveChanges({ presetContainers: containers, semesterId })
     await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
     await queryClient.invalidateQueries({ queryKey: ['projects'] })
     await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
-
-    await onSaveChanges({ presetContainers: containers, semesterId })
 
     setContainers((prev) =>
       prev.map((container) => ({
@@ -191,6 +191,7 @@ useEffect(() => {
     // send changes to the backend
     await onPublishChanges(semesterId)
     setSuccessNotification('The approved projects have been published!')
+    await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
 
     setTimeout(() => {
       setSuccessNotification(null)
