@@ -178,6 +178,7 @@ const AdminDashboard: React.FC = () => {
                       await queryClient.invalidateQueries({ queryKey: ['semesters'] })
                       await queryClient.invalidateQueries({ queryKey: ['projects'] })
                       await queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
                       setNotificationMessage('Semester updated successfully')
                     }}
                     handleCreateSemester={handleCreateSemester}
