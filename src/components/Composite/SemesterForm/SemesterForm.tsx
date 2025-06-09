@@ -6,7 +6,6 @@ import Input from '@/components/Generic/Input/InputField'
 import type { typeToFlattenedError } from 'zod'
 import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 import { useQueryClient } from '@tanstack/react-query'
-import { start } from 'repl'
 
 interface SemesterFormProps extends ModalProps {
   semesterId: string
@@ -74,12 +73,6 @@ const SemesterForm: React.FC<SemesterFormProps> = memo(
           setErrorState(true)
         } else if (res?.message) {
           onCreated?.()
-          const startDate = new Date(formData.get('startDate') as string)
-          const endDate = new Date(formData.get('endDate') as string)
-          const now = new Date()
-          if (startDate <= now && endDate >= now) {
-            await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
-          }
           onClose()
         }
       },
@@ -101,12 +94,6 @@ const SemesterForm: React.FC<SemesterFormProps> = memo(
         } else if (res?.message) {
           onUpdated?.()
           await queryClient.invalidateQueries({ queryKey: ['semesterProjects', semesterId] })
-          const startDate = new Date(formData.get('startDate') as string)
-          const endDate = new Date(formData.get('endDate') as string)
-          const now = new Date()
-          if (startDate <= now && endDate >= now) {
-            await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
-          }
           onClose()
         }
       },
