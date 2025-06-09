@@ -8,6 +8,7 @@ import { UserRole } from '@/types/User'
 import type { UserCombinedInfo } from '@/types/Collections'
 import { Security } from '@/business-layer/middleware/Security'
 import ProjectDataService from '@/data-layer/services/ProjectDataService'
+import AuthDataService from '@/data-layer/services/AuthDataService'
 
 export const UpdateUserRequestBodySchema = z.object({
   firstName: z.string().optional(),
@@ -131,6 +132,7 @@ class RouteWrapper {
     const { id } = await params
     const userDataService = new UserDataService()
     const projectDataService = new ProjectDataService()
+    const authDataService = new AuthDataService()
 
     try {
       const clientAdditionalInfo = await userDataService.getClientAdditionalInfo(id)
@@ -153,7 +155,8 @@ class RouteWrapper {
         }),
       )
 
-      await userDataService.deleteUser(id)
+      const user = await userDataService.deleteUser(id)
+      await authDataService.deleteAuthByEmail(user.email)
 
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
     } catch (error) {

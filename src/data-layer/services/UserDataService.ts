@@ -117,8 +117,8 @@ export default class UserDataService {
    * @param userID the ID of the user to delete
    * @returns A user document
    */
-  public async deleteUser(userID: string): Promise<void> {
-    await payload.delete({
+  public async deleteUser(userID: string): Promise<User> {
+    return await payload.delete({
       collection: 'user',
       id: userID,
     })
