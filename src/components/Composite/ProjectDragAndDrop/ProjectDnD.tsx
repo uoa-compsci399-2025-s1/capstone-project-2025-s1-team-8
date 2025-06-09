@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import type { DragEndEvent, DragMoveEvent, DragStartEvent, UniqueIdentifier } from '@dnd-kit/core'
 import {
   DndContext,
@@ -46,29 +46,6 @@ export type DndComponentProps = SemesterContainerData & {
     message?: string
   }>
   deletedProject: () => void
-}
-
-const checkForEquality = (a: DNDType[], b: DNDType[]) => {
-  if (a.length !== b.length) return false
-  for (let i = 0; i < a.length; i++) {
-    if (
-      a[i].id !== b[i].id ||
-      a[i].title !== b[i].title ||
-      a[i].containerColor !== b[i].containerColor ||
-      a[i].currentItems.length !== b[i].currentItems.length ||
-      a[i].originalItems.length !== b[i].originalItems.length
-    ) {
-      return false
-    }
-    for (let j = 0; j < a[i].currentItems.length; j++) {
-      if (a[i].currentItems[j].id !== b[i].currentItems[j].id) return false
-    }
-
-    for (let j = 0; j < a[i].originalItems.length; j++) {
-      if (a[i].originalItems[j].id !== b[i].originalItems[j].id) return false
-    }
-  }
-  return true
 }
 
 const defaultProjectInfo: ProjectDetails = {
