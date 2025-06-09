@@ -129,6 +129,9 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
                 onDeleteSemester?.(semester.id)
                 deletedSemester?.()
                 await queryClient.invalidateQueries({ queryKey: ['semesterProjects', semester.id] })
+                if (currentOrUpcoming === 'current' || currentOrUpcoming === 'upcoming') {
+                  await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
+                }
               }}
             />
           </button>
