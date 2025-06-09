@@ -115,7 +115,7 @@ export default class UserDataService {
    * Deletes a user from the database.
    *
    * @param userID the ID of the user to delete
-   * @returns A user document
+   * @returns The deleted {@link User} document
    */
   public async deleteUser(userID: string): Promise<User> {
     return await payload.delete({
