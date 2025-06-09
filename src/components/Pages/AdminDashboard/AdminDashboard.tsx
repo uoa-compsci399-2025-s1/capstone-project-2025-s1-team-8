@@ -104,6 +104,7 @@ const AdminDashboard: React.FC = () => {
                   <ProjectDnDSkeleton />
                 ) : (
                   <ProjectDnD
+                    key={JSON.stringify(projectsData?.presetContainers)}
                     {...(projectsData || {
                       semesterId: '',
                       presetContainers: [],
@@ -115,6 +116,7 @@ const AdminDashboard: React.FC = () => {
                       setNotificationMessage('Project deleted successfully')
                       await queryClient.invalidateQueries({ queryKey: ['projects'] })
                       await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) // get current sem id and only do this form current sem
+                      await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
                     }}
                   />
                 )}
@@ -170,6 +172,7 @@ const AdminDashboard: React.FC = () => {
                     semesters={semestersData?.data || []}
                     createdSemester={async () => {
                       await queryClient.invalidateQueries({ queryKey: ['semesters'] })
+                      await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
                       setNotificationMessage('Semester created successfully')
                     }}
                     updatedSemester={async () => {
@@ -177,6 +180,7 @@ const AdminDashboard: React.FC = () => {
                       await queryClient.invalidateQueries({ queryKey: ['semesters'] })
                       await queryClient.invalidateQueries({ queryKey: ['projects'] })
                       await queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
                       setNotificationMessage('Semester updated successfully')
                     }}
                     handleCreateSemester={handleCreateSemester}

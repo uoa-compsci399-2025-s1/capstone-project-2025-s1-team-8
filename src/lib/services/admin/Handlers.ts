@@ -5,7 +5,8 @@ import AdminService from 'src/lib/services/admin/index'
 import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 import type { typeToFlattenedError } from 'zod'
 import type { Project, Semester } from '@/payload-types'
-import type { ProjectDetails, ProjectStatus } from '@/types/Project'
+import type { ProjectDetails } from '@/types/Project'
+import { ProjectStatus } from '@/types/Project'
 import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import type { UpdateUserRequestBody } from '@/app/api/admin/users/[id]/route'
 import { UserRole } from '@/types/User'
@@ -121,7 +122,9 @@ export const handleGetAllSemesterProjects = async (
   error?: string
   data?: ProjectDetails[]
 }> => {
-  const { status, error, data } = await AdminService.getAllPaginatedProjectsBySemesterId(id)
+  const { status, error, data } = await AdminService.getAllPaginatedProjectsBySemesterId(id, {
+    status: ProjectStatus.Approved,
+  })
   if (status === StatusCodes.OK) {
     const projectPromises =
       data?.map(async (semesterProject) => {

@@ -20,6 +20,7 @@ import { handleProjectFormSubmission, handleProjectUpdate } from '@/lib/services
 import Notification from '@/components/Generic/Notification/Notification'
 import type { Semester } from '@/payload-types'
 import type { UpdateProjectRequestBody } from '@/app/api/projects/[id]/route'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface FormProject extends CreateProjectRequestBody {
   meetingAttendance: boolean
@@ -60,6 +61,8 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
 
   // check if trying to edit an existing project
   const projectId = searchParams.get('projectId') || undefined
+
+  const queryClient = useQueryClient()
 
   const handleChange = (index: number, field: keyof CreateProjectClient, value: string) => {
     const updated = [...otherClientDetails]
@@ -161,6 +164,11 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
     // Handle the response as needed
     // For example, you can check for errors or success messages
     if (res?.success) {
+      queryClient.invalidateQueries({ queryKey: ['projects'] })
+      queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
+      queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
+      queryClient.invalidateQueries({ queryKey: ['clientPage'] })
+      queryClient.invalidateQueries({ queryKey: ['studentPage'] })
       redirect('/client')
     } else {
       console.error('Error submitting form:', res?.error)
@@ -185,6 +193,11 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
     const res = await handleProjectUpdate(projectId, cleanedData as UpdateProjectRequestBody)
 
     if (res?.success) {
+      queryClient.invalidateQueries({ queryKey: ['projects'] })
+      queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
+      queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
+      queryClient.invalidateQueries({ queryKey: ['clientPage'] })
+      queryClient.invalidateQueries({ queryKey: ['studentPage'] })
       redirect('/client')
     } else {
       console.error('Error submitting form:', res?.error)
