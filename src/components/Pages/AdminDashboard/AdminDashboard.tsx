@@ -115,6 +115,7 @@ const AdminDashboard: React.FC = () => {
                       setNotificationMessage('Project deleted successfully')
                       await queryClient.invalidateQueries({ queryKey: ['projects'] })
                       await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) // get current sem id and only do this form current sem
+                      await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
                     }}
                   />
                 )}
