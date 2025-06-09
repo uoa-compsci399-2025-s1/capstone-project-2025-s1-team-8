@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import type { DragEndEvent, DragMoveEvent, DragStartEvent, UniqueIdentifier } from '@dnd-kit/core'
 import {
   DndContext,
@@ -23,6 +23,8 @@ import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
 import type { User } from '@/payload-types'
 import useUnsavedChangesWarning from './UnsavedChangesHandler'
+import { set } from 'zod'
+import { useQueryClient } from '@tanstack/react-query'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -45,6 +47,30 @@ export type DndComponentProps = SemesterContainerData & {
     message?: string
   }>
   deletedProject: () => void
+}
+
+const checkForEquality = (a: DNDType[], b: DNDType[]) => {
+  if (a.length !== b.length) return false
+  for (let i = 0; i < a.length; i++) {
+    if (
+      a[i].id !== b[i].id ||
+      a[i].title !== b[i].title ||
+      a[i].containerColor !== b[i].containerColor ||
+      a[i].currentItems.length !== b[i].currentItems.length ||
+      a[i].originalItems.length !== b[i].originalItems.length
+    ) {
+      return false
+    }
+    for (let j = 0; j < a[i].currentItems.length; j++) {
+      if (JSON.stringify(a[i].currentItems[j]) !== JSON.stringify(b[i].currentItems[j])) return false
+    }
+
+    for (let j = 0; j < a[i].originalItems.length; j++) {
+      if (JSON.stringify(a[i].originalItems[j]) !== JSON.stringify(b[i].originalItems[j]))
+        return false
+    }
+  }
+  return true
 }
 
 const defaultProjectInfo: ProjectDetails = {
@@ -104,9 +130,20 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }
   }, [showNotification])
 
-  useEffect(() => {
+const prevPresetContainers = useRef<DNDType[] | null>(null)
+const queryClient = useQueryClient()
+
+useEffect(() => {
+  if (!prevPresetContainers.current) {
     setContainers(presetContainers)
-  }, [presetContainers])
+    prevPresetContainers.current = presetContainers
+    return
+  }
+  if (!checkForEquality(presetContainers, prevPresetContainers.current)) {
+    setContainers(presetContainers)
+    prevPresetContainers.current = presetContainers
+  }
+}, [presetContainers])
 
   useUnsavedChangesWarning(hasChanges)
 
@@ -136,6 +173,9 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
       setSuccessNotification(null)
     }, 5000)
     //TODO: have some error handling in case changes aren't saved
+    await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
+    await queryClient.invalidateQueries({ queryKey: ['projects'] })
+    
     await onSaveChanges({ presetContainers: containers, semesterId })
 
     setContainers((prev) =>
