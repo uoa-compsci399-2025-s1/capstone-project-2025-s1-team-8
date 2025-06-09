@@ -8,7 +8,7 @@ import { buildNextRequest } from '@/utils/buildNextRequest'
 import type { typeToFlattenedError } from 'zod'
 import type { UpdateUserRequestBody } from '@/app/api/admin/users/[id]/route'
 import type { UserCombinedInfo } from '@/types/Collections'
-import type { StatusCodes } from 'http-status-codes'
+import { StatusCodes } from 'http-status-codes'
 import type { UserRole } from '@/types/User'
 import type { ProjectDetails } from '@/types/Project'
 import type { Project } from '@/payload-types'
@@ -22,14 +22,15 @@ const AdminClientService = {
     data?: UserCombinedInfo[]
     nextPage?: number
     totalPages?: number
+    totalDocs?: number
     error?: string
   }> {
     'use server'
     const url = buildNextRequestURL('/api/admin/users', options)
     const response = await GetUsers(await buildNextRequest(url, { method: 'GET' }))
-    const { data, nextPage, totalPages, error } = { ...(await response.json()) }
+    const { data, nextPage, totalPages, totalDocs, error } = { ...(await response.json()) }
 
-    return { status: response.status, data, nextPage, totalPages, error }
+    return { status: response.status, data, nextPage, totalPages, totalDocs, error }
   },
 
   getUserById: async function (userId: string): Promise<{
@@ -78,7 +79,11 @@ const AdminClientService = {
     const response = await DeleteUser(await buildNextRequest(url, { method: 'DELETE' }), {
       params: Promise.resolve({ id: userId }),
     })
-    const { error } = await response.json()
+    let error
+    if (response.status !== StatusCodes.NO_CONTENT) {
+      const body = await response.json()
+      error = body.error
+    }
 
     return { status: response.status, error }
   },
@@ -100,7 +105,7 @@ const AdminClientService = {
     const { data, nextPage, error } = { ...(await response.json()) }
 
     const projectDetailsList: ProjectDetails[] = await Promise.all(
-      data.map(async (project: Project) => {
+      data?.map(async (project: Project) => {
         const semesterResult = await AdminProjectService.getProjectSemesters(project.id)
         return {
           ...project,

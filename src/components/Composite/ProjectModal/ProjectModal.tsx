@@ -6,14 +6,22 @@ import Capsule from '@/components/Generic/Capsule/Capsule'
 import type { ModalProps } from '@/components/Generic/Modal/Modal'
 import { FiCheck, FiCopy } from 'react-icons/fi'
 import Button from '@/components/Generic/Button/Button'
-import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
+import EditDeleteDropdown from '@/components/Composite/EditDropdown/EditDeleteDropdown'
 import type { Project, Semester } from '@/payload-types'
 import type { UserCombinedInfo } from '@/types/Collections'
+import { useRouter } from 'next/navigation'
+import { formatDate } from '@/utils/date'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface ProjectModalProps extends ModalProps {
   projectInfo: Project
   semesters?: Semester[]
   type?: 'student' | 'admin' | 'client'
+  onDelete?: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deleted?: () => void
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({
@@ -23,7 +31,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
   projectInfo,
   semesters,
   type = 'admin',
+  onDelete,
+  deleted,
 }) => {
+  const queryClient = useQueryClient()
+
   if (!semesters) semesters = []
   const [copied, setCopied] = useState(false)
   const [copiedAll, setCopiedAll] = useState(false)
@@ -47,17 +59,19 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     setTimeout(() => setCopiedAll(false), 1000)
   }
 
-  const convertDatetoddmmYYYY = (date: Date) => {
-    const dd = String(date.getDate()).padStart(2, '0')
-    const mm = String(date.getMonth() + 1).padStart(2, '0') // January is 0!
-    const yyyy = date.getFullYear()
-    return `${dd}/${mm}/${yyyy}`
-  }
-
   const projectClient = projectInfo.client as UserCombinedInfo
   const otherClientDetails = projectInfo.additionalClients
     ? (projectInfo.additionalClients as UserCombinedInfo[])
     : []
+
+  const router = useRouter()
+
+  const callForm = () => {
+    const queryParams = new URLSearchParams({
+      projectId: projectInfo.id,
+    }).toString()
+    router.push(`/form?${queryParams}`)
+  }
 
   return (
     <Modal
@@ -73,7 +87,24 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             style={{ pointerEvents: 'initial' }}
             aria-label="Edit"
           >
-            <EditDropdown containerWidth={200} />
+            <EditDeleteDropdown
+              containerWidth={200}
+              onEdit={callForm}
+              onDelete={async () => {
+                await onDelete?.(projectInfo.id)
+                deleted?.()
+                await queryClient.invalidateQueries({ queryKey: ['clientPage'] })
+                await queryClient.invalidateQueries({
+                  queryKey: ['clientProjects', projectClient.id],
+                })
+                for (const client of otherClientDetails) {
+                  queryClient.invalidateQueries({
+                    queryKey: ['clientProjects', client.id],
+                  })
+                }
+                onClose()
+              }}
+            />
           </button>
         )}
 
@@ -85,18 +116,18 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
         {/* client details */}
         <div className="flex flex-col md:flex-row gap-3">
           <h2 className="flex text-lg font-normal text-steel-blue font-inter">
-            {projectClient.firstName + ' ' + projectClient.lastName}
+            {projectClient?.firstName + ' ' + projectClient?.lastName}
           </h2>
           {type === 'admin' && (
             <>
               <h2 className="flex text-lg font-normal text-deeper-blue font-inter">|</h2>
               <h2 className="flex text-lg font-normal text-deeper-blue font-inter">
-                {projectClient.email}
+                {projectClient?.email}
               </h2>
               <button
                 className="flex"
                 style={{ pointerEvents: 'initial' }}
-                onClick={() => handleCopy(projectClient.email)}
+                onClick={() => handleCopy(projectClient?.email)}
               >
                 {copied ? (
                   <FiCheck className="self-center size-5.5 text-dark-blue" />
@@ -136,7 +167,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           <Capsule
             className="col-start-1 md:col-start-2 mb-4 md:mb-2"
             variant="gradient"
-            text={convertDatetoddmmYYYY(new Date(projectInfo.createdAt))}
+            text={formatDate(projectInfo.createdAt)}
           />
 
           <Capsule className="col-start-1" variant="muted_blue" text="Number of teams" />

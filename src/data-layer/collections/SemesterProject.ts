@@ -3,6 +3,9 @@ import { ProjectStatus } from '@/types/Project'
 
 export const SemesterProject: CollectionConfig = {
   slug: 'semesterProject',
+  admin: {
+    useAsTitle: 'project',
+  },
   fields: [
     {
       name: 'number',

@@ -1,161 +1,56 @@
 'use client'
 import { motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
-
-import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
-import type { Semester } from '@/payload-types'
-import type { UserCombinedInfo } from '@/types/Collections'
-import type { ProjectDetails } from '@/types/Project'
 import {
   handleCreateSemester,
   handleUpdateSemester,
   handleDeleteSemester,
   handlePublishChanges,
   updateProjectOrdersAndStatus,
-  handleGetAllSemesters,
-  getAllClients,
-  handleGetAllSemesterProjects,
+  handleDeleteClient,
+  handleUpdateClient,
+  handleDeleteProject,
 } from '@/lib/services/admin/Handlers'
 import SemestersPage from '../SemestersPage/SemestersPage'
 import ClientsPage from '../ClientsPage/ClientsPage'
 import Notification from '@/components/Generic/Notification/Notification'
 import { TeapotCard } from '@/components/Generic/TeapotCard/TeapotCard'
 
-type AdminDashboardProps = {
-  clients: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
-  semesters: Semester[]
-  projects: SemesterContainerData
-  totalNumPages?: number
-  semesterStatusList?: Record<string, 'current' | 'upcoming' | ''>
-}
+import { useState, Suspense } from 'react'
+import { useQueryState } from 'nuqs'
+import { useQueryClient } from '@tanstack/react-query'
 
-const AdminDashboard: React.FC<AdminDashboardProps> = ({
-  clients,
-  semesters: initialSemesters,
-  projects,
-  totalNumPages = 0,
-  semesterStatusList = {},
-}) => {
+import { prefetchClients } from '@/lib/hooks/useClients'
+import { prefetchSemesters } from '@/lib/hooks/useSemesters'
+import { prefetchProjects } from '@/lib/hooks/useProjects'
+import { useSemesters } from '@/lib/hooks/useSemesters'
+import { useProjects } from '@/lib/hooks/useProjects'
+import ClientGroupSkeleton from '@/components/Generic/ClientGroupSkeleton/ClientGroupSkeleton'
+import ProjectDnDSkeleton from '@/components/Generic/ProjectDNDSkeleton/ProjectDNDSkeleton'
+import SemesterCardSkeleton from '@/components/Generic/SemesterCardSkeleton/SemesterCardSkeleton'
+
+const AdminDashboard: React.FC = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
-  const [activeNav, setActiveNav] = useState<number | null>(null)
   const [notificationMessage, setNotificationMessage] = useState('')
-  const [semesters, setSemesters] = useState<Semester[]>(initialSemesters)
-  const [semesterStatuses, setSemesterStatuses] =
-    useState<Record<string, 'current' | 'upcoming' | ''>>(semesterStatusList)
-  const [clientsData, setClientsData] = useState(clients)
-  const [pageNum, setPageNum] = useState(1)
-  const [isFetching, setIsFetching] = useState(false)
-  const [totalPages, setTotalPages] = useState(totalNumPages)
-  const cachedClientSearchRef = useRef<
-    Record<
-      string,
-      { data: { client: UserCombinedInfo; projects: ProjectDetails[] }[]; totalPages: number }
-    >
-  >({ _1: { data: clients, totalPages: totalNumPages } })
-  const itemsPerPage = 10
 
-  const getClientsCache = async (pageNum: number, query: string) => {
-    if (`${query}_${pageNum}` in cachedClientSearchRef.current) {
-      setClientsData(cachedClientSearchRef.current[`${query}_${pageNum}`].data || [])
-      console.log('Using cached data for query:', query, 'page:', pageNum)
-      return
-    }
-    const res = await getAllClients({ limit: itemsPerPage, page: pageNum, query })
-    cachedClientSearchRef.current[`${query}_${pageNum}`] = {
-      data: res?.data || [],
-      totalPages: res?.totalPages || 0,
-    }
-    console.log('Fetched new data for query:', query, 'page:', pageNum)
-    setClientsData(res?.data || [])
-  }
+  const [activeTab, setActiveTab] = useQueryState('tab', { defaultValue: '0' })
+  const queryClient = useQueryClient()
 
-  const searchForClients = async (searchValue: string) => {
-    const query = searchValue.trim().toLowerCase()
-    if (`${query}_1` in cachedClientSearchRef.current) {
-      console.log('Using cached data for query:', query)
-      setClientsData(cachedClientSearchRef.current[`${query}_1`].data)
-      setPageNum(1)
-      setTotalPages(cachedClientSearchRef.current[`${query}_1`].totalPages)
-      return
-    }
-    const res = await getAllClients({ limit: itemsPerPage, page: 1, query })
-    setClientsData(res?.data || [])
-    setPageNum(1)
-    if (res?.totalPages) {
-      setTotalPages(res.totalPages)
-    } else {
-      setTotalPages(0)
-    }
-    console.log('searchForClients', 'query:', query)
-    cachedClientSearchRef.current[`${query}_1`] = {
-      data: res?.data || [],
-      totalPages: res?.totalPages || 0,
+  const { data: semestersData, isLoading: isSemestersLoading } = useSemesters()
+  const { data: projectsData, isLoading: isProjectsLoading } = useProjects()
+
+  const handleTabChange = async (index: number) => {
+    setActiveTab(index.toString())
+    if (index === 1) {
+      await prefetchClients(queryClient, 1, '')
+    } else if (index === 0) {
+      await prefetchProjects(queryClient)
+    } else if (index === 2) {
+      await prefetchSemesters(queryClient)
     }
   }
 
-  const updatePageCount = async (
-    increment: boolean,
-    firstPage: boolean = false,
-    lastPage: boolean = false,
-    searchValue: string = '',
-  ) => {
-    try {
-      if (isFetching) return
-      setIsFetching(true)
-      const query = searchValue.trim().toLowerCase()
-      if (firstPage) {
-        if (totalPages === 0 || pageNum === 1) {
-          return
-        }
-        setPageNum(1)
-        return await getClientsCache(1, query)
-      }
-      if (lastPage) {
-        if (totalPages === 0 || pageNum === totalPages) {
-          return
-        }
-        setPageNum(totalPages)
-        return await getClientsCache(totalPages, query)
-      }
-      if (increment) {
-        if (pageNum < totalPages) {
-          await getClientsCache(pageNum + 1, query)
-          return setPageNum(pageNum + 1)
-        }
-      } else {
-        if (pageNum > 1) {
-          await getClientsCache(pageNum - 1, query)
-          return setPageNum(pageNum - 1)
-        }
-      }
-    } finally {
-      setIsFetching(false)
-    }
-  }
-
-  useEffect(() => {
-    const saved = localStorage.getItem('adminNav')
-    setActiveNav(saved !== null ? Number(saved) : 0)
-  }, [])
-
-  useEffect(() => {
-    if (activeNav !== null) {
-      localStorage.setItem('adminNav', String(activeNav))
-    }
-  }, [activeNav])
-
-  const refreshSemesters = async () => {
-    const res = await handleGetAllSemesters()
-    if (res?.data) {
-      setSemesters(res.data)
-    }
-    if (res?.semesterStatuses) {
-      setSemesterStatuses(res.semesterStatuses)
-    }
-  }
-
-  if (activeNav === null) return null // Wait for nav to be loaded
+  if (activeTab === null) return null // Wait for nav to be loaded
 
   return (
     <>
@@ -173,7 +68,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           {AdminNavElements.map((nav, i) => (
             <button
               key={nav}
-              onClick={() => setActiveNav(i)}
+              onClick={() => handleTabChange(i)}
               className="relative group p-2 nav-link-text"
             >
               <p>{nav}</p>
@@ -181,7 +76,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 className={`
                     nav-link-text-underline
                     scale-x-0 group-hover:scale-x-100
-                    ${activeNav === i ? 'scale-x-100' : ''}
+                    ${activeTab === i.toString() ? 'scale-x-100' : ''}
                   `}
               />
             </button>
@@ -198,60 +93,116 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 mass: 0.4,
               }}
               initial={false}
-              animate={{ x: activeNav * -100 + '%' }}
+              animate={{ x: Number(activeTab) * -100 + '%' }}
             >
               <div
                 className="admin-dash-carousel-item"
-                aria-hidden={activeNav !== 0}
-                tabIndex={activeNav === 0 ? 0 : -1}
+                aria-hidden={activeTab !== '0'}
+                tabIndex={activeTab === '0' ? 0 : -1}
               >
-                <ProjectDnD
-                  {...projects}
-                  onSaveChanges={updateProjectOrdersAndStatus}
-                  onPublishChanges={handlePublishChanges}
-                />
+                {isProjectsLoading ? (
+                  <ProjectDnDSkeleton />
+                ) : (
+                  <ProjectDnD
+                    key={JSON.stringify(projectsData?.presetContainers)}
+                    {...(projectsData || {
+                      semesterId: '',
+                      presetContainers: [],
+                    })}
+                    onSaveChanges={updateProjectOrdersAndStatus}
+                    onPublishChanges={handlePublishChanges}
+                    onDeleteProject={handleDeleteProject}
+                    deletedProject={async () => {
+                      setNotificationMessage('Project deleted successfully')
+                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) // get current sem id and only do this form current sem
+                      await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
+                    }}
+                  />
+                )}
               </div>
 
               <div
                 className="admin-dash-carousel-item"
-                aria-hidden={activeNav !== 1}
-                tabIndex={activeNav === 1 ? 0 : -1}
+                aria-hidden={activeTab !== '1'}
+                tabIndex={activeTab === '1' ? 0 : -1}
               >
-                <ClientsPage
-                  clientsData={clientsData}
-                  pageNum={pageNum}
-                  updatePageCount={updatePageCount}
-                  searchForClients={searchForClients}
-                  totalPages={totalPages}
-                  isFetching={isFetching}
-                />
+                <Suspense fallback={<ClientGroupSkeleton />}>
+                  <ClientsPage
+                    onUpdateClient={handleUpdateClient}
+                    onDeleteClient={handleDeleteClient}
+                    updatedClient={async () => {
+                      await queryClient.invalidateQueries({ queryKey: ['clients'] })
+                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) // do this for every semester the project is in
+                      await queryClient.invalidateQueries({ queryKey: ['clientProjects'] }) // invalidate for current client + additonal clients
+                      setNotificationMessage('Client updated successfully')
+                    }}
+                    deletedClient={async () => {
+                      await queryClient.invalidateQueries({ queryKey: ['clients'] })
+                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) //invalidate for every semester the clients proproject is in if no need for backend call
+                      await queryClient.invalidateQueries({ queryKey: ['clientProjects'] }) //invalidate for current client + additional clients
+                      setNotificationMessage('Client deleted successfully')
+                    }}
+                    onDeleteProject={handleDeleteProject}
+                    deletedProject={async () => {
+                      //done
+                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
+                      setNotificationMessage('Project deleted successfully')
+                    }}
+                  />
+                </Suspense>
               </div>
 
               <div
                 className="admin-dash-carousel-item"
-                aria-hidden={activeNav !== 2}
-                tabIndex={activeNav === 2 ? 0 : -1}
+                aria-hidden={activeTab !== '2'}
+                tabIndex={activeTab === '2' ? 0 : -1}
               >
-                <SemestersPage
-                  semesters={semesters}
-                  created={async () => {
-                    await refreshSemesters()
-                    setNotificationMessage('Semester created successfully')
-                  }}
-                  updated={async () => {
-                    await refreshSemesters()
-                    setNotificationMessage('Semester updated successfully')
-                  }}
-                  deleted={async () => {
-                    await refreshSemesters()
-                    setNotificationMessage('Semester deleted successfully')
-                  }}
-                  handleCreateSemester={handleCreateSemester}
-                  handleUpdateSemester={handleUpdateSemester}
-                  handleDeleteSemester={handleDeleteSemester}
-                  handleGetAllSemesterProjects={handleGetAllSemesterProjects}
-                  semesterStatuses={semesterStatuses}
-                />
+                {isSemestersLoading ? (
+                  <div className="space-y-4">
+                    {[1, 2, 3].map((i) => (
+                      <SemesterCardSkeleton key={i} />
+                    ))}
+                  </div>
+                ) : (
+                  <SemestersPage
+                    semesters={semestersData?.data || []}
+                    createdSemester={async () => {
+                      await queryClient.invalidateQueries({ queryKey: ['semesters'] })
+                      await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
+                      setNotificationMessage('Semester created successfully')
+                    }}
+                    updatedSemester={async () => {
+                      //done
+                      await queryClient.invalidateQueries({ queryKey: ['semesters'] })
+                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
+                      setNotificationMessage('Semester updated successfully')
+                    }}
+                    handleCreateSemester={handleCreateSemester}
+                    handleUpdateSemester={handleUpdateSemester}
+                    handleDeleteSemester={handleDeleteSemester}
+                    deletedSemester={async () => {
+                      //done
+                      await queryClient.invalidateQueries({ queryKey: ['semesters'] })
+                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
+                      setNotificationMessage('Semester deleted successfully')
+                    }}
+                    semesterStatuses={semestersData?.semesterStatuses || {}}
+                    onDeleteProject={handleDeleteProject}
+                    deletedProject={async () => {
+                      //done
+                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
+                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
+                      setNotificationMessage('Project deleted successfully')
+                    }}
+                  />
+                )}
               </div>
             </motion.div>
           </div>

@@ -1,5 +1,5 @@
 import type { FC, InputHTMLAttributes } from 'react'
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import Input from '../Input/InputField'
 import { HiExclamation } from 'react-icons/hi'
 
@@ -10,6 +10,7 @@ interface RadioProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
   error?: boolean
   errorMessage?: string
+  defaultValue?: string
 }
 
 const Radio: FC<RadioProps> = ({
@@ -19,9 +20,33 @@ const Radio: FC<RadioProps> = ({
   className = '',
   error = false,
   errorMessage = 'Input field must not be empty',
+  defaultValue = '',
   ...props
 }) => {
+  const [selectedValue, setSelectedValue] = useState('')
   const [customValue, setCustomValue] = useState('')
+
+  const hasInitialized = useRef(false)
+
+  if (defaultValue && !hasInitialized.current) {
+    // Check if the initial value exists in the predefined values
+    if (values.includes(defaultValue)) {
+      setSelectedValue(defaultValue)
+      setCustomValue('')
+    } else if (customInput) {
+      // If value doesn't exist in predefined options and customInput is enabled,
+      // select the custom input and prefill it
+      setSelectedValue(defaultValue)
+      setCustomValue(defaultValue)
+    }
+    hasInitialized.current = true
+  }
+
+  const handleChange = (e: React.MouseEvent<HTMLInputElement>) => {
+    const input = e.target as HTMLInputElement
+    setSelectedValue(input.value)
+  }
+
   const borderErrorStyle = `${error ? 'border-pink-accent hover:outline-dark-pink peer-focus:outline-dark-pink' : 'border-steel-blue hover:outline-deeper-blue peer-focus:outline-deeper-blue'}`
   const dotErrorStyle = `${error ? 'bg-pink-accent' : 'bg-steel-blue'} w-[8px] h-[8px] rounded-full self-center m-auto transition-opacity duration-300`
   const radioStyle =
@@ -43,6 +68,8 @@ const Radio: FC<RadioProps> = ({
             style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
             className="opacity-0 peer"
             value={value}
+            checked={selectedValue === value}
+            onClick={handleChange}
             {...props}
           />
           <span className={`${radioStyle} ${borderErrorStyle} ${className}`}>
@@ -58,6 +85,8 @@ const Radio: FC<RadioProps> = ({
             style={{ appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
             className="opacity-0 peer"
             value={customValue}
+            checked={selectedValue === customValue}
+            onClick={handleChange}
             {...props}
           />
           <span className={`${radioStyle} ${borderErrorStyle} ${className}`}>
@@ -67,6 +96,7 @@ const Radio: FC<RadioProps> = ({
             type="text"
             placeholder={'Other'}
             className="inline h-8"
+            value={customValue}
             onChange={(e) => {
               setCustomValue(e.target.value)
             }}

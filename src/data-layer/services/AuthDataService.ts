@@ -79,4 +79,20 @@ export default class AuthDataService {
       id: authID,
     })
   }
+
+  /**
+   * Method to delete an authentication document by email.
+   *
+   * @param email The email of the authentication to delete
+   */
+  public async deleteAuthByEmail(email: string): Promise<void> {
+    await payload.delete({
+      collection: 'authentication',
+      where: {
+        email: {
+          equals: email,
+        },
+      },
+    })
+  }
 }

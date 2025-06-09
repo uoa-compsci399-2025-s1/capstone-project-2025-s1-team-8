@@ -7,6 +7,8 @@ import UserDataService from '@/data-layer/services/UserDataService'
 import { UserRole } from '@/types/User'
 import type { UserCombinedInfo } from '@/types/Collections'
 import { Security } from '@/business-layer/middleware/Security'
+import ProjectDataService from '@/data-layer/services/ProjectDataService'
+import AuthDataService from '@/data-layer/services/AuthDataService'
 
 export const UpdateUserRequestBodySchema = z.object({
   firstName: z.string().optional(),
@@ -129,8 +131,33 @@ class RouteWrapper {
   static async DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
     const userDataService = new UserDataService()
+    const projectDataService = new ProjectDataService()
+    const authDataService = new AuthDataService()
+
     try {
-      await userDataService.deleteUser(id)
+      const clientAdditionalInfo = await userDataService.getClientAdditionalInfo(id)
+
+      if (clientAdditionalInfo)
+        await userDataService.deleteClientAdditionalInfo(clientAdditionalInfo.id)
+
+      const projects = await projectDataService.getProjectsByClientId(id)
+      await Promise.all(
+        projects.docs.map(async (project) => {
+          const semesterProjects = await projectDataService.getSemesterProjectsByProject(project.id)
+
+          await Promise.all(
+            semesterProjects.map((semesterProject) =>
+              projectDataService.deleteSemesterProject(semesterProject.id),
+            ),
+          )
+
+          await projectDataService.deleteProject(project.id)
+        }),
+      )
+
+      const user = await userDataService.deleteUser(id)
+      await authDataService.deleteAuthByEmail(user.email)
+
       return new NextResponse(null, { status: StatusCodes.NO_CONTENT })
     } catch (error) {
       if (error instanceof NotFound) {

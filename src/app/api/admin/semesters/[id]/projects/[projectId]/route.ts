@@ -9,13 +9,14 @@ import { Security } from '@/business-layer/middleware/Security'
 import type { SemesterProject } from '@/payload-types'
 import { ProjectSchema, SemesterSchema } from '@/types/Payload'
 import { ProjectStatus } from '@/types/Project'
+import type { UpdateSemesterProjectData } from '@/types/Collections'
 
 export const PatchSemesterProjectRequestBody = z.object({
   number: z.number().min(1).nullable().optional(),
   project: z.union([z.string(), ProjectSchema]).optional(),
   semester: z.union([z.string(), SemesterSchema]).optional(),
   status: z.nativeEnum(ProjectStatus).optional(),
-})
+}) satisfies z.ZodType<UpdateSemesterProjectData>
 
 class RouteWrapper {
   /**

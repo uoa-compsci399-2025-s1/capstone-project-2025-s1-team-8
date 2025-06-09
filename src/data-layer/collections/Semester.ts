@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 export const Semester: CollectionConfig = {
   slug: 'semester',
+  admin: {
+    useAsTitle: 'name',
+  },
   fields: [
     {
       name: 'name',
