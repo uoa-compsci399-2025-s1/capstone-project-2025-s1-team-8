@@ -104,7 +104,7 @@ const AdminDashboard: React.FC = () => {
                   <ProjectDnDSkeleton />
                 ) : (
                   <ProjectDnD
-                  key={JSON.stringify(projectsData?.presetContainers)}
+                    key={JSON.stringify(projectsData?.presetContainers)}
                     {...(projectsData || {
                       semesterId: '',
                       presetContainers: [],

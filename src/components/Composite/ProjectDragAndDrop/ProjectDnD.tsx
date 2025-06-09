@@ -107,7 +107,6 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
   const queryClient = useQueryClient()
 
-
   useUnsavedChangesWarning(hasChanges)
 
   //TODO: when items are moved around, remove the active filter styles
