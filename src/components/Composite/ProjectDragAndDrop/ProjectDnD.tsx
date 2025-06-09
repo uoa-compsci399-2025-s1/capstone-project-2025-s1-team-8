@@ -23,6 +23,7 @@ import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
 import type { User } from '@/payload-types'
 import useUnsavedChangesWarning from './UnsavedChangesHandler'
+import { useQueryClient } from '@tanstack/react-query'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -75,7 +76,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   onDeleteProject,
   deletedProject,
 }) => {
-  const [containers, setContainers] = useState<DNDType[]>(presetContainers)
+  const [containers, setContainers] = useState<DNDType[]>([...presetContainers])
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
   const [showNotification, setShowNotification] = useState<boolean>(false)
@@ -104,9 +105,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }
   }, [showNotification])
 
-  useEffect(() => {
-    setContainers(presetContainers)
-  }, [presetContainers])
+  const queryClient = useQueryClient()
 
   useUnsavedChangesWarning(hasChanges)
 
@@ -136,7 +135,11 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
       setSuccessNotification(null)
     }, 5000)
     //TODO: have some error handling in case changes aren't saved
+
     await onSaveChanges({ presetContainers: containers, semesterId })
+    await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
+    await queryClient.invalidateQueries({ queryKey: ['projects'] })
+    await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
 
     setContainers((prev) =>
       prev.map((container) => ({
@@ -150,6 +153,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     // send changes to the backend
     await onPublishChanges(semesterId)
     setSuccessNotification('The approved projects have been published!')
+    await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
 
     setTimeout(() => {
       setSuccessNotification(null)

@@ -38,7 +38,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({
   const { data: projects, isLoading } = useClientPage()
 
   if (isLoading) {
-    return <div className="text-center text-lg">Loading...</div>
+    return <div className="text-center text-dark-blue text-lg pt-30">Loading...</div>
   }
 
   return (
