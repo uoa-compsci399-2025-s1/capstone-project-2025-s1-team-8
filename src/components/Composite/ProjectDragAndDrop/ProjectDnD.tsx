@@ -175,7 +175,8 @@ useEffect(() => {
     //TODO: have some error handling in case changes aren't saved
     await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
     await queryClient.invalidateQueries({ queryKey: ['projects'] })
-    
+    await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
+
     await onSaveChanges({ presetContainers: containers, semesterId })
 
     setContainers((prev) =>
