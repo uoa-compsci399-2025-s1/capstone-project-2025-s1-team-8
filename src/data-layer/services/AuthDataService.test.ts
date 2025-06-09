@@ -52,4 +52,10 @@ describe('Project service methods test', () => {
   it('should throw an error if auth does not exist', async () => {
     await expect(authDataService.deleteAuth('nonexistent_id')).rejects.toThrow('Not Found')
   })
+
+  it('should delete auth by email', async () => {
+    const newAuth = await authDataService.createAuth(authCreateMock)
+    await authDataService.deleteAuthByEmail(newAuth.email)
+    expect(await authDataService.getAuthByEmail(newAuth.email)).toBeUndefined()
+  })
 })
