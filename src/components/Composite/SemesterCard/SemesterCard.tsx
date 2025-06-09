@@ -178,6 +178,9 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
             deleted={async () => {
               deletedProject()
               await queryClient.invalidateQueries({ queryKey: ['semesterProjects', semester.id] })
+              if (currentOrUpcoming === 'current' || currentOrUpcoming === 'upcoming') {
+                await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
+              }
             }}
             icon={<FiDownload />}
             loading={isLoading}
