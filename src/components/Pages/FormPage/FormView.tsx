@@ -168,6 +168,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
       queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
       queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
       queryClient.invalidateQueries({ queryKey: ['clientPage'] })
+      queryClient.invalidateQueries({ queryKey: ['studentPage'] })
       redirect('/client')
     } else {
       console.error('Error submitting form:', res?.error)
@@ -196,6 +197,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
       queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
       queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
       queryClient.invalidateQueries({ queryKey: ['clientPage'] })
+      queryClient.invalidateQueries({ queryKey: ['studentPage'] })
       redirect('/client')
     } else {
       console.error('Error submitting form:', res?.error)
