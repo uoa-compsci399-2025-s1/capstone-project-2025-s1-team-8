@@ -99,7 +99,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   onDeleteProject,
   deletedProject,
 }) => {
-  const [containers, setContainers] = useState<DNDType[]>(presetContainers)
+  const [containers, setContainers] = useState<DNDType[]>([...presetContainers])
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
   const [showNotification, setShowNotification] = useState<boolean>(false)

@@ -341,10 +341,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
             <span className="text-pink-accent">*</span> Required
           </p>
           <form
-            onSubmit={
-              projectId
-                ? handleSubmit(editProject): handleSubmit(submitProject)
-            }
+            onSubmit={projectId ? handleSubmit(editProject) : handleSubmit(submitProject)}
             className="flex flex-col gap-4"
           >
             <ol className="flex flex-col gap-10 list-decimal list-outside text-dark-blue font-inter text-lg whitespace-pre-wrap ml-5">
