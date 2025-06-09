@@ -20,6 +20,7 @@ import { handleProjectFormSubmission, handleProjectUpdate } from '@/lib/services
 import Notification from '@/components/Generic/Notification/Notification'
 import type { Semester } from '@/payload-types'
 import type { UpdateProjectRequestBody } from '@/app/api/projects/[id]/route'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface FormProject extends CreateProjectRequestBody {
   meetingAttendance: boolean
@@ -60,6 +61,8 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
 
   // check if trying to edit an existing project
   const projectId = searchParams.get('projectId') || undefined
+
+  const queryClient = useQueryClient()
 
   const handleChange = (index: number, field: keyof CreateProjectClient, value: string) => {
     const updated = [...otherClientDetails]
@@ -328,7 +331,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
             <span className="text-pink-accent">*</span> Required
           </p>
           <form
-            onSubmit={projectId ? handleSubmit(editProject) : handleSubmit(submitProject)}
+            onSubmit={projectId ? async () => {handleSubmit(editProject); await queryClient.invalidateQueries({queryKey: ["clientsPage"]})} : async () => {handleSubmit(submitProject); await queryClient.invalidateQueries({queryKey: ["clientsPage"]})}}
             className="flex flex-col gap-4"
           >
             <ol className="flex flex-col gap-10 list-decimal list-outside text-dark-blue font-inter text-lg whitespace-pre-wrap ml-5">
