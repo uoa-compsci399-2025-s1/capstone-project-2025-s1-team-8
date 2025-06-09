@@ -128,20 +128,8 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }
   }, [showNotification])
 
-  const prevPresetContainers = useRef<DNDType[] | null>(null)
   const queryClient = useQueryClient()
 
-  useEffect(() => {
-    if (!prevPresetContainers.current) {
-      setContainers(presetContainers)
-      prevPresetContainers.current = presetContainers
-      return
-    }
-    if (!checkForEquality(presetContainers, prevPresetContainers.current)) {
-      setContainers(presetContainers)
-      prevPresetContainers.current = presetContainers
-    }
-  }, [presetContainers])
 
   useUnsavedChangesWarning(hasChanges)
 
