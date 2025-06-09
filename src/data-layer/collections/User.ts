@@ -3,6 +3,9 @@ import { UserRole } from '@/types/User'
 
 export const User: CollectionConfig = {
   slug: 'user',
+  admin: {
+    useAsTitle: 'email',
+  },
   fields: [
     {
       name: 'email',
