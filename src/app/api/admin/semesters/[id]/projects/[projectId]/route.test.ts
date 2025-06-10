@@ -154,6 +154,26 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
       )
       expect((await res.json()).data.number).toEqual(123)
     })
+
+    it('should update the number field if status is not updated', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const semester = await semesterDataService.createSemester(semesterMock)
+      const semesterProject = await projectDataService.createSemesterProject({
+        ...semesterProjectCreateMock,
+        semester: semester.id,
+        status: ProjectStatus.Approved,
+        number: 123,
+      })
+      const res = await PATCH(
+        createMockNextPatchRequest(`api/semesters/${semester.id}/projects/${semesterProject.id}`, {
+          number: 200,
+        }),
+        {
+          params: paramsToPromise({ id: semester.id, projectId: semesterProject.id }),
+        },
+      )
+      expect((await res.json()).data.number).toEqual(200)
+    })
   })
 
   describe('test DELETE /api/semesters/[id]/projects/[projectId]', async () => {

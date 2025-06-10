@@ -58,7 +58,7 @@ class RouteWrapper {
           { status: StatusCodes.BAD_REQUEST },
         )
       }
-      const number =
+      const updatedProjectNumber =
         data.status === ProjectStatus.Approved ||
         (!data.status && semesterProject.status === ProjectStatus.Approved)
           ? (data.number ?? semesterProject.number)
@@ -66,7 +66,7 @@ class RouteWrapper {
 
       const updatedProject = await projectDataService.updateSemesterProject(projectId, {
         ...data,
-        number,
+        number: updatedProjectNumber,
       })
       return NextResponse.json({ data: updatedProject })
     } catch (error) {
