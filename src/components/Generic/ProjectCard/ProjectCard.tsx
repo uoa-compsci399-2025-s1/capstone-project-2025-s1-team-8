@@ -43,7 +43,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       >
         <div className="text-left">
           <div className="relative z-10">
-            <p className="text-dark-blue text-base font-semibold pb-0.5">{`${projectInfo.number ?? ''}${projectInfo.number ? '. ' : ''}${projectInfo.name}`}</p>
+            <p className="text-dark-blue text-base font-semibold pb-0.5">{`${projectInfo.number ? `Project ${projectInfo.number}: ` : ''}${projectInfo.name}`}</p>
             <p className="text-dark-blue text-xs">
               {`${client.firstName}${client.lastName ? ` ${client.lastName}` : ''}`}
             </p>
