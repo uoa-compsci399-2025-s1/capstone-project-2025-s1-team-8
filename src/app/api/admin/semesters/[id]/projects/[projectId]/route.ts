@@ -58,8 +58,14 @@ class RouteWrapper {
           { status: StatusCodes.BAD_REQUEST },
         )
       }
+      const number = data.status === ProjectStatus.Approved ? data.number : null
 
-      const updatedProject = await projectDataService.updateSemesterProject(projectId, data)
+      console.log('RUN: ' + number)
+
+      const updatedProject = await projectDataService.updateSemesterProject(projectId, {
+        ...data,
+        number,
+      })
       return NextResponse.json({ data: updatedProject })
     } catch (error) {
       if (error instanceof NotFound) {
