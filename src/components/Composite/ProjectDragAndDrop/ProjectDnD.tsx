@@ -137,9 +137,6 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     setHasChanges(false)
 
     const savedChangesMessage = await onSaveChanges({ presetContainers: containers, semesterId })
-    // await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
-    // await queryClient.invalidateQueries({ queryKey: ['projects'] })
-    // await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
     if (savedChangesMessage && 'error' in savedChangesMessage) {
       setNotification({
         title: 'Error',
@@ -153,6 +150,12 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
         type: 'success',
       })
     }
+    // Delay invalidation to avoid interfering with notification UI
+    setTimeout(() => {
+      queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
+      queryClient.invalidateQueries({ queryKey: ['projects'] })
+      queryClient.invalidateQueries({ queryKey: ['studentPage'] })
+    }, 500)
 
     setContainers((prev) =>
       prev.map((container) => ({
@@ -164,8 +167,6 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
   async function handlePublishChanges() {
     const publishMessage = await onPublishChanges(semesterId)
-    // await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
-    console.log('published message', publishMessage)
     if (publishMessage && 'error' in publishMessage) {
       setNotification({
         title: 'Error',
@@ -179,6 +180,11 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
         type: 'success',
       })
     }
+
+    // Delay invalidation slightly to avoid interrupting notification
+    setTimeout(() => {
+      queryClient.invalidateQueries({ queryKey: ['studentPage'] })
+    }, 500)
   }
 
   function handleDownloadCsv() {
