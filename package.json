@@ -96,6 +96,7 @@
     "@types/react-dom": "19.0.4",
     "@vitejs/plugin-react-swc": "^3.10.0",
     "@vitest/coverage-v8": "3.1.4",
+    "@vitest/ui": "3.1.4",
     "eslint": "^9.28.0",
     "eslint-config-next": "15.2.3",
     "jsdom": "^26.1.0",
