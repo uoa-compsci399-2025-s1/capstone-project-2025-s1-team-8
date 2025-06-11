@@ -56,18 +56,6 @@ class RouteWrapper {
       }
       return NextResponse.json({
         data: project,
-        // data: {
-        //   ...fetchedForm,
-        //   ...fetchedForm.questionResponses?.reduce(
-        //     (acc, curr) => {
-        //       if (curr.question instanceof Object) {
-        //         acc[curr.question.fieldName] = curr
-        //       }
-        //       return acc
-        //     },
-        //     {} as Record<string, QuestionResponse>,
-        //   ),
-        // },
       })
     } catch (error) {
       if (error instanceof NotFound) {
