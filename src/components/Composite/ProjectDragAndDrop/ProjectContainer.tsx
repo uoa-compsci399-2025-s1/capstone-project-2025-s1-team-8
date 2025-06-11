@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 import { useSortable, SortableContext } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import ProjectFilter from '@/components/Composite/Filter/ProjectFilter'
@@ -15,6 +15,11 @@ export interface ProjectContainerType {
   projects: ProjectCardType[]
   onChange?: (val?: string) => void
   containerColor: 'light' | 'medium' | 'dark'
+  onDelete: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deleted: () => void
 }
 
 const ProjectContainer = ({
@@ -23,6 +28,8 @@ const ProjectContainer = ({
   projects,
   onChange,
   containerColor,
+  onDelete,
+  deleted,
 }: ProjectContainerType) => {
   const { attributes, setNodeRef, transform, isDragging } = useSortable({
     id: id,
@@ -63,6 +70,9 @@ const ProjectContainer = ({
       : containerColor == 'medium'
         ? 'bg-deeper-blue'
         : 'bg-dark-blue'
+
+  const sortableItems = useMemo(() => projects.map((i) => i.id), [projects])
+
   return (
     <div
       {...attributes}
@@ -103,7 +113,7 @@ const ProjectContainer = ({
       </div>
 
       <div ref={contentRef} className="flex items-center justify-between mx-[20px] mb-4">
-        <SortableContext items={projects.map((i) => i.id)}>
+        <SortableContext id={`sortable-context-${id}`} items={sortableItems}>
           <div className="flex items-start flex-col gap-y-[15px] w-full">
             {projects.map((i) => (
               <DraggableProjectCard
@@ -121,6 +131,9 @@ const ProjectContainer = ({
           open={!!openProject}
           onClose={() => setOpenProject(null)}
           projectInfo={openProject}
+          semesters={openProject.semesters}
+          onDelete={onDelete}
+          deleted={deleted}
         >
           Open Project
         </ProjectModal>

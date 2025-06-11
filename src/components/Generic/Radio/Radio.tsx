@@ -10,7 +10,6 @@ interface RadioProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
   error?: boolean
   errorMessage?: string
-  // default value is used to prefill the radio input
   defaultValue?: string
 }
 
@@ -24,8 +23,7 @@ const Radio: FC<RadioProps> = ({
   defaultValue = '',
   ...props
 }) => {
-  // leave the space in selectedValue to avoid an empty radio input being selected prematurely
-  const [selectedValue, setSelectedValue] = useState(' ')
+  const [selectedValue, setSelectedValue] = useState('')
   const [customValue, setCustomValue] = useState('')
 
   const hasInitialized = useRef(false)

@@ -5,6 +5,7 @@ import type { ModalProps } from '@/components/Generic/Modal/Modal'
 import Input from '@/components/Generic/Input/InputField'
 import type { typeToFlattenedError } from 'zod'
 import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface SemesterFormProps extends ModalProps {
   semesterId: string
@@ -56,6 +57,8 @@ const SemesterForm: React.FC<SemesterFormProps> = memo(
     const [errorState, setErrorState] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
 
+    const queryClient = useQueryClient()
+
     const createSemester = useCallback(
       async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -90,6 +93,7 @@ const SemesterForm: React.FC<SemesterFormProps> = memo(
           setErrorState(true)
         } else if (res?.message) {
           onUpdated?.()
+          await queryClient.invalidateQueries({ queryKey: ['semesterProjects', semesterId] })
           onClose()
         }
       },
@@ -180,7 +184,7 @@ const SemesterForm: React.FC<SemesterFormProps> = memo(
 
           <div className="flex flex-row gap-5">
             <Button variant="dark" size="sm" type="submit">
-              {edit ? 'Edit' : 'Create'}
+              {edit ? 'Submit' : 'Create'}
             </Button>
             <Button variant="muted_blue" size="sm" onClick={onClose}>
               Cancel

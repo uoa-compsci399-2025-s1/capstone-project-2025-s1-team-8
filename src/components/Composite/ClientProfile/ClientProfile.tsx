@@ -24,10 +24,10 @@ interface ClientProfileProps {
 
 const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false)
-  const [name, setName] = useState<string>(clientInfo.firstName + ' ' + (clientInfo.lastName ?? ''))
-  const [previousName, setPreviousName] = useState<string>(
-    clientInfo.firstName + ' ' + (clientInfo.lastName ?? ''),
-  )
+  const [firstName, setFirstName] = useState<string>(clientInfo.firstName)
+  const [lastName, setLastName] = useState<string>(clientInfo.lastName ?? '')
+  const [previousFirstName, setPreviousFirstName] = useState<string>(clientInfo.firstName)
+  const [previousLastName, setPreviousLastName] = useState<string>(clientInfo.lastName ?? '')
   const [affiliation, setAffiliation] = useState<string>(clientInfo.affiliation ?? '')
   const [previousAffiliation, setPreviousAffiliation] = useState<string>(
     clientInfo.affiliation ?? '',
@@ -36,45 +36,29 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
   const [previousIntroduction, setPreviousIntroduction] = useState<string>(
     clientInfo.introduction ?? '',
   )
-  const [showNotification, setShowNotification] = useState<boolean>(false)
   const [notificationMessage, setNotificationMessage] = useState<string>('')
 
-  const handleShowNotification = (message: string) => {
-    setNotificationMessage(message)
-    setShowNotification(true)
-  }
-
   const handleSave = async () => {
-    const names = name.split(' ')
-    const firstName = names[0]
-    const lastName = names[1]
     if (!firstName || !lastName) {
-      setName(previousName)
-      setIsEditing(false)
-      handleShowNotification('Please enter a valid first and last name.')
+      setNotificationMessage('Please enter a valid first and last name.')
       return
     }
 
-    if (names.length > 2) {
-      setName(previousName)
-      setIsEditing(false)
-      handleShowNotification('Please enter only first and last name.')
-      return
-    }
     if (onSave) {
       const res = await onSave(firstName, lastName, affiliation, introduction)
       if (res.error) {
-        setName(previousName)
+        setFirstName(previousFirstName)
+        setLastName(previousLastName)
         setAffiliation(previousAffiliation)
         setIntroduction(previousIntroduction)
-        handleShowNotification(
+        setNotificationMessage(
           'Error updating profile: ' + ((res.error ?? '') || (res.details ?? '')),
         )
         return
       }
     }
-
-    setPreviousName(name)
+    setPreviousFirstName(firstName)
+    setPreviousLastName(lastName)
     setPreviousAffiliation(affiliation)
     setPreviousIntroduction(introduction)
     setIsEditing(false)
@@ -84,13 +68,12 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
     <div>
       <div className="fixed top-6 right-6 z-50">
         <Notification
-          isVisible={showNotification}
+          isVisible={notificationMessage !== ''}
           title={'Issue updating profile'}
           message={notificationMessage}
           type={'warning'}
           onClose={() => {
             setNotificationMessage('')
-            setShowNotification(false)
           }}
         />
       </div>
@@ -116,14 +99,23 @@ const ClientProfile: React.FC<ClientProfileProps> = ({ clientInfo, onSave }) => 
             className="ring-1 ring-muted-blue col-start-1"
           />
           {isEditing ? (
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="editable-capsule"
-            />
+            <div className="space-y-2">
+              <input
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="editable-capsule"
+                style={{ pointerEvents: 'initial' }}
+              />
+              <input
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="editable-capsule"
+                style={{ pointerEvents: 'initial' }}
+              />
+            </div>
           ) : (
             <Capsule
-              text={name}
+              text={firstName + ' ' + lastName}
               variant="beige"
               className="col-start-1 sm:col-start-2 mb-2 sm:mb-0"
             />

@@ -23,6 +23,7 @@ import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
 import type { User } from '@/payload-types'
 import useUnsavedChangesWarning from './UnsavedChangesHandler'
+import { useQueryClient } from '@tanstack/react-query'
 import type { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
 import type { typeToFlattenedError } from 'zod'
 
@@ -49,6 +50,11 @@ export type DndComponentProps = SemesterContainerData & {
     error?: string
     message?: string
   }>
+  onDeleteProject: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deletedProject: () => void
 }
 
 type Notification = {
@@ -82,8 +88,10 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   semesterId,
   onSaveChanges,
   onPublishChanges,
+  onDeleteProject,
+  deletedProject,
 }) => {
-  const [containers, setContainers] = useState<DNDType[]>(presetContainers)
+  const [containers, setContainers] = useState<DNDType[]>([...presetContainers])
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
   const [notification, setNotification] = useState<Notification>(null)
@@ -103,6 +111,9 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
       })
     }
   }, [hasChanges])
+
+  const queryClient = useQueryClient()
+
   useUnsavedChangesWarning(hasChanges)
 
   //TODO: when items are moved around, remove the active filter styles
@@ -126,6 +137,9 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     setHasChanges(false)
 
     const savedChangesMessage = await onSaveChanges({ presetContainers: containers, semesterId })
+    // await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
+    // await queryClient.invalidateQueries({ queryKey: ['projects'] })
+    // await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
     if (savedChangesMessage && 'error' in savedChangesMessage) {
       setNotification({
         title: 'Error',
@@ -150,6 +164,8 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
   async function handlePublishChanges() {
     const publishMessage = await onPublishChanges(semesterId)
+    // await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
+    console.log('published message', publishMessage)
     if (publishMessage && 'error' in publishMessage) {
       setNotification({
         title: 'Error',
@@ -488,6 +504,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
       <div className="flex gap-6 flex-wrap md:flex-nowrap">
         <DndContext
+          id="project-dnd-context"
           sensors={sensors}
           collisionDetection={closestCorners}
           onDragStart={handleDragStart}
@@ -508,6 +525,8 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
                 projects={container.currentItems}
                 onChange={(newFilter) => handleFilterChange(container.id, newFilter)}
                 containerColor={container.containerColor}
+                onDelete={onDeleteProject}
+                deleted={deletedProject}
               />
             </FilterProvider>
           ))}

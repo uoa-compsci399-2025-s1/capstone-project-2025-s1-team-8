@@ -17,10 +17,13 @@ import { adminToken, clientToken, studentToken } from '@/test-config/routes-setu
 import type { User } from '@/payload-types'
 import ProjectDataService from '@/data-layer/services/ProjectDataService'
 import { projectCreateMock, semesterProjectCreateMock } from '@/test-config/mocks/Project.mock'
+import AuthDataService from '@/data-layer/services/AuthDataService'
+import { authCreateMock } from '@/test-config/mocks/Auth.mock'
 
 describe('test /api/admin/users/[id]', async () => {
   const userDataService = new UserDataService()
   const projectDataService = new ProjectDataService()
+  const authDataService = new AuthDataService()
   const cookieStore = await cookies()
 
   describe('test GET /api/admin/users/[id]', () => {
@@ -318,6 +321,24 @@ describe('test /api/admin/users/[id]', async () => {
       expect(res.status).toBe(StatusCodes.NO_CONTENT)
       await expect(userDataService.getUser(newUser.id)).rejects.toThrow('Not Found')
       expect(await userDataService.getClientAdditionalInfo(newUser.id)).toBeUndefined()
+    })
+
+    it('should delete a user and the user auth', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const newUser = await userDataService.createUser(clientCreateMock)
+      const newAuth = await authDataService.createAuth({
+        ...authCreateMock,
+        email: clientCreateMock.email,
+      })
+
+      expect(await authDataService.getAuthByEmail(clientCreateMock.email)).toStrictEqual(newAuth)
+
+      const res = await DELETE({} as NextRequest, {
+        params: paramsToPromise({ id: newUser.id }),
+      })
+
+      expect(res.status).toBe(StatusCodes.NO_CONTENT)
+      expect(await authDataService.getAuthByEmail(clientCreateMock.email)).toBeUndefined()
     })
 
     it('should delete a user and related projects', async () => {

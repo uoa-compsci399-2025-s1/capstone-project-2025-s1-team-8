@@ -16,9 +16,11 @@ import { redirect, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import type { CreateProjectRequestBody, CreateProjectClient } from '@/app/api/projects/route'
 import type { ProjectDetails } from '@/types/Project'
-import { handleProjectFormSubmission } from '@/lib/services/form/Handlers'
+import { handleProjectFormSubmission, handleProjectUpdate } from '@/lib/services/form/Handlers'
 import Notification from '@/components/Generic/Notification/Notification'
 import type { Semester } from '@/payload-types'
+import type { UpdateProjectRequestBody } from '@/app/api/projects/[id]/route'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface FormProject extends CreateProjectRequestBody {
   meetingAttendance: boolean
@@ -59,6 +61,8 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
 
   // check if trying to edit an existing project
   const projectId = searchParams.get('projectId') || undefined
+
+  const queryClient = useQueryClient()
 
   const handleChange = (index: number, field: keyof CreateProjectClient, value: string) => {
     const updated = [...otherClientDetails]
@@ -145,14 +149,55 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
     hasInitialized.current.project = true
   }
 
-  const onSubmit: SubmitHandler<FormProject> = async (data) => {
+  const submitProject: SubmitHandler<FormProject> = async (data) => {
     data.additionalClients = otherClientDetails
 
-    const res = await handleProjectFormSubmission(data as CreateProjectRequestBody)
+    const {
+      meetingAttendance: _meetingAttendance,
+      finalPresentationAttendance: _finalPresentationAttendance,
+      projectSupportAndMaintenance: _projectSupportAndMaintenance,
+      ...cleanedData
+    } = data
+
+    const res = await handleProjectFormSubmission(cleanedData as CreateProjectRequestBody)
 
     // Handle the response as needed
     // For example, you can check for errors or success messages
     if (res?.success) {
+      queryClient.invalidateQueries({ queryKey: ['projects'] })
+      queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
+      queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
+      queryClient.invalidateQueries({ queryKey: ['clientPage'] })
+      queryClient.invalidateQueries({ queryKey: ['studentPage'] })
+      redirect('/client')
+    } else {
+      console.error('Error submitting form:', res?.error)
+      setShowNotification(true)
+    }
+  }
+
+  const editProject: SubmitHandler<FormProject> = async (data) => {
+    if (!projectId) {
+      console.error('Project ID is required for editing')
+      return
+    }
+    data.additionalClients = otherClientDetails
+
+    const {
+      meetingAttendance: _meetingAttendance,
+      finalPresentationAttendance: _finalPresentationAttendance,
+      projectSupportAndMaintenance: _projectSupportAndMaintenance,
+      ...cleanedData
+    } = data
+
+    const res = await handleProjectUpdate(projectId, cleanedData as UpdateProjectRequestBody)
+
+    if (res?.success) {
+      queryClient.invalidateQueries({ queryKey: ['projects'] })
+      queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
+      queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
+      queryClient.invalidateQueries({ queryKey: ['clientPage'] })
+      queryClient.invalidateQueries({ queryKey: ['studentPage'] })
       redirect('/client')
     } else {
       console.error('Error submitting form:', res?.error)
@@ -184,9 +229,11 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
             </button>
           </Link>
           <h1 className="text-4xl font-normal m-0 text-dark-blue font-dm-serif-display mb-3">
-            Computer Science Capstone: Project Proposal Form
+            {projectId
+              ? 'Edit Project Proposal'
+              : 'Computer Science Capstone: Project Proposal Form'}
           </h1>
-          <div>
+          <div className={projectId ? 'hidden' : ''}>
             <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
               Deadline
             </h2>
@@ -207,7 +254,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
               </em>
             </p>
           </div>
-          <div>
+          <div className={projectId ? 'hidden' : ''}>
             <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
               Project Requirements
             </h2>
@@ -226,7 +273,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
               progressively enhancing its functionality.
             </p>
           </div>
-          <div>
+          <div className={projectId ? 'hidden' : ''}>
             <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
               Supervision Requirements
             </h2>
@@ -238,7 +285,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
               feedback on your team&apos;s performance.
             </p>
           </div>
-          <div>
+          <div className={projectId ? 'hidden' : ''}>
             <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
               Disclaimer & Limitations
             </h2>
@@ -252,7 +299,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
               continuity, or further development of the project after the course concludes.
             </p>
           </div>
-          <div>
+          <div className={projectId ? 'hidden' : ''}>
             <h2 className="text-dark-blue font-inter font-bold text-lg whitespace-pre-wrap pb-2">
               Contacts & Information
             </h2>
@@ -293,7 +340,10 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
           <p className="text-dark-blue font-inter pb-6">
             <span className="text-pink-accent">*</span> Required
           </p>
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <form
+            onSubmit={projectId ? handleSubmit(editProject) : handleSubmit(submitProject)}
+            className="flex flex-col gap-4"
+          >
             <ol className="flex flex-col gap-10 list-decimal list-outside text-dark-blue font-inter text-lg whitespace-pre-wrap ml-5">
               <li>
                 <div className="flex justify-between items-center">

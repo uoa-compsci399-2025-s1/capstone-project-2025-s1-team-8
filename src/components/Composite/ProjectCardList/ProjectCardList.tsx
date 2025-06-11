@@ -10,7 +10,13 @@ interface ProjectListProps {
   projects: ProjectDetails[]
   type?: 'student' | 'admin' | 'client'
   icon?: ReactNode
+  loading?: boolean
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void
+  onDelete?: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deleted?: () => void
 }
 
 const ProjectCardList: React.FC<ProjectListProps> = ({
@@ -19,6 +25,9 @@ const ProjectCardList: React.FC<ProjectListProps> = ({
   heading,
   projects,
   type = 'admin',
+  loading = false,
+  onDelete,
+  deleted,
   icon,
   onClick,
 }) => {
@@ -37,9 +46,19 @@ const ProjectCardList: React.FC<ProjectListProps> = ({
       </div>
 
       <div className="flex flex-col gap-4 overflow-x-visible overflow-y-auto max-h-[490px] p-[1px] pt-0.5 pb-3">
-        {projects.map((project, index) => (
-          <ProjectCard key={index} projectInfo={project} type={type} />
-        ))}
+        {loading ? (
+          <p className="text-dark-blue">Loading Projects...</p>
+        ) : (
+          projects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              projectInfo={project}
+              type={type}
+              onDelete={onDelete}
+              deleted={deleted}
+            />
+          ))
+        )}
       </div>
     </div>
   )

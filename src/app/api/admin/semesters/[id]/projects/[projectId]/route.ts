@@ -9,13 +9,14 @@ import { Security } from '@/business-layer/middleware/Security'
 import type { SemesterProject } from '@/payload-types'
 import { ProjectSchema, SemesterSchema } from '@/types/Payload'
 import { ProjectStatus } from '@/types/Project'
+import type { UpdateSemesterProjectData } from '@/types/Collections'
 
 export const PatchSemesterProjectRequestBody = z.object({
   number: z.number().min(1).nullable().optional(),
   project: z.union([z.string(), ProjectSchema]).optional(),
   semester: z.union([z.string(), SemesterSchema]).optional(),
   status: z.nativeEnum(ProjectStatus).optional(),
-})
+}) satisfies z.ZodType<UpdateSemesterProjectData>
 
 class RouteWrapper {
   /**
@@ -57,8 +58,16 @@ class RouteWrapper {
           { status: StatusCodes.BAD_REQUEST },
         )
       }
+      const updatedProjectNumber =
+        data.status === ProjectStatus.Approved ||
+        (!data.status && semesterProject.status === ProjectStatus.Approved)
+          ? (data.number ?? semesterProject.number)
+          : null
 
-      const updatedProject = await projectDataService.updateSemesterProject(projectId, data)
+      const updatedProject = await projectDataService.updateSemesterProject(projectId, {
+        ...data,
+        number: updatedProjectNumber,
+      })
       return NextResponse.json({ data: updatedProject })
     } catch (error) {
       if (error instanceof NotFound) {
