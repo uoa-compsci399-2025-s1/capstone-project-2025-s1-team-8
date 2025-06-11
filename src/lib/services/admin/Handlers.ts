@@ -262,7 +262,6 @@ export async function handlePublishChanges(
     }
 
     const data = semester.data as Semester
-    console.log('semester published?', data.published)
 
     await AdminSemesterService.updateSemester(semesterId, {
       published: !data.published,

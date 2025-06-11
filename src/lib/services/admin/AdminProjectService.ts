@@ -167,7 +167,7 @@ const AdminProjectService = {
             return await AdminProjectService.transformSemesterProject(proj)
           } catch (e) {
             console.error(`Transform error for project ${proj.id}:`, e)
-            return null
+            return []
           }
         }),
       )
