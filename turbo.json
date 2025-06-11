@@ -38,6 +38,11 @@
       "dependsOn": ["^test"],
       "inputs": ["$TURBO_DEFAULT$", ".env*", "**.ts", "**.tsx"]
     },
+    "test:coverage": {
+      "dependsOn": ["^test:coverage"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": ["coverage/**"]
+    },
     "test:watch": {
       "cache": false,
       "persistent": true
