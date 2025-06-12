@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 import type { ButtonHTMLAttributes } from 'react'
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode // Button text or content
@@ -10,6 +11,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   endIcon?: ReactNode
   className?: string // Additional classes (for custom width and custom colours)
   type?: 'button' | 'submit' | 'reset' // Button type for form submission
+  loading?: boolean // Optional loading state
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -20,6 +22,7 @@ const Button: React.FC<ButtonProps> = ({
   startIcon,
   endIcon,
   type = 'button',
+  loading = false,
   ...props
 }) => {
   // Responsive Size Classes
@@ -46,10 +49,11 @@ const Button: React.FC<ButtonProps> = ({
         sizeClasses[size]
       } ${variantClasses[variant]}`}
       type={type}
+      disabled={loading}
       {...props}
     >
       {startIcon && <span className="flex items-center">{startIcon}</span>}
-      {children}
+      {loading ? <AiOutlineLoading3Quarters className="animate-spin" /> : children}
       {endIcon && <span className="flex items-center">{endIcon}</span>}
     </button>
   )

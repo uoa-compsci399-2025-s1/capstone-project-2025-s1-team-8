@@ -55,6 +55,8 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
   // State to manage the additional client details
   const [otherClientDetails, setOtherClientDetails] = useState<CreateProjectClient[]>([])
 
+  const [submitState, setSubmitState] = useState<boolean>(false)
+
   // State to manage the pairs of names and emails of additional clients
   const searchParams = useSearchParams()
   const projectName = searchParams.get('projectName') || ''
@@ -150,6 +152,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
   }
 
   const submitProject: SubmitHandler<FormProject> = async (data) => {
+    setSubmitState(true)
     data.additionalClients = otherClientDetails
 
     const {
@@ -174,6 +177,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
       console.error('Error submitting form:', res?.error)
       setShowNotification(true)
     }
+    setSubmitState(false)
   }
 
   const editProject: SubmitHandler<FormProject> = async (data) => {
@@ -181,6 +185,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
       console.error('Project ID is required for editing')
       return
     }
+    setSubmitState(true)
     data.additionalClients = otherClientDetails
 
     const {
@@ -203,6 +208,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
       console.error('Error submitting form:', res?.error)
       setShowNotification(true)
     }
+    setSubmitState(false)
   }
 
   return (
@@ -680,7 +686,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
                 </label>
               </li>
             </ol>
-            <Button type="submit" variant="dark" size="sm" className="self-start mt-5 ml-4">
+            <Button type="submit" variant="dark" size="sm" loading={submitState} className="self-start mt-5 ml-4">
               Submit
             </Button>
           </form>
