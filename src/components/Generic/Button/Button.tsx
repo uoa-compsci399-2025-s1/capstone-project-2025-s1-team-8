@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 import type { ButtonHTMLAttributes } from 'react'
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode // Button text or content

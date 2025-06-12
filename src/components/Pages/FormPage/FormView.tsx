@@ -686,7 +686,13 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
                 </label>
               </li>
             </ol>
-            <Button type="submit" variant="dark" size="sm" loading={submitState} className="self-start mt-5 ml-4">
+            <Button
+              type="submit"
+              variant="dark"
+              size="sm"
+              loading={submitState}
+              className="self-start mt-5 ml-4"
+            >
               Submit
             </Button>
           </form>
