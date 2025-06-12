@@ -23,7 +23,7 @@ const Radio: FC<RadioProps> = ({
   defaultValue = '',
   ...props
 }) => {
-  const [selectedValue, setSelectedValue] = useState('')
+  const [selectedValue, setSelectedValue] = useState(' ')
   const [customValue, setCustomValue] = useState('')
 
   const hasInitialized = useRef(false)
