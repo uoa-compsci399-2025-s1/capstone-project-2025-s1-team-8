@@ -346,13 +346,11 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
           >
             <ol className="flex flex-col gap-10 list-decimal list-inside text-dark-blue font-inter text-lg whitespace-pre-wrap">
               <li>
-                <label htmlFor="OtherClientDetails">
-                  Other client&apos;s details
-                </label>
+                <label htmlFor="OtherClientDetails">Other client&apos;s details</label>
                 <div className="flex flex-wrap lg:flex-nowrap justify-between items-center">
                   <p className="form-question-subheading">
-                    If there is anyone else involved in the project, please provide their names
-                    and emails.
+                    If there is anyone else involved in the project, please provide their names and
+                    emails.
                   </p>
                   <Button
                     type="button"
