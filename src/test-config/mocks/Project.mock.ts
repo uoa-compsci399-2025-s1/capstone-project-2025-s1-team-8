@@ -4,7 +4,6 @@ import { ProjectStatus } from '@/types/Project'
 import { semesterMock, mockSemesters } from '@/test-config/mocks/Semester.mock'
 import { clientMock, clientMock2 } from './Auth.mock'
 import type { ProjectDetails } from '@/types/Project'
-import { mockClients } from './User.mock'
 
 /*
  * Project mocks

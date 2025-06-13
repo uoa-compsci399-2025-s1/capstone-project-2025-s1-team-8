@@ -1,6 +1,6 @@
-import { DNDType } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
-import { User } from '@/payload-types'
-import { UniqueIdentifier } from '@dnd-kit/core'
+import type { DNDType } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
+import type { User } from '@/payload-types'
+import type { UniqueIdentifier } from '@dnd-kit/core'
 
 /**
  * Sorts projects in Drag and Drop based on filter.
@@ -19,42 +19,48 @@ export function sortProjects(
     if (container.id !== containerId) return container
 
     switch (filter) {
-      case 'projectName':
-      case 'clientName':
-      case 'submissionDate':
-        const sorted = [...container.currentItems]
-        if (filter === 'projectName') {
-          sorted.sort((a, b) => a.projectInfo.name.localeCompare(b.projectInfo.name))
-        } else if (filter === 'clientName') {
-          sorted.sort((a, b) =>
-            (
-              (a.projectInfo.client as User).firstName +
-              ' ' +
-              (a.projectInfo.client as User).lastName
-            ).localeCompare(
-              (b.projectInfo.client as User).firstName +
-                ' ' +
-                (b.projectInfo.client as User).lastName,
-            ),
-          )
-        } else if (filter === 'submissionDate') {
-          sorted.sort(
-            (a, b) =>
-              new Date(a.projectInfo.createdAt).getTime() -
-              new Date(b.projectInfo.createdAt).getTime(),
-          )
-        }
-
+      case 'projectName': {
+        const sorted = [...container.currentItems].sort((a, b) =>
+          a.projectInfo.name.localeCompare(b.projectInfo.name),
+        )
         return {
           ...container,
           currentItems: sorted,
         }
+      }
 
-      case 'originalOrder':
+      case 'clientName': {
+        const sorted = [...container.currentItems].sort((a, b) => {
+          const nameA =
+            (a.projectInfo.client as User).firstName + ' ' + (a.projectInfo.client as User).lastName
+          const nameB =
+            (b.projectInfo.client as User).firstName + ' ' + (b.projectInfo.client as User).lastName
+          return nameA.localeCompare(nameB)
+        })
+        return {
+          ...container,
+          currentItems: sorted,
+        }
+      }
+
+      case 'submissionDate': {
+        const sorted = [...container.currentItems].sort(
+          (a, b) =>
+            new Date(a.projectInfo.createdAt).getTime() -
+            new Date(b.projectInfo.createdAt).getTime(),
+        )
+        return {
+          ...container,
+          currentItems: sorted,
+        }
+      }
+
+      case 'originalOrder': {
         return {
           ...container,
           currentItems: [...container.originalItems],
         }
+      }
 
       default:
         return container

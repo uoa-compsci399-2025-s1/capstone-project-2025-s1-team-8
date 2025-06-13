@@ -1,8 +1,8 @@
 import { ProjectDetailsMock3, ProjectDetailsMock4 } from '@/test-config/mocks/Project.mock'
 import { sortProjects } from './AdminUtil'
-import { UniqueIdentifier } from '@dnd-kit/core'
+import type { UniqueIdentifier } from '@dnd-kit/core'
 import { ProjectStatus } from '@/types/Project'
-import { User } from '@/payload-types'
+import type { User } from '@/payload-types'
 
 describe('sortProjects', () => {
   const presetContainers = [
