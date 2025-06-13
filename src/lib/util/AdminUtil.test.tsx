@@ -1,4 +1,4 @@
-import { ProjectDetailsMock3, ProjectDetailsMock4 } from '@/test-config/mocks/Project.mock'
+import { ProjectDetailsMock4, ProjectDetailsMock5 } from '@/test-config/mocks/Project.mock'
 import { sortProjects } from './AdminUtil'
 import type { UniqueIdentifier } from '@dnd-kit/core'
 import { ProjectStatus } from '@/types/Project'
@@ -11,12 +11,12 @@ describe('sortProjects', () => {
       title: ProjectStatus.Rejected,
       containerColor: 'light' as const,
       currentItems: [
-        { id: 'item-1', projectInfo: ProjectDetailsMock4 },
-        { id: 'item-2', projectInfo: ProjectDetailsMock3 },
+        { id: 'item-1', projectInfo: ProjectDetailsMock5 },
+        { id: 'item-2', projectInfo: ProjectDetailsMock4 },
       ],
       originalItems: [
-        { id: 'item-1', projectInfo: ProjectDetailsMock3 },
-        { id: 'item-2', projectInfo: ProjectDetailsMock4 },
+        { id: 'item-1', projectInfo: ProjectDetailsMock4 },
+        { id: 'item-2', projectInfo: ProjectDetailsMock5 },
       ],
     },
     {
@@ -24,12 +24,12 @@ describe('sortProjects', () => {
       title: ProjectStatus.Pending,
       containerColor: 'medium' as const,
       currentItems: [
-        { id: 'item-1', projectInfo: ProjectDetailsMock4 },
-        { id: 'item-2', projectInfo: ProjectDetailsMock3 },
+        { id: 'item-1', projectInfo: ProjectDetailsMock5 },
+        { id: 'item-2', projectInfo: ProjectDetailsMock4 },
       ],
       originalItems: [
-        { id: 'item-1', projectInfo: ProjectDetailsMock3 },
-        { id: 'item-2', projectInfo: ProjectDetailsMock4 },
+        { id: 'item-1', projectInfo: ProjectDetailsMock4 },
+        { id: 'item-2', projectInfo: ProjectDetailsMock5 },
       ],
     },
   ]
