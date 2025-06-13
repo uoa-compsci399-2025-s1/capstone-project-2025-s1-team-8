@@ -97,6 +97,11 @@ export const clientMock: User = {
   email: 'client123@gmail.com',
 }
 
+export const clientMock2: User = {
+  ...clientMock,
+  lastName: '2',
+}
+
 export const studentMock: User = {
   id: STUDENT_USER_UID,
   updatedAt: new Date().toISOString(),
