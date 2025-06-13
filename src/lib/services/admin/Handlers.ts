@@ -161,7 +161,7 @@ export const getAllClients = async (
   totalDocs?: number
 }> => {
   const getClientsResponse = await AdminService.getAllUsers({ ...options, role: UserRole.Client })
-  if (getClientsResponse.status == 200) {
+  if (getClientsResponse.status == StatusCodes.OK) {
     const clientsWithProjects = await Promise.all(
       (getClientsResponse.data ?? []).map(async (client) => {
         const projectsResponse = await AdminService.getProjectsByUserId(client.id)
@@ -192,7 +192,7 @@ export const getNextSemesterProjects = async (): Promise<void | {
   data?: SemesterContainerData
 }> => {
   const { status, error, data } = await AdminService.getNextSemesterProjects()
-  if (status == 200) {
+  if (status == StatusCodes.OK) {
     return { data }
   } else {
     return { error }
@@ -234,7 +234,7 @@ export async function updateProjectOrdersAndStatus({
         project.projectInfo.semesterProjectId ?? '',
         updatedOrderAndStatus,
       )
-      if (statusCode != 200) {
+      if (statusCode != StatusCodes.OK) {
         errors.push({ error, details })
       }
     }

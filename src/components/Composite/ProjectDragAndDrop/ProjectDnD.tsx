@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { DragEndEvent, DragMoveEvent, DragStartEvent, UniqueIdentifier } from '@dnd-kit/core'
 import {
   DndContext,
@@ -21,8 +21,7 @@ import { FiSave, FiPrinter } from 'react-icons/fi'
 import Notification from '@/components/Generic/Notification/Notification'
 import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
-import type { User } from '@/payload-types'
-import useUnsavedChangesWarning from './UnsavedChangesHandler'
+import { sortProjects } from '@/lib/util/AdminUtil'
 import { useQueryClient } from '@tanstack/react-query'
 import type { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
 import type { typeToFlattenedError } from 'zod'
@@ -93,7 +92,6 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 }) => {
   const [containers, setContainers] = useState<DNDType[]>([...presetContainers])
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
-  const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
   const [notification, setNotification] = useState<Notification>(null)
 
   const buttonItems = [
@@ -102,19 +100,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     { Icon: HiOutlineDocumentDownload, value: 'downloadcsv', label: 'Download CSV' },
   ]
 
-  useEffect(() => {
-    if (hasChanges) {
-      setNotification({
-        title: 'Unsaved changes',
-        message: "You\'ve made changes to the project order. Don\'t forget to save!",
-        type: 'warning',
-      })
-    }
-  }, [hasChanges])
-
   const queryClient = useQueryClient()
-
-  useUnsavedChangesWarning(hasChanges)
 
   //TODO: when items are moved around, remove the active filter styles
 
@@ -129,13 +115,11 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }))
 
     if (newFilter) {
-      sortProjects(containerId, newFilter)
+      setContainers(sortProjects(containers, containerId, newFilter))
     }
   }
 
   async function handleSaveChanges() {
-    setHasChanges(false)
-
     const savedChangesMessage = await onSaveChanges({ presetContainers: containers, semesterId })
     if (savedChangesMessage && 'error' in savedChangesMessage) {
       setNotification({
@@ -150,12 +134,9 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
         type: 'success',
       })
     }
-    // Delay invalidation to avoid interfering with notification UI
-    setTimeout(() => {
-      queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
-      queryClient.invalidateQueries({ queryKey: ['projects'] })
-      queryClient.invalidateQueries({ queryKey: ['studentPage'] })
-    }, 500)
+    await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
+    await queryClient.invalidateQueries({ queryKey: ['projects'] })
+    await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
 
     setContainers((prev) =>
       prev.map((container) => ({
@@ -180,11 +161,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
         type: 'success',
       })
     }
-
-    // Delay invalidation slightly to avoid interrupting notification
-    setTimeout(() => {
-      queryClient.invalidateQueries({ queryKey: ['studentPage'] })
-    }, 500)
+    await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
   }
 
   function handleDownloadCsv() {
@@ -193,56 +170,6 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
       title: 'Success',
       message: 'You have successfully downloaded the list of projects.',
       type: 'success',
-    })
-  }
-
-  function sortProjects(containerId: UniqueIdentifier, filter: string): void {
-    setContainers((prevContainers) => {
-      return prevContainers.map((container) => {
-        if (container.id !== containerId) return container
-
-        switch (filter) {
-          case 'projectName':
-          case 'clientName':
-          case 'submissionDate':
-            const sorted = [...container.currentItems]
-            if (filter === 'projectName') {
-              sorted.sort((a, b) => a.projectInfo.name.localeCompare(b.projectInfo.name))
-            } else if (filter === 'clientName') {
-              sorted.sort((a, b) =>
-                (
-                  (a.projectInfo.client as User).firstName +
-                  ' ' +
-                  (a.projectInfo.client as User).lastName
-                ).localeCompare(
-                  (b.projectInfo.client as User).firstName +
-                    ' ' +
-                    (b.projectInfo.client as User).lastName,
-                ),
-              )
-            } else if (filter === 'submissionDate') {
-              sorted.sort(
-                (a, b) =>
-                  new Date(a.projectInfo.createdAt).getTime() -
-                  new Date(b.projectInfo.createdAt).getTime(),
-              )
-            }
-
-            return {
-              ...container,
-              currentItems: sorted,
-            }
-
-          case 'originalOrder':
-            return {
-              ...container,
-              currentItems: [...container.originalItems],
-            }
-
-          default:
-            return container
-        }
-      })
     })
   }
 
@@ -392,7 +319,11 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
   // This is the function that handles the sorting of items when the user is done dragging.
   function handleDragEnd(event: DragEndEvent) {
-    setHasChanges(true)
+    setNotification({
+      title: 'Unsaved changes',
+      message: "You\'ve made changes to the project order. Don\'t forget to save!",
+      type: 'warning',
+    })
     const { active, over } = event
 
     // Handling item Sorting
