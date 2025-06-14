@@ -7,9 +7,9 @@ import Link from 'next/link'
 
 const InvalidFormView: FC = () => {
   return (
-    <div className="h-dvh w-dvw bg-gradient-to-b from-[#779ea7] to-[#dae6e2] flex flex-col items-center overflow-y-scroll py-[8%] px-[10%] gap-4 p-4">
-      <div className="relative bg-light-beige max-w-full flex flex-col rounded-2xl my-auto border border-deeper-blue">
-        <div className="relative flex flex-col p-18 pt-20 rounded-t-2xl gap-6">
+    <div className="h-full w-full bg-gradient-to-b from-[#779ea7] to-[#dae6e2] flex flex-col items-center overflow-y-scroll py-[8%] gap-4">
+      <div className="relative bg-light-beige w-[95%] sm:w-[85%] md:w-[75%] flex flex-col rounded-2xl my-auto border border-deeper-blue">
+        <div className="relative flex flex-col px-10 pb-10 md:px-15 md:pb-15 pt-20 rounded-t-2xl gap-6">
           <Link href="/client">
             <button className="absolute top-10 right-10 rounded-full hover:cursor-pointer">
               <HiX className="w-5 h-5 text-dark-blue hover:text-steel-blue" />

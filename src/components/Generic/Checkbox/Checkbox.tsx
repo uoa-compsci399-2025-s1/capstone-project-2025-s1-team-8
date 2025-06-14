@@ -58,7 +58,7 @@ const Checkbox: FC<CheckboxProps> = ({
           <span
             className={` ${getBorderStyle(option.disabled || false)}
                 ${getCheckboxStyle(option.disabled || false)}
-                w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] rounded-sm 
+                min-w-[16px] h-[16px] flex mt-[3px] mr-6 border-[1.5px] rounded-sm 
                 [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
                 transition-colors duration-150 `}
           >
