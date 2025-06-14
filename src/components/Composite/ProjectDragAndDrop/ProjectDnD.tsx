@@ -39,6 +39,7 @@ export type DNDType = {
 export interface SemesterContainerData {
   presetContainers: DNDType[]
   semesterId: string
+  semesterPublished?: boolean
 }
 
 export type DndComponentProps = SemesterContainerData & {
@@ -87,6 +88,7 @@ const defaultProjectInfo: ProjectDetails = {
 const ProjectDnD: React.FC<DndComponentProps> = ({
   presetContainers,
   semesterId,
+  semesterPublished,
   onSaveChanges,
   onPublishChanges,
   onDeleteProject,
@@ -96,9 +98,8 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [notification, setNotification] = useState<Notification>(null)
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
-  // TODO: need to set the publish / unpublish toggle using a service method not just setting to false everytime
-  const [toPublishToggle, setToPublishToggle] = useState(true) // if true, projects are unpublished and need publishing, if false, projects are published and can be unpublished
-  
+  const [toPublishToggle, setToPublishToggle] = useState(!semesterPublished ?? true) // if true, projects are unpublished and need publishing, if false, projects are published and can be unpublished
+
   const [buttonItems, setButtonItems] = useState<
     {
       Icon: IconType
@@ -141,8 +142,6 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     ])
   }, [toPublishToggle])
 
-
-
   const queryClient = useQueryClient()
 
   //TODO: when items are moved around, remove the active filter styles
@@ -162,14 +161,6 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }
   }
 
-
-  function setButtonLoading(value: string, isLoading: boolean) {
-    setButtonItems((prevItems) =>
-      prevItems.map((item) => (item.value === value ? { ...item, isLoading } : item)),
-    )
-  }
-
-
   function setButtonLoading(value: string, isLoading: boolean) {
     setButtonItems((prevItems) =>
       prevItems.map((item) => (item.value === value ? { ...item, isLoading } : item)),
@@ -180,6 +171,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     setHasChanges(false)
     setButtonLoading('save', true)
     const savedChangesMessage = await onSaveChanges({ presetContainers: containers, semesterId })
+    setButtonLoading('save', false)
     if (savedChangesMessage && 'error' in savedChangesMessage) {
       setNotification({
         title: 'Error',
@@ -197,22 +189,12 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     await queryClient.invalidateQueries({ queryKey: ['projects'] })
     await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
 
-      setContainers((prev) =>
-        prev.map((container) => ({
-          ...container,
-          originalItems: [...container.currentItems],
-        })),
-      )
-      setSuccessNotification('Your changes have been saved successfully!')
-      setHasChanges(false)
-      setShowNotification(false)
-    } catch (error) {
-      console.error('Save failed', error)
-      setSuccessNotification('Failed to save changes.')
-    } finally {
-      setTimeout(() => setSuccessNotification(null), 5000)
-      setButtonLoading('save', false) // 👈 Unset loading
-    }
+    setContainers((prev) =>
+      prev.map((container) => ({
+        ...container,
+        originalItems: [...container.currentItems],
+      })),
+    )
   }
 
   async function handlePublishChanges() {
@@ -220,9 +202,10 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     setButtonLoading(buttonName, true)
 
     const publishMessage = await onPublishChanges(semesterId)
+    setButtonLoading(buttonName, false)
     const message = toPublishToggle
-        ? 'The approved projects have been published!'
-        : 'All projects are now unpublished'
+      ? 'The approved projects have been published!'
+      : 'All projects are now unpublished'
 
     if (publishMessage && 'error' in publishMessage) {
       setNotification({
@@ -237,6 +220,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
         type: 'success',
       })
     }
+    setToPublishToggle(!toPublishToggle)
     await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
   }
 
