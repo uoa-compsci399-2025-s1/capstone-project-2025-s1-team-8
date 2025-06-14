@@ -26,7 +26,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import type { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
 import type { typeToFlattenedError } from 'zod'
 import { LuEyeOff, LuEye } from 'react-icons/lu'
-import { IconType } from 'react-icons'
+import type { IconType } from 'react-icons'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -88,7 +88,7 @@ const defaultProjectInfo: ProjectDetails = {
 const ProjectDnD: React.FC<DndComponentProps> = ({
   presetContainers,
   semesterId,
-  semesterPublished,
+  semesterPublished = true,
   onSaveChanges,
   onPublishChanges,
   onDeleteProject,
@@ -98,7 +98,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [notification, setNotification] = useState<Notification>(null)
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
-  const [toPublishToggle, setToPublishToggle] = useState(!semesterPublished ?? true) // if true, projects are unpublished and need publishing, if false, projects are published and can be unpublished
+  const [toPublishToggle, setToPublishToggle] = useState(!semesterPublished) // if true, projects are unpublished and need publishing, if false, projects are published and can be unpublished
 
   const [buttonItems, setButtonItems] = useState<
     {
