@@ -8,7 +8,7 @@ import {
   CLIENT_JWT_MOCK,
   clientMock,
 } from '@/test-config/mocks/Auth.mock'
-import AuthDataService from '@/data-layer/services/AuthService'
+import AuthDataService from '@/data-layer/services/AuthDataService'
 import AuthService from '@/business-layer/services/AuthService'
 import { createMockNextPostRequest } from '@/test-config/utils'
 import { AUTH_COOKIE_NAME } from '@/types/Auth'

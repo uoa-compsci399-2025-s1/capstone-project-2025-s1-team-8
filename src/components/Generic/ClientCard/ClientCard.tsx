@@ -7,9 +7,39 @@ import type { ProjectDetails } from '@/types/Project'
 export interface ClientCardProps {
   clientInfo: UserCombinedInfo
   projects?: ProjectDetails[]
+  onSave?: (
+    clientId: string,
+    firstName: string,
+    lastName: string,
+    affiliation: string,
+    introduction: string,
+  ) => Promise<{
+    data?: UserCombinedInfo
+    error?: string
+    message?: string
+    details?: string
+  }>
+  onDeleteClient: (clientId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  updatedClient: () => void
+  deletedClient: () => void
+  onDeleteProject: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deletedProject: () => void
 }
 
-const ClientCard: React.FC<ClientCardProps> = ({ clientInfo, projects }) => {
+const ClientCard: React.FC<ClientCardProps> = ({
+  clientInfo,
+  onSave,
+  onDeleteClient,
+  updatedClient,
+  deletedClient,
+  onDeleteProject,
+}) => {
   const [copied, setCopied] = useState(false)
   const [open, setOpen] = useState(false)
 
@@ -25,17 +55,23 @@ const ClientCard: React.FC<ClientCardProps> = ({ clientInfo, projects }) => {
 
   return (
     <>
-      <div className="bg-gradient-to-r from-denim-blue to-deeper-blue hover:from-[#35474c] hover:to-[#6d939d] w-full flex flex-row justify-between p-6">
+      <div
+        className="bg-gradient-to-r from-denim-blue to-deeper-blue hover:from-[#35474c] hover:to-[#6d939d] w-full flex flex-row justify-between p-6 cursor-pointer"
+        onClick={() => handleModal()}
+      >
         <div className="flex flex-row gap-4">
-          <p
-            className="text-light-beige font-semibold text-xl cursor-pointer"
-            onClick={() => handleModal()}
-          >
+          <p className="text-light-beige font-semibold text-xl">
             {`${clientInfo.firstName}${clientInfo.lastName ? ' ' + clientInfo.lastName : ''}`}
           </p>
           <p className="text-light-beige text-base self-end">{clientInfo.email}</p>
         </div>
-        <button onClick={() => handleCopy(clientInfo.email)}>
+        <button
+          className="z-10"
+          onClick={(e) => {
+            e.stopPropagation()
+            handleCopy(clientInfo.email)
+          }}
+        >
           {copied ? (
             <FiCheck className="self-center size-5 text-light-beige" />
           ) : (
@@ -46,11 +82,18 @@ const ClientCard: React.FC<ClientCardProps> = ({ clientInfo, projects }) => {
       <ClientModal
         open={open}
         onClose={() => handleModal()}
-        clientFullName={`${clientInfo.firstName}${clientInfo.lastName ? ' ' + clientInfo.lastName : ''}`}
         clientEmail={clientInfo.email}
-        affiliation={clientInfo.affiliation ?? ''}
-        introduction={clientInfo.introduction ?? ''}
-        projects={projects}
+        clientInfo={clientInfo}
+        onSave={onSave}
+        onUpdatedClient={() => {
+          updatedClient?.()
+        }}
+        onDeleteClient={onDeleteClient}
+        onDeletedClient={() => {
+          deletedClient?.()
+          handleModal()
+        }}
+        onDeleteProject={onDeleteProject}
       />
     </>
   )

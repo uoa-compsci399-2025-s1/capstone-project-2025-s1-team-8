@@ -1,5 +1,6 @@
 import type { Semester, SemesterProject } from '@/payload-types'
 import { GET as GetSemesters } from '@/app/api/semesters/route'
+import { GET as GetSemester } from '@/app/api/semesters/[id]/route'
 import { GET as GetProjects } from '@/app/api/semesters/[id]/projects/route'
 import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 import { POST as CreateSemester } from '@/app/api/admin/semesters/route'
@@ -14,7 +15,6 @@ import type { UpdateSemesterData } from '@/types/Collections'
 import type { ProjectStatus } from '@/types/Project'
 import type { typeToFlattenedError } from 'zod'
 import type { StatusCodes } from 'http-status-codes'
-import { SemesterType } from '@/types/Semester'
 
 const AdminSemesterService = {
   /**
@@ -48,7 +48,6 @@ const AdminSemesterService = {
       page?: number
       limit?: number
       status?: ProjectStatus
-      published?: 'true' | 'false'
     } = {},
   ): Promise<{
     status: StatusCodes
@@ -64,6 +63,27 @@ const AdminSemesterService = {
     const { data, nextPage, error } = { ...(await response.json()) }
 
     return { status: response.status, data, nextPage, error }
+  },
+
+  /**
+   * Gets a semester by ID
+   *
+   * @param semesterID The ID of the semester to retrieve
+   * @returns an object containing the status, data, and error
+   */
+  getSemester: async function (semesterID: string): Promise<{
+    status: StatusCodes
+    data?: Semester
+    error?: string
+  }> {
+    'use server'
+    const url = buildNextRequestURL(`/app/semesters/${semesterID}`, {})
+    const res = await GetSemester(await buildNextRequest(url, { method: 'GET' }), {
+      params: Promise.resolve({ id: semesterID }),
+    })
+
+    const { error, data } = await res.json()
+    return { status: res.status, data, error }
   },
 
   /**
@@ -133,36 +153,50 @@ const AdminSemesterService = {
     const response = await DeleteSemester(await buildNextRequest(url, { method: 'DELETE' }), {
       params: Promise.resolve({ id: semesterId }),
     })
-    const { error } = await response.json()
-
-    return { status: response.status, error }
+    try {
+      const { error } = await response.json()
+      return { status: response.status, error }
+    } catch {
+      return { status: response.status, error: 'Failed to parse response' }
+    }
   },
 
   /**
-   * Check if a target semester is current or upcoming
-   *
-   * @param semesterId The ID of the semester to check
-   * @returns a string indicating if the semester is current, upcoming, or empty
+   * Returns all semester Statuses
+   * @param semesters an array of semesters to check
+   * @returns a record mapping semester IDs to their statuses
    */
-  isCurrentOrUpcoming: async function (semesterId: string): Promise<'current' | 'upcoming' | ''> {
-    'use server'
-    const urlCurrent = buildNextRequestURL('/api/semesters', { timeframe: SemesterType.Current })
-    const responseCurrent = await GetSemesters(
-      await buildNextRequest(urlCurrent, { method: 'GET' }),
-    )
-    const dataCurrent = await responseCurrent.json()
 
-    const urlNext = buildNextRequestURL('/api/semesters', { timeframe: SemesterType.Next })
-    const responseNext = await GetSemesters(await buildNextRequest(urlNext, { method: 'GET' }))
-    const dataNext = await responseNext.json()
+  getSemesterStatuses: async function (
+    semesters: Semester[],
+  ): Promise<Record<string, '' | 'current' | 'upcoming'>> {
+    const semesterStatuses: Record<string, '' | 'current' | 'upcoming'> = {}
+    const currentDate = new Date()
+    let earliestUpcomingDateIndex = -1
 
-    if (dataCurrent.data?.length && dataCurrent.data[0].id === semesterId) {
-      return 'current'
+    for (let i = 0; i < semesters.length; i++) {
+      const semester = semesters[i]
+      const startDate = new Date(semester.startDate)
+      const endDate = new Date(semester.endDate)
+      if (startDate <= currentDate && endDate >= currentDate) {
+        semesterStatuses[semester.id] = 'current'
+      } else if (startDate > currentDate) {
+        if (
+          earliestUpcomingDateIndex === -1 ||
+          startDate < new Date(semesters[earliestUpcomingDateIndex].startDate)
+        ) {
+          if (earliestUpcomingDateIndex !== -1) {
+            semesterStatuses[semesters[earliestUpcomingDateIndex].id] = ''
+          }
+          earliestUpcomingDateIndex = i
+          semesterStatuses[semester.id] = 'upcoming'
+        }
+      } else {
+        semesterStatuses[semester.id] = ''
+      }
     }
-    if (dataNext.data?.length && dataNext.data[0].id === semesterId) {
-      return 'upcoming'
-    }
-    return ''
+
+    return semesterStatuses
   },
 
   /**

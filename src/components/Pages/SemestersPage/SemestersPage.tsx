@@ -1,28 +1,21 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import SemesterCard from '@/components/Composite/SemesterCard/SemesterCard'
 import Button from '@/components/Generic/Button/Button'
 import SemesterForm from '@/components/Composite/SemesterForm/SemesterForm'
 import type { Semester } from '@/payload-types'
-import type { ProjectDetails } from '@/types/Project'
 import type { typeToFlattenedError } from 'zod'
 import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
 
 interface SemestersPageProps {
   semesters: Semester[]
-  created: () => void
-  updated: () => void
-  deleted: () => void
-  checkStatus?: (id: string) => Promise<'current' | 'upcoming' | ''>
-  getAllSemesterProjects: (
-    id: string,
-  ) => Promise<void | { error?: string; data?: ProjectDetails[] }>
   handleCreateSemester: (formData: FormData) => Promise<void | {
     error?: string
     message?: string
     details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
   }>
+  createdSemester: () => void
   handleUpdateSemester: (
     formData: FormData,
     id: string,
@@ -31,46 +24,43 @@ interface SemestersPageProps {
     message?: string
     details?: typeToFlattenedError<typeof CreateSemesterRequestBody>
   }>
+  updatedSemester: () => void
   handleDeleteSemester: (id: string) => Promise<void | {
     error?: string
     message?: string
   }>
+  deletedSemester: () => void
+  onDeleteProject: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deletedProject: () => void
+  semesterStatuses?: Record<string, 'current' | 'upcoming' | ''>
 }
 
 const SemestersPage: React.FC<SemestersPageProps> = ({
   semesters,
-  created,
-  updated,
-  deleted,
-  getAllSemesterProjects,
-  checkStatus,
   handleCreateSemester,
+  createdSemester,
   handleUpdateSemester,
+  updatedSemester,
   handleDeleteSemester,
+  deletedSemester,
+  semesterStatuses = {},
+  onDeleteProject,
+  deletedProject,
 }) => {
   const [modalOpen, setModalOpen] = useState(false)
-  const [semesterStatuses, setSemesterStatuses] = useState<
-    Record<string, 'current' | 'upcoming' | ''>
-  >({})
   const upcomingSemesterRef = useRef<HTMLDivElement>(null)
+  const [editingSemesterId, setEditingSemesterId] = useState<string | null>(null)
+
+  const callSemesterForm = (semesterId: string) => {
+    setEditingSemesterId(semesterId)
+  }
 
   function toggleModal() {
     setModalOpen(!modalOpen)
   }
-
-  useEffect(() => {
-    const loadStatuses = async () => {
-      const statuses: Record<string, 'current' | 'upcoming' | ''> = {}
-      if (!checkStatus) return
-      for (const semester of semesters) {
-        if (semester.id) {
-          statuses[semester.id] = await checkStatus(semester.id)
-        }
-      }
-      setSemesterStatuses(statuses)
-    }
-    loadStatuses()
-  }, [semesters, checkStatus])
 
   const scrollToCurrentSemester = () => {
     upcomingSemesterRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -103,8 +93,6 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
           }
         >
           <SemesterCard
-            semesterProjects={getAllSemesterProjects}
-            checkStatus={checkStatus}
             semester={semester as Semester}
             id={semester.id}
             name={semester.name}
@@ -113,25 +101,58 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
             endDate={semester.endDate}
             updatedAt={semester.updatedAt}
             createdAt={semester.createdAt}
+            published={semester.published}
+            currentOrUpcoming={semesterStatuses[semester.id] || ''}
+            onEdit={callSemesterForm}
+            onDeleteProject={onDeleteProject}
+            deletedProject={deletedProject}
+            onDeleteSemester={handleDeleteSemester}
+            deletedSemester={deletedSemester}
           />
         </div>
       ))}
+
       <SemesterForm
-        open={modalOpen}
-        semesterId="-1"
-        onClose={() => toggleModal()}
+        edit={editingSemesterId !== null}
+        open={modalOpen || editingSemesterId !== null}
+        semesterId={editingSemesterId || '-1'}
+        onClose={() => {
+          if (modalOpen) toggleModal()
+          setEditingSemesterId(null)
+        }}
         onCreated={() => {
-          created?.()
+          createdSemester?.()
+          setEditingSemesterId(null)
         }}
         onUpdated={() => {
-          updated?.()
+          updatedSemester?.()
+          setEditingSemesterId(null)
         }}
         onDeleted={() => {
-          deleted?.()
+          deletedSemester?.()
+          setEditingSemesterId(null)
         }}
         handleCreateSemester={handleCreateSemester}
         handleUpdateSemester={handleUpdateSemester}
         handleDeleteSemester={handleDeleteSemester}
+        semesterName={
+          editingSemesterId ? semesters.find((s) => s.id === editingSemesterId)?.name : ''
+        }
+        startDate={
+          editingSemesterId
+            ? new Date(semesters.find((s) => s.id === editingSemesterId)?.startDate || '')
+            : undefined
+        }
+        endDate={
+          editingSemesterId
+            ? new Date(semesters.find((s) => s.id === editingSemesterId)?.endDate || '')
+            : undefined
+        }
+        submissionDeadline={
+          editingSemesterId
+            ? new Date(semesters.find((s) => s.id === editingSemesterId)?.deadline || '')
+            : undefined
+        }
       />
     </div>
   )

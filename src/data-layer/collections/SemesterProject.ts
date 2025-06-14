@@ -3,6 +3,9 @@ import { ProjectStatus } from '@/types/Project'
 
 export const SemesterProject: CollectionConfig = {
   slug: 'semesterProject',
+  admin: {
+    useAsTitle: 'project',
+  },
   fields: [
     {
       name: 'number',
@@ -26,12 +29,6 @@ export const SemesterProject: CollectionConfig = {
       type: 'select',
       defaultValue: ProjectStatus.Pending,
       options: Object.values(ProjectStatus),
-      required: true,
-    },
-    {
-      name: 'published',
-      type: 'checkbox',
-      defaultValue: false,
       required: true,
     },
   ],

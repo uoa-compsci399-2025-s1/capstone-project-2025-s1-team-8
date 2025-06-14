@@ -1,26 +1,45 @@
 'use client'
 import React, { useState, useRef, useEffect } from 'react'
 import Capsule from '@/components/Generic/Capsule/Capsule'
-import EditDropdown from '@/components/Composite/EditDropdown/EditDropdown'
+import EditDeleteDropdown from '@/components/Composite/EditDropdown/EditDeleteDropdown'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import type { Semester } from '@/payload-types'
-import type { ProjectDetails } from '@/types/Project'
+import { FiDownload } from 'react-icons/fi'
+import { formatDate } from '@/utils/date'
+import { useSemesterProjects } from '@/lib/hooks/useSemesterProjects'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface SemesterCardProps extends Semester {
   semester: Semester
-  semesterProjects: (id: string) => Promise<void | {
+  currentOrUpcoming?: 'current' | 'upcoming' | ''
+  onEdit?: (id: string) => void
+  onDeleteProject: (projectId: string) => Promise<{
     error?: string
-    data?: ProjectDetails[]
+    message?: string
   }>
-  checkStatus?: (id: string) => Promise<'current' | 'upcoming' | ''>
+  deletedProject: () => void
+  onDeleteSemester: (semesterId: string) => Promise<void | {
+    error?: string
+    message?: string
+  }>
+  deletedSemester?: () => void
 }
-const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects, checkStatus }) => {
+const SemesterCard: React.FC<SemesterCardProps> = ({
+  semester,
+  currentOrUpcoming,
+  onEdit,
+  onDeleteProject,
+  deletedProject,
+  onDeleteSemester,
+  deletedSemester,
+}) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')
-  const [approvedProjectsList, setApprovedProjectsList] = useState<ProjectDetails[]>([])
-  const [currentOrUpcoming, setCurrentOrUpcoming] = useState('')
+  const { data: semesterProjectsData, isLoading } = useSemesterProjects(semester.id)
+
+  const queryClient = useQueryClient()
 
   useEffect(() => {
     if (isOpen && contentRef.current) {
@@ -28,31 +47,19 @@ const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects,
     } else {
       setHeight('0px')
     }
-  }, [isOpen])
+  }, [isOpen, isLoading])
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      const result = await semesterProjects(semester.id)
-      if (result?.data) {
-        setApprovedProjectsList(result.data)
-      }
-    }
-    fetchProjects()
-  }, [semesterProjects, semester.id])
-
-  useEffect(() => {
-    const fetchCurrentOrUpcoming = async () => {
-      if (!checkStatus) return
-      setCurrentOrUpcoming(await checkStatus(semester.id))
-    }
-    fetchCurrentOrUpcoming()
-  }, [checkStatus, semester.id])
+  function handleDownloadCsv() {
+    window.open(`/api/admin/export/semesters/${semester.id}`, '_blank')
+  }
 
   return (
     <div className="relative w-full flex flex-col gap-4">
       {/* Semester Card */}
       <div
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={async () => {
+          setIsOpen(!isOpen)
+        }} // should load projects
         className={`
       ${
         currentOrUpcoming === 'upcoming' || currentOrUpcoming === 'current'
@@ -83,12 +90,12 @@ const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects,
 
         <div className="flex flex-wrap sm:flex-nowrap gap-2">
           <Capsule
-            text={new Date(semester.startDate).toLocaleDateString()}
+            text={formatDate(semester.startDate)}
             variant="muted_blue"
             className="small-info-tag"
           />
           <Capsule
-            text={new Date(semester.endDate).toLocaleDateString()}
+            text={formatDate(semester.endDate)}
             variant="muted_blue"
             className="small-info-tag"
           />
@@ -115,7 +122,18 @@ const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects,
             className="absolute top-8.25 right-19 text-steel-blue hover:text-deep-teal cursor-pointer"
             aria-label="Edit"
           >
-            <EditDropdown containerWidth={200} />
+            <EditDeleteDropdown
+              containerWidth={200}
+              onEdit={() => onEdit?.(semester.id)}
+              onDelete={async () => {
+                onDeleteSemester?.(semester.id)
+                deletedSemester?.()
+                await queryClient.invalidateQueries({ queryKey: ['semesterProjects', semester.id] })
+                if (currentOrUpcoming === 'current' || currentOrUpcoming === 'upcoming') {
+                  await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
+                }
+              }}
+            />
           </button>
 
           {/* Details Section */}
@@ -127,13 +145,13 @@ const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects,
             <div className="grid grid-cols-[auto_1fr] grid-rows-3 gap-3 py-3 text-sm sm:text-base">
               <Capsule text="Starts" variant="muted_blue" className="small-info-tag pb-0.5" />
               <Capsule
-                text={new Date(semester.startDate).toLocaleDateString()}
+                text={formatDate(semester.startDate)}
                 variant="beige"
                 className="small-info-tag pb-0.5"
               />
               <Capsule text="Ends" variant="muted_blue" className="small-info-tag pb-0.5" />
               <Capsule
-                text={new Date(semester.endDate).toLocaleDateString()}
+                text={formatDate(semester.endDate)}
                 variant="beige"
                 className="small-info-tag pb-0.5"
               />
@@ -143,7 +161,7 @@ const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects,
                 className="small-info-tag pb-0.5"
               />
               <Capsule
-                text={new Date(semester.deadline).toLocaleDateString()}
+                text={formatDate(semester.deadline)}
                 variant="beige"
                 className="small-info-tag pb-0.5"
               />
@@ -155,7 +173,18 @@ const SemesterCard: React.FC<SemesterCardProps> = ({ semester, semesterProjects,
             className="pb-1"
             headingClassName="text-xl sm:text-2xl py-4 sm:py-6"
             heading="Approved projects"
-            projects={approvedProjectsList}
+            projects={semesterProjectsData || []}
+            onDelete={onDeleteProject}
+            deleted={async () => {
+              deletedProject()
+              await queryClient.invalidateQueries({ queryKey: ['semesterProjects', semester.id] })
+              if (currentOrUpcoming === 'current' || currentOrUpcoming === 'upcoming') {
+                await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
+              }
+            }}
+            icon={<FiDownload />}
+            loading={isLoading}
+            onClick={handleDownloadCsv}
           />
         </div>
       </div>

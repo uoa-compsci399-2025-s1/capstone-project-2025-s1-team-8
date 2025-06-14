@@ -18,15 +18,14 @@ export const Default: Story = {}
 export const CurrentSemester: Story = {
   args: {
     ...Default.args,
-    name: 'Current Semester',
-    //currentOrUpcoming: 'current',
+    semester: mockSemesters[1],
   },
 }
 
 export const UpcomingSemester: Story = {
   args: {
     ...Default.args,
-    name: 'Upcoming Semester',
-    //currentOrUpcoming: 'upcoming',
+    semester: mockSemesters[1],
+    currentOrUpcoming: 'upcoming',
   },
 }

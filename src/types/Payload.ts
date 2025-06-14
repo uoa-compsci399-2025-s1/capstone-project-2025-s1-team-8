@@ -2,7 +2,6 @@ import { z } from 'zod'
 
 import type {
   ClientAdditionalInfo,
-  Form,
   FormQuestion,
   Media,
   Project,
@@ -49,6 +48,7 @@ export const SemesterSchema = z.object({
   endDate: z.string(),
   updatedAt: z.string(),
   createdAt: z.string(),
+  published: z.boolean(),
 }) satisfies z.ZodType<Semester>
 
 export const FormQuestionSchema = z.object({
@@ -69,14 +69,6 @@ export const QuestionResponseSchema = z.object({
   id: z.string().nullable().optional(),
 })
 
-export const FormSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.string(),
-  updatedAt: z.string(),
-  createdAt: z.string(),
-}) satisfies z.ZodType<Form>
-
 export const ProjectSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -92,7 +84,6 @@ export const ProjectSchema = z.object({
   numberOfTeams: z.string(),
   desiredTeamSkills: z.string().optional(),
   availableResources: z.string().optional(),
-  futureConsideration: z.boolean(),
 }) satisfies z.ZodType<Project>
 
 export const SemesterProjectSchema = z.object({
@@ -101,7 +92,6 @@ export const SemesterProjectSchema = z.object({
   semester: z.union([z.string(), SemesterSchema]),
   project: z.union([z.string(), ProjectSchema]),
   status: z.nativeEnum(ProjectStatus),
-  published: z.boolean(),
   updatedAt: z.string(),
   createdAt: z.string(),
 }) satisfies z.ZodType<SemesterProject>

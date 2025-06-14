@@ -7,10 +7,20 @@ import type { ProjectDetails } from '@/types/Project'
 
 interface ProjectCardProps {
   projectInfo: ProjectDetails
-  type?: 'student' | 'admin'
+  type?: 'student' | 'admin' | 'client'
+  onDelete?: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deleted?: () => void
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo, type = 'admin' }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({
+  projectInfo,
+  type = 'admin',
+  onDelete,
+  deleted,
+}) => {
   const [modalOpen, setModalOpen] = useState(false)
 
   function toggleModal() {
@@ -33,7 +43,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo, type = 'admin' }
       >
         <div className="text-left">
           <div className="relative z-10">
-            <p className="text-dark-blue text-base font-semibold pb-0.5">{`${projectInfo.number ?? ''}${projectInfo.number ? '. ' : ''}${projectInfo.name}`}</p>
+            <p className="text-dark-blue text-base font-semibold pb-0.5">{`${projectInfo.number ? `Project ${projectInfo.number}: ` : ''}${projectInfo.name}`}</p>
             <p className="text-dark-blue text-xs">
               {`${client.firstName}${client.lastName ? ` ${client.lastName}` : ''}`}
             </p>
@@ -47,6 +57,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ projectInfo, type = 'admin' }
         onClose={() => toggleModal()}
         type={type}
         semesters={semesters}
+        onDelete={onDelete}
+        deleted={deleted}
       />
     </div>
   )

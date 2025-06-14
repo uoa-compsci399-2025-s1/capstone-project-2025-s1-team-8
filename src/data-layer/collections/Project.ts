@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 export const Project: CollectionConfig = {
   slug: 'project',
+  admin: {
+    useAsTitle: 'name',
+  },
   fields: [
     {
       name: 'name',
@@ -97,11 +100,6 @@ export const Project: CollectionConfig = {
       name: 'availableResources',
       type: 'textarea',
       required: false,
-    },
-    {
-      name: 'futureConsideration',
-      type: 'checkbox',
-      required: true,
     },
     {
       name: 'questionResponses',

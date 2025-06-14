@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 
 export const Semester: CollectionConfig = {
   slug: 'semester',
+  admin: {
+    useAsTitle: 'name',
+  },
   fields: [
     {
       name: 'name',
@@ -30,6 +33,15 @@ export const Semester: CollectionConfig = {
       name: 'endDate',
       type: 'date',
       required: true,
+    },
+    {
+      name: 'published',
+      type: 'checkbox',
+      defaultValue: false,
+      required: true,
+      admin: {
+        description: 'A state if all the approved projects are published or not. ',
+      },
     },
   ],
 }

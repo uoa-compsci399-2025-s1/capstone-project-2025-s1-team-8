@@ -21,8 +21,10 @@ import { FiSave } from 'react-icons/fi'
 import Notification from '@/components/Generic/Notification/Notification'
 import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
-import type { User } from '@/payload-types'
-import useUnsavedChangesWarning from './UnsavedChangesHandler'
+import { sortProjects } from '@/lib/util/AdminUtil'
+import { useQueryClient } from '@tanstack/react-query'
+import type { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
+import type { typeToFlattenedError } from 'zod'
 import { LuEyeOff, LuEye } from 'react-icons/lu'
 import { IconType } from 'react-icons'
 
@@ -40,9 +42,27 @@ export interface SemesterContainerData {
 }
 
 export type DndComponentProps = SemesterContainerData & {
-  onSaveChanges: (params: SemesterContainerData) => Promise<void>
-  onPublishChanges: (params: SemesterContainerData, publish: boolean) => Promise<void>
+  onSaveChanges: (params: SemesterContainerData) => Promise<void | {
+    error?: string
+    message?: string
+    details?: typeToFlattenedError<typeof PatchSemesterProjectRequestBody>
+  }>
+  onPublishChanges: (semesterId: string) => Promise<void | {
+    error?: string
+    message?: string
+  }>
+  onDeleteProject: (projectId: string) => Promise<{
+    error?: string
+    message?: string
+  }>
+  deletedProject: () => void
 }
+
+type Notification = {
+  title: string
+  message: string
+  type: 'success' | 'warning'
+} | null
 
 const defaultProjectInfo: ProjectDetails = {
   id: '',
@@ -57,7 +77,6 @@ const defaultProjectInfo: ProjectDetails = {
   numberOfTeams: '',
   desiredTeamSkills: null,
   availableResources: null,
-  futureConsideration: false,
   questionResponses: null,
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
@@ -70,12 +89,13 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   semesterId,
   onSaveChanges,
   onPublishChanges,
+  onDeleteProject,
+  deletedProject,
 }) => {
-  const [containers, setContainers] = useState<DNDType[]>(presetContainers)
+  const [containers, setContainers] = useState<DNDType[]>([...presetContainers])
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
+  const [notification, setNotification] = useState<Notification>(null)
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
-  const [showNotification, setShowNotification] = useState<boolean>(false)
-  const [successNotification, setSuccessNotification] = useState<string | null>(null)
   // TODO: need to set the publish / unpublish toggle using a service method not just setting to false everytime
   const [toPublishToggle, setToPublishToggle] = useState(true) // if true, projects are unpublished and need publishing, if false, projects are published and can be unpublished
   
@@ -122,25 +142,8 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   }, [toPublishToggle])
 
 
-  useEffect(() => {
-    if (hasChanges) {
-      setShowNotification(true)
-    } else {
-      setShowNotification(false)
-    }
-  }, [hasChanges])
 
-  useEffect(() => {
-    if (showNotification) {
-      const timer = setTimeout(() => {
-        setShowNotification(false)
-      }, 5000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [showNotification])
-
-  useUnsavedChangesWarning(hasChanges)
+  const queryClient = useQueryClient()
 
   //TODO: when items are moved around, remove the active filter styles
 
@@ -155,7 +158,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }))
 
     if (newFilter) {
-      sortProjects(containerId, newFilter)
+      setContainers((prevContainers) => sortProjects(prevContainers, containerId, newFilter))
     }
   }
 
@@ -166,11 +169,33 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     )
   }
 
-  async function handleSaveChanges() {
-    setButtonLoading('save', true)
 
-    try {
-      await onSaveChanges({ presetContainers: containers, semesterId })
+  function setButtonLoading(value: string, isLoading: boolean) {
+    setButtonItems((prevItems) =>
+      prevItems.map((item) => (item.value === value ? { ...item, isLoading } : item)),
+    )
+  }
+
+  async function handleSaveChanges() {
+    setHasChanges(false)
+    setButtonLoading('save', true)
+    const savedChangesMessage = await onSaveChanges({ presetContainers: containers, semesterId })
+    if (savedChangesMessage && 'error' in savedChangesMessage) {
+      setNotification({
+        title: 'Error',
+        message: 'There was an error saving your changes. Please try again.',
+        type: 'warning',
+      })
+    } else {
+      setNotification({
+        title: 'Success',
+        message: 'Your changes have been saved successfully!',
+        type: 'success',
+      })
+    }
+    await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
+    await queryClient.invalidateQueries({ queryKey: ['projects'] })
+    await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
 
       setContainers((prev) =>
         prev.map((container) => ({
@@ -192,80 +217,35 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
   async function handlePublishChanges() {
     const buttonName = toPublishToggle ? 'publish' : 'unpublish'
-    setButtonLoading(buttonName, true) // 👈 Set loading
+    setButtonLoading(buttonName, true)
 
-    try {
-      await onPublishChanges({ presetContainers: containers, semesterId }, toPublishToggle)
-      const message = toPublishToggle
+    const publishMessage = await onPublishChanges(semesterId)
+    const message = toPublishToggle
         ? 'The approved projects have been published!'
         : 'All projects are now unpublished'
-      setSuccessNotification(message)
-      setToPublishToggle(!toPublishToggle)
-    } catch (error) {
-      console.error('Publish failed', error)
-      setSuccessNotification('Failed to publish/unpublish.')
-    } finally {
-      setTimeout(() => setSuccessNotification(null), 5000)
-      setButtonLoading(buttonName, false) // 👈 Unset loading
+
+    if (publishMessage && 'error' in publishMessage) {
+      setNotification({
+        title: 'Error',
+        message: 'There was an error publishing the approved projects. Please try again.',
+        type: 'warning',
+      })
+    } else {
+      setNotification({
+        title: 'Success',
+        message: message,
+        type: 'success',
+      })
     }
+    await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
   }
 
   function handleDownloadCsv() {
     window.open(`/api/admin/export/semesters/${semesterId}`, '_blank')
-    setSuccessNotification('Download successful!')
-
-    setTimeout(() => {
-      setSuccessNotification(null)
-    }, 5000)
-  }
-
-  function sortProjects(containerId: UniqueIdentifier, filter: string): void {
-    setContainers((prevContainers) => {
-      return prevContainers.map((container) => {
-        if (container.id !== containerId) return container
-
-        switch (filter) {
-          case 'projectName':
-          case 'clientName':
-          case 'submissionDate':
-            const sorted = [...container.currentItems]
-            if (filter === 'projectName') {
-              sorted.sort((a, b) => a.projectInfo.name.localeCompare(b.projectInfo.name))
-            } else if (filter === 'clientName') {
-              sorted.sort((a, b) =>
-                (
-                  (a.projectInfo.client as User).firstName +
-                  ' ' +
-                  (a.projectInfo.client as User).lastName
-                ).localeCompare(
-                  (b.projectInfo.client as User).firstName +
-                    ' ' +
-                    (b.projectInfo.client as User).lastName,
-                ),
-              )
-            } else if (filter === 'submissionDate') {
-              sorted.sort(
-                (a, b) =>
-                  new Date(a.projectInfo.createdAt).getTime() -
-                  new Date(b.projectInfo.createdAt).getTime(),
-              )
-            }
-
-            return {
-              ...container,
-              currentItems: sorted,
-            }
-
-          case 'originalOrder':
-            return {
-              ...container,
-              currentItems: [...container.originalItems],
-            }
-
-          default:
-            return container
-        }
-      })
+    setNotification({
+      title: 'Success',
+      message: 'You have successfully downloaded the list of projects.',
+      type: 'success',
     })
   }
 
@@ -415,7 +395,15 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
   // This is the function that handles the sorting of items when the user is done dragging.
   function handleDragEnd(event: DragEndEvent) {
-    setHasChanges(true)
+    if (!hasChanges) {
+      setNotification({
+        title: 'Unsaved changes',
+        message: "You\'ve made changes to the project order. Don\'t forget to save!",
+        type: 'warning',
+      })
+      setHasChanges(true)
+    }
+
     const { active, over } = event
 
     // Handling item Sorting
@@ -523,23 +511,17 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     <div className="mx-auto w-full relative">
       <div className="fixed top-6 right-6 z-50">
         <Notification
-          title={'Unsaved Changes'}
-          message={"You've made changes to the project order. Don't forget to save!"}
-          type={'warning'}
-          isVisible={showNotification}
-          onClose={() => setShowNotification(false)}
-        />
-        <Notification
-          isVisible={successNotification != null}
-          title={'Success'}
-          message={successNotification ?? ''}
-          type={'success'}
-          onClose={() => setShowNotification(false)}
+          isVisible={notification != null}
+          title={notification?.title ?? ''}
+          message={notification?.message ?? ''}
+          type={notification?.type ?? 'warning'}
+          onClose={() => setNotification(null)}
         />
       </div>
 
       <div className="flex gap-6 flex-wrap md:flex-nowrap">
         <DndContext
+          id="project-dnd-context"
           sensors={sensors}
           collisionDetection={closestCorners}
           onDragStart={handleDragStart}
@@ -560,6 +542,8 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
                 projects={container.currentItems}
                 onChange={(newFilter) => handleFilterChange(container.id, newFilter)}
                 containerColor={container.containerColor}
+                onDelete={onDeleteProject}
+                deleted={deletedProject}
               />
             </FilterProvider>
           ))}

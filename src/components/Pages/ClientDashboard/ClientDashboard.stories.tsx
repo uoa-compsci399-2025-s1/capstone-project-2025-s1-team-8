@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import ClientDashboard from './ClientDashboard'
 import { mockClients } from '@/test-config/mocks/User.mock'
-import { projectDetailsListMock } from '@/test-config/mocks/Project.mock'
+import clientDashboardContent from '@/lib/defaults/ClientDashboard'
 
 const meta: Meta<typeof ClientDashboard> = {
   title: 'Pages/ClientDashboard',
@@ -10,7 +10,6 @@ const meta: Meta<typeof ClientDashboard> = {
   tags: ['autodocs'],
   args: {
     client: mockClients[0],
-    projects: projectDetailsListMock,
   },
 }
 
@@ -28,6 +27,6 @@ export const Default: Story = {
   },
   args: {
     client: mockClients[0],
-    projects: projectDetailsListMock,
+    content: clientDashboardContent,
   },
 }
