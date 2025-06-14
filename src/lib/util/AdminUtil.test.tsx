@@ -5,7 +5,7 @@ import {
 } from '@/test-config/mocks/Project.mock'
 import { sortByProjectNumber, sortProjects } from './AdminUtil'
 import type { UniqueIdentifier } from '@dnd-kit/core'
-import { ProjectDetails, ProjectStatus } from '@/types/Project'
+import { type ProjectDetails, ProjectStatus } from '@/types/Project'
 import type { SemesterProject, User } from '@/payload-types'
 import { clientMock2 } from '@/test-config/mocks/Auth.mock'
 
