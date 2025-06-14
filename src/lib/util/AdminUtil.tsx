@@ -68,6 +68,12 @@ export function sortProjects(
   })
 }
 
+/**
+ * Sorts projects based on project number before displaying them in Drag and Drop.
+ *
+ * @param projects The fetched SemesterProjects for a particular status (rejected, pending or approved)
+ * @returns The SemesterProjects sorted by on project number
+ */
 export function sortByProjectNumber(projects: SemesterProject[]): SemesterProject[] {
   return [...projects].sort((a, b) => {
     const aNum = a.number
