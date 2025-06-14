@@ -552,12 +552,9 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
                 />
               </li>
               <li>
-                <label htmlFor="FutureSemesters">Future Semesters</label>
+                <label htmlFor="FutureSemesters">Semester Availability</label>
                 <p className="form-question-subheading">
                   Please select all the semesters you would like your project to be considered for.
-                  If you would like this project to be considered for future semesters, please
-                  select from the list of semesters below: If you would like this project to be
-                  considered for future semesters, please select from the list of semesters below:
                 </p>
                 <Checkbox
                   options={upcomingSemesterOptions}
