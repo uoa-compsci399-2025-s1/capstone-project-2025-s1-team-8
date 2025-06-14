@@ -206,7 +206,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
   }
 
   return (
-    <div className="h-dvh w-dvw bg-gradient-to-b from-[#779ea7] to-[#dae6e2] flex flex-col items-center overflow-y-scroll py-[8%] px-[10%] gap-4 p-4">
+    <div className="h-full w-full bg-gradient-to-b from-[#779ea7] to-[#dae6e2] flex flex-col items-center overflow-y-scroll py-[8%] gap-4">
       <div className="fixed top-6 right-6 z-50">
         <Notification
           isVisible={showNotification}
@@ -218,8 +218,8 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
           }}
         />
       </div>
-      <div className="relative bg-light-beige max-w-full flex flex-col rounded-2xl my-auto border border-deeper-blue">
-        <div className="relative flex flex-col p-18 pt-20 rounded-t-2xl gap-6">
+      <div className="relative bg-light-beige w-[95%] sm:w-[85%] md:w-[75%] flex flex-col rounded-2xl my-auto border border-deeper-blue">
+        <div className="relative flex flex-col px-10 pb-10 pt-15 md:px-15 md:pb-15 md:pt-20 rounded-t-2xl gap-6">
           <Link href="/client">
             <button
               className="absolute top-10 right-10 rounded-full hover:cursor-pointer"
@@ -306,7 +306,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
             <p className="text-dark-blue font-inter text-sm">
               You can find examples of projects created by capstone students following this link:{' '}
               <a
-                className="text-steel-blue underline"
+                className="text-steel-blue underline wrap-break-word"
                 href="https://www.capitalise.space"
                 target="_blank"
               >
@@ -315,7 +315,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
               <br />
               The course overview can be found here:{' '}
               <a
-                className="text-steel-blue underline"
+                className="text-steel-blue underline wrap-break-word"
                 href="https://courseoutline.auckland.ac.nz/dco/course/COMPSCI/399/1243"
               >
                 https://courseoutline.auckland.ac.nz/dco/course/COMPSCI/399/1243
@@ -324,19 +324,25 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
               <br />
               If you have any questions, please feel free to contact: <br />
               Anna Trofimova (
-              <a className="text-steel-blue underline" href="mailto:anna.trofimova@auckland.ac.nz">
+              <a
+                className="text-steel-blue underline wrap-break-word"
+                href="mailto:anna.trofimova@auckland.ac.nz"
+              >
                 anna.trofimova@auckland.ac.nz
               </a>
               ) <br />
               or Asma Shakil (
-              <a className="text-steel-blue underline" href="mailto:asma.shakil@auckland.ac.nz">
+              <a
+                className="text-steel-blue underline wrap-break-word"
+                href="mailto:asma.shakil@auckland.ac.nz"
+              >
                 asma.shakil@auckland.ac.nz
               </a>
               )
             </p>
           </div>
         </div>
-        <div className="relative bg-transparent-blue border-t-deeper-blue border-t max-w-full flex flex-col pt-15 p-18 pr-20 pb-20 rounded-b-2xl gap-5">
+        <div className="relative bg-transparent-blue border-t-deeper-blue border-t max-w-full flex flex-col px-10 pt-10 md:px-15 md:pt-15 pb-20 rounded-b-2xl gap-5">
           <p className="text-dark-blue font-inter pb-6">
             <span className="text-pink-accent">*</span> Required
           </p>
@@ -344,31 +350,27 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
             onSubmit={projectId ? handleSubmit(editProject) : handleSubmit(submitProject)}
             className="flex flex-col gap-4"
           >
-            <ol className="flex flex-col gap-10 list-decimal list-outside text-dark-blue font-inter text-lg whitespace-pre-wrap ml-5">
+            <ol className="flex flex-col gap-10 list-decimal list-inside text-dark-blue font-inter text-lg whitespace-pre-wrap">
               <li>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <label className="" htmlFor="OtherClientDetails">
-                      Other client&apos;s details
-                    </label>
-                    <p className="form-question-subheading">
-                      If there is anyone else involved in the project, please provide their names
-                      and emails.
-                    </p>
-                  </div>
+                <label htmlFor="OtherClientDetails">Other client&apos;s details</label>
+                <div className="flex flex-wrap lg:flex-nowrap justify-between items-center">
+                  <p className="form-question-subheading">
+                    If there is anyone else involved in the project, please provide their names and
+                    emails.
+                  </p>
                   <Button
                     type="button"
                     variant="muted_blue"
                     size="sm"
-                    className="self-start h-10"
+                    className="self-start h-10 text-nowrap mb-7"
                     onClick={addPair}
                   >
                     + Add Client
                   </Button>
                 </div>
                 {otherClientDetails.map((pair, idx) => (
-                  <div key={idx} className="flex gap-5 justify-end mb-5">
-                    <div className="w-80 flex flex-col gap-3">
+                  <div key={idx} className="flex flex-wrap lg:flex-nowrap gap-5 justify-end mb-5">
+                    <div className="w-full lg:w-80 flex flex-col gap-3">
                       <label className="text-sm">First Name:</label>
                       <Input
                         id={`OtherClientFirstName${idx}`}
@@ -378,7 +380,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
                         placeholder="First name"
                       />
                     </div>
-                    <div className="w-80 flex flex-col gap-3">
+                    <div className="w-full lg:w-80 flex flex-col gap-3">
                       <label className="text-sm">Last Name:</label>
                       <Input
                         id={`OtherClientLastName${idx}`}
@@ -586,7 +588,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
                   />
                   <span
                     className={`${!!errors.finalPresentationAttendance ? 'border-pink-accent hover:outline-dark-pink peer-focus:outline-dark-pink' : 'border-steel-blue hover:outline-deeper-blue peer-focus:outline-deeper-blue'}
-                        w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] rounded-sm
+                        min-w-[16px] h-[16px] flex mt-[3px] mr-6 border-[1.5px] rounded-sm
                         peer-checked:bg-steel-blue
                         [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
                         hover:outline
@@ -627,7 +629,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
                   />
                   <span
                     className={`${!!errors.finalPresentationAttendance ? 'border-pink-accent hover:outline-dark-pink peer-focus:outline-dark-pink' : 'border-steel-blue hover:outline-deeper-blue peer-focus:outline-deeper-blue'}
-                        w-[16px] h-[16px] inline-flex mt-[3px] mr-6 border-[1.5px] rounded-sm
+                        min-w-[16px] h-[16px] flex mt-[3px] mr-6 border-[1.5px] rounded-sm
                         peer-checked:bg-steel-blue
                         [&>*]:opacity-0 peer-checked:[&>*]:opacity-100
                         hover:outline
