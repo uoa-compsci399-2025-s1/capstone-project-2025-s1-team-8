@@ -21,7 +21,6 @@ import Notification from '@/components/Generic/Notification/Notification'
 import type { Semester } from '@/payload-types'
 import type { UpdateProjectRequestBody } from '@/app/api/projects/[id]/route'
 import { useQueryClient } from '@tanstack/react-query'
-
 interface FormProject extends CreateProjectRequestBody {
   meetingAttendance: boolean
   finalPresentationAttendance: boolean
@@ -92,7 +91,9 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
   if (!hasInitialized.current.semester) {
     //sets upcoming semester options from earliest -> latest
     setUpcomingSemesterOptions(
-      upcomingSemesters
+      upcomingSemesters  
+        // make sure to filter out semesters whose deadline has passed
+        .filter(semester => new Date() < new Date(semester.deadline))
         .map((semester) => ({
           value: semester.id,
           label: `${semester.name} (${returnSubmissionDateFromISOString(semester.startDate)} - ${returnSubmissionDateFromISOString(semester.endDate)})`,
@@ -101,7 +102,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
     )
     // the closest upcoming semester is the last one in the list
     setNextSemesterDetails(
-      upcomingSemesters.length > 0 ? upcomingSemesters[upcomingSemesters.length - 1] : undefined,
+      upcomingSemesters.length > 0 ? upcomingSemesters.filter(semester => new Date() < new Date(semester.deadline)).at(-1) : undefined,
     )
 
     hasInitialized.current.semester = true
@@ -159,6 +160,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
       meetingAttendance: _meetingAttendance,
       finalPresentationAttendance: _finalPresentationAttendance,
       projectSupportAndMaintenance: _projectSupportAndMaintenance,
+      // Exclude these fields from the cleaned data 
       ...cleanedData
     } = data
 
@@ -176,8 +178,8 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
     } else {
       console.error('Error submitting form:', res?.error)
       setShowNotification(true)
+      setSubmitState(false)
     }
-    setSubmitState(false)
   }
 
   const editProject: SubmitHandler<FormProject> = async (data) => {
@@ -550,6 +552,11 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
               <li>
                 <label htmlFor="FutureSemesters">Future Semesters</label>
                 <p className="form-question-subheading">
+                  Please select all the semesters you would like your project to be considered for.
+
+                  If you would like this project to be considered for future semesters, please
+                  select from the list of semesters below:
+
                   If you would like this project to be considered for future semesters, please
                   select from the list of semesters below:
                 </p>
@@ -648,7 +655,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
                 </label>
                 {!!errors.finalPresentationAttendance && (
                   <div className="flex items-center gap-2 text-xs text-pink-accent min-h-[1.25rem] mt-2">
-                    <HiExclamation className="w-3 h-3" />
+                    <HiExclamation className="we3 h-3" />
                     <p>{errors.finalPresentationAttendance?.message}</p>
                   </div>
                 )}
@@ -691,7 +698,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
               variant="dark"
               size="sm"
               loading={submitState}
-              className="self-start mt-5 ml-4"
+              className="self-start mt-5 ml-4 h-10 w-32"
             >
               Submit
             </Button>
