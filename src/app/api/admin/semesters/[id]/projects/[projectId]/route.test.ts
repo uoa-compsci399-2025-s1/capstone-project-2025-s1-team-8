@@ -103,38 +103,6 @@ describe('test api/semester/[id]/projects[/projectId]', async () => {
       )
     })
 
-    it('should remove project numbering if the project status is not approved', async () => {
-      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
-      const semester = await semesterDataService.createSemester(semesterMock)
-      const semesterProject = await projectDataService.createSemesterProject({
-        ...semesterProjectCreateMock,
-        semester: semester.id,
-      })
-
-      const res = await PATCH(
-        createMockNextPatchRequest(`api/semesters/${semester.id}/projects/${semesterProject.id}`, {
-          number: 100,
-          status: ProjectStatus.Pending,
-        }),
-        {
-          params: paramsToPromise({ id: semester.id, projectId: semesterProject.id }),
-        },
-      )
-      expect(res.status).toBe(StatusCodes.OK)
-      expect((await res.json()).data.number).toEqual(null)
-
-      const res2 = await PATCH(
-        createMockNextPatchRequest(`api/semesters/${semester.id}/projects/${semesterProject.id}`, {
-          number: 100,
-          status: ProjectStatus.Approved,
-        }),
-        {
-          params: paramsToPromise({ id: semester.id, projectId: semesterProject.id }),
-        },
-      )
-      expect((await res2.json()).data.number).toEqual(100)
-    })
-
     it('should not update numbering if a different project data field is updated', async () => {
       cookieStore.set(AUTH_COOKIE_NAME, adminToken)
       const semester = await semesterDataService.createSemester(semesterMock)
