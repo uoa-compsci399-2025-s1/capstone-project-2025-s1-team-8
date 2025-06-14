@@ -91,9 +91,9 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
   if (!hasInitialized.current.semester) {
     //sets upcoming semester options from earliest -> latest
     setUpcomingSemesterOptions(
-      upcomingSemesters  
+      upcomingSemesters
         // make sure to filter out semesters whose deadline has passed
-        .filter(semester => new Date() < new Date(semester.deadline))
+        .filter((semester) => new Date() < new Date(semester.deadline))
         .map((semester) => ({
           value: semester.id,
           label: `${semester.name} (${returnSubmissionDateFromISOString(semester.startDate)} - ${returnSubmissionDateFromISOString(semester.endDate)})`,
@@ -102,7 +102,9 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
     )
     // the closest upcoming semester is the last one in the list
     setNextSemesterDetails(
-      upcomingSemesters.length > 0 ? upcomingSemesters.filter(semester => new Date() < new Date(semester.deadline)).at(-1) : undefined,
+      upcomingSemesters.length > 0
+        ? upcomingSemesters.filter((semester) => new Date() < new Date(semester.deadline)).at(-1)
+        : undefined,
     )
 
     hasInitialized.current.semester = true
@@ -160,7 +162,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
       meetingAttendance: _meetingAttendance,
       finalPresentationAttendance: _finalPresentationAttendance,
       projectSupportAndMaintenance: _projectSupportAndMaintenance,
-      // Exclude these fields from the cleaned data 
+      // Exclude these fields from the cleaned data
       ...cleanedData
     } = data
 
@@ -553,12 +555,9 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
                 <label htmlFor="FutureSemesters">Future Semesters</label>
                 <p className="form-question-subheading">
                   Please select all the semesters you would like your project to be considered for.
-
                   If you would like this project to be considered for future semesters, please
-                  select from the list of semesters below:
-
-                  If you would like this project to be considered for future semesters, please
-                  select from the list of semesters below:
+                  select from the list of semesters below: If you would like this project to be
+                  considered for future semesters, please select from the list of semesters below:
                 </p>
                 <Checkbox
                   options={upcomingSemesterOptions}
