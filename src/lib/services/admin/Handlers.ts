@@ -177,9 +177,8 @@ export const getAllClients = async (
       totalPages: getClientsResponse.totalPages,
       totalDocs: getClientsResponse.totalDocs,
     }
-  } else {
-    return { error: getClientsResponse.error }
   }
+  return { error: getClientsResponse.error }
 }
 
 /**

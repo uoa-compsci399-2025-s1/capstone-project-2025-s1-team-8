@@ -2,15 +2,12 @@ import type { CreateProjectData, CreateSemesterProjectData } from '@/types/Colle
 import type { Project, SemesterProject } from '@/payload-types'
 import { ProjectStatus } from '@/types/Project'
 import { semesterMock, mockSemesters } from '@/test-config/mocks/Semester.mock'
-import { clientMock, clientMock2 } from './Auth.mock'
+import { clientMock } from './Auth.mock'
 import type { ProjectDetails } from '@/types/Project'
 
 /*
  * Project mocks
  */
-
-const date = new Date()
-const laterDate = new Date(date.getTime() + 24 * 60 * 60 * 1000) // +1 day
 
 export const projectMock: Project = {
   id: '67ff38a56a35e1b6cf43a681',
@@ -113,19 +110,6 @@ export const ProjectDetailsMock2: ProjectDetails = {
 
 export const ProjectDetailsMock3: ProjectDetails = {
   ...projectMock,
-  semesters: mockSemesters,
-}
-
-export const ProjectDetailsMock4: ProjectDetails = {
-  ...projectMock,
-  createdAt: date.toISOString(),
-  semesters: [mockSemesters[0]],
-}
-
-export const ProjectDetailsMock5: ProjectDetails = {
-  ...projectMock2,
-  client: clientMock2,
-  createdAt: laterDate.toISOString(),
   semesters: mockSemesters,
 }
 

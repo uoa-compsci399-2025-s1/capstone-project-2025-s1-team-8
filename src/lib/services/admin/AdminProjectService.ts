@@ -14,6 +14,7 @@ import type { ProjectCardType } from '@/components/Generic/ProjectCard/Draggable
 import type { UniqueIdentifier } from '@dnd-kit/core'
 import { StatusCodes } from 'http-status-codes'
 import { DELETE as DeleteProject } from '@/app/api/projects/[id]/route'
+import { sortByProjectNumber } from '@/lib/util/AdminUtil'
 
 const AdminProjectService = {
   updateSemesterProject: async function (
@@ -152,14 +153,7 @@ const AdminProjectService = {
         return { data: [], error: message }
       }
 
-      const sortedProjects = data.sort((a: SemesterProject, b: SemesterProject) => {
-        const aNum = a.number
-        const bNum = b.number
-        if (aNum == null && bNum == null) return 0
-        if (aNum == null) return 1
-        if (bNum == null) return -1
-        return bNum - aNum
-      })
+      const sortedProjects = sortByProjectNumber(data)
 
       const transformed = await Promise.all(
         sortedProjects.map(async (proj) => {

@@ -93,6 +93,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   const [containers, setContainers] = useState<DNDType[]>([...presetContainers])
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [notification, setNotification] = useState<Notification>(null)
+  const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
 
   const buttonItems = [
     { Icon: FiSave, value: 'save', label: 'Save' },
@@ -115,11 +116,12 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }))
 
     if (newFilter) {
-      setContainers(sortProjects(containers, containerId, newFilter))
+      setContainers((prevContainers) => sortProjects(prevContainers, containerId, newFilter))
     }
   }
 
   async function handleSaveChanges() {
+    setHasChanges(false)
     const savedChangesMessage = await onSaveChanges({ presetContainers: containers, semesterId })
     if (savedChangesMessage && 'error' in savedChangesMessage) {
       setNotification({
@@ -319,11 +321,15 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
   // This is the function that handles the sorting of items when the user is done dragging.
   function handleDragEnd(event: DragEndEvent) {
-    setNotification({
-      title: 'Unsaved changes',
-      message: "You\'ve made changes to the project order. Don\'t forget to save!",
-      type: 'warning',
-    })
+    if (!hasChanges) {
+      setNotification({
+        title: 'Unsaved changes',
+        message: "You\'ve made changes to the project order. Don\'t forget to save!",
+        type: 'warning',
+      })
+      setHasChanges(true)
+    }
+
     const { active, over } = event
 
     // Handling item Sorting

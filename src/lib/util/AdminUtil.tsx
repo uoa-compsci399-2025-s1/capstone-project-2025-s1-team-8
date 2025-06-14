@@ -1,5 +1,5 @@
 import type { DNDType } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
-import type { User } from '@/payload-types'
+import type { SemesterProject, User } from '@/payload-types'
 import type { UniqueIdentifier } from '@dnd-kit/core'
 
 /**
@@ -65,5 +65,17 @@ export function sortProjects(
       default:
         return container
     }
+  })
+}
+
+export function sortByProjectNumber(projects: SemesterProject[]): SemesterProject[] {
+  return [...projects].sort((a, b) => {
+    const aNum = a.number
+    const bNum = b.number
+
+    if (aNum == null && bNum == null) return 0
+    if (aNum == null) return 1
+    if (bNum == null) return -1
+    return bNum - aNum
   })
 }

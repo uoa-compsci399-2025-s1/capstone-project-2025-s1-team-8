@@ -1,8 +1,27 @@
-import { ProjectDetailsMock4, ProjectDetailsMock5 } from '@/test-config/mocks/Project.mock'
-import { sortProjects } from './AdminUtil'
+import {
+  ProjectDetailsMock,
+  ProjectDetailsMock2,
+  semesterProjectMock,
+} from '@/test-config/mocks/Project.mock'
+import { sortByProjectNumber, sortProjects } from './AdminUtil'
 import type { UniqueIdentifier } from '@dnd-kit/core'
-import { ProjectStatus } from '@/types/Project'
-import type { User } from '@/payload-types'
+import { ProjectDetails, ProjectStatus } from '@/types/Project'
+import type { SemesterProject, User } from '@/payload-types'
+import { clientMock2 } from '@/test-config/mocks/Auth.mock'
+
+const date = new Date()
+const laterDate = new Date(date.getTime() + 24 * 60 * 60 * 1000) // +1 day
+
+const Project1: ProjectDetails = {
+  ...ProjectDetailsMock,
+  createdAt: date.toISOString(),
+}
+
+const Project2: ProjectDetails = {
+  ...ProjectDetailsMock2,
+  client: clientMock2,
+  createdAt: laterDate.toISOString(),
+}
 
 describe('sortProjects', () => {
   const presetContainers = [
@@ -11,12 +30,12 @@ describe('sortProjects', () => {
       title: ProjectStatus.Rejected,
       containerColor: 'light' as const,
       currentItems: [
-        { id: 'item-1', projectInfo: ProjectDetailsMock5 },
-        { id: 'item-2', projectInfo: ProjectDetailsMock4 },
+        { id: 'item-1', projectInfo: Project2 },
+        { id: 'item-2', projectInfo: Project1 },
       ],
       originalItems: [
-        { id: 'item-1', projectInfo: ProjectDetailsMock4 },
-        { id: 'item-2', projectInfo: ProjectDetailsMock5 },
+        { id: 'item-1', projectInfo: Project1 },
+        { id: 'item-2', projectInfo: Project2 },
       ],
     },
     {
@@ -24,12 +43,12 @@ describe('sortProjects', () => {
       title: ProjectStatus.Pending,
       containerColor: 'medium' as const,
       currentItems: [
-        { id: 'item-1', projectInfo: ProjectDetailsMock5 },
-        { id: 'item-2', projectInfo: ProjectDetailsMock4 },
+        { id: 'item-1', projectInfo: Project2 },
+        { id: 'item-2', projectInfo: Project1 },
       ],
       originalItems: [
-        { id: 'item-1', projectInfo: ProjectDetailsMock4 },
-        { id: 'item-2', projectInfo: ProjectDetailsMock5 },
+        { id: 'item-1', projectInfo: Project1 },
+        { id: 'item-2', projectInfo: Project2 },
       ],
     },
   ]
@@ -79,5 +98,48 @@ describe('sortProjects', () => {
   it('does nothing when containerId does not match', () => {
     const result = sortProjects(presetContainers, 'nonexistent-id', 'projectName')
     expect(result).toEqual(presetContainers)
+  })
+})
+
+describe('sortByProjectNumber', () => {
+  it('sorts projects in descending order by number', () => {
+    const projects: SemesterProject[] = [
+      { ...semesterProjectMock, number: 1 },
+      { ...semesterProjectMock, number: 2 },
+      { ...semesterProjectMock, number: 3 },
+    ]
+
+    const sorted = sortByProjectNumber(projects)
+
+    expect(sorted.map((p) => p.number)).toEqual([3, 2, 1])
+  })
+
+  it('handles null numbers by placing them last', () => {
+    const projects: SemesterProject[] = [
+      { ...semesterProjectMock, number: null },
+      { ...semesterProjectMock, number: 2 },
+      { ...semesterProjectMock, number: 1 },
+    ]
+
+    const sorted = sortByProjectNumber(projects)
+
+    expect(sorted.map((p) => p.number)).toEqual([2, 1, null])
+  })
+
+  it('handles all null numbers', () => {
+    const projects: SemesterProject[] = [
+      { ...semesterProjectMock, number: null },
+      { ...semesterProjectMock, number: null },
+    ]
+
+    const sorted = sortByProjectNumber(projects)
+
+    expect(sorted.map((p) => p.number)).toEqual([null, null])
+  })
+
+  it('handles empty array', () => {
+    const sorted = sortByProjectNumber([])
+
+    expect(sorted).toEqual([])
   })
 })
