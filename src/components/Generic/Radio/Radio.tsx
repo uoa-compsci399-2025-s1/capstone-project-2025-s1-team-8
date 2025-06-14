@@ -23,6 +23,7 @@ const Radio: FC<RadioProps> = ({
   defaultValue = '',
   ...props
 }) => {
+  // selectedValue state has a `space` to prevent the empty input field being automatically chosen
   const [selectedValue, setSelectedValue] = useState(' ')
   const [customValue, setCustomValue] = useState('')
 

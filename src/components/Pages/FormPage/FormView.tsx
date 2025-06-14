@@ -219,7 +219,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
         />
       </div>
       <div className="relative bg-light-beige w-[95%] sm:w-[85%] md:w-[75%] flex flex-col rounded-2xl my-auto border border-deeper-blue">
-        <div className="relative flex flex-col px-10 pb-10 md:px-15 md:pb-15 pt-20 rounded-t-2xl gap-6">
+        <div className="relative flex flex-col px-10 pb-10 pt-15 md:px-15 md:pb-15 md:pt-20 rounded-t-2xl gap-6">
           <Link href="/client">
             <button
               className="absolute top-10 right-10 rounded-full hover:cursor-pointer"
@@ -306,7 +306,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
             <p className="text-dark-blue font-inter text-sm">
               You can find examples of projects created by capstone students following this link:{' '}
               <a
-                className="text-steel-blue underline"
+                className="text-steel-blue underline wrap-break-word"
                 href="https://www.capitalise.space"
                 target="_blank"
               >
@@ -315,7 +315,7 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
               <br />
               The course overview can be found here:{' '}
               <a
-                className="text-steel-blue underline"
+                className="text-steel-blue underline wrap-break-word"
                 href="https://courseoutline.auckland.ac.nz/dco/course/COMPSCI/399/1243"
               >
                 https://courseoutline.auckland.ac.nz/dco/course/COMPSCI/399/1243
@@ -324,12 +324,18 @@ const FormView: FC<FormViewProps> = ({ projectData, upcomingSemesters }) => {
               <br />
               If you have any questions, please feel free to contact: <br />
               Anna Trofimova (
-              <a className="text-steel-blue underline" href="mailto:anna.trofimova@auckland.ac.nz">
+              <a
+                className="text-steel-blue underline wrap-break-word"
+                href="mailto:anna.trofimova@auckland.ac.nz"
+              >
                 anna.trofimova@auckland.ac.nz
               </a>
               ) <br />
               or Asma Shakil (
-              <a className="text-steel-blue underline" href="mailto:asma.shakil@auckland.ac.nz">
+              <a
+                className="text-steel-blue underline wrap-break-word"
+                href="mailto:asma.shakil@auckland.ac.nz"
+              >
                 asma.shakil@auckland.ac.nz
               </a>
               )
