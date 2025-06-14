@@ -24,9 +24,14 @@ export const Default: Story = {
   ),
   args: {
     items: [
-      { Icon: FiSave, value: 'save', label: 'Save' },
-      { Icon: FiPrinter, value: 'publish', label: 'Publish' },
-      { Icon: HiOutlineDocumentDownload, value: 'downloadcsv', label: 'Download CSV' },
+      { Icon: FiSave, value: 'save', label: 'Save', isLoading: false },
+      { Icon: FiPrinter, value: 'publish', label: 'Publish', isLoading: false },
+      {
+        Icon: HiOutlineDocumentDownload,
+        value: 'downloadcsv',
+        label: 'Download CSV',
+        isLoading: false,
+      },
     ],
   },
 }
