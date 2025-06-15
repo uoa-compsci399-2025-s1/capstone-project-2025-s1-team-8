@@ -145,6 +145,10 @@ We are using PayloadCMS to manage the content of the website, as well as define 
 - [Payload CMS](https://payloadcms.com/)
 - [Vitest](https://vitest.dev/)
 
+**Project Management:**
+
+We used Github Projects to help plan, track, and manage work with customizable boards, automation, and tight integration with issues and pull requests. You can view our Github Projects page [here](https://github.com/orgs/uoa-compsci399-2025-s1/projects/28).
+
 ## Contributing
 
 See further towards contributing guidelines in the [GitHub Wiki](https://github.com/uoa-compsci399-2025-s1/Encapsulate/wiki/)
