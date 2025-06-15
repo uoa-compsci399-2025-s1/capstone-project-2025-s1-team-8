@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import ProjectCardList from './ProjectCardList'
 import { projectDetailsListMock } from '@/test-config/mocks/Project.mock'
+import { QueryClientDecorator } from '@/utils/storybookProvider'
 
 const meta: Meta<typeof ProjectCardList> = {
   title: 'Composite/ProjectCardList',
@@ -11,6 +12,7 @@ const meta: Meta<typeof ProjectCardList> = {
     headingClassName: '',
     projects: projectDetailsListMock,
   },
+  decorators: [QueryClientDecorator],
 }
 
 export default meta

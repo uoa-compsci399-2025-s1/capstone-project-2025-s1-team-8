@@ -7,7 +7,8 @@ import ClientProfile from '@/components/Composite/ClientProfile/ClientProfile'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ClientDashboard } from '@/payload-types'
-import { useClientPage } from '@/lib/hooks/useClientPage'
+import type { ProjectDetails } from '@/types/Project'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 interface ClientDashboardProps {
   client: UserCombinedInfo
@@ -27,6 +28,7 @@ interface ClientDashboardProps {
     error?: string
     message?: string
   }>
+  useClientPage: () => UseQueryResult<ProjectDetails[], Error>
 }
 
 const ClientDashboard: React.FC<ClientDashboardProps> = ({
@@ -34,6 +36,7 @@ const ClientDashboard: React.FC<ClientDashboardProps> = ({
   content,
   onSave,
   onDeleteProject,
+  useClientPage,
 }) => {
   const { data: projects, isLoading } = useClientPage()
 

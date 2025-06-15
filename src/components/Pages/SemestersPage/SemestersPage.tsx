@@ -7,6 +7,8 @@ import SemesterForm from '@/components/Composite/SemesterForm/SemesterForm'
 import type { Semester } from '@/payload-types'
 import type { typeToFlattenedError } from 'zod'
 import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
+import type { UseQueryResult } from '@tanstack/react-query'
+import type { ProjectDetails } from '@/types/Project'
 
 interface SemestersPageProps {
   semesters: Semester[]
@@ -36,6 +38,7 @@ interface SemestersPageProps {
   }>
   deletedProject: () => void
   semesterStatuses?: Record<string, 'current' | 'upcoming' | ''>
+  useSemesterProjects: (id: string) => UseQueryResult<ProjectDetails[], Error>
 }
 
 const SemestersPage: React.FC<SemestersPageProps> = ({
@@ -49,6 +52,7 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
   semesterStatuses = {},
   onDeleteProject,
   deletedProject,
+  useSemesterProjects,
 }) => {
   const [modalOpen, setModalOpen] = useState(false)
   const upcomingSemesterRef = useRef<HTMLDivElement>(null)
@@ -94,20 +98,13 @@ const SemestersPage: React.FC<SemestersPageProps> = ({
         >
           <SemesterCard
             semester={semester as Semester}
-            id={semester.id}
-            name={semester.name}
-            deadline={semester.deadline}
-            startDate={semester.startDate}
-            endDate={semester.endDate}
-            updatedAt={semester.updatedAt}
-            createdAt={semester.createdAt}
-            published={semester.published}
             currentOrUpcoming={semesterStatuses[semester.id] || ''}
             onEdit={callSemesterForm}
             onDeleteProject={onDeleteProject}
             deletedProject={deletedProject}
             onDeleteSemester={handleDeleteSemester}
             deletedSemester={deletedSemester}
+            useSemesterProjects={useSemesterProjects}
           />
         </div>
       ))}

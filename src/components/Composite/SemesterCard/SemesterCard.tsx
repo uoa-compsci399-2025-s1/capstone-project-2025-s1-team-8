@@ -7,10 +7,10 @@ import { XMarkIcon } from '@heroicons/react/24/solid'
 import type { Semester } from '@/payload-types'
 import { FiDownload } from 'react-icons/fi'
 import { formatDate } from '@/utils/date'
-import { useSemesterProjects } from '@/lib/hooks/useSemesterProjects'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, type UseQueryResult } from '@tanstack/react-query'
+import type { ProjectDetails } from '@/types/Project'
 
-interface SemesterCardProps extends Semester {
+interface SemesterCardProps {
   semester: Semester
   currentOrUpcoming?: 'current' | 'upcoming' | ''
   onEdit?: (id: string) => void
@@ -24,6 +24,7 @@ interface SemesterCardProps extends Semester {
     message?: string
   }>
   deletedSemester?: () => void
+  useSemesterProjects: (id: string) => UseQueryResult<ProjectDetails[], Error>
 }
 const SemesterCard: React.FC<SemesterCardProps> = ({
   semester,
@@ -33,7 +34,8 @@ const SemesterCard: React.FC<SemesterCardProps> = ({
   deletedProject,
   onDeleteSemester,
   deletedSemester,
-}) => {
+  useSemesterProjects,
+}: SemesterCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const contentRef = useRef<HTMLDivElement>(null)
   const [height, setHeight] = useState('0px')

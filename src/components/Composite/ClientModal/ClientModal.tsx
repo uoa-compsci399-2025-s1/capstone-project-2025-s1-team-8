@@ -7,8 +7,8 @@ import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardL
 import EditDeleteDropdown from '@/components/Composite/EditDropdown/EditDeleteDropdown'
 import Notification from '@/components/Generic/Notification/Notification'
 import type { UserCombinedInfo } from '@/types/Collections'
-import { useClientProjects } from '@/lib/hooks/useClientProjects'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, type UseQueryResult } from '@tanstack/react-query'
+import type { ProjectDetails } from '@/types/Project'
 
 interface ClientModalProps extends ModalProps {
   clientInfo: UserCombinedInfo
@@ -36,6 +36,7 @@ interface ClientModalProps extends ModalProps {
     message?: string
   }>
   deletedProject?: () => void
+  useClientProjects: (id: string) => UseQueryResult<ProjectDetails[], Error>
 }
 
 const ClientModal: React.FC<ClientModalProps> = ({
@@ -50,6 +51,7 @@ const ClientModal: React.FC<ClientModalProps> = ({
   onUpdatedClient,
   onDeleteProject,
   deletedProject,
+  useClientProjects,
 }) => {
   const [copied, setCopied] = useState(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)

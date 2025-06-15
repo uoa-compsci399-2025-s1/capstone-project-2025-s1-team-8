@@ -5,7 +5,7 @@ import type { ProjectDetails } from '@/types/Project'
 
 const ITEMS_PER_PAGE = 10
 
-type ClientsData = {
+export type ClientsData = {
   clients: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
   totalPages: number
   totalUsers: number

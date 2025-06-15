@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
 import SemesterForm from './SemesterForm'
 import Button from '@/components/Generic/Button/Button'
+import { QueryClientDecorator } from '@/utils/storybookProvider'
 
 const meta: Meta<typeof SemesterForm> = {
   title: 'Composite/SemesterForm',
@@ -11,6 +12,7 @@ const meta: Meta<typeof SemesterForm> = {
     open: false,
     className: '',
   },
+  decorators: [QueryClientDecorator],
 }
 
 export default meta

@@ -1,13 +1,11 @@
 import { type JSX, Suspense } from 'react'
 
 import NavBar from '@/components/Generic/NavBar/NavBar'
-import ClientDashboard from '@/components/Pages/ClientDashboard/ClientDashboard'
 import ClientService from '@/lib/services/client/ClientService'
-import { handleClientProfileUpdate } from '@/lib/services/client/Handlers'
 import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 import type { UserCombinedInfo } from '@/types/Collections'
 import ContentService from '@/lib/services/content/ContentService'
-import { handleDeleteProject } from '@/lib/services/admin/Handlers'
+import WrappedClientDashboard from './WrappedClientDashbaord'
 
 const ProtectedClientView = async (): Promise<JSX.Element> => {
   const clientInfo = await ClientService.getClientInfo()
@@ -24,12 +22,7 @@ const ProtectedClientView = async (): Promise<JSX.Element> => {
         <Suspense
           fallback={<div className="text-center text-dark-blue text-lg pt-30">Loading...</div>}
         >
-          <ClientDashboard
-            client={user}
-            content={clientDashboardCMS}
-            onSave={handleClientProfileUpdate}
-            onDeleteProject={handleDeleteProject}
-          />
+          <WrappedClientDashboard user={user} clientDashboardCMS={clientDashboardCMS} />
         </Suspense>
       </div>
     </div>

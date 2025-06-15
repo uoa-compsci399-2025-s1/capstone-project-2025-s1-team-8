@@ -9,7 +9,6 @@ import Button from '@/components/Generic/Button/Button'
 import EditDeleteDropdown from '@/components/Composite/EditDropdown/EditDeleteDropdown'
 import type { Project, Semester } from '@/payload-types'
 import type { UserCombinedInfo } from '@/types/Collections'
-import { useRouter } from 'next/navigation'
 import { formatDate } from '@/utils/date'
 import { useQueryClient } from '@tanstack/react-query'
 
@@ -64,15 +63,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
     ? (projectInfo.additionalClients as UserCombinedInfo[])
     : []
 
-  const router = useRouter()
-
-  const callForm = () => {
-    const queryParams = new URLSearchParams({
-      projectId: projectInfo.id,
-    }).toString()
-    router.push(`/form?${queryParams}`)
-  }
-
   return (
     <Modal
       open={open}
@@ -89,7 +79,12 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
           >
             <EditDeleteDropdown
               containerWidth={200}
-              onEdit={callForm}
+              onEdit={() => {
+                const queryParams = new URLSearchParams({
+                  projectId: projectInfo.id,
+                }).toString()
+                window.open(`/form?${queryParams}`)
+              }}
               onDelete={async () => {
                 await onDelete?.(projectInfo.id)
                 deleted?.()

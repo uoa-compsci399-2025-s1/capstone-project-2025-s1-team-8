@@ -1,33 +1,18 @@
 'use client'
 import { motion } from 'framer-motion'
-import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
-import {
-  handleCreateSemester,
-  handleUpdateSemester,
-  handleDeleteSemester,
-  handlePublishChanges,
-  updateProjectOrdersAndStatus,
-  handleDeleteClient,
-  handleUpdateClient,
-  handleDeleteProject,
-} from '@/lib/services/admin/Handlers'
-import SemestersPage from '../SemestersPage/SemestersPage'
-import ClientsPage from '../ClientsPage/ClientsPage'
 import Notification from '@/components/Generic/Notification/Notification'
 import { TeapotCard } from '@/components/Generic/TeapotCard/TeapotCard'
 
-import { useState, Suspense } from 'react'
+import { useState } from 'react'
 import { useQueryState } from 'nuqs'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { prefetchClients } from '@/lib/hooks/useClients'
 import { prefetchSemesters } from '@/lib/hooks/useSemesters'
 import { prefetchProjects } from '@/lib/hooks/useProjects'
-import { useSemesters } from '@/lib/hooks/useSemesters'
-import { useProjects } from '@/lib/hooks/useProjects'
-import ClientGroupSkeleton from '@/components/Generic/ClientGroupSkeleton/ClientGroupSkeleton'
-import ProjectDnDSkeleton from '@/components/Generic/ProjectDNDSkeleton/ProjectDNDSkeleton'
-import SemesterCardSkeleton from '@/components/Generic/SemesterCardSkeleton/SemesterCardSkeleton'
+import AdminSemesterView from './AdminSemesterView/AdminSemesterView'
+import AdminClientView from './AdminClientView/AdminClientView'
+import AdminProjectView from './AdminProjectView/AdminProjectView'
 
 const AdminDashboard: React.FC = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -35,9 +20,6 @@ const AdminDashboard: React.FC = () => {
 
   const [activeTab, setActiveTab] = useQueryState('tab', { defaultValue: '0' })
   const queryClient = useQueryClient()
-
-  const { data: semestersData, isLoading: isSemestersLoading } = useSemesters()
-  const { data: projectsData, isLoading: isProjectsLoading } = useProjects()
 
   const handleTabChange = async (index: number) => {
     setActiveTab(index.toString())
@@ -100,26 +82,7 @@ const AdminDashboard: React.FC = () => {
                 aria-hidden={activeTab !== '0'}
                 tabIndex={activeTab === '0' ? 0 : -1}
               >
-                {isProjectsLoading ? (
-                  <ProjectDnDSkeleton />
-                ) : (
-                  <ProjectDnD
-                    key={JSON.stringify(projectsData?.presetContainers)}
-                    {...(projectsData || {
-                      semesterId: '',
-                      presetContainers: [],
-                    })}
-                    onSaveChanges={updateProjectOrdersAndStatus}
-                    onPublishChanges={handlePublishChanges}
-                    onDeleteProject={handleDeleteProject}
-                    deletedProject={async () => {
-                      setNotificationMessage('Project deleted successfully')
-                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) // get current sem id and only do this form current sem
-                      await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
-                    }}
-                  />
-                )}
+                <AdminProjectView setNotificationMessage={setNotificationMessage} />
               </div>
 
               <div
@@ -127,33 +90,7 @@ const AdminDashboard: React.FC = () => {
                 aria-hidden={activeTab !== '1'}
                 tabIndex={activeTab === '1' ? 0 : -1}
               >
-                <Suspense fallback={<ClientGroupSkeleton />}>
-                  <ClientsPage
-                    onUpdateClient={handleUpdateClient}
-                    onDeleteClient={handleDeleteClient}
-                    updatedClient={async () => {
-                      await queryClient.invalidateQueries({ queryKey: ['clients'] })
-                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) // do this for every semester the project is in
-                      await queryClient.invalidateQueries({ queryKey: ['clientProjects'] }) // invalidate for current client + additonal clients
-                      setNotificationMessage('Client updated successfully')
-                    }}
-                    deletedClient={async () => {
-                      await queryClient.invalidateQueries({ queryKey: ['clients'] })
-                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) //invalidate for every semester the clients proproject is in if no need for backend call
-                      await queryClient.invalidateQueries({ queryKey: ['clientProjects'] }) //invalidate for current client + additional clients
-                      setNotificationMessage('Client deleted successfully')
-                    }}
-                    onDeleteProject={handleDeleteProject}
-                    deletedProject={async () => {
-                      //done
-                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
-                      setNotificationMessage('Project deleted successfully')
-                    }}
-                  />
-                </Suspense>
+                <AdminClientView setNotificationMessage={setNotificationMessage} />
               </div>
 
               <div
@@ -161,48 +98,7 @@ const AdminDashboard: React.FC = () => {
                 aria-hidden={activeTab !== '2'}
                 tabIndex={activeTab === '2' ? 0 : -1}
               >
-                {isSemestersLoading ? (
-                  <div className="space-y-4">
-                    {[1, 2, 3].map((i) => (
-                      <SemesterCardSkeleton key={i} />
-                    ))}
-                  </div>
-                ) : (
-                  <SemestersPage
-                    semesters={semestersData?.data || []}
-                    createdSemester={async () => {
-                      await queryClient.invalidateQueries({ queryKey: ['semesters'] })
-                      await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
-                      setNotificationMessage('Semester created successfully')
-                    }}
-                    updatedSemester={async () => {
-                      //done
-                      await queryClient.invalidateQueries({ queryKey: ['semesters'] })
-                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      await queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
-                      await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
-                      setNotificationMessage('Semester updated successfully')
-                    }}
-                    handleCreateSemester={handleCreateSemester}
-                    handleUpdateSemester={handleUpdateSemester}
-                    handleDeleteSemester={handleDeleteSemester}
-                    deletedSemester={async () => {
-                      //done
-                      await queryClient.invalidateQueries({ queryKey: ['semesters'] })
-                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      await queryClient.invalidateQueries({ queryKey: ['clientProjects'] })
-                      setNotificationMessage('Semester deleted successfully')
-                    }}
-                    semesterStatuses={semestersData?.semesterStatuses || {}}
-                    onDeleteProject={handleDeleteProject}
-                    deletedProject={async () => {
-                      //done
-                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
-                      setNotificationMessage('Project deleted successfully')
-                    }}
-                  />
-                )}
+                <AdminSemesterView setNotificationMessage={setNotificationMessage} />
               </div>
             </motion.div>
           </div>
