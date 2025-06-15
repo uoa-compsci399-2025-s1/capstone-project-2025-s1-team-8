@@ -2,7 +2,6 @@ import { z } from 'zod'
 
 import type {
   ClientAdditionalInfo,
-  FormQuestion,
   Media,
   Project,
   Semester,
@@ -50,24 +49,6 @@ export const SemesterSchema = z.object({
   createdAt: z.string(),
   published: z.boolean(),
 }) satisfies z.ZodType<Semester>
-
-export const FormQuestionSchema = z.object({
-  id: z.string(),
-  question: z.string(),
-  description: z.string(),
-  required: z.boolean(),
-  fieldName: z.string(),
-  order: z.number(),
-  updatedAt: z.string(),
-  createdAt: z.string(),
-}) satisfies z.ZodType<FormQuestion>
-
-// Note that this schema isn't a payload schema but required to be defined here as FormQuestionSchema is defined above
-export const QuestionResponseSchema = z.object({
-  question: z.union([z.string(), FormQuestionSchema]),
-  answer: z.string(),
-  id: z.string().nullable().optional(),
-})
 
 export const ProjectSchema = z.object({
   id: z.string(),

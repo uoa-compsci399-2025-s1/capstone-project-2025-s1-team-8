@@ -101,23 +101,5 @@ export const Project: CollectionConfig = {
       type: 'textarea',
       required: false,
     },
-    {
-      name: 'questionResponses',
-      type: 'array',
-      required: false,
-      fields: [
-        {
-          name: 'question',
-          type: 'relationship',
-          relationTo: 'formQuestion',
-          required: true,
-        },
-        {
-          name: 'answer',
-          type: 'textarea',
-          required: true,
-        },
-      ],
-    },
   ],
 }

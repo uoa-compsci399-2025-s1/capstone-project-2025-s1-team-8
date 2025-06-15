@@ -75,7 +75,6 @@ export interface Config {
     project: Project;
     semesterProject: SemesterProject;
     semester: Semester;
-    formQuestion: FormQuestion;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -90,7 +89,6 @@ export interface Config {
     project: ProjectSelect<false> | ProjectSelect<true>;
     semesterProject: SemesterProjectSelect<false> | SemesterProjectSelect<true>;
     semester: SemesterSelect<false> | SemesterSelect<true>;
-    formQuestion: FormQuestionSelect<false> | FormQuestionSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -275,42 +273,6 @@ export interface Project {
   numberOfTeams: string;
   desiredTeamSkills?: string | null;
   availableResources?: string | null;
-  questionResponses?:
-    | {
-        question: string | FormQuestion;
-        answer: string;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "formQuestion".
- */
-export interface FormQuestion {
-  id: string;
-  /**
-   * The question title, e.g. Whats your name?
-   */
-  question: string;
-  /**
-   * The description of this question provides more information about how the question can be answered! E.g. Enter a number
-   */
-  description: string;
-  /**
-   * An identifiable field name key, e.g. final_presentation_confirm
-   */
-  fieldName: string;
-  /**
-   * The question ordering ascending order, e.g. 0
-   */
-  order: number;
-  /**
-   * If the question is required or not, e.g. true
-   */
-  required: boolean;
   updatedAt: string;
   createdAt: string;
 }
@@ -386,10 +348,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'semester';
         value: string | Semester;
-      } | null)
-    | ({
-        relationTo: 'formQuestion';
-        value: string | FormQuestion;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -524,13 +482,6 @@ export interface ProjectSelect<T extends boolean = true> {
   numberOfTeams?: T;
   desiredTeamSkills?: T;
   availableResources?: T;
-  questionResponses?:
-    | T
-    | {
-        question?: T;
-        answer?: T;
-        id?: T;
-      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -557,19 +508,6 @@ export interface SemesterSelect<T extends boolean = true> {
   startDate?: T;
   endDate?: T;
   published?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "formQuestion_select".
- */
-export interface FormQuestionSelect<T extends boolean = true> {
-  question?: T;
-  description?: T;
-  fieldName?: T;
-  order?: T;
-  required?: T;
   updatedAt?: T;
   createdAt?: T;
 }

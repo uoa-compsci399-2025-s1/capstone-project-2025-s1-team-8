@@ -1,4 +1,4 @@
-import { StatusCodes } from 'http-status-codes'
+import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 import { cookies } from 'next/headers'
 
 import SemesterDataService from '@/data-layer/services/SemesterDataService'
@@ -66,6 +66,23 @@ describe('tests /api/admin/semesters', async () => {
       expect(json.details.fieldErrors.startDate[0]).toEqual(
         'Invalid date format, should be in ISO 8601 format',
       )
+    })
+
+    it('should handle errors and return 500 status', async () => {
+      cookieStore.set(AUTH_COOKIE_NAME, adminToken)
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+      const mockCreateSemester = vi
+        .spyOn(SemesterDataService.prototype, 'createSemester')
+        .mockRejectedValueOnce(new Error('Database error'))
+
+      const res = await POST(createMockNextPostRequest('', semesterCreateMock))
+      const json = await res.json()
+
+      expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR)
+      expect(json.error).toBe(getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR))
+      expect(mockCreateSemester).toHaveBeenCalledWith(semesterCreateMock)
+      expect(consoleErrorSpy).toHaveBeenCalled()
     })
   })
 })

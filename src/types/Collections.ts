@@ -5,7 +5,6 @@ import type {
   Project,
   Form,
   Authentication,
-  FormQuestion,
   ClientAdditionalInfo,
 } from '@/payload-types'
 
@@ -14,12 +13,6 @@ import type {
  */
 export type CreateSemesterData = Omit<Semester, 'id' | 'createdAt' | 'updatedAt'>
 export type UpdateSemesterData = Partial<CreateSemesterData>
-
-/*
- * Form Question Collection Types
- */
-export type CreateFormQuestionData = Omit<FormQuestion, 'createdAt' | 'updatedAt' | 'id'>
-export type UpdateFormQuestionData = Partial<CreateFormQuestionData>
 
 /*
  * Semester Project Collection Types

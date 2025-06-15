@@ -10,7 +10,6 @@ import { Media } from './data-layer/collections/Media'
 import { Project } from './data-layer/collections/Project'
 import { SemesterProject } from './data-layer/collections/SemesterProject'
 import { Semester } from './data-layer/collections/Semester'
-import { FormQuestion } from './data-layer/collections/FormQuestion'
 import { Authentication } from './data-layer/collections/Authentication'
 import { ClientAdditionalInfo } from './data-layer/collections/ClientAdditionalInfo'
 import { Admin } from './data-layer/collections/Admin'
@@ -39,7 +38,6 @@ export default buildConfig({
     Project,
     SemesterProject,
     Semester,
-    FormQuestion,
   ],
   globals: [Home, Form, ClientDashboard],
   editor: lexicalEditor(),
