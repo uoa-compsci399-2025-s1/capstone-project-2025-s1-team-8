@@ -7,7 +7,6 @@ import {
   adminMock,
   CLIENT_JWT_MOCK,
   clientMock,
-  TURNSTILE_PUBLIC_ALWAYS_BLOCK_KEY,
   TURNSTILE_TOKEN_KEY_MOCK,
 } from '@/test-config/mocks/Auth.mock'
 import AuthDataService from '@/data-layer/services/AuthDataService'

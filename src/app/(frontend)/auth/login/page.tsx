@@ -21,6 +21,10 @@ export default function LoginPage() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (turnstileStatus !== 'success') {
+      setErrorState(true)
+      return setErrorMessage('Security check failed. Please try again.')
+    }
     setErrorState(false)
     setErrorMessage('')
     setEmailErrorMessage('')
