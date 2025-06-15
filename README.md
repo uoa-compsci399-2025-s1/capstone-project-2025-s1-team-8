@@ -15,6 +15,8 @@
 
 ### About
 
+Deployment: https://compsci399.com
+
 Encapsulate is a platform that aims to provide a comprehensive solution for Clients, Admins, and Students to manage, submit, and view projects for the [University of Auckland's BSc Computer Science](https://www.auckland.ac.nz/en/study/study-options/find-a-study-option/computer-science/undergraduate/bsc-compsci-from-2019.html) capstone course, COMPSCI 399. Encapsulate is built for a user-friendly interface, aiming for an efficient and effective user experience.
 
 ## Setting up the Project
