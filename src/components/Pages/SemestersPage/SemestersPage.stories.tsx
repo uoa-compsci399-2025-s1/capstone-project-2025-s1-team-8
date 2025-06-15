@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import SemestersPage from './SemestersPage'
 import { mockSemesters } from '@/test-config/mocks/Semester.mock'
+import { QueryClientDecorator } from '@/utils/storybookProvider'
+import { ProjectDetails } from '@/types/Project'
+import { UseQueryResult } from '@tanstack/react-query'
 
 const meta: Meta<typeof SemestersPage> = {
   title: 'Pages/SemestersPage',
@@ -12,6 +15,7 @@ const meta: Meta<typeof SemestersPage> = {
     updatedSemester: () => {},
     deletedSemester: () => {},
   },
+  decorators: [QueryClientDecorator],
 }
 
 export default meta
@@ -28,5 +32,9 @@ export const Default: Story = {
   },
   args: {
     semesters: mockSemesters,
+    useSemesterProjects: (id: string) => {
+      console.log(`ID: ${id}`)
+      return {} as UseQueryResult<ProjectDetails[], Error>
+    },
   },
 }

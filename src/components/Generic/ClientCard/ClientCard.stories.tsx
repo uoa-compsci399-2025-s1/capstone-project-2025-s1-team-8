@@ -4,11 +4,13 @@ import { mockClients } from '@/test-config/mocks/User.mock'
 import { projectDetailsListMock } from '@/test-config/mocks/Project.mock'
 import type { UseQueryResult } from '@tanstack/react-query'
 import type { ProjectDetails } from '@/types/Project'
+import { QueryClientDecorator } from '@/utils/storybookProvider'
 
 const meta: Meta<typeof ClientCard> = {
   component: ClientCard,
   title: 'Generic/ClientCard',
   tags: ['autodocs'],
+  decorators: [QueryClientDecorator],
 }
 
 export default meta
