@@ -7,8 +7,8 @@ import ClientProfile from '@/components/Composite/ClientProfile/ClientProfile'
 import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardList'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ClientDashboard } from '@/payload-types'
-import { ProjectDetails } from '@/types/Project'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { ProjectDetails } from '@/types/Project'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 interface ClientDashboardProps {
   client: UserCombinedInfo

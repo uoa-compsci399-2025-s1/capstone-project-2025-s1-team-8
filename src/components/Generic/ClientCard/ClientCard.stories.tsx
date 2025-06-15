@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react'
 import ClientCard from './ClientCard'
 import { mockClients } from '@/test-config/mocks/User.mock'
 import { projectDetailsListMock } from '@/test-config/mocks/Project.mock'
-import { UseQueryResult } from '@tanstack/react-query'
-import { ProjectDetails } from '@/types/Project'
+import type { UseQueryResult } from '@tanstack/react-query'
+import type { ProjectDetails } from '@/types/Project'
 
 const meta: Meta<typeof ClientCard> = {
   component: ClientCard,

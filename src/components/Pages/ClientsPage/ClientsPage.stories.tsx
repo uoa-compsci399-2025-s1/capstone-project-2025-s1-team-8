@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import ClientsPage from './ClientsPage'
-import { UseQueryResult } from '@tanstack/react-query'
-import { ClientsData } from '@/lib/hooks/useClients'
+import type { UseQueryResult } from '@tanstack/react-query'
+import type { ClientsData } from '@/lib/hooks/useClients'
 
 const meta: Meta<typeof ClientsPage> = {
   title: 'Pages/ClientsPage',

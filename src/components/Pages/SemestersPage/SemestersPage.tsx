@@ -7,8 +7,8 @@ import SemesterForm from '@/components/Composite/SemesterForm/SemesterForm'
 import type { Semester } from '@/payload-types'
 import type { typeToFlattenedError } from 'zod'
 import type { CreateSemesterRequestBody } from '@/app/api/admin/semesters/route'
-import { UseQueryResult } from '@tanstack/react-query'
-import { ProjectDetails } from '@/types/Project'
+import type { UseQueryResult } from '@tanstack/react-query'
+import type { ProjectDetails } from '@/types/Project'
 
 interface SemestersPageProps {
   semesters: Semester[]

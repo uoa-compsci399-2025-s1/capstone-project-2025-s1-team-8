@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { FiCopy, FiCheck } from 'react-icons/fi'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 export interface ClientCardProps {
   clientInfo: UserCombinedInfo

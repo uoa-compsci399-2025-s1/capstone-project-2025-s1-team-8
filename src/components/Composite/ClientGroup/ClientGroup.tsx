@@ -2,7 +2,7 @@ import React from 'react'
 import ClientCard from '@/components/Generic/ClientCard/ClientCard'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 export interface ClientGroupProps {
   clients: {

@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
 import ClientModal from './ClientModal'
 import Button from '@/components/Generic/Button/Button'
-import { UseQueryResult } from '@tanstack/react-query'
-import { ProjectDetails } from '@/types/Project'
+import type { UseQueryResult } from '@tanstack/react-query'
+import type { ProjectDetails } from '@/types/Project'
 
 const meta: Meta<typeof ClientModal> = {
   title: 'Composite/ClientModal',

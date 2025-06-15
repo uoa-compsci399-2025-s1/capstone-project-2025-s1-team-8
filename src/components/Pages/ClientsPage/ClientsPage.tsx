@@ -12,10 +12,10 @@ import { FiLoader } from 'react-icons/fi'
 
 import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
 import ClientGroupSkeleton from '@/components/Generic/ClientGroupSkeleton/ClientGroupSkeleton'
-import { ClientsData } from '@/lib/hooks/useClients'
+import type { ClientsData } from '@/lib/hooks/useClients'
 import type { UserCombinedInfo } from '@/types/Collections'
-import { UseQueryResult } from '@tanstack/react-query'
-import { ProjectDetails } from '@/types/Project'
+import type { UseQueryResult } from '@tanstack/react-query'
+import type { ProjectDetails } from '@/types/Project'
 
 interface ClientsPageProps {
   onUpdateClient: (

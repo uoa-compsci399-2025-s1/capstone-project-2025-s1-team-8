@@ -7,8 +7,8 @@ import { XMarkIcon } from '@heroicons/react/24/solid'
 import type { Semester } from '@/payload-types'
 import { FiDownload } from 'react-icons/fi'
 import { formatDate } from '@/utils/date'
-import { useQueryClient, UseQueryResult } from '@tanstack/react-query'
-import { ProjectDetails } from '@/types/Project'
+import { useQueryClient, type UseQueryResult } from '@tanstack/react-query'
+import type { ProjectDetails } from '@/types/Project'
 
 interface SemesterCardProps {
   semester: Semester

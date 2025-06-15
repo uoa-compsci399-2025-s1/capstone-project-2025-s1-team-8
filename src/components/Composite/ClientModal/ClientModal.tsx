@@ -7,8 +7,8 @@ import ProjectCardList from '@/components/Composite/ProjectCardList/ProjectCardL
 import EditDeleteDropdown from '@/components/Composite/EditDropdown/EditDeleteDropdown'
 import Notification from '@/components/Generic/Notification/Notification'
 import type { UserCombinedInfo } from '@/types/Collections'
-import { useQueryClient, UseQueryResult } from '@tanstack/react-query'
-import { ProjectDetails } from '@/types/Project'
+import { useQueryClient, type UseQueryResult } from '@tanstack/react-query'
+import type { ProjectDetails } from '@/types/Project'
 
 interface ClientModalProps extends ModalProps {
   clientInfo: UserCombinedInfo
