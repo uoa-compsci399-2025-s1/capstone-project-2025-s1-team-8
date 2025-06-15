@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
 import ClientModal from './ClientModal'
 import Button from '@/components/Generic/Button/Button'
+import { UseQueryResult } from '@tanstack/react-query'
+import { ProjectDetails } from '@/types/Project'
 
 const meta: Meta<typeof ClientModal> = {
   title: 'Composite/ClientModal',
@@ -51,5 +53,9 @@ export const Exemplar: Story = {
       createdAt: '123',
     },
     clientEmail: 'johndoe@gmail.com',
+    useClientProjects: (id: string) => {
+      console.log(`Client projects fetch called on ID: ${id}`)
+      return {} as unknown as UseQueryResult<ProjectDetails[], Error>
+    },
   },
 }

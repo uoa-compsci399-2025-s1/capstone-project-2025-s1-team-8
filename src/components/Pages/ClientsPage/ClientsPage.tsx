@@ -15,6 +15,7 @@ import ClientGroupSkeleton from '@/components/Generic/ClientGroupSkeleton/Client
 import { ClientsData } from '@/lib/hooks/useClients'
 import type { UserCombinedInfo } from '@/types/Collections'
 import { UseQueryResult } from '@tanstack/react-query'
+import { ProjectDetails } from '@/types/Project'
 
 interface ClientsPageProps {
   onUpdateClient: (
@@ -41,6 +42,7 @@ interface ClientsPageProps {
   }>
   deletedProject: () => void
   useClients: (page: number, search: string) => UseQueryResult<ClientsData, Error>
+  useClientProjects: (id: string) => UseQueryResult<ProjectDetails[], Error>
 }
 
 const ClientsPage: React.FC<ClientsPageProps> = ({
@@ -51,6 +53,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
   onDeleteProject,
   deletedProject,
   useClients,
+  useClientProjects,
 }) => {
   const [search, setSearch] = useQueryState('search')
   const [localSearch, setLocalSearch] = useState(search ?? '')
@@ -136,6 +139,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
               deletedClient={deletedClient}
               onDeleteProject={onDeleteProject}
               deletedProject={deletedProject}
+              useClientProjects={useClientProjects}
             />
           </>
         )}

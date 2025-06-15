@@ -8,6 +8,7 @@ import {
   handleUpdateClient,
 } from '@/lib/services/admin/Handlers'
 import { Suspense } from 'react'
+import { useClientProjects } from '@/lib/hooks/useClientProjects'
 
 interface IAdminClientView {
   /**
@@ -45,6 +46,7 @@ const AdminClientView = ({ setNotificationMessage }: IAdminClientView) => {
           setNotificationMessage('Project deleted successfully')
         }}
         useClients={useClients}
+        useClientProjects={useClientProjects}
       />
     </Suspense>
   )
