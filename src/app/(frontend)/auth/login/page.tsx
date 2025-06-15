@@ -73,7 +73,7 @@ export default function LoginPage() {
             siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
             retry="auto"
             refreshExpired="auto"
-            sandbox={process.env.NODE_ENV === 'development'}
+            sandbox={process.env.NODE_ENV !== 'production'}
             onError={() => {
               setTurnstileStatus('error')
               setEmailErrorState(true)
