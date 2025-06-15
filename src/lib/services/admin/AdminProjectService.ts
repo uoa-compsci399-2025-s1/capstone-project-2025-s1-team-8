@@ -62,13 +62,16 @@ const AdminProjectService = {
     'use server'
 
     try {
-      const semesterId = await AdminProjectService.getNextSemesterId()
-      if (!semesterId) {
+      const nextSemester = await AdminProjectService.getNextSemester()
+      if (!nextSemester) {
         return {
           status: StatusCodes.NOT_FOUND,
           error: 'No next semester found',
         }
       }
+
+      const semesterId = nextSemester.id
+      const semesterPublished = nextSemester.published
 
       const [pending, approved, rejected] = await Promise.all([
         AdminProjectService.fetchProjectsByStatus(semesterId, ProjectStatus.Pending),
@@ -83,6 +86,7 @@ const AdminProjectService = {
 
       const data: SemesterContainerData = {
         semesterId,
+        semesterPublished,
         presetContainers: [
           {
             id: 'rejected-container' as UniqueIdentifier,
@@ -122,7 +126,7 @@ const AdminProjectService = {
     }
   },
 
-  getNextSemesterId: async function (): Promise<string | null> {
+  getNextSemester: async function (): Promise<Semester | null> {
     const semesterUrl = buildNextRequestURL('/api/semesters', { timeframe: 'next' })
     const semesterResponse = await GetSemesters(
       await buildNextRequest(semesterUrl, { method: 'GET' }),
@@ -134,7 +138,7 @@ const AdminProjectService = {
       return null
     }
 
-    return semester[0].id
+    return semester[0] as Semester
   },
 
   fetchProjectsByStatus: async function (
