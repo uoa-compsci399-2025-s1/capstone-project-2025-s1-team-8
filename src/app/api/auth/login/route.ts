@@ -36,7 +36,7 @@ export const POST = async (req: NextRequest) => {
     })
 
     if (!validationResponse.success && process.env.NODE_ENV !== 'production') {
-      return NextResponse.json({ message: 'Invalid token' }, { status: 400 })
+      return NextResponse.json({ error: 'Invalid token' }, { status: StatusCodes.BAD_REQUEST })
     }
 
     const auth = await authDataService.getAuthByEmail(email)
