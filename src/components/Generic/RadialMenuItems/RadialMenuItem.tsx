@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useHover, useLayer } from 'react-laag'
 import React from 'react'
+import { FiLoader } from 'react-icons/fi'
 
 function getTransform(progress: number, radius: number, index: number, totalItems: number): string {
   const angle = (index / (totalItems + 5)) * 2 * Math.PI - Math.PI / 2 // Start at top
@@ -19,6 +20,7 @@ type RadialMenuItemProps = {
   index: number
   totalItems: number
   onClick: () => void
+  isLoading: boolean
 }
 
 const RadialMenuItem: React.FC<RadialMenuItemProps> = ({
@@ -27,6 +29,7 @@ const RadialMenuItem: React.FC<RadialMenuItemProps> = ({
   index,
   totalItems,
   onClick,
+  isLoading,
 }) => {
   const [isHovering, hoverProps] = useHover({ delayEnter: 300, delayLeave: 100 })
 
@@ -59,7 +62,11 @@ const RadialMenuItem: React.FC<RadialMenuItemProps> = ({
           duration: 0.2,
         }}
       >
-        <Icon className="w-5 h-5 transition-transform group-hover:scale-110" />
+        {!isLoading ? (
+          <Icon className="w-5 h-5 transition-transform group-hover:scale-110" />
+        ) : (
+          <FiLoader className="animate-spin" />
+        )}
       </motion.button>
 
       {renderLayer(

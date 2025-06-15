@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { DragEndEvent, DragMoveEvent, DragStartEvent, UniqueIdentifier } from '@dnd-kit/core'
 import {
   DndContext,
@@ -17,7 +17,7 @@ import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProj
 import { FilterProvider } from '@/contexts/FilterContext'
 import type { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import type { ProjectDetails, ProjectStatus } from '@/types/Project'
-import { FiSave, FiPrinter } from 'react-icons/fi'
+import { FiSave } from 'react-icons/fi'
 import Notification from '@/components/Generic/Notification/Notification'
 import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
@@ -25,6 +25,8 @@ import { sortProjects } from '@/lib/util/AdminUtil'
 import { useQueryClient } from '@tanstack/react-query'
 import type { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
 import type { typeToFlattenedError } from 'zod'
+import { LuEyeOff, LuEye } from 'react-icons/lu'
+import type { IconType } from 'react-icons'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -37,6 +39,7 @@ export type DNDType = {
 export interface SemesterContainerData {
   presetContainers: DNDType[]
   semesterId: string
+  semesterPublished?: boolean
 }
 
 export type DndComponentProps = SemesterContainerData & {
@@ -85,6 +88,7 @@ const defaultProjectInfo: ProjectDetails = {
 const ProjectDnD: React.FC<DndComponentProps> = ({
   presetContainers,
   semesterId,
+  semesterPublished = true,
   onSaveChanges,
   onPublishChanges,
   onDeleteProject,
@@ -94,12 +98,49 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [notification, setNotification] = useState<Notification>(null)
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
+  const [toPublishToggle, setToPublishToggle] = useState(!semesterPublished) // if true, projects are unpublished and need publishing, if false, projects are published and can be unpublished
 
-  const buttonItems = [
-    { Icon: FiSave, value: 'save', label: 'Save' },
-    { Icon: FiPrinter, value: 'publish', label: 'Publish' },
-    { Icon: HiOutlineDocumentDownload, value: 'downloadcsv', label: 'Download CSV' },
-  ]
+  const [buttonItems, setButtonItems] = useState<
+    {
+      Icon: IconType
+      value: string
+      label: string
+      isLoading: boolean
+    }[]
+  >([
+    { Icon: FiSave, value: 'save', label: 'Save', isLoading: false },
+    {
+      Icon: toPublishToggle ? LuEye : LuEyeOff,
+      value: toPublishToggle ? 'publish' : 'unpublish',
+      label: toPublishToggle ? 'Publish' : 'Unpublish',
+      isLoading: false,
+    },
+    {
+      Icon: HiOutlineDocumentDownload,
+      value: 'downloadcsv',
+      label: 'Download CSV',
+      isLoading: false,
+    },
+  ])
+
+  useEffect(() => {
+    // Update buttonItems when toPublishToggle changes
+    setButtonItems([
+      { Icon: FiSave, value: 'save', label: 'Save', isLoading: false },
+      {
+        Icon: toPublishToggle ? LuEye : LuEyeOff,
+        value: toPublishToggle ? 'publish' : 'unpublish',
+        label: toPublishToggle ? 'Publish' : 'Unpublish',
+        isLoading: false,
+      },
+      {
+        Icon: HiOutlineDocumentDownload,
+        value: 'downloadcsv',
+        label: 'Download CSV',
+        isLoading: false,
+      },
+    ])
+  }, [toPublishToggle])
 
   const queryClient = useQueryClient()
 
@@ -120,9 +161,17 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }
   }
 
+  function setButtonLoading(value: string, isLoading: boolean) {
+    setButtonItems((prevItems) =>
+      prevItems.map((item) => (item.value === value ? { ...item, isLoading } : item)),
+    )
+  }
+
   async function handleSaveChanges() {
     setHasChanges(false)
+    setButtonLoading('save', true)
     const savedChangesMessage = await onSaveChanges({ presetContainers: containers, semesterId })
+    setButtonLoading('save', false)
     if (savedChangesMessage && 'error' in savedChangesMessage) {
       setNotification({
         title: 'Error',
@@ -149,7 +198,15 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   }
 
   async function handlePublishChanges() {
+    const buttonName = toPublishToggle ? 'publish' : 'unpublish'
+    setButtonLoading(buttonName, true)
+
     const publishMessage = await onPublishChanges(semesterId)
+    setButtonLoading(buttonName, false)
+    const message = toPublishToggle
+      ? 'The approved projects have been published!'
+      : 'All projects are now unpublished'
+
     if (publishMessage && 'error' in publishMessage) {
       setNotification({
         title: 'Error',
@@ -159,10 +216,11 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     } else {
       setNotification({
         title: 'Success',
-        message: 'The approved projects have been successfully published!',
+        message: message,
         type: 'success',
       })
     }
+    setToPublishToggle(!toPublishToggle)
     await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
   }
 
@@ -488,7 +546,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
               if (value === 'save') {
                 handleSaveChanges()
               }
-              if (value === 'publish') {
+              if (value === 'publish' || value === 'unpublish') {
                 handlePublishChanges()
               }
               if (value === 'downloadcsv') {
