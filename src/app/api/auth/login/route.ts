@@ -35,7 +35,10 @@ export const POST = async (req: NextRequest) => {
       sandbox: process.env.NODE_ENV !== 'production',
     })
 
-    if (!validationResponse.success && process.env.NODE_ENV !== 'production') {
+    if (
+      !validationResponse.success &&
+      (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test')
+    ) {
       return NextResponse.json({ error: 'Invalid token' }, { status: StatusCodes.BAD_REQUEST })
     }
 

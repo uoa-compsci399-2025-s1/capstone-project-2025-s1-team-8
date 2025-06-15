@@ -148,19 +148,6 @@ export default function RegisterPage() {
             setErrorState(true)
             setErrorMessage('Security check failed. Please try again.')
           }}
-          onExpire={() => {
-            setTurnstileStatus('expired')
-            setErrorState(true)
-            setErrorMessage('Security check expired. Please verify again.')
-          }}
-          onLoad={() => {
-            setTurnstileStatus('required')
-            setErrorState(false)
-          }}
-          onVerify={() => {
-            setTurnstileStatus('success')
-            setErrorState(false)
-          }}
         />
       </form>
     </div>

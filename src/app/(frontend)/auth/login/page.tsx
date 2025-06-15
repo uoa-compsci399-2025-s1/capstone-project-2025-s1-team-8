@@ -110,19 +110,6 @@ export default function LoginPage() {
                 setEmailErrorState(true)
                 setEmailErrorMessage('Security check failed. Please try again.')
               }}
-              onExpire={() => {
-                setTurnstileStatus('expired')
-                setEmailErrorState(true)
-                setEmailErrorMessage('Security check expired. Please verify again.')
-              }}
-              onLoad={() => {
-                setTurnstileStatus('required')
-                setEmailErrorState(false)
-              }}
-              onVerify={() => {
-                setTurnstileStatus('success')
-                setEmailErrorState(false)
-              }}
             />
           </div>
         </div>
