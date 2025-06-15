@@ -8,6 +8,7 @@ import { handleLoginButtonClick } from '@/lib/services/user/Handlers'
 import type { UserCombinedInfo } from '@/types/Collections'
 import ContentService from '@/lib/services/content/ContentService'
 import { handleDeleteProject } from '@/lib/services/admin/Handlers'
+import { useClientPage } from '@/lib/hooks/useClientPage'
 
 const ProtectedClientView = async (): Promise<JSX.Element> => {
   const clientInfo = await ClientService.getClientInfo()
@@ -29,6 +30,7 @@ const ProtectedClientView = async (): Promise<JSX.Element> => {
             content={clientDashboardCMS}
             onSave={handleClientProfileUpdate}
             onDeleteProject={handleDeleteProject}
+            useClientPage={useClientPage as any}
           />
         </Suspense>
       </div>

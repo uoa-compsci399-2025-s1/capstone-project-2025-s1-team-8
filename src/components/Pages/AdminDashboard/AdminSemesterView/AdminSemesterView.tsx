@@ -8,6 +8,7 @@ import {
   handleDeleteSemester,
   handleUpdateSemester,
 } from '@/lib/services/admin/Handlers'
+import { useSemesterProjects } from '@/lib/hooks/useSemesterProjects'
 
 interface IAdminSemesterView {
   /**
@@ -62,6 +63,7 @@ const AdminSemesterView = ({ setNotificationMessage }: IAdminSemesterView) => {
             await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
             setNotificationMessage('Project deleted successfully')
           }}
+          useSemesterProjects={useSemesterProjects}
         />
       )}
     </>

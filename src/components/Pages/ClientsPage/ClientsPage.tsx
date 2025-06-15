@@ -12,8 +12,9 @@ import { FiLoader } from 'react-icons/fi'
 
 import ClientGroup from '@/components/Composite/ClientGroup/ClientGroup'
 import ClientGroupSkeleton from '@/components/Generic/ClientGroupSkeleton/ClientGroupSkeleton'
-import { useClients } from '@/lib/hooks/useClients'
+import { ClientsData } from '@/lib/hooks/useClients'
 import type { UserCombinedInfo } from '@/types/Collections'
+import { UseQueryResult } from '@tanstack/react-query'
 
 interface ClientsPageProps {
   onUpdateClient: (
@@ -39,6 +40,7 @@ interface ClientsPageProps {
     message?: string
   }>
   deletedProject: () => void
+  useClients: (page: number, search: string) => UseQueryResult<ClientsData, Error>
 }
 
 const ClientsPage: React.FC<ClientsPageProps> = ({
@@ -48,6 +50,7 @@ const ClientsPage: React.FC<ClientsPageProps> = ({
   deletedClient,
   onDeleteProject,
   deletedProject,
+  useClients,
 }) => {
   const [search, setSearch] = useQueryState('search')
   const [localSearch, setLocalSearch] = useState(search ?? '')

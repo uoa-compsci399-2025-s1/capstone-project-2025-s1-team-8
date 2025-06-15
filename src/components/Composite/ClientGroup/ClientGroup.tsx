@@ -2,6 +2,7 @@ import React from 'react'
 import ClientCard from '@/components/Generic/ClientCard/ClientCard'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
+import { UseQueryResult } from '@tanstack/react-query'
 
 export interface ClientGroupProps {
   clients: {
@@ -31,6 +32,7 @@ export interface ClientGroupProps {
     message?: string
   }>
   deletedProject: () => void
+  useClientProjects: (id: string) => UseQueryResult<ProjectDetails[], Error>
 }
 
 const ClientGroup: React.FC<ClientGroupProps> = ({
@@ -41,6 +43,7 @@ const ClientGroup: React.FC<ClientGroupProps> = ({
   deletedClient,
   onDeleteProject,
   deletedProject,
+  useClientProjects,
 }) => {
   return (
     <div className="w-full rounded-2xl overflow-hidden border border-beige divide-beige divide-y-2">
@@ -54,6 +57,7 @@ const ClientGroup: React.FC<ClientGroupProps> = ({
           deletedClient={deletedClient}
           onDeleteProject={onDeleteProject}
           deletedProject={deletedProject}
+          useClientProjects={useClientProjects}
         />
       ))}
     </div>

@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import ClientsPage from './ClientsPage'
+import { UseQueryResult } from '@tanstack/react-query'
+import { ClientsData } from '@/lib/hooks/useClients'
 
 const meta: Meta<typeof ClientsPage> = {
   title: 'Pages/ClientsPage',
@@ -9,6 +11,10 @@ const meta: Meta<typeof ClientsPage> = {
     onDeleteClient: async (clientId: string) => {
       console.log('Update client:', clientId)
       return {}
+    },
+    useClients: (page: number, search: string) => {
+      console.log(`Page: ${page}, Search: ${search}`)
+      return {} as UseQueryResult<ClientsData, Error>
     },
   },
 }
@@ -29,6 +35,10 @@ export const Default: Story = {
     onDeleteClient: async (clientId: string) => {
       console.log('Update client:', clientId)
       return {}
+    },
+    useClients: (page: number, search: string) => {
+      console.log(`Page: ${page}, Search: ${search}`)
+      return {} as UseQueryResult<ClientsData, Error>
     },
   },
 }
