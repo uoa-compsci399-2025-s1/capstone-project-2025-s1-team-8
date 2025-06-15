@@ -9,6 +9,7 @@ import type { ProjectDetails } from '@/types/Project'
 import { ProjectStatus } from '@/types/Project'
 import type { SemesterContainerData } from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
 import type { UpdateUserRequestBody } from '@/app/api/admin/users/[id]/route'
+import type { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
 import { UserRole } from '@/types/User'
 import AdminSemesterService from './AdminSemesterService'
 import { StatusCodes } from 'http-status-codes'
@@ -153,27 +154,31 @@ export const handleGetAllSemesterProjects = async (
 export const getAllClients = async (
   options: { limit?: number; page?: number; query?: string } = {},
 ): Promise<void | {
+  error?: string
   data?: { client: UserCombinedInfo; projects: ProjectDetails[] }[]
   nextPage?: number
   totalPages?: number
   totalDocs?: number
 }> => {
   const getClientsResponse = await AdminService.getAllUsers({ ...options, role: UserRole.Client })
-  const clientsWithProjects = await Promise.all(
-    (getClientsResponse.data ?? []).map(async (client) => {
-      const projectsResponse = await AdminService.getProjectsByUserId(client.id)
-      return {
-        client,
-        projects: projectsResponse.data,
-      }
-    }),
-  )
-  return {
-    data: clientsWithProjects,
-    nextPage: getClientsResponse.nextPage,
-    totalPages: getClientsResponse.totalPages,
-    totalDocs: getClientsResponse.totalDocs,
+  if (getClientsResponse.status == StatusCodes.OK) {
+    const clientsWithProjects = await Promise.all(
+      (getClientsResponse.data ?? []).map(async (client) => {
+        const projectsResponse = await AdminService.getProjectsByUserId(client.id)
+        return {
+          client,
+          projects: projectsResponse.data,
+        }
+      }),
+    )
+    return {
+      data: clientsWithProjects,
+      nextPage: getClientsResponse.nextPage,
+      totalPages: getClientsResponse.totalPages,
+      totalDocs: getClientsResponse.totalDocs,
+    }
   }
+  return { error: getClientsResponse.error }
 }
 
 /**
@@ -182,10 +187,15 @@ export const getAllClients = async (
  * @returns {@link SemesterContainerData} containing the id of the upcoming semester and all the related projects separated by status (rejected, pending, approved)
  */
 export const getNextSemesterProjects = async (): Promise<void | {
+  error?: string
   data?: SemesterContainerData
 }> => {
-  const response = await AdminService.getNextSemesterProjects()
-  return { data: response.data }
+  const { status, error, data } = await AdminService.getNextSemesterProjects()
+  if (status == StatusCodes.OK) {
+    return { data }
+  } else {
+    return { error }
+  }
 }
 
 /**
@@ -198,7 +208,12 @@ export const getNextSemesterProjects = async (): Promise<void | {
 export async function updateProjectOrdersAndStatus({
   presetContainers,
   semesterId,
-}: SemesterContainerData): Promise<void> {
+}: SemesterContainerData): Promise<void | {
+  error?: string
+  message?: string
+  details?: typeToFlattenedError<typeof PatchSemesterProjectRequestBody>
+}> {
+  const errors = []
   for (const container of presetContainers) {
     const status = container.title as ProjectStatus
 
@@ -206,16 +221,27 @@ export async function updateProjectOrdersAndStatus({
       const project = container.currentItems[i]
       const updatedOrderAndStatus = {
         number: container.currentItems.length - i,
-        status,
+        status: status,
       }
 
-      await AdminService.updateSemesterProject(
+      const {
+        status: statusCode,
+        error,
+        details,
+      } = await AdminService.updateSemesterProject(
         semesterId,
         project.projectInfo.semesterProjectId ?? '',
         updatedOrderAndStatus,
       )
+      if (statusCode != StatusCodes.OK) {
+        errors.push({ error, details })
+      }
     }
   }
+  if (errors.length > 0) {
+    return errors[0] // Return the first error encountered
+  }
+  return { message: 'Semester updated successfully' }
 }
 
 /**
@@ -224,10 +250,27 @@ export async function updateProjectOrdersAndStatus({
  * @param semesterId The id of the upcoming semester
  * @returns Error or success message
  */
-export async function handlePublishChanges(semesterId: string): Promise<void> {
-  const semester = await AdminSemesterService.getSemester(semesterId)
-  const data = semester.data as Semester
-  await AdminSemesterService.updateSemester(semesterId, { published: !data.published })
+export async function handlePublishChanges(
+  semesterId: string,
+): Promise<void | { error?: string; message?: string }> {
+  try {
+    const semester = await AdminSemesterService.getSemester(semesterId)
+
+    if (!semester?.data) {
+      return { error: 'Semester not found.' }
+    }
+
+    const data = semester.data as Semester
+
+    await AdminSemesterService.updateSemester(semesterId, {
+      published: !data.published,
+    })
+
+    return { message: `Semester ${data.published ? 'unpublished' : 'published'} successfully.` }
+  } catch (error: any) {
+    console.error('Failed to publish/unpublish semester:', error)
+    return { error: error?.message ?? 'An unknown error occurred.' }
+  }
 }
 
 export async function handleUpdateClient(

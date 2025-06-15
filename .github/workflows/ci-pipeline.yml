@@ -76,7 +76,6 @@ jobs:
           key: node-modules-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             node-modules-
-          lookup-only: true
 
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'

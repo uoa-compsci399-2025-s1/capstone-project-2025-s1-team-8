@@ -3,6 +3,7 @@ import { useArgs } from '@storybook/preview-api'
 import ProjectModal from './ProjectModal'
 import Button from '@/components/Generic/Button/Button'
 import { ProjectDetailsMock } from '@/test-config/mocks/Project.mock'
+import { QueryClientDecorator } from '@/utils/storybookProvider'
 
 const meta: Meta<typeof ProjectModal> = {
   title: 'Composite/ProjectModal',
@@ -12,6 +13,7 @@ const meta: Meta<typeof ProjectModal> = {
     open: false,
     className: '',
   },
+  decorators: [QueryClientDecorator],
 }
 
 export default meta

@@ -14,6 +14,7 @@ import type { ProjectCardType } from '@/components/Generic/ProjectCard/Draggable
 import type { UniqueIdentifier } from '@dnd-kit/core'
 import { StatusCodes } from 'http-status-codes'
 import { DELETE as DeleteProject } from '@/app/api/projects/[id]/route'
+import { sortByProjectNumber } from '@/lib/util/AdminUtil'
 
 const AdminProjectService = {
   updateSemesterProject: async function (
@@ -21,6 +22,7 @@ const AdminProjectService = {
     semesterProjectId: string,
     semesterProject: UpdateSemesterProjectData,
   ): Promise<{
+    status: StatusCodes
     data: SemesterProject
     error?: string
     details?: typeToFlattenedError<typeof PatchSemesterProjectRequestBody>
@@ -34,7 +36,7 @@ const AdminProjectService = {
       },
     )
     const { data, error, details } = await response.json()
-    return { data, error, details }
+    return { status: response.status, data, error, details }
   },
 
   getProjectSemesters: async function (projectId: string): Promise<{
@@ -53,51 +55,78 @@ const AdminProjectService = {
   },
 
   getNextSemesterProjects: async function (): Promise<{
-    data: SemesterContainerData
+    status: StatusCodes
+    data?: SemesterContainerData
     error?: string
   }> {
     'use server'
 
-    const semesterId = await AdminProjectService.getNextSemesterId()
-    if (!semesterId) return { data: null as any, error: 'No semester found' }
+    try {
+      const nextSemester = await AdminProjectService.getNextSemester()
+      if (!nextSemester) {
+        return {
+          status: StatusCodes.NOT_FOUND,
+          error: 'No next semester found',
+        }
+      }
 
-    const [pendingProjects, approvedProjects, rejectedProjects] = await Promise.all([
-      AdminProjectService.fetchProjectsByStatus(semesterId, ProjectStatus.Pending),
-      AdminProjectService.fetchProjectsByStatus(semesterId, ProjectStatus.Approved),
-      AdminProjectService.fetchProjectsByStatus(semesterId, ProjectStatus.Rejected),
-    ])
+      const semesterId = nextSemester.id
+      const semesterPublished = nextSemester.published
 
-    return {
-      data: {
+      const [pending, approved, rejected] = await Promise.all([
+        AdminProjectService.fetchProjectsByStatus(semesterId, ProjectStatus.Pending),
+        AdminProjectService.fetchProjectsByStatus(semesterId, ProjectStatus.Approved),
+        AdminProjectService.fetchProjectsByStatus(semesterId, ProjectStatus.Rejected),
+      ])
+
+      const combinedErrors = [pending, approved, rejected]
+        .map((res) => res.error)
+        .filter(Boolean)
+        .join('; ')
+
+      const data: SemesterContainerData = {
         semesterId,
+        semesterPublished,
         presetContainers: [
           {
             id: 'rejected-container' as UniqueIdentifier,
             title: ProjectStatus.Rejected,
             containerColor: 'light',
-            currentItems: rejectedProjects,
-            originalItems: rejectedProjects,
+            currentItems: rejected.data,
+            originalItems: rejected.data,
           },
           {
             id: 'pending-container' as UniqueIdentifier,
             title: ProjectStatus.Pending,
             containerColor: 'medium',
-            currentItems: pendingProjects,
-            originalItems: pendingProjects,
+            currentItems: pending.data,
+            originalItems: pending.data,
           },
           {
             id: 'approved-container' as UniqueIdentifier,
             title: ProjectStatus.Approved,
             containerColor: 'dark',
-            currentItems: approvedProjects,
-            originalItems: approvedProjects,
+            currentItems: approved.data,
+            originalItems: approved.data,
           },
         ],
-      },
+      }
+
+      return {
+        status: StatusCodes.OK,
+        data,
+        ...(combinedErrors && { error: combinedErrors }),
+      }
+    } catch (e) {
+      console.error('Unexpected error in getNextSemesterProjects:', e)
+      return {
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+        error: 'Failed to fetch next semester projects',
+      }
     }
   },
 
-  getNextSemesterId: async function (): Promise<string | null> {
+  getNextSemester: async function (): Promise<Semester | null> {
     const semesterUrl = buildNextRequestURL('/api/semesters', { timeframe: 'next' })
     const semesterResponse = await GetSemesters(
       await buildNextRequest(semesterUrl, { method: 'GET' }),
@@ -109,49 +138,65 @@ const AdminProjectService = {
       return null
     }
 
-    return semester[0].id
+    return semester[0] as Semester
   },
 
   fetchProjectsByStatus: async function (
     semesterId: string,
     status: ProjectStatus,
-  ): Promise<ProjectCardType[]> {
-    const url = buildNextRequestURL(`/api/semesters/${semesterId}/projects`, { status })
-    const response = await GetProjects(await buildNextRequest(url, { method: 'GET' }), {
-      params: Promise.resolve({ id: semesterId }),
-    })
-    const { data, error } = await response.json()
+  ): Promise<{ data: ProjectCardType[]; error?: string }> {
+    try {
+      const url = buildNextRequestURL(`/api/semesters/${semesterId}/projects`, { status })
+      const response = await GetProjects(await buildNextRequest(url, { method: 'GET' }), {
+        params: Promise.resolve({ id: semesterId }),
+      })
+      const { data, error } = await response.json()
 
-    if (error || !data) {
-      console.error(`Failed to fetch ${status} projects`)
-      return []
+      if (error || !Array.isArray(data)) {
+        const message = `API error or invalid data for ${status} projects. ${error}`
+        return { data: [], error: message }
+      }
+
+      const sortedProjects = sortByProjectNumber(data)
+
+      const transformed = await Promise.all(
+        sortedProjects.map(async (proj) => {
+          try {
+            return await AdminProjectService.transformSemesterProject(proj)
+          } catch (e) {
+            console.error(`Transform error for project ${proj.id}:`, e)
+            return []
+          }
+        }),
+      )
+      return { data: transformed.filter(Boolean) as ProjectCardType[] }
+    } catch (e) {
+      return { data: [], error: `Unexpected error fetching ${status} projects. ${e}` }
     }
-
-    const sortedProjects = data.sort((a: SemesterProject, b: SemesterProject) => {
-      const aNum = a.number
-      const bNum = b.number
-      if (aNum == null && bNum == null) return 0
-      if (aNum == null) return 1
-      if (bNum == null) return -1
-      return bNum - aNum
-    })
-
-    return await Promise.all(sortedProjects.map(AdminProjectService.transformSemesterProject))
   },
 
   transformSemesterProject: async function (
     semesterProject: SemesterProject,
-  ): Promise<ProjectCardType> {
-    const project = semesterProject.project as Project
-    const { data: semesters } = await AdminProjectService.getProjectSemesters(project.id)
+  ): Promise<ProjectCardType | null> {
+    try {
+      const project = semesterProject.project as Project
+      const { data: semesters, error } = await AdminProjectService.getProjectSemesters(project.id)
 
-    return {
-      id: `item-${project.id}` as UniqueIdentifier,
-      projectInfo: {
-        ...project,
-        semesters: semesters ?? [],
-        semesterProjectId: semesterProject.id,
-      },
+      if (error) {
+        console.error(`Failed to get semesters for project ${project.id}:`, error)
+      }
+
+      return {
+        id: `item-${project.id}` as UniqueIdentifier,
+        projectInfo: {
+          ...project,
+          semesters: semesters ?? [],
+          semesterProjectId: semesterProject.id,
+        },
+      }
+    } catch (e) {
+      console.error(`transformSemesterProject failed for ${semesterProject.id}:`, e)
+      return null
     }
   },
 

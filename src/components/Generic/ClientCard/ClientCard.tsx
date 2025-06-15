@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { FiCopy, FiCheck } from 'react-icons/fi'
 import type { UserCombinedInfo } from '@/types/Collections'
 import type { ProjectDetails } from '@/types/Project'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 export interface ClientCardProps {
   clientInfo: UserCombinedInfo
@@ -30,6 +31,7 @@ export interface ClientCardProps {
     message?: string
   }>
   deletedProject: () => void
+  useClientProjects: (id: string) => UseQueryResult<ProjectDetails[], Error>
 }
 
 const ClientCard: React.FC<ClientCardProps> = ({
@@ -39,6 +41,7 @@ const ClientCard: React.FC<ClientCardProps> = ({
   updatedClient,
   deletedClient,
   onDeleteProject,
+  useClientProjects,
 }) => {
   const [copied, setCopied] = useState(false)
   const [open, setOpen] = useState(false)
@@ -94,6 +97,7 @@ const ClientCard: React.FC<ClientCardProps> = ({
           handleModal()
         }}
         onDeleteProject={onDeleteProject}
+        useClientProjects={useClientProjects}
       />
     </>
   )

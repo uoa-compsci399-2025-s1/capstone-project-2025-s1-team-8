@@ -17,13 +17,16 @@ import DraggableProjectCard from '@/components/Generic/ProjectCard/DraggableProj
 import { FilterProvider } from '@/contexts/FilterContext'
 import type { ProjectCardType } from '@/components/Generic/ProjectCard/DraggableProjectCard'
 import type { ProjectDetails, ProjectStatus } from '@/types/Project'
-import { FiSave, FiPrinter } from 'react-icons/fi'
+import { FiSave } from 'react-icons/fi'
 import Notification from '@/components/Generic/Notification/Notification'
 import RadialMenu from '@/components/Composite/RadialMenu/RadialMenu'
 import { HiOutlineDocumentDownload } from 'react-icons/hi'
-import type { User } from '@/payload-types'
-import useUnsavedChangesWarning from './UnsavedChangesHandler'
+import { sortProjects } from '@/lib/util/AdminUtil'
 import { useQueryClient } from '@tanstack/react-query'
+import type { PatchSemesterProjectRequestBody } from '@/app/api/admin/semesters/[id]/projects/[projectId]/route'
+import type { typeToFlattenedError } from 'zod'
+import { LuEyeOff, LuEye } from 'react-icons/lu'
+import type { IconType } from 'react-icons'
 
 export type DNDType = {
   id: UniqueIdentifier
@@ -36,17 +39,31 @@ export type DNDType = {
 export interface SemesterContainerData {
   presetContainers: DNDType[]
   semesterId: string
+  semesterPublished?: boolean
 }
 
 export type DndComponentProps = SemesterContainerData & {
-  onSaveChanges: (params: SemesterContainerData) => Promise<void>
-  onPublishChanges: (semesterId: string) => Promise<void>
+  onSaveChanges: (params: SemesterContainerData) => Promise<void | {
+    error?: string
+    message?: string
+    details?: typeToFlattenedError<typeof PatchSemesterProjectRequestBody>
+  }>
+  onPublishChanges: (semesterId: string) => Promise<void | {
+    error?: string
+    message?: string
+  }>
   onDeleteProject: (projectId: string) => Promise<{
     error?: string
     message?: string
   }>
   deletedProject: () => void
 }
+
+type Notification = {
+  title: string
+  message: string
+  type: 'success' | 'warning'
+} | null
 
 const defaultProjectInfo: ProjectDetails = {
   id: '',
@@ -71,6 +88,7 @@ const defaultProjectInfo: ProjectDetails = {
 const ProjectDnD: React.FC<DndComponentProps> = ({
   presetContainers,
   semesterId,
+  semesterPublished = true,
   onSaveChanges,
   onPublishChanges,
   onDeleteProject,
@@ -78,36 +96,53 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 }) => {
   const [containers, setContainers] = useState<DNDType[]>([...presetContainers])
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
+  const [notification, setNotification] = useState<Notification>(null)
   const [hasChanges, setHasChanges] = useState(false) //Used to track when items have been moved
-  const [showNotification, setShowNotification] = useState<boolean>(false)
-  const [successNotification, setSuccessNotification] = useState<string | null>(null)
+  const [toPublishToggle, setToPublishToggle] = useState(!semesterPublished) // if true, projects are unpublished and need publishing, if false, projects are published and can be unpublished
 
-  const buttonItems = [
-    { Icon: FiSave, value: 'save', label: 'Save' },
-    { Icon: FiPrinter, value: 'publish', label: 'Publish' },
-    { Icon: HiOutlineDocumentDownload, value: 'downloadcsv', label: 'Download CSV' },
-  ]
+  const [buttonItems, setButtonItems] = useState<
+    {
+      Icon: IconType
+      value: string
+      label: string
+      isLoading: boolean
+    }[]
+  >([
+    { Icon: FiSave, value: 'save', label: 'Save', isLoading: false },
+    {
+      Icon: toPublishToggle ? LuEye : LuEyeOff,
+      value: toPublishToggle ? 'publish' : 'unpublish',
+      label: toPublishToggle ? 'Publish' : 'Unpublish',
+      isLoading: false,
+    },
+    {
+      Icon: HiOutlineDocumentDownload,
+      value: 'downloadcsv',
+      label: 'Download CSV',
+      isLoading: false,
+    },
+  ])
+
   useEffect(() => {
-    if (hasChanges) {
-      setShowNotification(true)
-    } else {
-      setShowNotification(false)
-    }
-  }, [hasChanges])
-
-  useEffect(() => {
-    if (showNotification) {
-      const timer = setTimeout(() => {
-        setShowNotification(false)
-      }, 5000)
-
-      return () => clearTimeout(timer)
-    }
-  }, [showNotification])
+    // Update buttonItems when toPublishToggle changes
+    setButtonItems([
+      { Icon: FiSave, value: 'save', label: 'Save', isLoading: false },
+      {
+        Icon: toPublishToggle ? LuEye : LuEyeOff,
+        value: toPublishToggle ? 'publish' : 'unpublish',
+        label: toPublishToggle ? 'Publish' : 'Unpublish',
+        isLoading: false,
+      },
+      {
+        Icon: HiOutlineDocumentDownload,
+        value: 'downloadcsv',
+        label: 'Download CSV',
+        isLoading: false,
+      },
+    ])
+  }, [toPublishToggle])
 
   const queryClient = useQueryClient()
-
-  useUnsavedChangesWarning(hasChanges)
 
   //TODO: when items are moved around, remove the active filter styles
 
@@ -122,21 +157,34 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     }))
 
     if (newFilter) {
-      sortProjects(containerId, newFilter)
+      setContainers((prevContainers) => sortProjects(prevContainers, containerId, newFilter))
     }
+  }
+
+  function setButtonLoading(value: string, isLoading: boolean) {
+    setButtonItems((prevItems) =>
+      prevItems.map((item) => (item.value === value ? { ...item, isLoading } : item)),
+    )
   }
 
   async function handleSaveChanges() {
     setHasChanges(false)
-    setShowNotification(false)
-    setSuccessNotification('Your changes have been saved successfully!')
-
-    setTimeout(() => {
-      setSuccessNotification(null)
-    }, 5000)
-    //TODO: have some error handling in case changes aren't saved
-
-    await onSaveChanges({ presetContainers: containers, semesterId })
+    setButtonLoading('save', true)
+    const savedChangesMessage = await onSaveChanges({ presetContainers: containers, semesterId })
+    setButtonLoading('save', false)
+    if (savedChangesMessage && 'error' in savedChangesMessage) {
+      setNotification({
+        title: 'Error',
+        message: 'There was an error saving your changes. Please try again.',
+        type: 'warning',
+      })
+    } else {
+      setNotification({
+        title: 'Success',
+        message: 'Your changes have been saved successfully!',
+        type: 'success',
+      })
+    }
     await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] })
     await queryClient.invalidateQueries({ queryKey: ['projects'] })
     await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
@@ -150,72 +198,38 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
   }
 
   async function handlePublishChanges() {
-    // send changes to the backend
-    await onPublishChanges(semesterId)
-    setSuccessNotification('The approved projects have been published!')
-    await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
+    const buttonName = toPublishToggle ? 'publish' : 'unpublish'
+    setButtonLoading(buttonName, true)
 
-    setTimeout(() => {
-      setSuccessNotification(null)
-    }, 5000)
+    const publishMessage = await onPublishChanges(semesterId)
+    setButtonLoading(buttonName, false)
+    const message = toPublishToggle
+      ? 'The approved projects have been published!'
+      : 'All projects are now unpublished'
+
+    if (publishMessage && 'error' in publishMessage) {
+      setNotification({
+        title: 'Error',
+        message: 'There was an error publishing the approved projects. Please try again.',
+        type: 'warning',
+      })
+    } else {
+      setNotification({
+        title: 'Success',
+        message: message,
+        type: 'success',
+      })
+    }
+    setToPublishToggle(!toPublishToggle)
+    await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
   }
 
   function handleDownloadCsv() {
     window.open(`/api/admin/export/semesters/${semesterId}`, '_blank')
-    setSuccessNotification('Download successful!')
-
-    setTimeout(() => {
-      setSuccessNotification(null)
-    }, 5000)
-  }
-
-  function sortProjects(containerId: UniqueIdentifier, filter: string): void {
-    setContainers((prevContainers) => {
-      return prevContainers.map((container) => {
-        if (container.id !== containerId) return container
-
-        switch (filter) {
-          case 'projectName':
-          case 'clientName':
-          case 'submissionDate':
-            const sorted = [...container.currentItems]
-            if (filter === 'projectName') {
-              sorted.sort((a, b) => a.projectInfo.name.localeCompare(b.projectInfo.name))
-            } else if (filter === 'clientName') {
-              sorted.sort((a, b) =>
-                (
-                  (a.projectInfo.client as User).firstName +
-                  ' ' +
-                  (a.projectInfo.client as User).lastName
-                ).localeCompare(
-                  (b.projectInfo.client as User).firstName +
-                    ' ' +
-                    (b.projectInfo.client as User).lastName,
-                ),
-              )
-            } else if (filter === 'submissionDate') {
-              sorted.sort(
-                (a, b) =>
-                  new Date(a.projectInfo.createdAt).getTime() -
-                  new Date(b.projectInfo.createdAt).getTime(),
-              )
-            }
-
-            return {
-              ...container,
-              currentItems: sorted,
-            }
-
-          case 'originalOrder':
-            return {
-              ...container,
-              currentItems: [...container.originalItems],
-            }
-
-          default:
-            return container
-        }
-      })
+    setNotification({
+      title: 'Success',
+      message: 'You have successfully downloaded the list of projects.',
+      type: 'success',
     })
   }
 
@@ -365,7 +379,15 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
 
   // This is the function that handles the sorting of items when the user is done dragging.
   function handleDragEnd(event: DragEndEvent) {
-    setHasChanges(true)
+    if (!hasChanges) {
+      setNotification({
+        title: 'Unsaved changes',
+        message: "You\'ve made changes to the project order. Don\'t forget to save!",
+        type: 'warning',
+      })
+      setHasChanges(true)
+    }
+
     const { active, over } = event
 
     // Handling item Sorting
@@ -473,18 +495,11 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
     <div className="mx-auto w-full relative">
       <div className="fixed top-6 right-6 z-50">
         <Notification
-          title={'Unsaved Changes'}
-          message={"You've made changes to the project order. Don't forget to save!"}
-          type={'warning'}
-          isVisible={showNotification}
-          onClose={() => setShowNotification(false)}
-        />
-        <Notification
-          isVisible={successNotification != null}
-          title={'Success'}
-          message={successNotification ?? ''}
-          type={'success'}
-          onClose={() => setShowNotification(false)}
+          isVisible={notification != null}
+          title={notification?.title ?? ''}
+          message={notification?.message ?? ''}
+          type={notification?.type ?? 'warning'}
+          onClose={() => setNotification(null)}
         />
       </div>
 
@@ -531,7 +546,7 @@ const ProjectDnD: React.FC<DndComponentProps> = ({
               if (value === 'save') {
                 handleSaveChanges()
               }
-              if (value === 'publish') {
+              if (value === 'publish' || value === 'unpublish') {
                 handlePublishChanges()
               }
               if (value === 'downloadcsv') {

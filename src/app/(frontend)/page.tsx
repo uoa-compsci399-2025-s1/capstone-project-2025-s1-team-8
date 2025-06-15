@@ -25,6 +25,7 @@ export const metadata: Metadata = {
   title: 'Home',
   description:
     'Welcome to Encapsulate - A place to connect Computer Science students with innovative projects',
+  icons: '/favicon.ico',
 }
 
 export default async function HomePage() {

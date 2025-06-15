@@ -3,6 +3,7 @@ import ProjectDnD from './ProjectDnD'
 import type { UniqueIdentifier } from '@dnd-kit/core'
 import { ProjectDetailsMock, ProjectDetailsMock2 } from '@/test-config/mocks/Project.mock'
 import { ProjectStatus } from '@/types/Project'
+import { QueryClientDecorator } from '@/utils/storybookProvider'
 
 const semesterId = 'semester12026'
 const presetContainers = [
@@ -49,6 +50,7 @@ const meta: Meta<typeof ProjectDnD> = {
       console.log('Mock publish called')
     },
   },
+  decorators: [QueryClientDecorator],
 }
 
 export default meta
