@@ -135,20 +135,20 @@ export default function RegisterPage() {
               </p>
             </Button>
           </Link>
+          <Turnstile
+            appearance="execute"
+            theme="light"
+            siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+            retry="auto"
+            refreshExpired="auto"
+            sandbox={process.env.NODE_ENV !== 'production'}
+            onError={() => {
+              setTurnstileStatus('error')
+              setErrorState(true)
+              setErrorMessage('Security check failed. Please try again.')
+            }}
+          />
         </div>
-        <Turnstile
-          appearance="interaction-only"
-          theme="light"
-          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
-          retry="auto"
-          refreshExpired="auto"
-          sandbox={process.env.NODE_ENV !== 'production'}
-          onError={() => {
-            setTurnstileStatus('error')
-            setErrorState(true)
-            setErrorMessage('Security check failed. Please try again.')
-          }}
-        />
       </form>
     </div>
   )
