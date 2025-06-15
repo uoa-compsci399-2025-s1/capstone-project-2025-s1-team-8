@@ -9,14 +9,22 @@ import Link from 'next/link'
 import { handleRegister } from '@/lib/services/user/Handlers'
 import { useState } from 'react'
 import { BsFillPersonFill } from 'react-icons/bs'
+import { Turnstile } from 'next-turnstile'
 
 export default function RegisterPage() {
   const [errorState, setErrorState] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [role, setRole] = useState('')
+  const [turnstileStatus, setTurnstileStatus] = useState<
+    'success' | 'error' | 'expired' | 'required'
+  >('required')
 
   const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (turnstileStatus !== 'success') {
+      setErrorState(true)
+      return setErrorMessage('Security check failed. Please try again.')
+    }
     setErrorState(false)
     setErrorMessage('')
     const formData = new FormData(e.currentTarget)
@@ -85,6 +93,32 @@ export default function RegisterPage() {
               required={true}
             />
           </div>
+          <Turnstile
+            appearance="interaction-only"
+            theme="light"
+            siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+            retry="auto"
+            refreshExpired="auto"
+            sandbox={process.env.NODE_ENV !== 'production'}
+            onError={() => {
+              setTurnstileStatus('error')
+              setErrorState(true)
+              setErrorMessage('Security check failed. Please try again.')
+            }}
+            onExpire={() => {
+              setTurnstileStatus('expired')
+              setErrorState(true)
+              setErrorMessage('Security check expired. Please verify again.')
+            }}
+            onLoad={() => {
+              setTurnstileStatus('required')
+              setErrorState(false)
+            }}
+            onVerify={() => {
+              setTurnstileStatus('success')
+              setErrorState(false)
+            }}
+          />
           <Button size="md" variant="dark" type="submit">
             <p className="text-xs">Register</p>
           </Button>

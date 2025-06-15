@@ -220,6 +220,8 @@ jobs:
         run: pnpm turbo:build
 
   test:
+    env:
+      NODE_ENV: test
     needs: [check_changes, setup]
     if: ${{ needs.check_changes.outputs.exists == 'true' }}
     name: Test

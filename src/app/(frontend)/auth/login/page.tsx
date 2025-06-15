@@ -75,6 +75,8 @@ export default function LoginPage() {
           </div>
           <Turnstile
             siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+            appearance="interaction-only"
+            theme="light"
             retry="auto"
             refreshExpired="auto"
             sandbox={process.env.NODE_ENV !== 'production'}
