@@ -1,6 +1,6 @@
 import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Decorator } from '@storybook/react'
+import type { Decorator } from '@storybook/react'
 import { NuqsAdapter } from 'nuqs/adapters/react'
 
 const queryClient = new QueryClient()

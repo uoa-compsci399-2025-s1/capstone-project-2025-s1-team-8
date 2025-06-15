@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import SemesterCard from './SemesterCard'
 import { semesterMock } from '@/test-config/mocks/Semester.mock'
-import { UseQueryResult } from '@tanstack/react-query'
-import { ProjectDetails } from '@/types/Project'
+import type { UseQueryResult } from '@tanstack/react-query'
+import type { ProjectDetails } from '@/types/Project'
 import { QueryClientDecorator } from '@/utils/storybookProvider'
 
 export default {

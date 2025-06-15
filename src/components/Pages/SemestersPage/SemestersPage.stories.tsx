@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react'
 import SemestersPage from './SemestersPage'
 import { mockSemesters } from '@/test-config/mocks/Semester.mock'
 import { QueryClientDecorator } from '@/utils/storybookProvider'
-import { ProjectDetails } from '@/types/Project'
-import { UseQueryResult } from '@tanstack/react-query'
+import type { ProjectDetails } from '@/types/Project'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 const meta: Meta<typeof SemestersPage> = {
   title: 'Pages/SemestersPage',

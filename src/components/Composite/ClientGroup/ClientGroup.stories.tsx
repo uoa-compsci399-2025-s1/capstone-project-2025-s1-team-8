@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import ClientGroup from './ClientGroup'
 import { mockClients } from '@/test-config/mocks/User.mock'
-import { UseQueryResult } from '@tanstack/react-query'
-import { ProjectDetails } from '@/types/Project'
+import type { UseQueryResult } from '@tanstack/react-query'
+import type { ProjectDetails } from '@/types/Project'
 import { QueryClientDecorator } from '@/utils/storybookProvider'
 
 const meta: Meta<typeof ClientGroup> = {
