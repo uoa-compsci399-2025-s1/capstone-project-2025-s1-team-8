@@ -85,6 +85,7 @@ export const handleRegister = async (
   const email = formData.get('email') as string
   const password = formData.get('password') as string
   const role = formData.get('role') as UserRoleWithoutAdmin
+  const token = formData.get('cf-turnstile-response') as string
 
   if (!isValidEmail(email)) return { error: 'Invalid email address' }
   if (!isValidPassword(password).isValid) {
@@ -97,6 +98,7 @@ export const handleRegister = async (
     firstName,
     lastName,
     role,
+    token,
   })
 
   if (status === StatusCodes.CREATED) {

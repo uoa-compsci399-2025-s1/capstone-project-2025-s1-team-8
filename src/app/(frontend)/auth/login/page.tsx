@@ -73,32 +73,6 @@ export default function LoginPage() {
               required={true}
             />
           </div>
-          <Turnstile
-            siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
-            appearance="interaction-only"
-            theme="light"
-            retry="auto"
-            refreshExpired="auto"
-            sandbox={process.env.NODE_ENV !== 'production'}
-            onError={() => {
-              setTurnstileStatus('error')
-              setEmailErrorState(true)
-              setEmailErrorMessage('Security check failed. Please try again.')
-            }}
-            onExpire={() => {
-              setTurnstileStatus('expired')
-              setEmailErrorState(true)
-              setEmailErrorMessage('Security check expired. Please verify again.')
-            }}
-            onLoad={() => {
-              setTurnstileStatus('required')
-              setEmailErrorState(false)
-            }}
-            onVerify={() => {
-              setTurnstileStatus('success')
-              setEmailErrorState(false)
-            }}
-          />
           <Button size="md" variant="dark" type="submit">
             <p className="text-xs">Log In</p>
           </Button>
@@ -124,6 +98,32 @@ export default function LoginPage() {
                 <p className="text-xs text-center pt-0.5">Sign In with Google</p>
               </Button>
             </Link>
+            <Turnstile
+              siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+              appearance="interaction-only"
+              theme="light"
+              retry="auto"
+              refreshExpired="auto"
+              sandbox={process.env.NODE_ENV !== 'production'}
+              onError={() => {
+                setTurnstileStatus('error')
+                setEmailErrorState(true)
+                setEmailErrorMessage('Security check failed. Please try again.')
+              }}
+              onExpire={() => {
+                setTurnstileStatus('expired')
+                setEmailErrorState(true)
+                setEmailErrorMessage('Security check expired. Please verify again.')
+              }}
+              onLoad={() => {
+                setTurnstileStatus('required')
+                setEmailErrorState(false)
+              }}
+              onVerify={() => {
+                setTurnstileStatus('success')
+                setEmailErrorState(false)
+              }}
+            />
           </div>
         </div>
       </form>

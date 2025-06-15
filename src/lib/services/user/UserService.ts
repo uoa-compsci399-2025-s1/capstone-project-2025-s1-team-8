@@ -40,7 +40,7 @@ const UserService = {
   /**
    * Registers a new user with the provided details.
    *
-   * @param options The registration options containing the user's email, password, first name, last name, and role.
+   * @param options The registration options containing the user's email, password, first name, last name, role, and Cloudflare Turnstile token.
    * @returns A promise resolving to an object containing:
    *   - `status` {@link StatusCodes}: The HTTP status code of the response.
    *   - `message` string: A message indicating the result of the registration attempt.
@@ -53,6 +53,7 @@ const UserService = {
     firstName: string
     lastName: string
     role: UserRoleWithoutAdmin
+    token: string
   }): Promise<{
     status: StatusCodes
     message?: string
