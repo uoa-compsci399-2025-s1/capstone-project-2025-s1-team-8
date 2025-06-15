@@ -80,7 +80,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({
             <EditDeleteDropdown
               containerWidth={200}
               onEdit={() => {
-                window.open(`/form?${projectInfo.id}`)
+                const queryParams = new URLSearchParams({
+                  projectId: projectInfo.id,
+                }).toString()
+                window.open(`/form?${queryParams}`)
               }}
               onDelete={async () => {
                 await onDelete?.(projectInfo.id)
