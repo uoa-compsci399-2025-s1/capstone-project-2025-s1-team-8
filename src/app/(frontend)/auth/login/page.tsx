@@ -8,12 +8,16 @@ import Link from 'next/link'
 import { handleLogin } from '@/lib/services/user/Handlers'
 import { useState } from 'react'
 import { redirect } from 'next/navigation'
+import { Turnstile } from 'next-turnstile'
 
 export default function LoginPage() {
   const [errorState, setErrorState] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [emailErrorMessage, setEmailErrorMessage] = useState<string>('')
   const [emailErrorState, setEmailErrorState] = useState<boolean>(false)
+  const [turnstileStatus, setTurnstileStatus] = useState<
+    'success' | 'error' | 'expired' | 'required'
+  >('required')
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -65,6 +69,30 @@ export default function LoginPage() {
               required={true}
             />
           </div>
+          <Turnstile
+            siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+            retry="auto"
+            refreshExpired="auto"
+            sandbox={process.env.NODE_ENV === 'development'}
+            onError={() => {
+              setTurnstileStatus('error')
+              setEmailErrorState(true)
+              setEmailErrorMessage('Security check failed. Please try again.')
+            }}
+            onExpire={() => {
+              setTurnstileStatus('expired')
+              setEmailErrorState(true)
+              setEmailErrorMessage('Security check expired. Please verify again.')
+            }}
+            onLoad={() => {
+              setTurnstileStatus('required')
+              setEmailErrorState(false)
+            }}
+            onVerify={() => {
+              setTurnstileStatus('success')
+              setEmailErrorState(false)
+            }}
+          />
           <Button size="md" variant="dark" type="submit">
             <p className="text-xs">Log In</p>
           </Button>
