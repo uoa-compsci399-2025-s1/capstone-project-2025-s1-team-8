@@ -1,11 +1,5 @@
 'use client'
 import { motion } from 'framer-motion'
-import ProjectDnD from '@/components/Composite/ProjectDragAndDrop/ProjectDnD'
-import {
-  updateProjectOrdersAndStatus,
-  handleDeleteProject,
-  handlePublishChanges,
-} from '@/lib/services/admin/Handlers'
 import Notification from '@/components/Generic/Notification/Notification'
 import { TeapotCard } from '@/components/Generic/TeapotCard/TeapotCard'
 
@@ -16,10 +10,9 @@ import { useQueryClient } from '@tanstack/react-query'
 import { prefetchClients } from '@/lib/hooks/useClients'
 import { prefetchSemesters } from '@/lib/hooks/useSemesters'
 import { prefetchProjects } from '@/lib/hooks/useProjects'
-import { useProjects } from '@/lib/hooks/useProjects'
-import ProjectDnDSkeleton from '@/components/Generic/ProjectDNDSkeleton/ProjectDNDSkeleton'
 import AdminSemesterView from './AdminSemesterView/AdminSemesterView'
 import AdminClientView from './AdminClientView/AdminClientView'
+import AdminProjectView from './AdminProjectView/AdminProjectView'
 
 const AdminDashboard: React.FC = () => {
   const AdminNavElements = ['Projects', 'Clients', 'Semesters']
@@ -27,8 +20,6 @@ const AdminDashboard: React.FC = () => {
 
   const [activeTab, setActiveTab] = useQueryState('tab', { defaultValue: '0' })
   const queryClient = useQueryClient()
-
-  const { data: projectsData, isLoading: isProjectsLoading } = useProjects()
 
   const handleTabChange = async (index: number) => {
     setActiveTab(index.toString())
@@ -91,26 +82,7 @@ const AdminDashboard: React.FC = () => {
                 aria-hidden={activeTab !== '0'}
                 tabIndex={activeTab === '0' ? 0 : -1}
               >
-                {isProjectsLoading ? (
-                  <ProjectDnDSkeleton />
-                ) : (
-                  <ProjectDnD
-                    key={JSON.stringify(projectsData?.presetContainers)}
-                    {...(projectsData || {
-                      semesterId: '',
-                      presetContainers: [],
-                    })}
-                    onSaveChanges={updateProjectOrdersAndStatus}
-                    onPublishChanges={handlePublishChanges}
-                    onDeleteProject={handleDeleteProject}
-                    deletedProject={async () => {
-                      setNotificationMessage('Project deleted successfully')
-                      await queryClient.invalidateQueries({ queryKey: ['projects'] })
-                      await queryClient.invalidateQueries({ queryKey: ['semesterProjects'] }) // get current sem id and only do this form current sem
-                      await queryClient.invalidateQueries({ queryKey: ['studentPage'] })
-                    }}
-                  />
-                )}
+                <AdminProjectView setNotificationMessage={setNotificationMessage} />
               </div>
 
               <div
